@@ -1,89 +1,89 @@
 {
-  "finished_at": "2026-10-26T17:13:14+00:00",
-  "seconds": 325,
-  "query": "(KW:\"Female\" AND KW:\"Humans\" AND OPEN_ACCESS:Y AND HAS_FT:Y AND SRC:MED) NOT KW:\"Male\" NOT PUB_TYPE:\"review\" NOT PUB_TYPE:\"editorial\" NOT PUB_TYPE:\"comment\"",
-  "europepmc_hit_count": 289345,
+  "finished_at": "2026-10-26T17:33:14+00:00",
+  "seconds": 1048,
+  "query": "(KW:\"Female\" AND KW:\"Humans\" AND OPEN_ACCESS:Y AND HAS_FT:Y AND SRC:MED) NOT KW:\"Male\" NOT PUB_TYPE:\"review\" NOT PUB_TYPE:\"editorial\" NOT PUB_TYPE:\"comment\" NOT PUB_TYPE:\"letter\" NOT PUB_TYPE:\"case reports\" AND METHODS:(\"women\" OR \"pregnant\" OR \"mothers\" OR \"female participants\" OR \"female patients\" OR \"girls\")",
+  "europepmc_hit_count": 120676,
   "db_connected": true,
   "llm_verifier": false,
   "stats": {
-    "chunks": 1592,
-    "loaded_to_db": 60,
-    "processed": 60
+    "chunks": 4015,
+    "loaded_to_db": 150,
+    "processed": 150,
+    "skipped_existing_or_no_pmcid": 1
   },
   "labels": {
-    "female_only_verified": 35,
-    "female_only_probable": 10,
-    "female_only_unverified": 15
+    "female_only_verified": 127,
+    "female_only_probable": 23
   },
   "sections_found": {
-    "introduction": 53,
-    "other": 136,
-    "methods": 67,
-    "results": 40,
-    "conclusion": 31,
-    "discussion": 52
+    "introduction": 144,
+    "methods": 167,
+    "results": 140,
+    "discussion": 155,
+    "conclusion": 117,
+    "other": 245
   },
-  "commercial_use_ok": 40,
-  "with_n_female": 27,
+  "commercial_use_ok": 83,
+  "with_n_female": 129,
   "study_types": {
-    "qualitative": 11,
-    "unknown": 23,
-    "cross-sectional": 7,
-    "cohort": 17,
-    "randomized controlled trial": 2
+    "cohort": 63,
+    "randomized controlled trial": 18,
+    "unknown": 12,
+    "qualitative": 17,
+    "cross-sectional": 36,
+    "case-control": 4
   },
   "top_journals": [
     [
-      "PloS one",
-      15
+      "BMC pregnancy and childbirth",
+      30
     ],
     [
-      "The American journal of case reports",
+      "PloS one",
+      17
+    ],
+    [
+      "BMJ open",
+      12
+    ],
+    [
+      "BMJ global health",
       8
     ],
     [
-      "Revista brasileira de enfermagem",
-      7
+      "BMC public health",
+      6
     ],
     [
-      "Science advances",
-      5
+      "Maternal & child nutrition",
+      3
     ],
     [
-      "Sociology of health & illness",
-      1
+      "Scientific reports",
+      3
     ],
     [
-      "Acta anaesthesiologica Scandinavica",
-      1
+      "Frontiers in public health",
+      3
     ],
     [
-      "Disasters",
-      1
+      "International breastfeeding journal",
+      3
     ],
     [
-      "Prenatal diagnosis",
-      1
-    ],
-    [
-      "International braz j urol : official journal of the Brazilian Society of Urology",
-      1
-    ],
-    [
-      "Nature communications",
-      1
+      "BMC infectious diseases",
+      2
     ]
   ],
   "years": {
-    "2026": 59,
-    "2027": 1
+    "2025": 4,
+    "2026": 146
   },
   "db_totals": {
     "papers_by_label": {
-      "female_only_verified": 35,
-      "female_only_unverified": 15,
-      "female_only_probable": 10
+      "female_only_verified": 127,
+      "female_only_probable": 23
     },
-    "chunks": 1592
+    "chunks": 4015
   }
 }

@@ -1,0 +1,89 @@
+{
+  "finished_at": "2026-10-26T17:33:14+00:00",
+  "seconds": 1048,
+  "query": "(KW:\"Female\" AND KW:\"Humans\" AND OPEN_ACCESS:Y AND HAS_FT:Y AND SRC:MED) NOT KW:\"Male\" NOT PUB_TYPE:\"review\" NOT PUB_TYPE:\"editorial\" NOT PUB_TYPE:\"comment\" NOT PUB_TYPE:\"letter\" NOT PUB_TYPE:\"case reports\" AND METHODS:(\"women\" OR \"pregnant\" OR \"mothers\" OR \"female participants\" OR \"female patients\" OR \"girls\")",
+  "europepmc_hit_count": 120676,
+  "db_connected": true,
+  "llm_verifier": false,
+  "stats": {
+    "chunks": 4015,
+    "loaded_to_db": 150,
+    "processed": 150,
+    "skipped_existing_or_no_pmcid": 1
+  },
+  "labels": {
+    "female_only_verified": 127,
+    "female_only_probable": 23
+  },
+  "sections_found": {
+    "introduction": 144,
+    "methods": 167,
+    "results": 140,
+    "discussion": 155,
+    "conclusion": 117,
+    "other": 245
+  },
+  "commercial_use_ok": 83,
+  "with_n_female": 129,
+  "study_types": {
+    "cohort": 63,
+    "randomized controlled trial": 18,
+    "unknown": 12,
+    "qualitative": 17,
+    "cross-sectional": 36,
+    "case-control": 4
+  },
+  "top_journals": [
+    [
+      "BMC pregnancy and childbirth",
+      30
+    ],
+    [
+      "PloS one",
+      17
+    ],
+    [
+      "BMJ open",
+      12
+    ],
+    [
+      "BMJ global health",
+      8
+    ],
+    [
+      "BMC public health",
+      6
+    ],
+    [
+      "Maternal & child nutrition",
+      3
+    ],
+    [
+      "Scientific reports",
+      3
+    ],
+    [
+      "Frontiers in public health",
+      3
+    ],
+    [
+      "International breastfeeding journal",
+      3
+    ],
+    [
+      "BMC infectious diseases",
+      2
+    ]
+  ],
+  "years": {
+    "2025": 4,
+    "2026": 146
+  },
+  "db_totals": {
+    "papers_by_label": {
+      "female_only_verified": 127,
+      "female_only_probable": 23
+    },
+    "chunks": 4015
+  }
+}

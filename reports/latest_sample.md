@@ -1,277 +1,217 @@
 # Quality-check sample (latest run)
 
 
-## female_only_probable (10 papers)
-
-### Female Representation and Quality Indicators in Anesthesiology and Critical Care Podcasts.
-
-- Acta anaesthesiologica Scandinavica (2026) | PMC13669520 | doi:10.1111/aas.70356 | license: cc by
-- study type: cohort | population: None | n_female: None | chunks: 24 | methods found: True
-- reasons: ['male_terms_in_text:8']
-- male mention: "e 26.5% female workforce proportion among US anesthesiologists. Episodes with exclusively male hosts had 2.13 times the odds of featuring only male guests (95% CI 1.88-2.41). A positiv"
-- male mention: "iologists. Episodes with exclusively male hosts had 2.13 times the odds of featuring only male guests (95% CI 1.88-2.41). A positive trend of increasing female participation was observ"
-- male mention: "specialties. This sampling of podcasts related to our specialty looked at how females and males contributed to podcast content generation and dissemination, as a marker for male versus "
-- abstract: Background Podcasts have emerged as prominent tools for asynchronous medical education, widely adopted across training levels and specialties. Diverse representation strengthens medical discourse, making an evaluation of speaker demographics essential for understanding equity and quality in digital knowledge dissemination. This study systematically evaluates female representation and quality assurance indicators in anesthesiology and critical care podcasts, including longitudinal publication trends. Methods We systematically searched Apple Podcasts and Spotify using specialty-specific terms an
-
-### Psychological and computational evidence that merit is a constructed evaluative process.
-
-- Science advances (2026) | PMC13632724 | doi:10.1126/sciadv.aeh5472 | license: cc by
-- study type: None | population: None | n_female: 125 | chunks: 40 | methods found: True
-- reasons: ['male_terms_in_text:4']
-- evidence: " study 4: player). Experimental procedures were programmed in Gorilla Experiment Builder (www.gorilla.sc). For study 1, 125 participants were recruited. One participant was excluded from the analysis due to a technical error which occurred during their dat"
-- male mention: "cal power of 0.95. The gender distribution was broadly balanced with 69 females (56%), 53 males (43%), and 2 “other” (2%). For full details of sample sociodemographic characteristics, s"
-- male mention: " of 0.95. The gender distribution was again broadly balanced with 62 females (51%) and 60 males (49%). For full details of sample sociodemographic characteristics, see table S2. Partici"
-- male mention: ".05 and a desired statistical power of 0.95. The gender distribution was balanced with 64 males (51%) and 61 females (49%). For full details of sample sociodemographic characteristics, "
-- abstract: Merit is a foundational moral principle invoked to justify inequality between people, yet an individual's productivity is shaped not only by their efforts but also their opportunities. How, then, do people construct merit judgements? Across four preregistered, incentivized studies with US-based samples (total N = 759), we provide psychological and computational evidence that merit is not the product of a fixed rule, but rather the outcome of a subjective valuation. In a two-stage paradigm, participants first completed a real-effort tournament that dissociated performance (effort) from structur
-
-### Coordinated mosquito biting dynamics at the human skin interface.
-
-- Science advances (2026) | PMC13685975 | doi:10.1126/sciadv.aec2023 | license: cc by-nc
-- study type: None | population: None | n_female: None | chunks: 40 | methods found: True
-- reasons: ['male_terms_in_text:1']
-- male mention: "Products Inc). All An. coluzzii mutant mosquitoes were in NGO genetic background. Adults (males and females) were fed 10% sugar solution ad libitum. Females were assumed mated and were "
-- abstract: The bite of a female mosquito is the critical point of pathogen transmission, yet the fine-scale biting dynamics on human skin remain unknown. Here, we combine high-speed videography, deep-learning-based tracking, and electrophysiology to analyze biting dynamics of the malaria vector Anopheles coluzzii in real time at the human skin interface. We uncover a previously uncharacterized synchronization of mouthpart and leg movements during probing and identify five distinct below skin sub-behaviors: piercing, vessel searching, blood ingestion, retraction, and withdrawal. We show that disruption of
-
-### Implementing a climate-resilient and inclusive WASH guidance in Indonesia: A mixed-methods case study.
-
-- PloS one (2026) | PMC13618932 | doi:10.1371/journal.pone.0359266 | license: cc by
-- study type: cross-sectional | population: None | n_female: 26 | chunks: 40 | methods found: True
-- reasons: ['male_terms_in_text:1']
-- evidence: "s rather than a sampled subset. Village-level data were gathered from focus group discussions attended by an average of 26 participants per village. The village, rather than each workshop participant, was treated as the unit of observation in the quantita"
-- male mention: "line FGD included 10 members of Plan Indonesia’s CERIA project field team, comprising six men and four women. The study included KIIs with 29 participants: 13 village officials, four "
-- abstract: Climate change increasingly disrupts water, sanitation, and hygiene (WASH) services, disproportionately affecting women, children, people with disabilities, and groups with limited adaptive resources. Evidence remains limited on how WASH programs integrate climate resilience, equity, and social inclusion and on the conditions that enable benefits to reach households. Researchers examined how Climate Change Response for Inclusive WASH (CCRIW) guidance was implemented and adapted within routine programming in Indonesia, how implementation outcomes related to post-implementation household access,
-
-### Repercussions of the sexual experiences of women with a history of domestic violence: A Grounded Theory.
-
-- Revista brasileira de enfermagem (2026) | PMC13679594 | doi:10.1590/0034-7167-2024-0561 | license: cc by
-- study type: qualitative | population: None | n_female: 16 | chunks: 30 | methods found: True
-- reasons: ['male_terms_in_text:1']
-- evidence: " of guiding the theoretical model being constructed(,). Considering the object of the study, this group was composed of 16 women. The following inclusion criteria were defined: age 18 years or older and being monitored by the OERMP due to conjugal "
-- male mention: " conjugal violence within the Unified Health System: a social technology involving women, men, and Primary Care professionals”, submitted to the Research Program for the “SUS” (Unifie"
-- abstract: Objectives to understand the repercussions of sexuality experiences on the lives and health of women with a history of intimate partner violence. Methods a qualitative study grounded in Grounded Theory and the theoretical framework of gender and patriarchy as proposed by Kate Millet. Seventeen women assisted by the Ronda Maria da Penha operation and ten Family Health Strategy professionals in Salvador, Bahia, were interviewed. This study brings together data from the component Consequences of the Paradigmatic Model. Results the following categories emerged: Experiencing repercussions on physic
-
-### Social Physiology: Human homeostasis is more efficient in social proximity.
-
-- Science advances (2026) | PMC13600219 | doi:10.1126/sciadv.aeg4937 | license: cc by
-- study type: qualitative | population: mothers | n_female: 56 | chunks: 40 | methods found: True
-- reasons: ['male_terms_in_text:1']
-- evidence: " Alone condition could not be completed as the infants became too distressed to continue. The final sample consisted of 56 mothers (age range: 22 to 47 years; mean = 32.04; SD = 5.26) and their 56 infants (27 females and 29 males; age range: 2.5 to 1"
-- male mention: "us, analyses were conducted on 116 observations (116 unique participants; 57 couples, one man, and one woman). In the Stress Experiment (Experiment 3), of the 120 participants, two co"
-- abstract: Physiological homeostasis is traditionally viewed as an individual process optimized through evolution to minimize the energetic costs of regulation. However, it remains unknown whether social proximity enhances the efficiency of homeostatic regulation, including in systems not traditionally viewed as socially sensitive. Glucose metabolism is one such system. In a set of preregistered experiments, we found that glucose homeostasis following a carbohydrate challenge is more efficient in a Social condition than an Alone condition, exhibiting lower perturbation amplitude and faster recovery ( n =
-
-### Elamipretide Rejuvenates Oocyte Quality and Restores Female Fertility During Reproductive Aging.
-
-- Aging cell (2026) | PMC13633435 | doi:10.1111/acel.70749 | license: cc by
-- study type: None | population: ovarian, infertil | n_female: None | chunks: 40 | methods found: True
-- reasons: ['male_terms_in_text:1']
-- male mention: "m the ampullae of the female mice's oviducts and placed into HTF fertilization drops. ICR male mice (9–10 weeks old) were purchased from Qinglongshan Animal Farm. Their epididymides we"
-- abstract: Aging represents a major contributor to the deterioration of female fertility, with oocyte quality being the central determinant of ovarian aging, a key factor underlying infertility. Although several natural compounds with anti-aging activity have been documented, highly effective strategies to reverse ovarian aging remain elusive. Here, we report that the peptide elamipretide preserves ovarian function and sustains female fertility during maternal aging. We found that elamipretide administration increases litter size in aged mice and ameliorates oocyte quality decline. Metabolomic and transc
-
-### Exploring barriers to implementing adolescent pregnancy prevention interventions in low- and middle-income countries: Perspectives from international experts.
-
-- PloS one (2026) | PMC13693911 | doi:10.1371/journal.pone.0360943 | license: cc by
-- study type: qualitative | population: None | n_female: 25 | chunks: 39 | methods found: True
-- reasons: ['male_terms_in_text:1']
-- evidence: "hs and were able to communicate in English and French were included. The study initially aimed to recruit approximately 25 participants. Sample adequacy was assessed in relation to the study’s exploratory objective and the recurrence and depth of cross-cu"
-- male mention: "rther constrained by gendered allocation and unequal decision-making power, which limited boys' participation and girls' agency. Separately, poverty, household material insecurity, and"
-- abstract: Background Adolescent pregnancy remains a significant public health concern, particularly in low- and middle-income countries (LMICs). Although various interventions have been implemented to address this issue, many have failed to achieve positive outcomes due to numerous barriers. Objective To explore the barriers to implementing adolescent pregnancy prevention interventions in LMICs. Methods This qualitative exploratory study involved 19 adolescent pregnancy prevention program implementers across 24 LMICs. Data were collected through virtual in-depth individual interviews, organized using De
-
-### Once yearly cell-based therapy for sustained and dose-tunable delivery of monoclonal antibodies.
-
-- Science advances (2026) | PMC13632727 | doi:10.1126/sciadv.aej5440 | license: cc by-nc
-- study type: None | population: None | n_female: None | chunks: 40 | methods found: True
-- reasons: ['male_terms_in_text:1']
-- male mention: " in accordance with the Guide for the Care and Use of Laboratory Animals (, ). A juvenile male rhesus macaque (Macaca mulatta; 3.55 years; 5.5 kg) was used. An ipilimumab-producing clo"
-- abstract: More than 200 monoclonal antibodies (mAbs) are approved for clinical use, yet their therapeutic potential is constrained by dependence on repeated injections or infusions that drive nonadherence, limit access in low-resource settings, and generate peak-trough pharmacokinetics linked to adverse effects and reduced efficacy. Here, we developed an immunomodulatory, encapsulated cell-based "biologics factory" that overcomes mAb instability, immunogenicity, and the fibrotic foreign body response that have limited previous approaches, enabling continuous in situ production of therapeutic antibodies 
-
-### Tailoring Escalated Adjuvant Chemotherapy for Multifocal and Multicentric Breast Cancer With Low Tumor Burden.
-
-- JCO precision oncology (2026) | PMC13668041 | doi:10.1200/po-26-00177 | license: cc by-nc-nd
-- study type: cohort | population: breast cancer | n_female: 9751 | chunks: 21 | methods found: True
-- reasons: ['male_terms_in_text:2']
-- evidence: " proportional hazards models, with subgroup analyses stratified by tumor size in node-negative MMBC. Results After PSM, 9,751 matched pairs of patients with MMBC and UBC were included. Analyses showed MMBC had significantly worse overall survival (OS) and breast cancer-s"
-- male mention: "st cancer after 2020 were excluded to ensure adequate follow-up time. This study excluded male patients because the incidence of male breast cancer is barely 0.7%-1% that of female bre"
-- male mention: "nsure adequate follow-up time. This study excluded male patients because the incidence of male breast cancer is barely 0.7%-1% that of female breast cancer, which is insufficient to un"
-- abstract: Purpose The prognostic significance of multifocal and multicentric breast cancer (MMBC) with low tumor burden remains controversial, and adjuvant chemotherapy guidelines for these patients are lacking. Materials and methods Female patients with cT1-T2 MMBC or unifocal breast cancer (UBC) diagnosed between 2010 and 2020 were identified from the SEER database. Propensity score matching (PSM) balanced baseline characteristics. Survival outcomes were evaluated using Kaplan-Meier and Cox proportional hazards models, with subgroup analyses stratified by tumor size in node-negative MMBC. Results Afte
-
-
-## female_only_unverified (15 papers)
-
-### Robotic Flexible Ureteroscopy: A Step-by-Step Guide to the ILY® Platform.
-
-- International braz j urol : official journal of the Brazilian Society of Urology (2026) | PMC13682739 | doi:10.1590/s1677-5538.ibju.2026.0541 | license: cc by
-- study type: None | population: None | n_female: None | chunks: 2 | methods found: False
-- reasons: ['no_methods_section']
-- abstract: Introduction Robotic flexible ureteroscopy (rfURS) is emerging as an alternative to manual flexible ureteroscopy for the treatment of upper urinary tract stones. Contemporary guidelines and reviews describe its potential ergonomic and radiation-related advantages, as well as comparable surgical outcomes (1-5). Initial clinical and simulation studies with the ILY® platform have demonstrated feasibility, safety, and a short learning curve, although standardized implementation remains limited (6-10). This video presents a step-by-step workflow for the safe and efficient use of the ILY® platform. 
-
-### Primary Care Recognition of Rabson-Mendenhall Syndrome Despite Absence of Classical Diabetic Symptoms.
-
-- The American journal of case reports (2026) | PMC13556273 | doi:10.12659/ajcr.953067 | license: cc by-nc-nd
-- study type: None | population: None | n_female: None | chunks: 16 | methods found: False
-- reasons: ['no_methods_section']
-- abstract: BACKGROUND Rabson-Mendenhall syndrome (RMS) is an extremely rare autosomal recessive disorder caused by pathogenic variants in the insulin receptor gene, leading to severe insulin resistance and compensatory hyperinsulinemia. Classical features include acanthosis nigricans, non-obese or underweight body habitus, hirsutism, dental abnormalities, dysmorphic features, and variable growth abnormalities. Early recognition may be difficult when the initial presentation is dominated by non-specific symptoms rather than classical metabolic complaints. CASE REPORT A 10-year-old Saudi girl presented to 
-
-### How unequal is unequal? Turn-taking simulation for benchmarking participation and opportunity inequality in small-group collaboration.
-
-- PloS one (2026) | PMC13693943 | doi:10.1371/journal.pone.0361205 | license: cc by
-- study type: None | population: None | n_female: None | chunks: 40 | methods found: False
-- reasons: ['no_methods_section']
-- abstract: Participation equity is essential for ensuring that students gain cognitive and social benefits from collaborative learning, yet there is a lack of quantitative benchmarks for interpreting participation and opportunity distributions in small-group collaboration. This study focuses on two turn-based analytical dimensions of participation equity: participation equality, measured by students' shares of speaking turns, and opportunity equality, measured by students' shares of addressed opportunities. Using the standard deviation of these rates, the study establishes preliminary, context-specific s
-
-### A Giant Intra-Abdominal Plasmablastic Neoplasm Favoring Lymphoma Mimicking an Exacerbation of Severe Fistulizing Crohn's Disease: A Case Report.
-
-- The American journal of case reports (2026) | PMC13660446 | doi:10.12659/ajcr.954003 | license: cc by-nc-nd
-- study type: None | population: None | n_female: None | chunks: 20 | methods found: False
-- reasons: ['no_methods_section']
-- abstract: BACKGROUND Plasmablastic lymphoma (PBL) is a rare, aggressive large B-cell lymphoma associated with immunosuppression. In Crohn's disease, it can mimic disease exacerbation or infection. We describe a rapidly enlarging intra-abdominal plasmablastic neoplasm in a medically complex patient, emphasizing diagnostic vigilance without inferring a causal association with biological therapy. CASE REPORT A 44-year-old woman with severe fistulizing Crohn's disease treated sequentially with adalimumab, infliximab, and ustekinumab developed progressive systemic deterioration despite partial intestinal sta
-
-### The End of Silo Medicine: A Case for Disease-Centered Subspecialization.
-
-- Journal of evaluation in clinical practice (2026) | PMC13405251 | doi:10.1111/jep.70542 | license: cc by
-- study type: None | population: None | n_female: None | chunks: 9 | methods found: False
-- reasons: ['no_methods_section']
-- abstract: Modern medical subspecialization was organized around organs, age groups and procedures during an era when diseases were viewed as isolated processes. Contemporary biology instead reveals illnesses that arise across systems and evolve across the life span. Yet clinical care remains fragmented among multiple specialties with no single physician accountable for the integrated whole. We propose disease-centred subspecialization, in which expertise for a complex condition is unified within a single clinical domain and supported by advanced clinical intelligence systems. Fetoneonatology, integratin
-
-### A 45-Year-Old Woman With 30-Year History of a Nodule of the Earlobe Diagnosed as Lupus Vulgaris (Cutaneous Tuberculosis).
-
-- The American journal of case reports (2026) | PMC13656826 | doi:10.12659/ajcr.954366 | license: cc by-nc-nd
-- study type: None | population: None | n_female: None | chunks: 10 | methods found: False
-- reasons: ['no_methods_section']
-- abstract: BACKGROUND Tuberculosis is a chronic granulomatous infection caused by Mycobacterium tuberculosis, which can affect multiple organs in the human body. Lupus vulgaris is the most common clinical type of cutaneous tuberculosis in China. It typically follows a chronic course, with skin lesions that are difficult to heal, making it prone to misdiagnosis and missed diagnosis. This report presents a case of chronic lupus vulgaris that remained untreated over an exceptionally long duration, demonstrating that lupus vulgaris can manifest as a chronic inflammatory focus. CASE REPORT This article report
-
-### Perceived Value of Certification for Nurses and Nurse Managers: Updated 2026 White Paper.
-
-- Orthopedic nursing (2026) | PMC13600352 | doi:10.1097/nor.0000000000001237 | license: cc by-nc-nd
-- study type: cross-sectional | population: None | n_female: None | chunks: 29 | methods found: False
-- reasons: ['no_methods_section']
-- abstract: Introduction Since the first orthopaedic nurse certification (ONC) examination in 1988, more than 16,000 nurses have earned the ONC credential, with nearly 5000 currently certified in orthopaedic nursing, advanced practice, or nurse navigation roles. Certification validates expertise in musculoskeletal care and supports improved clinical practice, professional identity, and organizational performance. Methods The Orthopaedic Nurses Certification Board survey included a representative sample of over 300 orthopaedic-certified nurses. Survey items were based on the Perceived Value of Certificatio
-
-### OsteoStrong and dynamic exercise in older women: rethinking comparative effectiveness.
-
-- Aging clinical and experimental research (2026) | PMC13668926 | doi:10.1007/s40520-026-03536-8 | license: cc by-nc-nd
-- study type: randomized controlled trial | population: older women | n_female: 194 | chunks: 9 | methods found: False
-- reasons: ['no_methods_section']
-- evidence: "berg and colleagues conducted a randomized trial comparing OsteoStrong (OS) to dynamic multicomponent exercise (DME) in 194 older women with osteopenia or osteoporosis, finding superior improvements in gait speed, back endurance, and balance with DME. Whi"
-- abstract: Exercise is a cornerstone of osteoporosis management, yet the comparative effectiveness of isometric machine‑based training versus dynamic multicomponent exercise remains unclear. Lindberg and colleagues conducted a randomized trial comparing OsteoStrong (OS) to dynamic multicomponent exercise (DME) in 194 older women with osteopenia or osteoporosis, finding superior improvements in gait speed, back endurance, and balance with DME. While these findings are clinically relevant, several methodological considerations warrant attention: the six‑fold difference in training volume (20 vs. 120 min/we
-
-### Coexisting Postural Orthostatic Tachycardia Syndrome on Autonomic Reflex Testing in Functional Neurologic Disorder.
-
-- The American journal of case reports (2026) | PMC13632569 | doi:10.12659/ajcr.953323 | license: cc by-nc-nd
-- study type: None | population: None | n_female: None | chunks: 23 | methods found: False
-- reasons: ['no_methods_section']
-- abstract: BACKGROUND Functional neurological disorder (FND) is characterized by neurological symptoms identified through positive clinical signs that are incongruent with recognized structural neurological disease. Postural orthostatic tachycardia syndrome (POTS), in contrast, is defined by excessive orthostatic tachycardia and is associated with a range of multisystem autonomic symptoms. Shared clinical features can blur diagnostic boundaries. As a result, new or evolving symptoms in patients with a prior functional diagnosis may be overlooked, increasing the risk of diagnostic overshadowing. CASE REPO
-
-### Late Diagnosis of Noonan Syndrome Presenting With Infective Endocarditis: A Multidisciplinary Challenge in an Underserved Population.
-
-- The American journal of case reports (2026) | PMC13592135 | doi:10.12659/ajcr.952213 | license: cc by-nc-nd
-- study type: None | population: None | n_female: None | chunks: 14 | methods found: False
-- reasons: ['no_methods_section']
-- abstract: BACKGROUND Noonan syndrome is a clinically diagnosed genetic disorder frequently associated with congenital and structural cardiac abnormalities such as valvular dysplasia and cardiomyopathy, which may predispose patients to infective endocarditis. Delayed recognition, particularly in underserved populations, can lead to advanced cardiac complications and complex presentations. CASE REPORT A 29-year-old woman from a rural area with no previous medical history presented with severe respiratory distress, weight loss, and newly detected cardiac murmurs. Physical examination revealed dysmorphic fe
-
-### A 35-Year-Old Woman With Multiple Sclerosis and a New Atypical Thalamic Lesion: A Case Report From the National Multiple Sclerosis Society Case Conference Proceedings.
-
-- Neurology(R) neuroimmunology & neuroinflammation (2026) | PMC13690360 | doi:10.1212/nxi.0000000000200667 | license: cc by-nc-nd
-- study type: None | population: None | n_female: None | chunks: 18 | methods found: False
-- reasons: ['no_methods_section']
-- abstract: In multiple sclerosis (MS), new or enlarging brain lesions often suggest disease activity, but infections or tumors may mimic relapse. We report a 35-year-old woman with MS whose enlarging thalamic lesion was ultimately diagnosed as diffuse midline glioma, underscoring the need for prompt evaluation of atypical MRI findings.
-
-### Susan G. Komen's ShareForCures: a patient-engaged, nationwide breast cancer research registry.
-
-- Journal of the National Cancer Institute (2026) | PMC13650378 | doi:10.1093/jnci/djaf353 | license: cc by-nc-nd
-- study type: cohort | population: breast cancer | n_female: 1327 | chunks: 24 | methods found: False
-- reasons: ['no_methods_section']
-- evidence: "ch participants. All adults in the United States with a breast cancer diagnosis are eligible. As of September 30, 2025, 1327 participants had enrolled. The platform aims to enroll 2500 diverse participants by 2027, with a long-term goal of reaching 10 000 p"
-- abstract: ShareForCures is a newly launched and growing dataset, crowdsourced from participants, that comprises self-reported, clinical, and genomics data. The dataset seeks to advance breast cancer research by expanding patient participation in research and accelerating discoveries. It is designed to (1) provide opportunities for individuals who have or have had breast cancer to participate in research, (2) create a longitudinal cohort that represents the diversity of individuals diagnosed with breast cancer, and (3) facilitate collaboration among researchers from various backgrounds and institutions t
-
-
-## female_only_verified (35 papers)
-
-### Impact of Daily Life Challenges on Emotional and Functional Well-Being Among Community-Dwelling Female Survivors of Breast and Gynecological Cancers in Japan.
-
-- Japan journal of nursing science : JJNS (2026) | PMC13468176 | doi:10.1111/jjns.70070 | license: cc by-nc-nd
-- study type: cross-sectional | population: None | n_female: None | chunks: 25 | methods found: True
-- reasons: []
-- abstract: Aim This study aimed to investigate these aspects in female community-dwelling cancer survivors. Methods This secondary analysis of a community-based cancer survey was conducted in Tokyo, Japan. Emotional well-being (EWB) and functional well-being (FWB) were measured using two subdomains of the Functional Assessment of Cancer Therapy-General. The sample comprised 163 survivors of breast and gynecological cancers. We used descriptive statistics and multivariate regression analyses to explore the association between the challenges and EWB and FWB. Results All participants were women, of whom 118
-
-### Study on the influence of microabscess on the recurrence of granulomatous lobular mastitis and stratified treatment strategies.
-
-- PloS one (2026) | PMC13600525 | doi:10.1371/journal.pone.0358780 | license: cc by
-- study type: cohort | population: None | n_female: 520 | chunks: 22 | methods found: True
-- reasons: []
-- evidence: "esign individualized anti-recurrence therapy for GLM patients. Methods This single-center retrospective cohort enrolled 520 women with pathologically confirmed GLM from a non-puerperal mastitis registry maintained at a provincial maternal and child "
-- abstract: Objective We aimed to clarify whether microabscess observed on pathological biopsy independently predicts recurrence in granulomatous lobular mastitis (GLM), and to compare recurrence risks across different treatment regimens stratified by microabscess status. Our findings may help clinicians design individualized anti-recurrence therapy for GLM patients. Methods This single-center retrospective cohort enrolled 520 women with pathologically confirmed GLM from a non-puerperal mastitis registry maintained at a provincial maternal and child health hospital. Patient records spanned January 2017 to
-
-### Women's experiences regarding the care received in the hospital setting during the abortion process.
-
-- Revista brasileira de enfermagem (2026) | PMC13679158 | doi:10.1590/0034-7167-2025-0521 | license: cc by
-- study type: qualitative | population: pregnant, postpartum | n_female: 19 | chunks: 32 | methods found: True
-- reasons: []
-- evidence: "ollected between May and September 2024 through audio recorded interviews, conducted either in person or remotely, with 19 women, and analyzed using thematic content analysis. Results two categories emerged: Experiencing disrespectful care, which r"
-- abstract: Objectives to understand how women recall the care they received in the hospital setting during the abortion process. Methods a descriptive qualitative study grounded in the conceptual framework of the National Humanization Policy. Data were collected between May and September 2024 through audio recorded interviews, conducted either in person or remotely, with 19 women, and analyzed using thematic content analysis. Results two categories emerged: Experiencing disrespectful care, which reflects dissatisfaction with communication, insufficient information, devaluation of complaints and emotional
-
-### Exploring the motivation and structural barriers of women's sports consumption from the perspective of the "She-Economy".
-
-- PloS one (2026) | PMC13686482 | doi:10.1371/journal.pone.0359201 | license: cc by
-- study type: qualitative | population: athlete | n_female: None | chunks: 40 | methods found: True
-- reasons: []
-- abstract: Against the backdrop of consumption upgrading and growing gender consciousness, the "She-Economy" has emerged as an important socio-economic phenomenon driving market transformation and consumption restructuring. Women's participation in sports consumption has continued to increase, making women a significant consumer group within the sports industry. However, women's sports consumption is a contradictory field in which empowerment, identity formation, market discipline, gender norms, institutional neglect, and structural inequality coexist. Therefore, this study adopted a descriptive phenomen
-
-### Living with a rare disease: Why lived experience must shape research.
-
-- PLoS medicine (2026) | PMC13588516 | doi:10.1371/journal.pmed.1005253 | license: cc by
-- study type: None | population: None | n_female: None | chunks: 10 | methods found: True
-- reasons: []
-- abstract: Rare diseases are often defined by numbers and clinical perspectives, a narrative that needs re-writing. Drawing on decades of patient advocacy, two women living with the rare condition Congenital Melanocytic Naevus argue that lived experience must shape research from the outset, and discuss how genuine patient-researcher partnership transforms science, care and identity.
-
-### Development of an open-access food atlas with nutrient composition and recipes in Argentina: The Smart24Food Atlas.
-
-- PloS one (2026) | PMC13614558 | doi:10.1371/journal.pone.0359331 | license: cc by
-- study type: None | population: None | n_female: 108 | chunks: 38 | methods found: True
-- reasons: []
-- evidence: "d recipes, and nutrient-composition information. A controlled direct-observation study in a university setting included 108 participants, mostly young adults, completing 20 tasks: seven packaged-product selection tasks and 13 visual portion-matching tasks."
-- abstract: Introduction Accurate dietary intake assessment remains challenging, particularly for portion-size estimation, and context-specific photographic aids remain limited in Argentina. This study aimed to develop an open-access digital atlas of foods and recipes consumed in Argentina, integrating portion-size photographs and nutrient-composition data, and to describe its performance for food and recipe retrieval and visual portion-size matching under controlled direct-observation conditions. Methods The Smart24Food atlas was developed as a digital resource integrating food photographs, standardized 
-
-### Curating the Fetal Genome: Experience of the ClinGen Prenatal Gene Curation Expert Panel (GCEP).
-
-- Prenatal diagnosis (2026) | PMC13659245 | doi:10.1002/pd.70246 | license: cc by
-- study type: qualitative | population: None | n_female: None | chunks: 30 | methods found: True
-- reasons: []
-- abstract: Objective Expert prenatal focused gene-disease curation is necessary to accurately inform clinical care in the setting of rapidly expanding prenatal genomic sequencing. Methods An international Prenatal Gene Curation Expert Panel assembled and systematically reviewed genes asserted to be associated with prenatal hydrops, stillbirth, or severe anomalies using the ClinGen framework. Results The ClinGen Prenatal GCEP published evidence summaries for 63 disease relationships involving 61 genes with unique and clinically severe prenatally observed fetal phenotypes. Conclusion The ClinGen Prenatal G
-
-### Stabilization of cervical stiffness associated with cervical pessary placement in women at risk for preterm birth.
-
-- PloS one (2026) | PMC13618951 | doi:10.1371/journal.pone.0359271 | license: cc by
-- study type: cohort | population: pregnant, postpartum, cervical, gestational | n_female: 89 | chunks: 24 | methods found: True
-- reasons: []
-- evidence: "gth ≤ 25 mm according to the ISUOG guidelines) treated with a cervical pessary and healthy controls. Methods A total of 89 pregnant participants were analysed in this prospective observational study. Among them, 30 received a cervical pessary because of cervical s"
-- abstract: Purpose Shortening of the cervix is a predictor of spontaneous preterm birth (PTB). It is assumed that a cervical pessary reduces mechanical stress on the internal os and consequently decreases the risk of premature delivery. The primary aim of this study was to compare longitudinal changes in cervical stiffness between women with cervical shortening (a cervical length ≤ 25 mm according to the ISUOG guidelines) treated with a cervical pessary and healthy controls. Methods A total of 89 pregnant participants were analysed in this prospective observational study. Among them, 30 received a cervic
-
-### Single-cell-level digital twins for preterm birth prevention strategies.
-
-- Science advances (2026) | PMC13693830 | doi:10.1126/sciadv.aed2741 | license: cc by
-- study type: cohort | population: pregnant, gestational | n_female: 19 | chunks: 40 | methods found: True
-- reasons: []
-- evidence: "ion medians across markers for each cell type and patient. For the final analysis, CellOT models were trained using all 19 patients (pregnant and nonpregnant) from the perturbation dataset. Our rationale for combining both groups was to increase cellu"
-- abstract: Digital twin models can accelerate therapeutic development by enabling low-risk testing of candidate interventions. In preterm labor (PTL), a major pregnancy complication where clinical trials face ethical and financial barriers, digital twins are especially valuable for evaluating new therapies targeting immune dysfunctions driving PTL. Yet, current models lack single-cell resolution, limiting detection of cell type-specific mechanisms, off-target effects, and the design of personalized interventions. We present Simulated Immunome Modeling of Clinical Outcomes (SIMCO), a single-cell-level dig
-
-### Transition of the insertion of nurse midwives in the delivery room of a teaching hospital.
-
-- Revista brasileira de enfermagem (2026) | PMC13679595 | doi:10.1590/0034-7167-2025-0190 | license: cc by
-- study type: cross-sectional | population: pregnant, gestational | n_female: 2113 | chunks: 29 | methods found: True
-- reasons: []
-- evidence: "ogram in Health Care Sciences at Universidade Federal Fluminense (). In the quantitative phase, the sample consisted of 2,113 cases of patients receiving obstetric care with gestational age ≥ 22 weeks who underwent vaginal delivery or cesarean section. Subsequent"
-- abstract: Objectives to understand the transition of the insertion of nurse midwives in the delivery room based on the Apice On Project in a teaching hospital. Methods a mixed-method study - Embedded Concurrent Design. Qualitative data were collected from 18 professionals from a maternity hospital in the city of Rio de Janeiro through semi-structured interviews and submitted to content analysis. Quantitative data were extracted from the obstetric indicators logbook and processed using descriptive statistical analysis. Results the correlation of data indicated determining factors for the performance of s
-
-### TUBA4A Pathogenic Variant Manifesting With Adulthood-Onset Genetic Myasthenic Syndrome, Myopathy, and Infertility.
-
-- European journal of neurology (2026) | PMC13564105 | doi:10.1111/ene.70753 | license: cc by-nc-nd
-- study type: None | population: infertil | n_female: None | chunks: 16 | methods found: True
-- reasons: []
-- abstract: Objectives TUBA4A pathogenic variants are associated with ALS, frontotemporal dementia, spastic ataxia, spasticity, ataxia, Parkinson's disease, female infertility, macrothrombocytopenia, and myopathy. Four recently reported patients with TUBA4A neonatal/childhood onset myopathy had also a decrement on repetitive nerve stimulation (RNS), but such a finding was not further characterized. We describe a patient with a TUBA4A pathogenic variant with adulthood-onset genetic myasthenic syndrome accompanied by myopathy and infertility to highlight the neuromuscular junction defect as the main feature
-
-### Health vulnerability to vertical transmission of syphilis: validity of constitutive and operational definitions.
-
-- Revista brasileira de enfermagem (2026) | PMC13679585 | doi:10.1590/0034-7167-2024-0656 | license: cc by
-- study type: qualitative | population: pregnant | n_female: None | chunks: 22 | methods found: True
-- reasons: []
-- abstract: Objective to develop and analyze the validity evidence of the constitutive and operational definitions of health vulnerability for pregnant women in relation to vertical transmission of syphilis. Methods a psychometric study, based on the Health Vulnerability Model, protocols from the Ministry of Health, updating the scoping review and conducting a concept analysis. Content validity evidence was analyzed by ten judges. The Content Validity Ratio was used to select operational definitions with a score equal to or greater than 0.8. Results the dimensions were divided into nine subdimensions with
+## female_only_probable (23 papers)
+
+### Missed opportunities in health sector responses to violence against women and girls: a comparative mixed-methods study in Albania and Brazil.
+
+- BMJ global health (2026) | PMC13629869 | doi:10.1136/bmjgh-2025-022311 | license: cc by-nc
+- study type: cohort | population: None | n_female: 8 | chunks: 40 | methods found: True
+- reasons: ['male_terms_in_text:2', 'female_pop_mentions:16']
+- evidence: "rana. We conducted semistructured interviews in Tirana with a purposive sample of healthcare professionals (n=11—3 men, 8 women), covering roles such as family doctors, psychologists, gynaecologists, forensic doctors and municipal specialists and "
+- male mention: "ructured interviews in Tirana with a purposive sample of healthcare professionals (n=11—3 men, 8 women), covering roles such as family doctors, psychologists, gynaecologists, forensic"
+- male mention: "conducted in-depth interviews with a purposive sample of healthcare professionals (n=62—7 men, 55 women), three survivors of VAWG and two activists from social movements, resulting in"
+- abstract: Background Violence against women and girls (VAWG) is a global public health crisis, affecting one in three women worldwide. Survivors of VAWG access health services more frequently due to the direct and indirect consequences of violence. Despite the health system's potential lifesaving role, these visits often result in missed opportunities. Methods The Missed Opportunities to Respond to Violence Against Women and Girls in the Health Sector (MISSOP) study investigated the nature, scale and determinants of missed opportunities in responding to VAWG within primary care and emergency departments
+
+### Barriers to healthcare access during pregnancy and after birth for adolescent girls living with disability in Sierra Leone: a qualitative study.
+
+- BMJ open (2026) | PMC13239463 | doi:10.1136/bmjopen-2025-109084 | license: cc by
+- study type: qualitative | population: pregnant, postpartum, adolescent girls | n_female: None | chunks: 40 | methods found: True
+- reasons: ['male_terms_in_text:1', 'female_pop_mentions:23']
+- male mention: "ender and disability issues, particularly topics culturally inappropriate to discuss with male interviewers. Interviews were conducted in Krio or Mende according to participant prefere"
+- abstract: Background and objective In 2017, Lifeline Nehemiah Projects in Sierra Leone launched 2YoungLives, a mentoring initiative for vulnerable pregnant adolescents, including those living with disabilities. Drawing from the social model of disability, we aimed to investigate the exacerbated disabling barriers which prevent these girls and their babies from accessing available healthcare and develop comprehensive solutions to improve their access. Design Qualitative methods were used in this study. Setting Participants were invited to participate in face-to-face interviews in one district in Sierra L
+
+### Effectiveness of breastfeeding educational interventions during pregnancy on breastfeeding practices in rural Central Ethiopia: cluster randomized controlled trial.
+
+- BMC public health (2026) | PMC13459159 | doi:10.1186/s12889-026-28088-4 | license: cc by-nc-nd
+- study type: randomized controlled trial | population: pregnant, postpartum, breastfeeding, mothers | n_female: 510 | chunks: 28 | methods found: True
+- reasons: ['male_terms_in_text:2', 'female_pop_mentions:40']
+- evidence: "n rural Central Ethiopia. Methods A community-based, three-arm, cluster randomized controlled trial was conducted among 510 pregnant women enrolled before 16 weeks of gestation. The study arms were: (1) pregnant woman with her mother-in-law, (2) pregnant wom"
+- male mention: "the nation’s capital. Hadiya Zone has a total population of 1,807,065, comprising 895,581 men (49.56%) and 911,484 women (50.44%). Women of reproductive age (15–49 years) account for "
+- male mention: " Hadiya Zone has a total population of 1,807,065, comprising 895,581 men (49.56%) and 911,484 women (50.44%). Women of reproductive age (15–49 years) account for 421,044 individuals (23.3%), and th"
+- abstract: Background Despite its well-established benefits, breastfeeding practices differ across communities, and many women exhibit suboptimal practices due to cultural influences and limited access to accurate information. Nulliparous pregnant women, in particular, lack prior breastfeeding experience and are often strongly influenced by family members such as mothers-in-law. However, there is limited evidence on whether involving these influential family members in breastfeeding education can improve breastfeeding practices. This study evaluated the effectiveness of breastfeeding educational interven
+
+### Knowledge of pregnancy danger signs and associated factors among pregnant teenagers in Western Hararghe, Ethiopia: a facility-based cross-sectional study.
+
+- BMC pregnancy and childbirth (2026) | PMC13632411 | doi:10.1186/s12884-026-09642-9 | license: cc by-nc-nd
+- study type: cross-sectional | population: pregnant, gestational, mothers | n_female: 1191888 | chunks: 18 | methods found: True
+- reasons: ['male_terms_in_text:1', 'female_pop_mentions:13']
+- evidence: "ons (2017), the total population of the Western Hararghe Zone was estimated at 2,435,350, comprising 1,243,462 men, and 1,191,888 women. Of these, 259,563 residents were urban dwellers. The zone’s healthcare infrastructure includes two general hospitals, "
+- male mention: " population of the Western Hararghe Zone was estimated at 2,435,350, comprising 1,243,462 men, and 1,191,888 women. Of these, 259,563 residents were urban dwellers. The zone’s healthc"
+- abstract: Background Obstetric danger signs are often unpredictable, making timely recognition critical for preventing maternal complications. Enhancing maternal knowledge, ensuring quality maternal care, and promoting prompt health-seeking behavior are essential strategies for reducing maternal mortality. While previous studies have primarily focused on the general population of women of reproductive age, empirical evidence regarding pregnant teenagers' knowledge of these signs, and the factors influencing it, remains limited and largely unexamined in Ethiopia. Objective This study aimed to assess the 
+
+### Observed Maternal Positive Affect Responsivity Prospectively Predicts Lower Internalizing Problems in Toddlers of Mothers With Depression: A Dynamic Systems Analysis.
+
+- Research on child and adolescent psychopathology (2026) | PMC13582076 | doi:10.1007/s10802-026-01507-1 | license: cc by-nc-nd
+- study type: cohort | population: mothers | n_female: 100 | chunks: 40 | methods found: True
+- reasons: ['male_terms_in_text:1', 'female_pop_mentions:26']
+- evidence: "ernal attunement to child positive affect may be an important target for preventive intervention. Participants included 100 mothers (mean age = 33.37 years, SD = 4.54 years, range = 22 to 45 years; 38% depressed) and their 1- to 3-year-old children (m"
+- male mention: "3-year-old children (mean age = 24.97 months, SD = 10.43 months, range = 10 to 42 months; 54% girls) drawn from a larger study (N = 131 dyads) focusing on longitudinal changes in child neur"
+- abstract: Toddlers of mothers with depression are at risk for wide-ranging negative outcomes across development, including early emerging internalizing and externalizing problems. These children may be especially sensitive to individual differences in (positive) affective parenting, with implications for enduring psychosocial outcomes. Maternal attunement to child positive emotions may be an important protective factor buffering against risk for psychopathology in vulnerable youth. Illuminating the role of such subtle, moment-to-moment parenting behaviors in attenuating risk across early development is 
+
+### Factors associated with uptake of optimal dose of IPTP-SP among pregnant women attending antenatal clinics of Soroti district, Uganda.
+
+- Scientific reports (2026) | PMC12830700 | doi:10.1038/s41598-025-10733-4 | license: cc by-nc-nd
+- study type: cross-sectional | population: pregnant, gestational, mothers | n_female: 80 | chunks: 13 | methods found: True
+- reasons: ['male_terms_in_text:3', 'female_pop_mentions:42']
+- evidence: "a Multi Centre Institutional based Cross-sectional study where four high volume health facilities which handle at least 80 mothers per week with gestation of 36 weeks and above attending antenatal clinics were selected (Sororti Regional Referral Hosp"
+- male mention: "cord book. Information on sociodemographic characteristics (age, education level both the men and women, marital status, residence, religion, tribe, distance from facility). socioecon"
+- male mention: "tribe, distance from facility). socioeconomic factors (occupation of woman, occupation of men, distance from facility, level of income of men, level of income of women), obstetrics fa"
+- male mention: "ctors (occupation of woman, occupation of men, distance from facility, level of income of men, level of income of women), obstetrics factors (parity, gestational age, frequency of ANC"
+- abstract: Malaria in pregnancy is a major Public Health problem globally especially in low- and middle-income countries, because it contributes significantly to maternal, foetal, and perinatal morbidity and mortality. Uptake of up to three doses (optimal dose) of intermittent preventive treatment using sulfadoxine pyrimethamine (IPTp-SP) has been shown to prevent malaria in pregnancy and placental malaria. We aimed to determine the factors associated with the uptake of optimal dose of IPTp-SP among pregnant women attending antenatal care in Soroti District. A cross-sectional study was conducted at selec
+
+### Menstruation Is Associated with Dietary Diversity among Adolescent Girls: The Role of Social Eating Norms and Menstruation-Related Norms from a Mixed-Methods Study in Bangladesh.
+
+- The Journal of nutrition (2026) | PMC13197925 | doi:10.1016/j.tjnut.2026.101467 | license: cc by-nc-nd
+- study type: randomized controlled trial | population: adolescent girls, mothers | n_female: 898 | chunks: 40 | methods found: True
+- reasons: ['male_terms_in_text:1', 'female_pop_mentions:30']
+- evidence: "ersity and whether menstruation-related norms moderate this relationship. Methods Quantitative data were collected from 898 girls and qualitative data were obtained from 20 interviews and 12 focus groups in Bangladesh. The women's dietary diversity "
+- male mention: "men of reproductive age (15–49 y), Minimum Dietary Diversity for Women can be extended to boys and girls aged 10–19 y and serves as a proxy for the micronutrient adequacy of diets []. "
+- abstract: Background Menstruation-related food restrictions are common among adolescent girls in low-and middle-income countries and often limit their dietary diversity. Despite having scholarly attention, little is known about adolescent girls' dietary diversity during menstruation and how menstruation-related norms influence their ability to achieve minimum dietary diversity from the standpoint of social norm theory. Objectives The objective of this mixed-methods study was to examine the relationship between menstruation and dietary diversity and whether menstruation-related norms moderate this relati
+
+### Maternal mental health as a neglected dimension of primary health care systems responsiveness in low- and middle-income countries: a mixed methods cross-sectional study in Ghana.
+
+- BMC health services research (2026) | PMC13361588 | doi:10.1186/s12913-026-14704-x | license: cc by-nc-nd
+- study type: cross-sectional | population: pregnant, postpartum, mothers | n_female: 7 | chunks: 28 | methods found: True
+- reasons: ['male_terms_in_text:1', 'female_pop_mentions:37']
+- evidence: " providers who provide maternal or mental health services at the PHC level (n = 24). The FGDs comprised an average of 6–7 participants and were held at private venues within a district hospital. Most discussions with the clients were in the local languag"
+- male mention: "ricts was estimated at 310,283, of which NP had 204,673 and SO had 105,610. The female-to-male ratio was 50% each according to the 2021 Population and Housing Census []. The two distri"
+- abstract: Background Pregnancy and postpartum-related mental health problems present serious public health threat to the society; however, this is not prioritized in sub-Saharan Africa (SSA). We aimed to determine the prevalence and analyze perceptions and experiences of maternal mental health (MMH) distress and health systems responsiveness to mental well-being of pregnant and postpartum clients and their relatives, and frontline health workers in two districts of Southern Ghana. Methods The study used a cross-sectional mixed methods design and purposively selected study sites to provide insights from 
+
+### Distribution, socioeconomic inequalities and contributing factors of anaemia prevalence across wealth index among Indian adolescent girls: multivariate decomposition analysis of nationally representative survey.
+
+- BMJ paediatrics open (2026) | PMC13599878 | doi:10.1136/bmjpo-2026-004903 | license: cc by-nc
+- study type: cross-sectional | population: pregnant, adolescent girls | n_female: 606 | chunks: 23 | methods found: True
+- reasons: ['male_terms_in_text:1', 'female_pop_mentions:7']
+- evidence: "isparities and their contributing factors through multivariate decomposition analysis. Methodology NFHS-5 data from 113 606 adolescent girls aged 15-19 years were analysed. Socio-demographic, health, and behavioural factors were assessed through standardised i"
+- male mention: "elsewhere. NFHS-5 included 636 699 households, 7 24 115 women (15–49 years), and 1 01 839 men (15–54 years). NFHS-5 employed four core questionnaires (Household, Woman’s, Man’s, and B"
+- abstract: Background Anaemia among adolescent girls aged 15-19 years can adversely affect educational, vocational and reproductive outcomes. Amid rapid urbanisation, understanding its prevalence, determinants and urban-rural inequities is essential. Using National Family Health Survey (NFHS)-5 data in India, this study comprehensively assessed anaemia epidemiology and quantified urban-rural disparities and their contributing factors through multivariate decomposition analysis. Methodology NFHS-5 data from 113 606 adolescent girls aged 15-19 years were analysed. Socio-demographic, health, and behavioural
+
+### 'We truly feel limited': nurses and midwives' perspectives on multi-level factors influencing women's adherence to ANC in Rwanda: a qualitative study.
+
+- BMC health services research (2025) | PMC12836835 | doi:10.1186/s12913-025-13902-3 | license: cc by-nc-nd
+- study type: qualitative | population: pregnant, mothers | n_female: 70 | chunks: 40 | methods found: True
+- reasons: ['male_terms_in_text:7', 'female_pop_mentions:71']
+- evidence: "a significant challenge due to the shortage of service providers (HC2- Pn2). With only one provider attending to around 70 mothers, long waiting become inevitable. Some women grow frustrated and leave without receiving care, making it difficult to en"
+- male mention: "eople might be pregnant unexpectedly, such as young girls or when it’s a pregnancy from a man who has another wife. They hide it so it doesn’t become known, which causes delays. I thi"
+- male mention: " avoid gossip, being young, or unplanned pregnancies. (HC4- Pn3) One HCP stated that both men and women who have been unfaithful were reluctant to seek the ANC at HC due to similar re"
+- male mention: " today, I’ll go when I have the money.” (HC- Pn3) Nurses and midwives mentioned that many men see pregnancy as solely a woman’s responsibility, questioning why they should attend chec"
+- abstract: Background Antenatal care (ANC) is essential for improving maternal and neonatal health outcomes, yet adherence to ANC services remains a challenge in many low-income settings, including Rwanda. Understanding nurses and midwives' perspectives on factors influencing ANC adherence is crucial for developing targeted interventions to enhance service utilization and maternal health outcomes. Methods This study employed a qualitative descriptive design to explore the perspectives of nurses and midwives on ANC adherence in Rwanda. Fifteen in-depth interviews (IDIs) were conducted using a semi-structu
+
+### Exploring the interplay of family dynamics and pregnancy supplement adherence among married women of reproductive age: a qualitative study from rural Bangladesh.
+
+- BMJ open (2026) | PMC13182426 | doi:10.1136/bmjopen-2025-115088 | license: cc by
+- study type: randomized controlled trial | population: pregnant, gestational, mothers | n_female: 32 | chunks: 40 | methods found: True
+- reasons: ['male_terms_in_text:5', 'female_pop_mentions:137']
+- evidence: " and to surface alternative interpretations for ensuring reflexive awareness and inclusion of diverse perspectives. The 32 women in the study sample had a mean age of 25 (SD±5) years. Women had a mean of 8 (±4) years of education. Husbands were mos"
+- male mention: "ot all men in Bengal are the same. Not all treat their wives the same way. There are some men who keep track of everything their wife needs, while there are others who don’t care abou"
+- male mention: "ntions, which has been shown to be supportive for women’s health behaviour in Bangladesh. Male engagement strategies have been shown to improve women’s adherence to health intervention"
+- male mention: "men’s adherence to health interventions through several key mechanisms. For example, when men are actively engaged, they provide practical, financial and emotional support. Their invo"
+- abstract: Objectives To examine how household members, community health research workers (CHRWs) and broader social networks influenced pregnant women's capabilities, opportunities and motivations to consume a daily balanced-energy protein (BEP) supplement or a multiple micronutrient supplement (MMS) in the context of an effectiveness trial in rural Bangladesh. Design In-depth interviews, group interviews, focus group discussions, thematic analysis using the Capability, Opportunity, Motivation-Behaviour (COM-B) framework. Setting Gaibandha, Bangladesh. Participants Women (n=32) who had completed partici
+
+### Uncovering the Experiences of Basti-Dwelling Adolescent Girls Who Menstruate in Hyderabad, India: Protocol for a Multimethod Critical Qualitative Study.
+
+- JMIR research protocols (2026) | PMC13679868 | doi:10.2196/94012 | license: cc by
+- study type: cross-sectional | population: adolescent girls, mothers | n_female: 8 | chunks: 36 | methods found: True
+- reasons: ['male_terms_in_text:7', 'female_pop_mentions:16']
+- evidence: "end on when redundancy is confirmed. Participants will be recruited to take part in four separate, homogenous FGDs of 5‐8 participants each, conducted separately with adolescent girls, their mothers, fathers, and adolescent brothers, in order to foster a"
+- male mention: "enstrual experiences are influenced by social, cultural, and physical contexts. Unmarried male siblings aged 15‐24 years will be included to capture how an adolescent girl’s household "
+- male mention: "enstrual perception from spousal influences. The lower bound of 15 years reflects the age boys typically gain some household exposure to menstruation-related discussion, even though fo"
+- male mention: "o at home [,,]. The upper bound of 24 years reflects the typical premarital age range for men in this population. Per National Family Health Survey (NFHS)-5 (2019‐21), the median age "
+- abstract: Background Rapid urbanization in India is straining the government's capacity to provide basic amenities such as housing, sanitation, electricity, and water. One group of people who are deeply affected are adolescent girls who menstruate. In urban slums, referred to as bastis in Telugu and Hindi, this reality is worsened by spatial congestion and limited water, sanitation, and hygiene (WASH) resources. This study is situated in the populous slum colonies of Film Nagar, Hyderabad, where residents navigate precarious living conditions and a scarcity of basic amenities. Objective In this context,
+
+
+## female_only_verified (127 papers)
+
+### Determinants of low birth weight babies delivered at paropakar maternity and Women's hospital: A case-control study.
+
+- PloS one (2026) | PMC13286188 | doi:10.1371/journal.pone.0335107 | license: cc by
+- study type: case-control | population: pregnant, gestational, mothers | n_female: None | chunks: 23 | methods found: True
+- reasons: ['female_pop_mentions:16']
+- abstract: Background Low birth weight remains a major public health concern due to its association with adverse neonatal, developmental, and long-term health outcomes, with no substantial improvement observed over the past decade in Nepal. Multiple socioeconomic, maternal, and obstetric factors contribute to low birth weight, particularly in low-resource settings. This study aimed to identify the determinants of low birth weight babies delivered at Paropakar Maternity and Women's Hospital in Kathmandu, Nepal. Methods A hospital-based age-matched (± 5 years) case-control study was carried out from 1st Au
+
+### Intersections of menstruation, gender-based violence and contraceptive use: qualitative insights from girls and young women's experiences in western Kenyan family planning clinics.
+
+- BMJ open (2025) | PMC12684201 | doi:10.1136/bmjopen-2025-101248 | license: cc by-nc
+- study type: cross-sectional | population: pregnant, mothers | n_female: 77 | chunks: 29 | methods found: True
+- reasons: ['female_pop_mentions:31']
+- evidence: "reflexive thematic approach. Setting Four county-run family planning clinics in Uasin Gishu County, Kenya. Participants 77 girls and young women aged 15-19 years (via 35 in-depth interviews and 7 focus group discussions) and 27 family planning clin"
+- abstract: Objective To examine how menstruation, contraceptive use and gender-based violence intersect to shape the sexual and reproductive health and autonomy of girls and young women in Kenya. Design Qualitative study exploring girls and young women's experiences with contraceptive use and menstrual management, using in-depth interviews and focus group discussions analysed through a reflexive thematic approach. Setting Four county-run family planning clinics in Uasin Gishu County, Kenya. Participants 77 girls and young women aged 15-19 years (via 35 in-depth interviews and 7 focus group discussions) a
+
+### Spatiotemporal distribution of pregnancies among girls aged 14 years or younger in Bahia, Brazil, 2014-2023: an ecological study under the Brazilian legal framework of statutory rape.
+
+- BMC pediatrics (2026) | PMC13621721 | doi:10.1186/s12887-026-07250-2 | license: cc by
+- study type: None | population: gestational, mothers | n_female: 1000 | chunks: 18 | methods found: True
+- reasons: ['female_pop_mentions:12']
+- evidence: " in 17.5% and low birth weight in 14.0% of live-born infants. The statewide pregnancy rate declined from 3.5 to 2.5 per 1,000 girls aged 10 to 14 years (- 28.6%); however, marked regional disparities persisted. Four statistically significant spatiotem"
+- abstract: Background Sexual violence against children is a severe violation of human rights and a persistent public health problem, with early pregnancy representing one of its most serious consequences. Although national studies in Brazil have identified geographic disparities in pregnancies resulting from statutory rape, intrastate heterogeneity remains insufficiently explored. This study aimed to describe the epidemiological profile of pregnancies among girls aged 14 years or younger interpreted under the Brazilian legal framework of statutory rape in the state of Bahia and to analyze their spatiotem
+
+### Impact of antenatal screening for Chlamydia and Gonorrhea on pregnancy outcomes in South African women.
+
+- BMC infectious diseases (2026) | PMC13505017 | doi:10.1186/s12879-026-13967-3 | license: cc by
+- study type: randomized controlled trial | population: pregnant, postpartum, cervical, gestational, adolescent girls | n_female: 1237 | chunks: 22 | methods found: True
+- reasons: ['female_pop_mentions:22']
+- evidence: "e frequency of poor pregnancy outcomes, individually and combined including pregnancy loss (miscarriage [ Results Among 1237 pregnant women, the prevalence of CT/NG at first ANC visit was 28% (24% CT, 8% NG). Of those diagnosed with CT/NG (n = 345), 54% recei"
+- abstract: Background We evaluated the impact of diagnosing and treating curable STIs during pregnancy on adverse pregnancy outcomes in Cape Town, South Africa. Methods Eligible women ≥ 15 years, without HIV, attending first antenatal care (ANC) visit before 28 weeks gestation, received diagnostic testing at enrolment and either same-day or follow-up treatment for Chlamydia trachomatis (CT) and Neisseria gonorrhoeae (NG) using either on-site GeneXpert or laboratory-based testing with TaqMan qPCR assays. We assessed prevalence of CT/NG, time to treatment and the frequency of poor pregnancy outcomes, indiv
+
+### Prevalence, risk factors and adverse outcomes of intrapartum related asphyxia amongst newborns from mothers with low-risk deliveries in peri-urban Gambian health facilities: a retrospective cohort study.
+
+- BMC pregnancy and childbirth (2026) | PMC13587270 | doi:10.1186/s12884-026-09674-1 | license: cc by
+- study type: cohort | population: pregnant, gestational, mothers | n_female: 12000 | chunks: 16 | methods found: True
+- reasons: ['female_pop_mentions:11']
+- evidence: "he PregnAnZI-2 trial [] a phase III, double-blind, placebo-controlled individually randomised clinical trial in which ~ 12,000 women in labour in The Gambia and Burkina Faso received either azithromycin or placebo (ratio 1:1) from October 2017 to May 2"
+- abstract: Introduction Despite significant progress in perinatal care, intrapartum-related asphyxia remains a leading cause of neonatal morbidity and mortality, especially in the poorest regions of the world such as sub-Saharan Africa. The objective of this study is to determine the prevalence, risk factors, and adverse outcomes of intrapartum-related asphyxia among low-risk health facility-based deliveries in The Gambia. Methods This is a secondary analysis of a randomised clinical trial conducted in western Gambia between October 2017 and May 2021. Women with low-risk pregnancies in labour and their l
+
+### Estimated incidence and number of new cases with prenatal alcohol exposure and fetal alcohol spectrum disorders in Finland 1990-2025.
+
+- PloS one (2026) | PMC13686515 | doi:10.1371/journal.pone.0349964 | license: cc by
+- study type: cohort | population: pregnant, gestational, mothers | n_female: 30 | chunks: 32 | methods found: True
+- reasons: ['female_pop_mentions:20']
+- evidence: " alcohol use during pregnancy (see section Estimation of variables), Ah is the prevalence of binge drinking during past 30 days among women, L is the proportion of late awareness of pregnancy and Sh is the self-reported heavy alcohol use during pregnancy. The"
+- abstract: Background Fetal alcohol spectrum disorders (FASD) arising from prenatal alcohol exposure (PAE) are the leading preventable cause of neurobehavioral disorders. Early pregnancy is particularly vulnerable to ethanol toxicity, yet alcohol use often continues until pregnancy recognition. In Finland, national incidence estimates of PAE and FASD remain limited. Objective To estimate the incidence of any PAE and heavy PAE in Finland between 1990 and 2025, and to model the annual number of children with FASD born in Finland. Methods We developed a mathematical modelling framework integrating studies o
+
+### Pregnant women as a reference population to estimate dengue under-reporting: methodological proposal and application in São Paulo State, Brazil.
+
+- Revista brasileira de epidemiologia = Brazilian journal of epidemiology (2026) | PMC13405553 | doi:10.1590/1980-549720260023 | license: cc by
+- study type: None | population: pregnant, gestational, mothers | n_female: None | chunks: 20 | methods found: True
+- reasons: ['female_pop_mentions:64']
+- abstract: Objective To propose and apply a methodology to estimate the under-reporting of probable dengue cases among non-pregnant women, using the incidence in pregnant women as a reference. Methods Ecological study using data on probable dengue cases reported in the state of São Paulo, Brazil, between January and June 2024. Assuming that pregnant women have a higher likelihood of diagnosis and notification due to prenatal follow-up, this group was taken as a reference to calculate the under-reporting of dengue incidence among non-pregnant women aged 18 to 45 years. The association between under-report
+
+### Prospective accuracy study on an artificial intelligence-based ultrasound system for gestational age estimation among pregnant women in Ghana, Kenya and South Africa: protocol.
+
+- BMJ open (2026) | PMC13583877 | doi:10.1136/bmjopen-2026-118330 | license: cc by
+- study type: cohort | population: pregnant, gestational | n_female: 969 | chunks: 21 | methods found: True
+- reasons: ['female_pop_mentions:23']
+- evidence: "cilities in Ghana, Kenya and South Africa. Methods and analysis This multicountry prospective cohort study will recruit 969 pregnant women at 13 health facilities across Kenya, Ghana and South Africa. The eligible population is pregnant women presenting for "
+- abstract: Background Risk screening for pre-eclampsia relies on accurate gestational age assessment, but routine access to ultrasound-based gestational dating remains challenging in many low- and middle-income countries. As part of the formative work for the 'Preventing pre-eclampsia: Evaluating AspiRin Low-dose regimens following risk Screening' (PEARLS) platform, we aim to validate and implement an artificial intelligence (AI)-based algorithm for estimation of gestational age, using blind sweeps done with a handheld ultrasound device. This study protocol outlines the accuracy cohort for AI-based gesta
+
+### Comparison of SARS-CoV-2 total and neutralizing antibody transfer to neonates from vaccinated mothers vs. mothers infected during pregnancy: an observational study.
+
+- BMC pregnancy and childbirth (2026) | PMC13617768 | doi:10.1186/s12884-026-09539-7 | license: cc by-nc-nd
+- study type: cohort | population: pregnant, postpartum, mothers | n_female: 40 | chunks: 18 | methods found: True
+- reasons: ['female_pop_mentions:19']
+- evidence: "tibodies in blood samples from pregnant women and umbilical cord blood from 86 mother-child pairs. The cohort comprised 40 mothers vaccinated during pregnancy (46.5%), 35 vaccinated before pregnancy (40.6%), and 11 infected with SARS-CoV-2 during pre"
+- abstract: Background Differences in antibody production against SARS-CoV-2 arise from both, infection and immunization, leading to variations in neutralization capacity and transplacental antibody transfer during pregnancy. A deeper understanding of these mechanisms can provide valuable insights into neonatal protection against viral exposure and inform the evaluation of vaccination strategies during pregnancy. This study aimed to compare the transfer of IgG and neutralizing antibodies between neonates born to mothers vaccinated against SARS-CoV-2 either during or before gestation and those born to moth
+
+### Determinants of uterine rupture among pregnant mothers who gave birth at University of Gondar comprehensive specialized Hospital, Northwest Ethiopia: unmatched case control study.
+
+- BMC pregnancy and childbirth (2026) | PMC13488564 | doi:10.1186/s12884-026-09409-2 | license: cc by-nc-nd
+- study type: case-control | population: pregnant, gestational, mothers | n_female: 450 | chunks: 24 | methods found: True
+- reasons: ['female_pop_mentions:18']
+- evidence: "ospital, Northwest Ethiopia. Methods and materials An institutional-based unmatched case-control study was conducted on 450 women (150 cases and 300 controls) from 2018 to 2022. A data collection tool containing variables was designed to extract dat"
+- abstract: Background Uterine rupture is a tear in the wall of the uterus that commonly occurs in its lower segment. Despite it being the most preventable obstetric complication and different interventions being done by stakeholders, the prevalence of uterine rupture is high, and it remains one of the leading public health problems in developing countries, including Ethiopia. It is also a leading cause of severe maternal morbidity and mortality. Although risk factors for uterine rupture are context-specific, there is a lack of clarity in our context regarding the contributing factors and untoward outcome
+
+### Women's Quality-of-Life Trajectories During Pregnancy and Postpartum Periods by Mode of Birth: A Prospective Cohort Study.
+
+- Maternal and child health journal (2026) | PMC13569506 | doi:10.1007/s10995-026-04298-5 | license: cc by
+- study type: cohort | population: pregnant, postpartum, mothers | n_female: 2866 | chunks: 26 | methods found: True
+- reasons: ['female_pop_mentions:20']
+- evidence: " the differences by mode of birth. Methods A secondary analysis of a prospective, observational cohort study comprising 2866 pregnant women in Queensland, Australia. Women's quality-of-life scores were collected at 36 weeks of gestation and 6- and 12-week pos"
+- abstract: Objectives To determine the quality-of-life scores of women during pregnancy and postpartum and compare the differences by mode of birth. Methods A secondary analysis of a prospective, observational cohort study comprising 2866 pregnant women in Queensland, Australia. Women's quality-of-life scores were collected at 36 weeks of gestation and 6- and 12-week postpartum and converted into utility values. Results On average, quality-of-life utility scores increased from 36 weeks of gestation to 12 weeks postpartum, regardless of birth type. After adjusting for socioeconomic characteristics, women 
+
+### The impact of maternal incarceration on mothers and children: A scoping review protocol.
+
+- PloS one (2026) | PMC13524290 | doi:10.1371/journal.pone.0355209 | license: cc by
+- study type: qualitative | population: pregnant, mothers | n_female: None | chunks: 15 | methods found: True
+- reasons: ['female_pop_mentions:12']
+- abstract: Globally, female incarceration rates have risen in recent decades. Estimates indicate that between 60-80% of incarcerated women are mothers. Maternal incarceration (MI) is associated with negative and often enduring implications for both the mother and child. Recognising the risk of harmful outcomes, evidence-based support for both populations is essential. However, this broad research topic draws interest from academics and practitioners across many distinct but overlapping disciplines, each with different priorities, and methodological and theoretical approaches. Interdisciplinary collaborat
