@@ -14,9 +14,17 @@ This project collects peer-reviewed open-access studies whose **participants wer
 4. **Embed**: BAAI/bge-small-en-v1.5 (384 dims) runs locally via fastembed, so no API key is needed.
 5. **Load**: `papers` and `chunks` tables, plus a `match_chunks()` search function (`db/schema.sql`). The schema is applied automatically.
 
+## Search app (web/)
+HerEvidence is a static page plus two optional Vercel functions.
+- **Keyword search** and **"Start from my symptoms"** (symptoms, age, life stage, conditions, medicines) both call `search_evidence()` in Supabase directly with the public read-only key.
+- `search_evidence()` is a hybrid search. It combines full-text matching (stemmed, phrases, OR) with semantic neighbours of the best keyword hits, using reciprocal-rank fusion, a cap of 2 passages per paper, and a boost for studies that match the user's life stage.
+- Everyday words are translated to clinical terms by a built-in word list (e.g. "period pain" → dysmenorrhea).
+- With `ANTHROPIC_API_KEY` set in the Vercel project, `/api/expand` uses Claude for that translation and `/api/answer` writes a cited plain-language summary.
+- Deploy: Vercel → Add New Project → import this repo → Root Directory `web` → Deploy.
+
 ## Running
-- **GitHub Actions → "Scrape women-only papers" → Run workflow.** Inputs: max papers, since year, topic.
-- **Weekly**: runs automatically every Monday and only adds new papers.
+- **Fill database (parallel by topic)**: runs every 6 hours and on pushes to `scraper/`/`db/`. A setup job applies the schema, then 14 topic jobs (6 at a time) each resume where the last run stopped. Filling pauses at `DB_SIZE_LIMIT_MB` (400 MB, Supabase free plan ≈ 2,500 papers). Raise it after upgrading the plan.
+- **Scrape women-only papers (single run)**: manual one-off runs from the Actions tab.
 - **Reports**: each run commits `reports/latest_run.json`, `reports/latest_sample.md` (a quality-check sample) and `reports/latest_papers.jsonl`.
 
 ### Required secret

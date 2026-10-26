@@ -306,3 +306,8 @@ create policy "public read chunks" on public.chunks for select to anon, authenti
 grant execute on function public.match_chunks(extensions.vector, int, text[], int, text[]) to anon, authenticated;
 grant execute on function public.search_evidence(text, int, text[], int, text[], text[], boolean, extensions.vector) to anon, authenticated;
 grant execute on function public.evidence_stats() to anon, authenticated;
+
+-- Searches can take a few seconds when the vector index is cold on a small instance; allow 8 s for public reads.
+alter role anon set statement_timeout = '8s';
+alter role authenticated set statement_timeout = '8s';
+notify pgrst, 'reload config';

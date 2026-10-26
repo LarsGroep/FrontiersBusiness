@@ -49,7 +49,7 @@ OTHER_GROUPS_RX = re.compile(
     r"midwives|nurses|teachers|husbands|male partners|fathers|community leaders|stakeholders|boys)\b", re.I)
 QUAL_RX = re.compile(r"\b(interview\w*|focus group\w*|FGDs?|KIIs?)\b", re.I)
 NON_PRIMARY_TITLE_RX = re.compile(r"scoping review|systematic review|meta-analysis|umbrella review|modell?ing study|"
-                                  r"simulation|where are we|narrative review|position statement|guideline", re.I)
+                                  r"simulation|model-based|where are we|narrative review|position statement|guideline|reddit|social media posts", re.I)
 PROTOCOL_RX = re.compile(r"\bprotocol\b", re.I)
 
 # Positive evidence that women were the study population.
