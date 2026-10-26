@@ -15,7 +15,7 @@ This project collects peer-reviewed open-access studies whose **participants wer
 5. **Load**: `papers` and `chunks` tables, plus a `match_chunks()` search function (`db/schema.sql`). The schema is applied automatically.
 
 ## Search app (web/)
-HerEvidence is a static page plus two optional Vercel functions.
+The search page is a static page plus two optional Vercel functions. Live at https://larsfrontiers2.vercel.app
 - **Keyword search** and **"Start from my symptoms"** (symptoms, age, life stage, conditions, medicines) both call `search_evidence()` in Supabase directly with the public read-only key.
 - `search_evidence()` is a hybrid search. It combines full-text matching (stemmed, phrases, OR) with semantic neighbours of the best keyword hits, using reciprocal-rank fusion, a cap of 2 passages per paper, and a boost for studies that match the user's life stage.
 - Everyday words are translated to clinical terms by a built-in word list (e.g. "period pain" → dysmenorrhea).

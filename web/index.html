@@ -3,11 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HerEvidence</title>
-<meta name="description" content="Search peer-reviewed studies in which every participant was a woman.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Search</title>
 <style>
 :root{
   --paper:#F6F8F7; --surface:#FFFFFF; --ink:#14233B; --ink-2:#3C4A60; --muted:#66748A;
@@ -41,16 +37,12 @@ button,input,select,textarea{font:inherit;color:inherit}
 .wrap{max-width:1180px;margin:0 auto;padding:0 16px}
 
 /* header */
-header.site{padding:40px 0 28px;border-bottom:1px solid var(--rule)}
-.brand{font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:-.01em;margin:0 0 22px}
-.brand span{color:var(--teal)}
-h1{font-family:var(--serif);font-weight:500;font-size:clamp(30px,4.2vw,46px);line-height:1.1;letter-spacing:-.015em;margin:0;max-width:20ch}
-.lede{color:var(--ink-2);max-width:62ch;margin:14px 0 0;font-size:17px}
-.stats{margin:18px 0 0;color:var(--muted);font-size:14px}
+header.site{padding:16px 0 20px;border-bottom:1px solid var(--rule)}
+.stats{margin:0;color:var(--muted);font-size:14px}
 .stats strong{color:var(--ink);font-weight:600}
 
 /* composer */
-.composer{margin:28px 0 0}
+.composer{margin:12px 0 0}
 .modes{display:flex;gap:4px;border-bottom:1px solid var(--rule)}
 .modes button{background:none;border:0;border-bottom:2px solid transparent;padding:10px 14px 9px;font-weight:600;color:var(--muted);cursor:pointer;margin-bottom:-1px}
 .modes button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--teal)}
@@ -135,7 +127,6 @@ footer p{margin:0 0 6px;max-width:80ch}
   aside.filters{order:0}
   aside.filters details{border:1px solid var(--rule);border-radius:var(--radius-m);padding:4px 12px;background:var(--surface)}
   .form{grid-template-columns:1fr}
-  header.site{padding-top:28px}
 }
 @media (min-width:861px){ aside.filters details > summary{display:none} }
 @media (prefers-reduced-motion:no-preference){ .entry{animation:in .28s ease both} @keyframes in{from{opacity:0}to{opacity:1}} }
@@ -144,10 +135,7 @@ footer p{margin:0 0 6px;max-width:80ch}
 <body>
 <header class="site">
   <div class="wrap">
-    <p class="brand">Her<span>Evidence</span></p>
-    <h1>Research where every participant was a woman</h1>
-    <p class="lede">Most medical evidence was gathered mainly from men. Search open-access, peer-reviewed studies whose participants were all women or girls, or start from your own symptoms and history.</p>
-    <p class="stats" id="stats">Loading the library…</p>
+    <p class="stats" id="stats">Loading…</p>
 
     <div class="composer">
       <div class="modes" role="tablist" aria-label="How to search">
@@ -245,10 +233,7 @@ footer p{margin:0 0 6px;max-width:80ch}
 </div>
 
 <footer>
-  <div class="wrap">
-    <p><b>This is research, not medical advice.</b> Studies describe groups of women, not you. Talk to a doctor, midwife or pharmacist before changing treatment.</p>
-    <p>Sources: open-access articles indexed by Europe PMC whose participants were all female, checked automatically for male participants. Each entry links to the original paper.</p>
-  </div>
+  <div class="wrap"><p>Research results, not medical advice.</p></div>
 </footer>
 
 <script>
@@ -363,9 +348,8 @@ function filters() {
 rpc("evidence_stats").then(s => {
   const y = s.years || {};
   $("#stats").innerHTML = `<strong>${fmt(s.verified)}</strong> verified women-only studies` +
-    (s.women ? `, with about <strong>${fmt(s.women)}</strong> women taking part` : "") +
-    (y.min ? `, published ${yr(y.min, y.max)}` : "") + `. The library grows every few hours.`;
-}).catch(() => { $("#stats").textContent = "The study library is unavailable right now. Try again in a minute."; });
+    (y.min ? `, published ${yr(y.min, y.max)}` : "") + ".";
+}).catch(() => { $("#stats").textContent = "Database unavailable. Try again in a minute."; });
 
 // ---------- examples ----------
 const EX = ["hot flushes sleep", "iron deficiency fatigue", "statins side effects", "endometriosis pain treatment", "postpartum depression", "exercise bone density"];
