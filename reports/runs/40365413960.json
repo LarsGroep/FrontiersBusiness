@@ -1,0 +1,20 @@
+{
+  "finished_at": "2026-10-26T17:06:14+00:00",
+  "seconds": 3,
+  "query": "(MESH_HEADING:\"Humans\" AND MESH_HEADING:\"Female\") NOT MESH_HEADING:\"Male\" AND OPEN_ACCESS:Y AND HAS_FT:Y AND SRC:MED NOT PUB_TYPE:\"Review\" NOT PUB_TYPE:\"Editorial\" NOT PUB_TYPE:\"Comment\"",
+  "europepmc_hit_count": 0,
+  "db_connected": true,
+  "llm_verifier": false,
+  "stats": {},
+  "labels": {},
+  "sections_found": {},
+  "commercial_use_ok": 0,
+  "with_n_female": 0,
+  "study_types": {},
+  "top_journals": [],
+  "years": {},
+  "db_totals": {
+    "papers_by_label": {},
+    "chunks": 0
+  }
+}
