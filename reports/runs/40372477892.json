@@ -1,0 +1,165 @@
+{
+  "finished_at": "2026-10-26T18:09:57+00:00",
+  "seconds": 1113,
+  "query": "(KW:\"Female\" AND KW:\"Humans\" AND OPEN_ACCESS:Y AND HAS_FT:Y AND SRC:MED) NOT KW:\"Male\" NOT PUB_TYPE:\"review\" NOT PUB_TYPE:\"editorial\" NOT PUB_TYPE:\"comment\" NOT PUB_TYPE:\"letter\" NOT PUB_TYPE:\"case reports\" AND METHODS:(\"women\" OR \"female participants\" OR \"female patients\" OR \"girls\")",
+  "europepmc_hit_count": 710573,
+  "topics": {
+    "cardiovascular OR hypertension OR stroke OR heart": {
+      "hits": 43929,
+      "processed": 10,
+      "verified": 5
+    },
+    "cancer OR tumor OR oncology": {
+      "hits": 47198,
+      "processed": 10,
+      "verified": 9
+    },
+    "depression OR anxiety OR mental health OR psychiatric": {
+      "hits": 100498,
+      "processed": 10,
+      "verified": 6
+    },
+    "diabetes OR obesity OR metabolic OR nutrition": {
+      "hits": 55129,
+      "processed": 10,
+      "verified": 7
+    },
+    "osteoporosis OR bone OR musculoskeletal OR exercise OR physical activity": {
+      "hits": 45927,
+      "processed": 10,
+      "verified": 8
+    },
+    "pharmacokinetics OR drug OR medication OR adverse events": {
+      "hits": 34567,
+      "processed": 10,
+      "verified": 7
+    },
+    "autoimmune OR lupus OR rheumatoid OR multiple sclerosis OR thyroid": {
+      "hits": 75079,
+      "processed": 10,
+      "verified": 9
+    },
+    "menopause OR perimenopause OR postmenopausal": {
+      "hits": 17375,
+      "processed": 10,
+      "verified": 9
+    },
+    "pregnancy OR maternal OR postpartum OR breastfeeding": {
+      "hits": 70584,
+      "processed": 10,
+      "verified": 6
+    },
+    "contraception OR fertility OR endometriosis OR PCOS OR menstrual": {
+      "hits": 33354,
+      "processed": 10,
+      "verified": 8
+    },
+    "HIV OR infection OR vaccine OR HPV": {
+      "hits": 37966,
+      "processed": 10,
+      "verified": 7
+    },
+    "pain OR migraine OR sleep OR fatigue": {
+      "hits": 34017,
+      "processed": 10,
+      "verified": 8
+    },
+    "violence OR social OR employment OR education": {
+      "hits": 71968,
+      "processed": 10,
+      "verified": 6
+    },
+    "ageing OR older OR dementia OR cognition": {
+      "hits": 42982,
+      "processed": 10,
+      "verified": 6
+    }
+  },
+  "db_connected": true,
+  "llm_verifier": false,
+  "stats": {
+    "skipped_existing_or_no_pmcid": 157,
+    "chunks": 3790,
+    "loaded_to_db": 140,
+    "processed": 140
+  },
+  "labels": {
+    "female_only_probable": 29,
+    "female_only_verified": 101,
+    "female_only_unverified": 9,
+    "rejected": 1
+  },
+  "sections_found": {
+    "introduction": 133,
+    "methods": 149,
+    "results": 130,
+    "discussion": 145,
+    "conclusion": 96,
+    "other": 272
+  },
+  "commercial_use_ok": 74,
+  "with_n_female": 123,
+  "study_types": {
+    "cohort": 83,
+    "randomized controlled trial": 7,
+    "cross-sectional": 26,
+    "unknown": 16,
+    "qualitative": 7,
+    "case-control": 1
+  },
+  "top_journals": [
+    [
+      "PloS one",
+      8
+    ],
+    [
+      "Frontiers in endocrinology",
+      7
+    ],
+    [
+      "BMJ open",
+      7
+    ],
+    [
+      "Medicine",
+      7
+    ],
+    [
+      "BMC women's health",
+      6
+    ],
+    [
+      "Nutrients",
+      4
+    ],
+    [
+      "Frontiers in public health",
+      4
+    ],
+    [
+      "BMC pregnancy and childbirth",
+      4
+    ],
+    [
+      "The oncologist",
+      3
+    ],
+    [
+      "JAMA network open",
+      3
+    ]
+  ],
+  "years": {
+    "2025": 4,
+    "2026": 136
+  },
+  "db_totals": {
+    "papers_by_label": {
+      "female_only_verified": 204,
+      "female_only_probable": 55,
+      "female_only_unverified": 19,
+      "rejected": 2
+    },
+    "chunks": 7528
+  }
+}

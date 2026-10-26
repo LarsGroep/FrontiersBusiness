@@ -1,298 +1,290 @@
 # Quality-check sample (latest run)
 
 
-## female_only_probable (26 papers)
+## female_only_probable (29 papers)
 
-### Kinematic analysis of multisensory integration and sensory load induced fatigue in migraine.
+### &lt;i&gt;"You are not the person you used to be…".&lt;/i&gt; A phenomenological study on sexual desire and embodied sexuality in heterosexual women with fibromyalgia syndrome.
 
-- Scientific reports (2026) | PMC13473616 | doi:10.1038/s41598-026-55972-1 | license: cc by-nc-nd
-- study type: cohort | population: ovarian | n_female: 36 | chunks: 35 | methods found: True
-- reasons: ['male_terms_in_text:1', 'female_pop_mentions:4']
-- evidence: "s sensorimotor tracking task with sequentially added visual, auditory, semantic-numeric, and somatosensory stimuli from 36 female participants (15 interictal migraine without aura (MwoA), mean age 21.6 ± 3.36 years; 21 healthy controls, mean age 20.81 ± 0.93 yea"
-- male mention: " align with the high epidemiological prevalence of migraine in women, where the female-to-male ratio is approximately 3:1. Furthermore, since fluctuations in ovarian hormones are well-"
-- abstract: Individuals with migraine frequently experience performance deterioration during repetitive sensory tasks. This study aimed to investigate the behavioral and temporal dynamics of this deterioration under multisensory load. We analyzed sensory profile assessment and kinematic data during a continuous sensorimotor tracking task with sequentially added visual, auditory, semantic-numeric, and somatosensory stimuli from 36 female participants (15 interictal migraine without aura (MwoA), mean age 21.6 ± 3.36 years; 21 healthy controls, mean age 20.81 ± 0.93 years). Kinematic data were analyzed using
+- International journal of qualitative studies on health and well-being (2026) | PMC13618183 | doi:10.1080/17482631.2026.2732815 | license: cc by
+- study type: qualitative | population: None | n_female: 25 | chunks: 40 | methods found: True
+- reasons: ['other_participant_groups:healthcare professionals', 'female_pop_mentions:10']
+- evidence: "d with rheumatic or psychiatric conditions or receiving psychological therapy, were excluded from the study. A total of 25 participants were selected using purposive sampling. Five declined to participate because they did not want to discuss their sexuali"
+- abstract: Purpose The objective of this study was to describe and understand how women with fibromyalgia syndrome (FMS) perceive their sexuality and the changes associated with sexual desire. Method A qualitative methodology based on Merleau-Ponty's phenomenology was used. Data collection included in-depth interviews with fifteen women diagnosed with FMS. Results Two main themes emerged from the results: "When desire moves between light and shadow" and "Only your partner can understand the traffic light of desire". Conclusions Sexual desire is substantially affected by FMS. Understanding the fluctuation
 
-### The Brazilian breast cancer patient navigation program: impact on waiting times and treatment costs.
+### A Small Natural Molecule Targeting IL-23/IL-17 Axis Exerts Dual Effects on T-Cell Function and Breast Cancer Cell Migration.
 
-- Health policy and planning (2026) | PMC13678738 | doi:10.1093/heapol/czag105 | license: cc by
-- study type: None | population: breast cancer, cervical | n_female: 69 | chunks: 33 | methods found: True
-- reasons: ['male_terms_in_text:1', 'female_pop_mentions:14']
-- evidence: "cularly when diagnosis occurs at more advanced stages. Biennial screening is recommended for asymptomatic women aged 50–69 and for women at high risk due to genetic factors or family history, while symptomatic women are referred directly for diagnostic eva"
-- male mention: "statistics for all malignant neoplasms (ICD-10 C00–C97), including cancers affecting both men and women. The second column reports outcomes for breast cancer (ICD-10 C50), while the t"
-- abstract: Delays in cancer diagnosis and treatment pose significant challenges to the efficiency and equity of universal health systems. Patient navigation programs have been introduced to improve care coordination and facilitate timely access to treatment; however, evidence on their cost implications remains limited, particularly in middle-income countries. This study evaluates the impact of Brazil's National Breast Cancer Patient Navigation Program on waiting times and treatment costs within the Unified Health System (Sistema Único de Saúde). Exploiting the nationwide implementation of the program in 
+- Medical sciences (Basel, Switzerland) (2026) | PMC13515054 | doi:10.3390/medsci14040485 | license: cc by
+- study type: cohort | population: breast cancer | n_female: 34 | chunks: 32 | methods found: True
+- reasons: ['male_terms_in_text:1', 'female_pop_mentions:3']
+- evidence: "atment, concurrently modulating immunity and inhibiting tumor cell migration. mRNA expression analysis was performed in 34 breast cancer patients with invasive breast carcinoma who underwent surgical treatment between 2019 and 2023. Tissue from breast reduction mam"
+- male mention: "nd TNBC) and provision of free and informed consent. However, the exclusion criteria were male sex, incomplete medical records and lack of free and informed consent. Clinicopathologica"
+- abstract: Background/Objectives: Chronic inflammation in the tumor microenvironment (TME) promotes immune evasion and metastasis in breast cancer, where the IL-23/IL-17 axis is a key mediator. We investigated the expression of IL-23 in breast cancer and identified a small natural molecule therapeutically targeting this axis. Methods: IL-23 expression and its clinicopathological significance were assessed in a Moroccan breast cancer cohort and the METABRIC dataset. A High-throughput virtual screening of Allium sativum L. compounds was conducted to target the IL-23/IL-17 axis. In vitro, the selected candi
 
-### Long-term risk of cardiovascular disease after assisted reproductive technology and infertility: A cohort study.
+### The relationship between C-reactive protein-triglyceride-glucose index and incident cardiometabolic multimorbidity in postmenopausal women: insights from the China Health and Retirement Longitudinal Study (CHARLS).
 
-- PLoS medicine (2026) | PMC13492785 | doi:10.1371/journal.pmed.1005120 | license: cc by
-- study type: cohort | population: ovarian, gestational, infertil | n_female: 380756 | chunks: 31 | methods found: True
-- reasons: ['other_participant_groups:midwives', 'female_pop_mentions:31']
-- evidence: "ility and its risk factors. Methods and findings Swedish national registers allowed us to follow a nationwide cohort of 380,756 women from their first birth between 1992 and 2002 until the end of 2023. The safety of ART was evaluated by comparing women "
-- abstract: Background The use of Assisted Reproductive Technology (ART) is increasing worldwide. These treatments involve ovarian stimulation to enable multiple follicle recruitment, hence inducing supraphysiological estrogen levels. While most long-term follow-up of women undergoing ART has concerned cancer incidence, the long-term safety regarding cardiovascular and metabolic diseases remains under-explored. This study was performed to assess the risk of acute myocardial infarction, cerebral ischemic conditions, intracranial hemorrhage, type 2 diabetes mellitus, heart failure, aortic aneurysm or dissec
+- BMC cardiovascular disorders (2026) | PMC13678932 | doi:10.1186/s12872-026-06150-8 | license: cc by-nc-nd
+- study type: cohort | population: postmenopausal, menopausal | n_female: 2972 | chunks: 17 | methods found: True
+- reasons: ['male_terms_in_text:1', 'female_pop_mentions:8']
+- evidence: "iables. Methods Data were obtained from the China Health and Retirement Longitudinal Study (CHARLS). The study included 2972 postmenopausal women (aged ≥45 years) without CMM at baseline, with a mean follow-up duration of 103.53 months. The association between CTI "
+- male mention: "MM at baseline; and (4) Being in a postmenopausal state. The exclusion criteria were: (1) Male participants; (2) Age at baseline < 45 years; (3) Diagnosis of CMM at baseline; (4) Diagn"
+- abstract: Background Cardiometabolic multimorbidity (CMM), defined as the coexistence of at least two cardiometabolic diseases, is an increasing public health burden. Postmenopausal women may be particularly vulnerable because menopause-related metabolic and inflammatory changes can intensify cardiometabolic risk. However, simple tools for early CMM risk prediction in this population remain limited. The C-reactive protein-triglyceride-glucose index (CTI) integrates inflammatory status and insulin resistance, but its association with incident CMM in postmenopausal women has not been fully evaluated. We t
 
-### Reproductive lifespan in relation to diabetes mellitus and metabolic syndrome in a nationally representative population.
+### Developing a survey tool to assess gendered violence and mental health burden in migrants living in precarity.
 
-- BMJ open diabetes research & care (2026) | PMC13560957 | doi:10.1136/bmjdrc-2026-005990 | license: cc by-nc
-- study type: cohort | population: postmenopausal, premenopausal, menopausal | n_female: 868 | chunks: 23 | methods found: True
-- reasons: ['male_terms_in_text:2', 'female_pop_mentions:10']
-- evidence: "n were used to estimate ORs and 95% CIs for diabetes and metabolic syndrome across quartiles of RLS. Results A total of 868 postmenopausal women with a mean age of 54.1 years were included. The mean ages at menarche and menopause were 12.7 and 51.2 years, respecti"
-- male mention: " three or more of the following components: (1) increased waist circumference (>102 cm in men and >88 cm in women); (2) elevated triglyceride levels (≥150 mg/dL); (3) low HDL choleste"
-- male mention: ") elevated triglyceride levels (≥150 mg/dL); (3) low HDL cholesterol levels (<40 mg/dL in men and <50 mg/dL in women); (4) elevated blood pressure (≥130/85 mm Hg); and (5) impaired fa"
-- abstract: Aims The association between reproductive lifespan (RLS) and diabetes and metabolic syndrome in menopausal women remains unclear. We investigated whether a short RLS is associated with diabetes and metabolic syndrome using nationally representative US data. Methods We conducted a cross-sectional analysis of menopausal women using data from the US National Health and Nutrition Examination Survey from 2007 to 2018. Weighted logistic regression models accounting for the complex survey design were used to estimate ORs and 95% CIs for diabetes and metabolic syndrome across quartiles of RLS. Results
+- BMJ open (2026) | PMC13630092 | doi:10.1136/bmjopen-2026-120912 | license: cc by
+- study type: cross-sectional | population: None | n_female: None | chunks: 40 | methods found: True
+- reasons: ['male_terms_in_text:1', 'female_pop_mentions:5']
+- male mention: "pondents’ lived experiences and minimised unnecessary respondent burden. For example, the men’s violence module focused primarily on experiences of violence, coercion and abuse occurr"
+- abstract: Background Migrants living in precarious conditions often face gendered violence (GV) and poor mental health (MH). However, most of the existing GV and MH measures assume residentially stable populations, missing migration-related precarity or structural conditions shaping migrants' experiences. As a result, the intersection of GV, poor MH and precarity across migrant populations remains unstudied, especially in low- and middle-income country (LMIC) settings, that the National Institute for Health and Care Research (NIHR)-funded research programme Gendered Violence and Poor Mental Health among
 
-### Prevalence and factors associated with depression, anxiety and stress symptoms among married women in Southern Nepal: a cross-sectional study.
+### Association between stride length variability and osteosarcopenia in community-dwelling older women: a cross-sectional study.
 
-- BMJ open (2026) | PMC13374486 | doi:10.1136/bmjopen-2025-110162 | license: cc by-nc
-- study type: cross-sectional | population: None | n_female: 545 | chunks: 22 | methods found: True
-- reasons: ['other_participant_groups:husbands', 'female_pop_mentions:15']
-- evidence: "conducted a cross-sectional study. Setting Household Survey of Chandrapur municipality, Nepal. Participants We enrolled 545 married women from June to August 2022. Outcome measures We administered the Depression, Anxiety and Stress Scale (DASS-21) through f"
-- abstract: Objective To determine the prevalence and factors associated with stress, anxiety and depression among married women in Chandrapur municipality, Nepal. Design We conducted a cross-sectional study. Setting Household Survey of Chandrapur municipality, Nepal. Participants We enrolled 545 married women from June to August 2022. Outcome measures We administered the Depression, Anxiety and Stress Scale (DASS-21) through face-to-face interviews to determine the prevalence of stress, anxiety and depression. We performed univariable and multivariable linear regression to identify factors associated wit
+- BMC geriatrics (2026) | PMC13543560 | doi:10.1186/s12877-026-07995-6 | license: cc by
+- study type: cohort | population: older women | n_female: 190 | chunks: 27 | methods found: True
+- reasons: ['male_terms_in_text:1', 'female_pop_mentions:7']
+- evidence: "ociation and the discriminative ability of gait variability for osteosarcopenia. Methods In this cross-sectional study, 190 community-dwelling women aged 65 years or older were classified by DXA and the 2019 Asian Working Group for Sarcopenia criteria into normal (n ="
+- male mention: " women with osteopenia. Applying these criteria to the 242 participants, only 2 of the 47 men (4.3%) met the definition of osteosarcopenia. Given this very low prevalence, which was i"
+- abstract: Background Osteosarcopenia, the coexistence of sarcopenia and low bone mass, raises the risk of falls, fractures, and functional decline, yet its diagnosis depends on dual-energy X-ray absorptiometry (DXA) and muscle function testing, which are difficult to apply routinely in the community. Whether gait variability, a marker of neuromuscular control, is associated with osteosarcopenia and adds information beyond mean gait measures is unknown in Korean community-dwelling older women. We examined this association and the discriminative ability of gait variability for osteosarcopenia. Methods In 
 
-### Missed opportunities in health sector responses to violence against women and girls: a comparative mixed-methods study in Albania and Brazil.
+### Diabetes Fact Sheet 2025: Special Edition on Diabetes with Obesity and in Pregnancy.
 
-- BMJ global health (2026) | PMC13629869 | doi:10.1136/bmjgh-2025-022311 | license: cc by-nc
-- study type: cohort | population: None | n_female: 8 | chunks: 40 | methods found: True
-- reasons: ['male_terms_in_text:2', 'female_pop_mentions:16']
-- evidence: "rana. We conducted semistructured interviews in Tirana with a purposive sample of healthcare professionals (n=11—3 men, 8 women), covering roles such as family doctors, psychologists, gynaecologists, forensic doctors and municipal specialists and "
-- male mention: "ructured interviews in Tirana with a purposive sample of healthcare professionals (n=11—3 men, 8 women), covering roles such as family doctors, psychologists, gynaecologists, forensic"
-- male mention: "conducted in-depth interviews with a purposive sample of healthcare professionals (n=62—7 men, 55 women), three survivors of VAWG and two activists from social movements, resulting in"
-- abstract: Background Violence against women and girls (VAWG) is a global public health crisis, affecting one in three women worldwide. Survivors of VAWG access health services more frequently due to the direct and indirect consequences of violence. Despite the health system's potential lifesaving role, these visits often result in missed opportunities. Methods The Missed Opportunities to Respond to Violence Against Women and Girls in the Health Sector (MISSOP) study investigated the nature, scale and determinants of missed opportunities in responding to VAWG within primary care and emergency departments
+- Diabetes & metabolism journal (2026) | PMC12996954 | doi:10.4093/dmj.2025.1162 | license: cc by-nc
+- study type: cohort | population: postpartum | n_female: 3451648 | chunks: 23 | methods found: True
+- reasons: ['male_terms_in_text:1', 'female_pop_mentions:8']
+- evidence: "ate the current prevalence and management status. To analyze diabetes in pregnancy, we analyzed the delivery records of 3,451,648 women using claims data from 2013 to 2023, derived from the Korean NHIS database, to estimate the prevalence of diabetes in p"
+- male mention: "d class III obesity (BMI ≥35.0 kg/m²) []. Abdominal obesity was defined as a WC ≥90 cm in men and ≥85 cm in women []. GDM was defined as using any prescription for insulin during preg"
+- abstract: Backgruound We evaluated epidemiologic trends and clinical characteristics in Koreans with diabetes and obesity and in those with diabetes in pregnancy. Methods We analyzed Korea National Health and Nutrition Examination Survey data (2012-2023) to assess obesity trends in people with diabetes and used the Korean National Health Insurance Service database (2013-2023) to evaluate diabetes in pregnancy. Results Among Korean adults with diabetes (≥19 years), 52.4% had obesity and 61.1% had abdominal obesity. Only 39.9% achieved the glycemic target (glycosylated hemoglobin Conclusion Obesity and ab
 
-### Obesity and Age Elevate Tissue-Resident Microbiota Akkermansia muciniphila to Induce Oxidative Stress and Promote Breast Cancer Risk.
+### 'Women deserve better': a national mixed-methods exploration of the 'silent' health conditions and social issues affecting women and girls in Australia.
 
-- Cancer research (2026) | PMC13631505 | doi:10.1158/0008-5472.can-25-2087 | license: cc by-nc-nd
-- study type: cohort | population: postmenopausal, menopausal, breast cancer | n_female: None | chunks: 40 | methods found: True
-- reasons: ['male_terms_in_text:1', 'female_pop_mentions:6']
-- male mention: "Females predominantly develop breast cancer, with only a low prevalence (less than 1%) in men. Breast tissue uninvolved by tumor was obtained on the day of surgery from women undergoi"
-- abstract: Obesity is a modifiable risk factor for postmenopausal breast cancer. As obesity-gut microbiome interactions are well known, obesity might also affect tissue-resident microbiome populations as a mechanism promoting breast cancer. Using noncancerous breast tissue samples, we demonstrated that obesity and aging interact to shift the tissue-resident microbiome in patients with breast cancer. Breast tissue from postmenopausal women with obesity displayed significantly different α-diversity and β-diversity compared with pre- and postmenopausal women without obesity. At the species level, breast tis
+- BMC women's health (2025) | PMC12860007 | doi:10.1186/s12905-025-04236-7 | license: cc by-nc-nd
+- study type: cohort | population: endometri | n_female: None | chunks: 20 | methods found: True
+- reasons: ['male_terms_in_text:2', 'female_pop_mentions:36']
+- male mention: "nd social issues which affect women/girls only, and disproportionately and differently to men/boys. The qualitative (interviews; desktop review) and quantitative (survey) data were an"
+- male mention: "ocial issues which affect women/girls only, and disproportionately and differently to men/boys. The qualitative (interviews; desktop review) and quantitative (survey) data were analyse"
+- abstract: Background Gender disparities persist in health research, care and outcomes. The aim of this study was to identify and explore the health conditions and social issues that affect women and girls in Australia which are not well-understood, discussed or funded. Methods A national exploratory mixed-methods study using a triangulation approach which included three phases: (1) survey of women and girls; (2) interviews with female subject matter experts including women's health and social care practitioners, organisational leaders, academics and policy makers; and (3) a desktop review of peer-review
 
-### Shadow pandemics: violence and vulnerability as part of the COVID-19 experience in Sub-Saharan Africa.
+### Gun and Other Weapon-Involved Intimate Partner Violence and Psychiatric Symptoms.
 
-- Health promotion international (2026) | PMC13542835 | doi:10.1093/heapro/daag111 | license: cc by-nc-nd
-- study type: cross-sectional | population: older women | n_female: None | chunks: 32 | methods found: True
-- reasons: ['male_terms_in_text:6', 'female_pop_mentions:11']
-- male mention: "GDI of 0.899 (). In addition, the unemployment rate for women in Uganda is double that of men (13.7% women vs. 5.8% men), and the share of men (67.1%) engaged in paid employment is tw"
-- male mention: "on, the unemployment rate for women in Uganda is double that of men (13.7% women vs. 5.8% men), and the share of men (67.1%) engaged in paid employment is twice that of women (32.9%; "
-- male mention: "te for women in Uganda is double that of men (13.7% women vs. 5.8% men), and the share of men (67.1%) engaged in paid employment is twice that of women (32.9%; ). During the COVID-19 "
-- abstract: According to United Nations (UN) Women, a 'shadow pandemic' (or secondary crisis) occurred alongside COVID-19: increased violence against vulnerable populations (women and older adults (UN Research Roadmap)). While COVID-19-related morbidity and mortality were lower than expected in Sub-Saharan Africa, this region reports the highest global levels of violence experienced by these groups. In order to investigate this shadow pandemic, we undertook a cross-sectional survey in three countries at the height of the pandemic in order to explore both the impacts of COVID-19, as well as attitudes towar
+- JAMA network open (2026) | PMC13621252 | doi:10.1001/jamanetworkopen.2026.36313 | license: cc by-nc-nd
+- study type: cohort | population: pregnant, ovarian | n_female: 1114 | chunks: 21 | methods found: True
+- reasons: ['male_terms_in_text:2', 'female_pop_mentions:11']
+- evidence: "iates. Pooled marginal and within-person transition contrasts were estimated using parametric simulation. Results Among 1114 women (mean [SD] age at wave 1, 29.48 [5.42] years), 585 (52.5%) were migrants; median birth year was 1987 (range, 1969-1999)"
+- male mention: "5 (52.5%) were migrants; median birth year was 1987 (range, 1969-1999). Across follow-up, 43 women (3.9%) reported gun or other weapon-involved IPV, 171 (15.4%) nonweapon physical IPV, and 726 ("
+- male mention: " nonmissing exposure and outcome data for at least 2 waves of data collection. A total of 742 women (66.6%) in the retained sample completed 5 or more survey waves. The WATCH study is approved by "
+- abstract: Importance Gun, knife, or other weapon involvement in intimate partner violence (IPV) may indicate heightened actual and perceived lethality and coercive control, but its mental health impacts on survivors are poorly understood after accounting for other IPV and prior mental health symptoms. Objective To estimate the adjusted association between gun and other weapon-involved IPV and symptoms of major depressive disorder (MDD), panic disorder (PD), posttraumatic stress disorder (PTSD), and adult separation anxiety disorder (ASAD), accounting for concurrent and past nonweapon physical IPV, psych
 
-### Strengthened HPV vaccination among adolescents living with HIV, - Findings of a Pilot QI project in Kampala Metropolitan, Uganda.
+### Preparation for healthy ageing: An integrated educational intervention for enhancing knowledge and self-efficacy in intrinsic capacity preservation, midlife condition management, and caregiving in midlife women.
 
-- PloS one (2026) | PMC13528983 | doi:10.1371/journal.pone.0356686 | license: cc by
-- study type: cohort | population: adolescent girls | n_female: 32 | chunks: 40 | methods found: True
-- reasons: ['other_participant_groups:health workers,healthcare providers,healthcare workers,key informant', 'female_pop_mentions:7']
-- evidence: "hrough four focus group discussions (FGDs) with adolescent girls, each comprising eight participants, giving a total of 32 participants, and 32 Key Informant Interviews (KIIs) of focal health workers. These included heads of the treatment centres, nurses "
-- abstract: Introduction Recent reports from Kampala indicate low uptake and completion of the human papillomavirus (HPV) vaccine among adolescents, especially amongst those living with HIV. However, the drivers of this low uptake are poorly understood. This study aimed to determine the current HPV vaccine coverage; assess the knowledge, attitude and practices influencing HPV vaccine uptake among adolescent girls living with HIV; and pilot an HPV vaccination program while documenting lessons learned and experiences at two urban HIV treatment centres the Joint Clinical Research Centre (JCRC) and Mildmay Ug
+- The Journal of frailty & aging (2026) | PMC12874410 | doi:10.1016/j.tjfa.2025.100126 | license: cc by-nc-nd
+- study type: qualitative | population: None | n_female: 690 | chunks: 21 | methods found: True
+- reasons: ['other_participant_groups:healthcare professionals,nurses', 'female_pop_mentions:5']
+- evidence: "ntion caregiving confidence (Likert scale: 1-5), and qualitative feedback from program coordinators. Results A total of 690 women aged 50-64 years were assessed. Pre-tests revealed knowledge gaps in pain management, bladder health, and dementia care"
+- abstract: Objectives Midlife women often experience concurrent declines in intrinsic capacity (IC) and increasing caregiving responsibilities. This study evaluated the effectiveness of an educational intervention designed to enhance knowledge of IC preservation, self-care efficacy, and caregiving competencies among midlife women. Methods The Pursuit of Wellness Program was developed and evaluated through a multicentre mixed methods study. This program comprised nine modules addressing IC domains (cognitive, vitality, psychological) and six modules focused on priority midlife conditions (e.g., urinary in
 
-### Hypertensive Disorders of Pregnancy Associated With Cerebral Small Vessel Disease Decades Later.
+### Prevalence of cervical human papillomavirus infections and cytological abnormalities in asymptomatic women living with HIV in Addis Ababa, Ethiopia.
 
-- Journal of the American Heart Association (2026) | PMC13477347 | doi:10.1161/jaha.125.046304 | license: cc by-nc-nd
-- study type: cohort | population: gestational | n_female: 1602 | chunks: 26 | methods found: True
-- reasons: ['male_terms_in_text:1', 'female_pop_mentions:16']
-- evidence: "ve more cerebral small vessel disease compared with women without HDP. Methods This retrospective cohort study included 1602 women from the Utah Population Database who underwent brain magnetic resonance imaging after their index pregnancy. Magnetic "
-- male mention: "lable brain MRI data, which substantially disrupted the original matching structure; only 27 women (1.4% of those with MRI data) remained in intact matched or clustered sets. Consequently, analy"
-- abstract: Background Hypertensive disorders of pregnancy (HDP) are associated with elevated long-term risks of cerebrovascular disease. Emerging data suggest a link between HDP and dementia, potentially mediated by cerebral small vessel disease. We aimed to evaluate whether women with a history of HDP have more cerebral small vessel disease compared with women without HDP. Methods This retrospective cohort study included 1602 women from the Utah Population Database who underwent brain magnetic resonance imaging after their index pregnancy. Magnetic resonance imaging scans were evaluated for white matter
+- Scientific reports (2026) | PMC13427740 | doi:10.1038/s41598-026-64488-7 | license: cc by
+- study type: qualitative | population: cervical | n_female: 293 | chunks: 12 | methods found: True
+- reasons: ['other_participant_groups:nurses', 'female_pop_mentions:11']
+- evidence: "tive women and 5% among HIV-negative women. Using a two-sided alpha of 0.05 and 90% power, the required sample size was 293 participants per group. After accounting for a 10% dropout rate, the final target sample size was 326 participants per group. Howeve"
+- abstract: Cervical cancer from persistent HPV infection is the leading cause of cancer death among Sub-Saharan African women. We here addressed the existing knowledge gap concerning the prevalence of HPV infection and cervical lesions in asymptomatic women living with HIV (WLWH) in Addis Ababa, Ethiopia. Adult WLWH (N = 334) were recruited at the HIV clinic of the Tikur Anbessa Specialized Hospital, Addis Ababa. Real-time PCR targeting 12 high-risk (HR) and 2 low-risk HPV types on cervical samples and Pap smear testing were performed. Logistic regression was used in IBM SPSS Statistics to identify facto
 
-### Menopause Literacy Gaps Across Individual, Healthcare and Societal Levels: A Qualitative Study of Women's Experiences and Healthcare Providers' Perspectives.
+### Analysis of mortality risk and influencing factors in female patients with young-onset type 2 diabetes.
 
-- Health expectations : an international journal of public participation in health care and health policy (2026) | PMC13693505 | doi:10.1111/hex.70938 | license: cc by
-- study type: qualitative | population: postmenopausal, perimenopausal, menopausal, ovarian | n_female: 22 | chunks: 40 | methods found: True
-- reasons: ['other_participant_groups:healthcare professionals', 'female_pop_mentions:32']
-- evidence: "uded in the final study sample or the data analysis. Consequently, the final sample reported in this study consisted of 22 menopausal women and 10 healthcare professionals. The interviews were conducted by the first author (N.P.). Before each interview, parti"
-- abstract: Background Menopause is a major life transition that can affect women's physical, psychological, cognitive, sexual and social well-being. Despite the availability of evidence-based interventions, many women remain insufficiently informed and experience difficulties accessing reliable information and appropriate support. Objectives To explore menopause-related information needs and challenges from the perspectives of menopausal women and healthcare professionals and to identify individual, healthcare-related and societal factors influencing menopause literacy. Design A qualitative study informe
+- Frontiers in endocrinology (2026) | PMC13132775 | doi:10.3389/fendo.2026.1735053 | license: cc by
+- study type: cohort | population: postmenopausal, premenopausal, menopausal | n_female: 5984 | chunks: 29 | methods found: True
+- reasons: ['male_terms_in_text:1', 'female_pop_mentions:12']
+- evidence: "luencing factors in female patients with young-onset type 2 diabetes mellitus (YOD). Methods This cohort study included 5,984 female patients diagnosed with type 2 diabetes mellitus (T2DM) who were registered in the National Basic Public Health Service Manageme"
+- male mention: "Jiangsu Province, from December 2013 to January 2014. Exclusion criteria: A total of 3689 male patients and 86 participants with missing or implausible values for key variables. Ultima"
+- abstract: Objective To explore all-cause mortality risk and its influencing factors in female patients with young-onset type 2 diabetes mellitus (YOD). Methods This cohort study included 5,984 female patients diagnosed with type 2 diabetes mellitus (T2DM) who were registered in the National Basic Public Health Service Management Program between December 2013 and January 2014 in Qinghe District (now Qingjiangpu District) and Huai'an District, Huai'an City, Jiangsu Province, China. All-cause mortality data were obtained by comprehensive matching with the Huai'an city Resident Mortality Database as of Dece
 
-### Beyond conventional indicators: Reproductive coercion and its overlap with measured intimate partner violence in Bangladesh.
+### Individual, Interpersonal, and Obstetric Factors Associated with Exclusive Breastfeeding Among Polish Mothers: A Cross-Sectional Study Informed by the Socio-Ecological Model.
 
-- PloS one (2026) | PMC13686496 | doi:10.1371/journal.pone.0360372 | license: cc by
-- study type: cross-sectional | population: pregnant | n_female: 24951 | chunks: 40 | methods found: True
-- reasons: ['other_participant_groups:stakeholders', 'female_pop_mentions:27']
-- evidence: "al, sexual, or emotional violence items included in the survey. Methods We analysed nationally representative data from 24,951 ever-married women, including 22,161 currently married women, in the Bangladesh Violence Against Women Survey 2024. Outcomes were physical"
-- abstract: Background Reproductive coercion is an under-recognised form of violence against women and is not routinely captured by standard measures of intimate partner violence, which commonly focus on physical, sexual, and emotional violence. This study examined the association between reproductive coercion and these measured forms of intimate partner violence and estimated the proportion of women who reported reproductive coercion without reporting any of the physical, sexual, or emotional violence items included in the survey. Methods We analysed nationally representative data from 24,951 ever-marrie
+- Nutrients (2026) | PMC13567125 | doi:10.3390/nu18172900 | license: cc by
+- study type: cohort | population: postpartum, gestational, breastfeeding, mothers | n_female: 769 | chunks: 40 | methods found: True
+- reasons: ['other_participant_groups:midwives', 'female_pop_mentions:20']
+- evidence: "the Socio-Ecological Model (SEM) as a conceptual framework. Methods A cross-sectional online survey was conducted among 769 Polish mothers of children aged up to 24 months. The questionnaire included sociodemographic and perinatal characteristics, as well as"
+- abstract: Background/objectives Exclusive breastfeeding (EBF) is associated with multiple individual, interpersonal, and healthcare-related factors. Identifying potentially modifiable factors associated with EBF across different levels of influence may help inform future breastfeeding research and support strategies. This study aimed to identify individual, interpersonal, and obstetric factors associated with exclusive breastfeeding among Polish mothers, using the Socio-Ecological Model (SEM) as a conceptual framework. Methods A cross-sectional online survey was conducted among 769 Polish mothers of chi
 
 
-## female_only_unverified (10 papers)
+## female_only_unverified (9 papers)
 
-### Effect of synbiotic supplementation and psychobiotic diet on prenatal and postnatal depression and anxiety in women with gestational diabetes: a three-arm randomised controlled trial protocol.
+### Intensification of blood pressure lowering therapeutics based on diuretics versus usual management for uncontrolled hypertension in patients with moderate to severe chronic kidney disease (THINK): protocol for an open label, two-parallel group, cluster randomised controlled, superiority, phase 3 trial.
 
-- BMJ open (2026) | PMC13583767 | doi:10.1136/bmjopen-2026-118047 | license: cc by-nc
-- study type: randomized controlled trial | population: pregnant, postpartum, gestational | n_female: 102 | chunks: 27 | methods found: True
-- reasons: ['study_protocol_no_results', 'female_pop_mentions:7']
-- evidence: "ed immediately after birth. Methods and analysis This is a randomised, controlled, three-arm parallel trial. A total of 102 pregnant women diagnosed with GDM between 24 and 28 weeks of gestation will be randomly assigned (1:1:1) to one of three groups: a syn"
-- abstract: Background Gestational diabetes mellitus (GDM) is one of the most prevalent metabolic disorders during pregnancy and may lead to various short-term and long-term complications for both the mother and the fetus. It is also associated with psychological disorders, such as anxiety and depression, the prevalence of which is reported to be two to four times higher than that among healthy pregnant women. Psychobiotics may improve cognitive and emotional function through modulation of the gut-brain axis. Therefore, this study was designed to evaluate the prophylactic effects of synbiotic supplementat
+- BMJ open (2026) | PMC13599880 | doi:10.1136/bmjopen-2026-122192 | license: cc by-nc
+- study type: randomized controlled trial | population: pregnant, breastfeeding | n_female: 720 | chunks: 27 | methods found: True
+- reasons: ['study_protocol_no_results', 'female_pop_mentions:3']
+- evidence: "y 6 months, proportion of patients who used at least one diuretic, quality of life and safety. It is planned to include 720 patients in 40 centres. Ethics and dissemination This study was approved by the Ethics Committee CPP Ile-de-France VII on 23 Jan"
+- male mention: "d in the ). The timeline of the trial is displayed in the . Eligible participants will be male or female over 18 years old, with a Clinical Frailty Score ≤5 for patients aged over 80 y"
+- abstract: Introduction Hypertension is the primary modifiable risk factor for cardiorenal complications of chronic kidney disease (CKD). It is well established that lowering blood pressure (BP) in patients with CKD reduces renal and cardiovascular complications. The guidelines advise starting the BP-lowering drug with ACE inhibitors (ACEi) or angiotensin receptor blockers (ARB), but then there is no strong evidence to support the preferential use of any particular agent in controlling BP. Our hypothesis is that patients with CKD and uncontrolled hypertension are fluid overloaded and that the second line
 
-### SMILE body project: protocol for a randomized controlled trial of an online eating disorder prevention program in young women with psychiatric disorders.
+### Immunization strategies to prevent malaria in pregnancy - a multistakeholder workshop.
 
-- Eating and weight disorders : EWD (2026) | PMC13095908 | doi:10.1007/s40519-026-01832-w | license: cc by
-- study type: randomized controlled trial | population: None | n_female: 300 | chunks: 15 | methods found: True
-- reasons: ['study_protocol_no_results', 'female_pop_mentions:1']
-- evidence: "zed controlled trial (RCT) to evaluate the efficacy of the SMILE Body Project. Methods This is an ongoing RCT including 300 young women between 15 and 30 years with a psychiatric illness and subjective body dissatisfaction, starting May 2025. Participants"
-- abstract: Aim Young women with psychiatric illness have an increased susceptibility for eating disorders (ED); however, no prevention initiatives have been tested for this group. The Body Project ED prevention program has produced promising effect on ED symptoms, body satisfaction, and future ED onset; however, no studies have investigated this specific vulnerable group. In SMILE Body Project, we adapted the Body Project manual to a psychiatric population. In this protocol paper, we describe the randomized controlled trial (RCT) to evaluate the efficacy of the SMILE Body Project. Methods This is an ongo
+- Vaccine (2026) | PMC13147148 | doi:10.1016/j.vaccine.2026.128505 | license: cc by
+- study type: None | population: pregnant, adolescent girls | n_female: None | chunks: 34 | methods found: False
+- reasons: ['no_methods_section', 'female_pop_mentions:4']
+- abstract: As part of the ADVANCE-VAC4PM project, the European Vaccine Initiative (EVI) and La Fondation pour la Recherche Scientifique (FORS) co-hosted a hybrid workshop titled "Strategies for using malaria vaccines to prevent malaria in pregnancy (MiP)". The event brought together researchers, regulators, civil society, global health experts, and policymakers to discuss the need for MiP vaccines and strategies for their development, evaluation, and implementation. Malaria remains a major global health threat, with sub-Saharan Africa bearing the highest burden. Pregnant women (PW) are highly vulnerable,
 
-### Single-Dose Longitudinal Pharmacokinetic Evaluation of Doravirine in Pregnant Women Living With HIV: Protocol for a Phase 1 Study.
+### Comparison of live birth rates between calorie-restricted diet and metformin prior to ovulation induction therapy in women with polycystic ovary syndrome and overweight/obesity: a protocol for a multicenter, randomized comparative effectiveness trial.
 
-- JMIR research protocols (2026) | PMC13352967 | doi:10.2196/89990 | license: cc by
-- study type: cohort | population: pregnant, postpartum, gestational | n_female: 7 | chunks: 21 | methods found: True
-- reasons: ['study_protocol_no_results', 'female_pop_mentions:2']
-- evidence: "e last participant was enrolled on October 3, 2024, and all participants were off the study on April 8, 2025. In total, 7 participants were enrolled in the study, and 5 were evaluable. Conclusions The data collected with this novel single-dose pharmacoki"
-- abstract: Background Women are largely underrepresented in clinical trials of antiretroviral therapy, constituting approximately 20% of participants. Trials often exclude pregnant women from participation to minimize fetal risk, and women enrolled in clinical trials who have a positive pregnancy test may be discontinued from the study. This results in an average 7-year lag between the time of drug approval and when dosing information for pregnancy is available. However, there may be low-risk opportunities to obtain dosing information earlier for pregnant women who need treatment with newer medications. 
-
-### Evaluating the impact and cost-benefit of CAMFED's livelihoods support on young women's economic activity, health and well-being in Tanzania and Zimbabwe: protocol for a multi-method, longitudinal study.
-
-- BMJ open (2026) | PMC13141206 | doi:10.1136/bmjopen-2025-113868 | license: cc by-nc
-- study type: cohort | population: adolescent girls | n_female: 1045 | chunks: 40 | methods found: True
-- reasons: ['study_protocol_no_results', 'female_pop_mentions:33']
-- evidence: " to four Form 4 CAMFED clients in each school. There are 157 schools in the five districts in Zimbabwe, with a total of 1045 CAMFED participants, approximately seven CAMFED clients in each school. Based on the workshops that involved young people and other stakeho"
-- abstract: Background In sub-Saharan Africa, young women face disproportionate challenges transitioning from school to employment, with high rates of those not in education, employment or training (NEET). Structural barriers-including unequal gender norms, early marriage and unpaid labour-limit their economic participation. The Campaign for Female Education (CAMFED) Livelihoods programme supports young women's transition from school to independent adulthood through mentoring, life skills, business and agricultural training and access to financial resources. Aim This study will evaluate the impact, proces
-
-### Optimizing intermittent preventive treatment for malaria in pregnancy: protocol for phase IV randomized controlled trial of sulphadoxine-pyrimethamine, dihydroartemisinin-piperaquine, and combination therapy in Northern Nigeria.
-
-- BMC pregnancy and childbirth (2026) | PMC13660245 | doi:10.1186/s12884-026-09535-x | license: cc by-nc-nd
-- study type: randomized controlled trial | population: pregnant, postpartum, gestational | n_female: 1200 | chunks: 24 | methods found: True
-- reasons: ['study_protocol_no_results', 'female_pop_mentions:18']
-- evidence: "geria. Methods This study is an open-label, randomized, three-arm, parallel-group, phase IV superiority trial enrolling 1,200 HIV-negative pregnant women between 16 and 26 weeks' gestation in Northern, Nigeria. Participants are randomized in a 1:1:1 ratio to receive monthl"
-- abstract: Background Malaria during pregnancy remains an important cause of maternal and neonatal morbidity and mortality in sub-Saharan Africa. Currently, intermittent preventive therapy with sulphadoxine-pyrimethamine (IPTp-SP) is the standard of care. However, increasing resistance of Plasmodium falciparum to sulphadoxine-pyrimethamine (SP) raises concerns about its effectiveness. Recently, Dihydroartemisinin-piperaquine (DP), an artemisinin-based combination therapy with prolonged post-treatment prophylactic activity, has demonstrated superior parasitological efficacy compared with SP. Despite these
-
-### Characterizing the effects of genetic liability to autoimmune conditions on pregnancy outcomes using Mendelian randomization.
-
-- BMC medicine (2026) | PMC13122933 | doi:10.1186/s12916-026-04797-w | license: cc by
-- study type: cohort | population: gestational | n_female: None | chunks: 13 | methods found: True
-- reasons: ['no_female_population_evidence', 'female_pop_mentions:0']
-- abstract: Background Autoimmune conditions are common in women of reproductive age. They are associated with an increased risk of adverse pregnancy outcomes; whether this is causal is unclear. Our aim was to explore the causal effects of genetic liability to autoimmune conditions on pregnancy outcomes. Methods We conducted two-sample Mendelian randomization (MR) to estimate effects of genetic liability to ten autoimmune conditions on nine primary and seven secondary pregnancy outcomes. We used data from the MR-PREG collaboration including up to 714,889 pregnancies. Main analyses used the inverse varianc
-
-### The LIFE study: a cross-sectional study protocol for LIfestyle risk Factors for chronic disease across the stagEs of reproductive ageing.
-
-- BMJ open (2026) | PMC13264921 | doi:10.1136/bmjopen-2025-106377 | license: cc by-nc
-- study type: cross-sectional | population: pregnant, postmenopausal, menopausal, ovarian, breastfeeding | n_female: 58 | chunks: 40 | methods found: True
+- Frontiers in public health (2026) | PMC13601334 | doi:10.3389/fpubh.2026.1881719 | license: cc by
+- study type: None | population: menopausal, ovarian, polycystic ovary, pcos | n_female: None | chunks: 38 | methods found: True
 - reasons: ['study_protocol_no_results', 'female_pop_mentions:6']
-- evidence: "an equal distribution of participants across the three groups (pre, peri and postmenopausal), once the target number of 58 participants is achieved in each group, recruitment for that group ceases. Complete details of eligibility and exclusion criteria ar"
-- abstract: Introduction The dynamic physiological and hormonal changes through the menopause transition predispose women to an increased risk of chronic diseases including cardiovascular disease, metabolic disease, depression and dementia. The underlying mechanisms remain unclear, yet it is thought that chronic systemic inflammation and changes to lifestyle behaviours play important roles. The LIfestyle risk Factors for chronic disease across the stagEs of reproductive ageing (LIFE study) is a cross-sectional study aimed to characterise how hormonal and lifestyle (physical activity, diet and sleep) diffe
+- abstract: Background Polycystic ovary syndrome (PCOS) significantly impairs physical and mental health, quality of life, and fertility in women of reproductive age. Strategies to enhance fertility in PCOS have been prioritised in International Guidelines. Whilst Guidelines recommend Letrozole in first line ovulation induction (OI), therapeutic interventions to optimise endocrine and metabolic PCOS features prior to OI have not been adequately researched despite potential to improve live birth and pregnancy outcomes. Whilst both a calorie-restricted (CR) diet and metformin interventions may offer benefit
 
-### Women With Bipolar Disorder are at Increased Risk of Sarcopenia.
+### Cardiovascular disease and mortality following placental abruption.
 
-- Bipolar disorders (2026) | PMC13680794 | doi:10.1111/bdi.70192 | license: cc by
-- study type: cohort | population: None | n_female: None | chunks: 15 | methods found: True
+- American journal of epidemiology (2026) | PMC13231852 | doi:10.1093/aje/kwaf289 | license: cc by
+- study type: cohort | population: gestational | n_female: None | chunks: 27 | methods found: True
 - reasons: ['no_female_population_evidence', 'female_pop_mentions:1']
-- abstract: Introduction While bipolar disorder is associated with significant comorbidity, little is known about the musculoskeletal health of individuals with bipolar disorder. Thus, we aimed to investigate the association between bipolar disorder and muscle strength, mass, quality and sarcopenia. Methods Women with bipolar disorder (n = 106) were recruited from healthcare settings and age-matched to controls (n = 300), without bipolar disorder, from the Geelong Osteoporosis Study. Both groups, aged ≥ 20 years. were drawn from South-Eastern Australia. Bipolar disorder was identified using a clinical int
+- abstract: We investigate the relationship between placental abruption and cardiovascular disease (CVD) events using a population-based, retrospective cohort study of individuals who delivered a singleton birth between 1993 and 2020 in New Jersey, USA. We fit multistate weighted Cox models to estimate the risks of non-fatal CVD hospitalization, all-cause mortality, and non-fatal CVD hospitalization to all-cause mortality. We examine these associations in two non-overlapping cohorts of individuals with their first delivery only (parity 1) and those with the first two consecutive deliveries (parity 1-2). A
 
-### Phase-specific sequential press-needle therapy for menstrual migraine: a randomized trial protocol.
+### Semaglutide for prevention of type 2 diabetes in women with postpartum prediabetes after gestational diabetes: protocol for a Belgian multicentre double-blind randomised placebo-controlled trial.
 
-- Frontiers in neurology (2026) | PMC13612432 | doi:10.3389/fneur.2026.1876533 | license: cc by
-- study type: randomized controlled trial | population: pregnant, breastfeeding | n_female: 76 | chunks: 40 | methods found: True
-- reasons: ['study_protocol_no_results', 'female_pop_mentions:5']
-- evidence: "ture large-scale confirmatory trials. Methods This is a randomized, active-controlled, parallel-group trial. A total of 76 eligible women aged 18-45 years with migraine without aura and diagnosed with pure menstrual migraine or menstrually-related migraine "
-- abstract: Background Menstrual migraine (MM) is a neurological disorder affecting women of childbearing age. According to the definition in the International Classification of Headache Disorders, 3rd Edition (ICHD-3), it includes pure menstrual migraine (PMM) and menstrually-related migraine (MRM). The efficacy and safety of acupressure therapy for menstrual migraine have not yet been fully evaluated, particularly when administered sequentially according to specific phases of the menstrual cycle. Therefore, we designed this trial to preliminarily assess whether sequential acupressure therapy shows a fav
+- BMJ open (2026) | PMC13404484 | doi:10.1136/bmjopen-2026-118191 | license: cc by-nc
+- study type: randomized controlled trial | population: pregnant, postpartum, gestational, breastfeeding | n_female: 252 | chunks: 31 | methods found: True
+- reasons: ['study_protocol_no_results', 'female_pop_mentions:19']
+- evidence: "nalysis SERENA is a Belgian multicentre, double-blind randomised controlled trial conducted in 13 hospitals. A total of 252 women with a recent history of GDM and postpartum pre-diabetes will be randomised in a 1:1 ratio to receive once-weekly subcu"
+- male mention: "asured by bioelectrical impedance analysis with Bodystat 1500 (Bodystat, Douglas, Isle of Man, UK). A self-designed questionnaire on general habits (including smoking and alcohol habi"
+- abstract: Introduction Women with postpartum pre-diabetes following gestational diabetes mellitus (GDM) are at particularly high risk of developing type 2 diabetes mellitus (T2DM). While the implementation of effective lifestyle interventions in the early postpartum period is often difficult and has in general limited efficacy to prevent T2DM after GDM, effective preventive strategies, including medical therapies, are needed in this population. The 'semaglutide for the treatment of pre-diabetes in women with prior gestational diabetes (SERENA) study' aims to evaluate the efficacy, safety and cost-effect
 
-### Endometriosis Longitudinal Fertility Study (ELFS): a prospective longitudinal cohort study of the effect of conservative and surgical management for moderate to severe endometriosis on future fertility - study protocol.
+### Association between maternal and neonatal outcomes and psychosocial risk levels in pregnant women: a convergent parallel mixed methods study protocol.
 
-- BMJ open (2026) | PMC13504474 | doi:10.1136/bmjopen-2025-114124 | license: cc by
-- study type: cohort | population: ovarian, endometri, gestational, infertil | n_female: None | chunks: 21 | methods found: True
-- reasons: ['study_protocol_no_results', 'female_pop_mentions:15']
-- abstract: Introduction Endometriosis is associated with reduced pregnancy and live birth rates in patients attempting both spontaneous and assisted conception. At present, it is unclear whether prepregnancy surgery for moderate or severe endometriosis, either in the setting of established infertility or even before a woman has begun trying to conceive, confers any benefit in terms of (a) spontaneous conception, (b) conception with assisted reproductive technology (ART), (c) live birth or (d) other obstetric outcomes. Methods and analysis The Endometriosis Longitudinal Fertility Study (ELFS) is a multisi
+- Reproductive health (2026) | PMC13637229 | doi:10.1186/s12978-026-02405-x | license: cc by-nc-nd
+- study type: cohort | population: pregnant, postpartum, gestational, infertil, breastfeeding, mothers | n_female: 260 | chunks: 31 | methods found: True
+- reasons: ['study_protocol_no_results', 'female_pop_mentions:27']
+- evidence: " will be employed for this investigation. The quantitative strand comprises a prospective cohort study that will enroll 260 pregnant women at 12-14 weeks of gestation. Based on their ANRQ‑R total scores, participants will be divided into two groups: those sc"
+- abstract: Background Perinatal psychosocial health has gained significant attention due to its impact on maternal and neonatal health outcomes. Elevated rates of mental health disorders during pregnancy and the initial postpartum year, particularly pronounced in low- and middle-income countries (LMICs), have been consistently linked to women's heightened exposure to psychosocial risk factors. In response to this evidence, the current investigation is designed to evaluate psychosocial risk status among pregnant women and to explore its associations with both maternal and neonatal outcomes, employing a co
+
+### Monitoring nutritional consequences of obesity treatment on long-term health of women and their offspring: protocol of a multicentre prospective cohort study.
+
+- BMJ open (2026) | PMC13599838 | doi:10.1136/bmjopen-2026-119119 | license: cc by-nc
+- study type: cohort | population: pregnant, postpartum, gestational | n_female: 1150 | chunks: 20 | methods found: True
+- reasons: ['study_protocol_no_results', 'female_pop_mentions:13']
+- evidence: "besity (MONUCO) study is a multicentre prospective cohort study with an integrated pregnancy and birth cohort. At least 1150 women living with obesity, undergoing either surgical or pharmacological obesity treatment, aged 18-55 years, will be include"
+- abstract: Introduction Over the past years, the number of people receiving surgical or pharmacological obesity treatment has been increasing globally. The majority of these patients are female and of reproductive age. Although these treatments are effective in reducing body weight and obesity-related comorbidities for most patients with obesity, they also compromise nutrient status, which may negatively impact the long-term health of women and their offspring born after obesity treatment. Hence, there is a need to investigate the nutritional consequences of obesity treatment and their long-term health e
+
+### Palmitoleic acid n7 improves glucose uptake and metabolism and attenuates oxidative stress in human visceral adipocytes.
+
+- Endocrine (2026) | PMC13619680 | doi:10.1007/s12020-026-04766-6 | license: cc by
+- study type: None | population: None | n_female: None | chunks: 15 | methods found: True
+- reasons: ['no_female_population_evidence', 'female_pop_mentions:1']
+- abstract: Purpose Obesity-associated dysfunction of visceral white adipose tissue (vWAT) is characterized by impaired glucose handling, altered adipokine secretion, and redox imbalance, contributing to metabolic deterioration. Palmitoleic acid (16:1n-7), a monounsaturated fatty acid, has been implicated in regulation of glucose and lipid metabolism in rodent and cellular models; however, its effects on human adipocytes under metabolically compromised conditions remain incompletely understood. Here, we investigated the effects of in vitro treatment with 16:1n-7 on glucose uptake and metabolism, adipokine
+
+### Medication concentrations in human milk and potential adverse effects in breastfed infants (MedMilk): a protocol for an observational clinical study.
+
+- BMJ open (2026) | PMC13223637 | doi:10.1136/bmjopen-2026-119958 | license: cc by-nc
+- study type: cohort | population: breastfeeding, mothers | n_female: 250 | chunks: 16 | methods found: True
+- reasons: ['study_protocol_no_results', 'female_pop_mentions:3']
+- evidence: "ntification combined with descriptive statistics and pharmacokinetic modelling. The study aims to recruit approximately 250 women across medication groups. For the most frequently used medications, we aim to include 20 participants per medication, w"
+- abstract: Introduction Data on medication concentrations in human milk and their potential effects on the breastfed infant remain limited, leaving clinicians with insufficient evidence to guide women who require medication while breastfeeding. The MedMilk study aims to systematically measure medication concentrations in human milk, calculate the relative infant dose (RID) and evaluate infant outcomes. Methods and analysis This observational clinical study will recruit breastfeeding women using prescription and over-the-counter medications. Women will provide milk and urine samples along with self-report
 
 
-## female_only_verified (103 papers)
+## female_only_verified (101 papers)
 
-### Effect of nutritional intervention on interleukin-18 and alpha-2-macroglobulin in women with obesity and metabolic dysfunction-associated fatty liver disease: a prospective cohort study.
+### Effects of OsteoStrong vs. dynamic multicomponent exercise on physical function in older women in the BONEMORE randomized controlled trial.
 
-- Journal of health, population, and nutrition (2026) | PMC13159282 | doi:10.1186/s41043-026-01324-8 | license: cc by
-- study type: cohort | population: breastfeeding | n_female: 54 | chunks: 25 | methods found: True
-- reasons: ['female_pop_mentions:5']
-- evidence: " and alpha-2-macroglobulin (A2M) as noninvasive biomarkers. Methods A prospective interventional study was conducted on 54 women with obesity and at least one criterion of metabolic syndrome. Participants were categorized into mild MAFLD, moderate "
-- abstract: Background Metabolic dysfunction-associated fatty liver disease (MAFLD) is closely linked to metabolic abnormalities, including central obesity, dyslipidaemia, hypertension, hyperglycaemia, and impaired liver function. Identifying effective lifestyle interventions and reliable noninvasive biomarkers remains a public health priority. Objective This study aimed to evaluate the effect of dietary modification on metabolic and hepatic parameters in women with MAFLD and to assess the potential role of interleukin-18 (IL-18) and alpha-2-macroglobulin (A2M) as noninvasive biomarkers. Methods A prospec
-
-### Evaluation of salivary bone turnover markers and vitamin D as non-invasive, early predictive indicators of bone health in pre-, peri-, and post-menopausal women.
-
-- BMC women's health (2026) | PMC12882318 | doi:10.1186/s12905-025-04238-5 | license: cc by-nc-nd
-- study type: cohort | population: postmenopausal, premenopausal, perimenopausal, menopausal | n_female: 150 | chunks: 23 | methods found: True
-- reasons: ['female_pop_mentions:9']
-- evidence: "tmenopausal women, and explore their association with oral health. METHODS: A cross-sectional study was conducted among 150 women: premenopausal (n = 50), perimenopausal (n = 50), and postmenopausal (n = 50). Salivary ALP, osteocalcin, and vitamin D"
-- abstract: BACKGROUND: Menopause adversely affects bone health, often going unnoticed. Salivary biomarkers may provide a non-invasive approach to assess bone turnover and oral health changes across menopausal stages. AIM: To evaluate salivary bone turnover markers—alkaline phosphatase (ALP), osteocalcin, and vitamin D3—in pre-, peri, and postmenopausal women, and explore their association with oral health. METHODS: A cross-sectional study was conducted among 150 women: premenopausal (n = 50), perimenopausal (n = 50), and postmenopausal (n = 50). Salivary ALP, osteocalcin, and vitamin D3 were measured usi
-
-### The lived experiences of reproductive-aged women with polycystic ovary syndrome: a qualitative study.
-
-- BMC women's health (2026) | PMC13682020 | doi:10.1186/s12905-026-04681-y | license: cc by-nc-nd
-- study type: cross-sectional | population: menopausal, polycystic ovary, pcos | n_female: 39 | chunks: 39 | methods found: True
-- reasons: ['female_pop_mentions:2']
-- evidence: "lived experiences of individuals diagnosed with PCOS. We conducted semi-structured interviews via web conferencing with 39 females 18-45 years of age, residing in the U.S. with PCOS. Transcribed interviews were analyzed using the Framework Method. Re"
-- abstract: Background PCOS is a complex health condition that affects up to 20% females of reproductive age worldwide, and approximately 5 million U.S. females of reproductive aged females. Despite the prevalence of the condition, research on the lived experiences of women with PCOS is limited, particularly in the United States. Methods This study employed a phenomenological qualitative design to explore the lived experiences of individuals diagnosed with PCOS. We conducted semi-structured interviews via web conferencing with 39 females 18-45 years of age, residing in the U.S. with PCOS. Transcribed inte
-
-### Denosumab Versus Zoledronic Acid for Muscle Strength and Physical Performance in Postmenopausal Osteoporosis: A 3-Year Prospective Study.
-
-- Journal of cachexia, sarcopenia and muscle (2026) | PMC13685528 | doi:10.1002/jcsm.70406 | license: cc by
-- study type: cohort | population: postmenopausal, menopausal | n_female: 186 | chunks: 40 | methods found: True
+- Aging clinical and experimental research (2026) | PMC13424000 | doi:10.1007/s40520-026-03421-4 | license: cc by
+- study type: randomized controlled trial | population: postmenopausal, menopausal, older women | n_female: 194 | chunks: 35 | methods found: True
 - reasons: ['female_pop_mentions:3']
-- evidence: "pa B ligand (sRANKL) responses tracked with later benefit. Methods This prospective observational cohort study included 186 postmenopausal women with osteoporosis and prescreened sarcopenia risk (82 denosumab, 104 zoledronic acid). Assessments at baseline and 12, "
-- abstract: Background Osteoporosis and sarcopenia frequently coexist in older adults, yet whether denosumab provides muscle-related benefits beyond bone remains uncertain. We compared denosumab and zoledronic acid across functional, imaging, biologic and study-defined sarcopenia outcomes based on an Asian Working Group for Sarcopenia (AWGS) 2025-informed framework and examined whether early osteoprotegerin (OPG)/soluble receptor activator of nuclear factor-kappa B ligand (sRANKL) responses tracked with later benefit. Methods This prospective observational cohort study included 186 postmenopausal women wi
+- evidence: "multicomponent exercise (DME) on functional outcomes in older women with osteopenia or osteoporosis. Methods A total of 194 women aged 65-79 years with a T-score of ≤-1.0 at the hip and/or spine were randomized to nine months of either OS (once week"
+- abstract: Background Limited research exists on the effects of OsteoStrong on physical function in older women. Aim This randomized controlled trial aimed to evaluate and compare the effects of OsteoStrong (OS) and dynamic multicomponent exercise (DME) on functional outcomes in older women with osteopenia or osteoporosis. Methods A total of 194 women aged 65-79 years with a T-score of ≤-1.0 at the hip and/or spine were randomized to nine months of either OS (once weekly, 20 min) or DME (twice weekly, 60 min). Outcomes included measures of muscle strength (hand grip and back strength), back and trunk end
 
-### Association of childhood loneliness with incident hypertension, heart disease, and stroke among low-educated Chinese women: A 9-year cohort study.
+### Preliminary lipidomics and transcriptomics reveals stage-specific dynamic metabolic patterns from menopause transition to postmenopause.
 
-- Medicine (2026) | PMC13619210 | doi:10.1097/md.0000000000050822 | license: cc by-nc
-- study type: cohort | population: older women | n_female: 4341 | chunks: 40 | methods found: True
-- reasons: ['female_pop_mentions:3']
-- evidence: "ucted a prospective cohort study using data from the China Health and Retirement Longitudinal Study (CHARLS), including 4341 women aged ≥45 years with low educational attainment (primary school or less) at baseline (2011) and followed through 2020. C"
-- abstract: Early-life psychosocial factors may be associated with long-term cardiovascular health. We investigated whether self-reported loneliness during childhood is associated with an increased risk of developing hypertension, heart disease, and stroke in later life. We focused on low-educated, middle-aged, and older women, a potentially vulnerable population. This study was conducted and reported in accordance with the STROBE (Strengthening the Reporting of Observational Studies in Epidemiology) statement for cohort studies. We conducted a prospective cohort study using data from the China Health and
+- Frontiers in endocrinology (2026) | PMC12991988 | doi:10.3389/fendo.2026.1726161 | license: cc by
+- study type: cohort | population: postmenopausal, premenopausal, menopausal | n_female: 90 | chunks: 40 | methods found: True
+- reasons: ['female_pop_mentions:7']
+- evidence: "rmone therapy (within the past 6 months); (3) medications affecting metabolism (e.g., statins, antibiotics). A total of 90 women (n = 30 per group) were enrolled. Sample size estimation was based on pilot untargeted lipidomics data (n = 12 per grou"
+- abstract: Objective This study aimed to systematically analyze the clinical indicators, lipid metabolism, and leukocyte transcriptomic profiles of premenopausal, menopause transition, and postmenopausal women. It sought to explore stage-specific characteristics of lipid metabolism and gene expression and their potential associations with key clinical indicators. Methods Clinical indicators were collected, and untargeted lipidomics and leukocyte transcriptomic sequencing were performed. Multivariate statistical analyses were used to assess intergroup differences. Significant patterns in lipid and gene ex
 
-### Epigenetic clocks of biological aging and cognitively healthy longevity: the Women's Health Initiative Memory Study.
+### Comparison of self-collected vaginal swabs and first-void urine for detection of human papillomavirus in sexually active girls and women in three South Asian countries.
 
-- The journals of gerontology. Series A, Biological sciences and medical sciences (2026) | PMC13641828 | doi:10.1093/gerona/glag215 | license: cc by-nc-nd
-- study type: None | population: None | n_female: 5844 | chunks: 23 | methods found: True
+- PloS one (2026) | PMC13262861 | doi:10.1371/journal.pone.0350049 | license: None
+- study type: cohort | population: None | n_female: 753 | chunks: 22 | methods found: True
+- reasons: ['female_pop_mentions:13']
+- evidence: "ght low- and middle-income countries in South Asia and Sub-Saharan Africa, we analyzed paired SCVS and FVU samples from 753 participants in Bangladesh, Pakistan, and Nepal using standardized protocols. DNA was extracted using the QIAamp DNA Mini Kit, and H"
+- abstract: Background As more countries plan and launch human papillomavirus (HPV) vaccination campaigns, a variety of self-sampling methods and assays have been used for detecting high-risk HPV (HR-HPV) types. This study compared HR-HPV detection in self-collected vaginal swabs (SCVS) and first-void urine (FVU) among sexually active girls and women aged 15-25 years in diverse settings (Bangladesh, Nepal, and Pakistan) using harmonized methods for each step. Methods Within the Global Burden Estimation of HPV (GLOBE-HPV) project, which aims to estimate HPV prevalence and incidence across eight low- and mi
+
+### Weight Loss Responses to Pharmacotherapy in Breast Cancer Survivors: Results from the Adaptive Nutrition and Exercise Weight Loss (A-NEW) Study.
+
+- Clinical cancer research : an official journal of the American Association for Cancer Research (2026) | PMC13669726 | doi:10.1158/1078-0432.ccr-26-0270 | license: cc by-nc-nd
+- study type: qualitative | population: pregnant, breast cancer | n_female: 55 | chunks: 33 | methods found: True
+- reasons: ['female_pop_mentions:6']
+- evidence: ", 2 months, and 6 months. At 2 months, participants with ≥5% WL (FAST-BWL) continued BWL, whereas those with Results Of 55 participants, 2 withdrew prior to 2 months. At 2 months, 15 (28.3%) were FAST-BWL with mean% WL [standard deviation (SD)] of 7.2% (1"
+- abstract: Purpose Behavioral weight loss (BWL) interventions consisting of remote coaching and self-monitoring have limited effectiveness in breast cancer survivors. We conducted a single-arm phase II study evaluating the addition of Contrave for Patients and methods Women with prior stage 0 to III breast cancer and a body mass index ≥27 kg/m2 were eligible and initiated BWL. We collected weight, patient-reported outcomes, and labs at baseline, 2 months, and 6 months. At 2 months, participants with ≥5% WL (FAST-BWL) continued BWL, whereas those with Results Of 55 participants, 2 withdrew prior to 2 mont
+
+### Racial differences in cardiovascular events and adverse pregnancy outcomes among pregnant individuals with SLE.
+
+- Lupus science & medicine (2026) | PMC13583854 | doi:10.1136/lupus-2025-001846 | license: cc by
+- study type: cohort | population: pregnant, postpartum, gestational, mothers | n_female: 8188 | chunks: 30 | methods found: True
 - reasons: ['female_pop_mentions:9']
-- evidence: "locks are capable of predicting exceptional longevity with or without preserved cognitive function. Methods We examined 5844 women from the Women's Health Initiative Memory Study. Fifteen epigenetic clocks were measured at baseline (1996-1999). Longe"
-- abstract: Background Little is known about whether epigenetic age acceleration (EAA) clocks are capable of predicting exceptional longevity with or without preserved cognitive function. Methods We examined 5844 women from the Women's Health Initiative Memory Study. Fifteen epigenetic clocks were measured at baseline (1996-1999). Longevity outcomes were defined as (1) survival to age 90 with preserved cognition (n = 1726, 29.5%) or (2) survival to age 90 with cognitive impairment (n = 956, 16.4%); vs (3) death before age 90 (n = 2611, 44.7%). Logistic regression models examined associations between the 1
+- evidence: "hnic differences in APOs and examined associations between CVEs and APOs within each racial/ethnic group. Results Among 8188 liveborn singletons from women with SLE, non-Hispanic black women had the highest prevalence of maternal CVEs (4.0% vs 1.6-2.0% in other groups), mate"
+- abstract: Objective We aimed to characterise differences in the occurrence of maternal cardiovascular events (CVEs) and adverse pregnancy outcomes (APOs) in each of four racial/ethnic groups compared with non-Hispanic white women with SLE and to evaluate whether the relationship between CVEs and APOs differed across or within racial/ethnic groups. Methods Using a California population-based birth cohort (2005-2020), we identified pregnant individuals with SLE via International Classification of Diseases codes from maternal discharge records. Self-reported racial/ethnic groups were categorised as Asian, 
 
-### Cardiometabolic and Biochemical Indicators in Adolescent Girls According to Nutritional Status and Lifestyle.
+### Evidence of APOE4-related brain vulnerabilities in verbal memory systems in midlife women.
 
-- Nutrients (2026) | PMC13467703 | doi:10.3390/nu18152500 | license: cc by
-- study type: cross-sectional | population: pregnant, adolescent girls | n_female: 79 | chunks: 40 | methods found: True
+- Alzheimer's & dementia : the journal of the Alzheimer's Association (2026) | PMC13309847 | doi:10.1002/alz.71635 | license: cc by-nc
+- study type: cohort | population: postmenopausal, perimenopausal, menopausal | n_female: 145 | chunks: 31 | methods found: True
+- reasons: ['female_pop_mentions:11']
+- evidence: "ing indices with verbal memory measures and plasma AD biomarkers, adjusting for age, race, and education. Results Among 145 women from MsBrain, APOE4 carriers and non-carriers did not differ in verbal memory performance or AD biomarker levels. Durin"
+- abstract: Introduction Women carrying the apolipoprotein E4 (APOE4) allele have a greater risk of Alzheimer's disease (AD) from ages 65-75 years compared to men, yet the effects of APOE4 on cognitive and neuroimaging outcomes among midlife women remain poorly understood. We investigated APOE4-related differences in memory-based functional neuroimaging outcomes in cognitively normal, midlife postmenopausal women. Methods We measured blood-oxygen-level-dependent activation and hippocampal functional connectivity during a functional magnetic resonance imaging verbal encoding task. Linear regression models 
+
+### Calcidiol Status and Metabolic Syndrome in 40-60-Year-Old Women: Association with Metabolic Components.
+
+- Nutrients (2026) | PMC13415389 | doi:10.3390/nu18142311 | license: cc by
+- study type: cohort | population: postmenopausal, menopausal | n_female: 202 | chunks: 28 | methods found: True
+- reasons: ['female_pop_mentions:4']
+- evidence: "d metabolic syndrome in 40-to-60-year-old Mexican women. Methods A retrospective cross-sectional study was conducted in 202 women from the northeast of Mexico. The diagnosis of MetS was established using the definition of the International Diabetes "
+- abstract: Background Metabolic syndrome (MetS) is a public health problem with high prevalence in adult Mexican women. Evidence suggest that vitamin D deficiency is prevalent among individuals' metabolic disorders, obesity, and insulin resistance. Objective To assess the association between calcidiol status (25D 3 ) and metabolic syndrome in 40-to-60-year-old Mexican women. Methods A retrospective cross-sectional study was conducted in 202 women from the northeast of Mexico. The diagnosis of MetS was established using the definition of the International Diabetes Federation. Calcidiol was quantified usin
+
+### A multilevel analysis of the predictive effects of internal migration and region of residence on women's empowerment in Nigeria.
+
+- BMC women's health (2026) | PMC13483617 | doi:10.1186/s12905-026-04805-4 | license: cc by-nc-nd
+- study type: cross-sectional | population: None | n_female: 37762 | chunks: 36 | methods found: True
+- reasons: ['female_pop_mentions:24']
+- evidence: "ration status and region of residence as correlates of women empowerment in Nigeria. Methods The study utilized data of 37,762 women aged 15-49 years from the 2024 Nigeria Demographic and Health Survey. The outcome variables were indices of household d"
+- abstract: Background Despite growing research interest on the influences of migration and regions of residence on human behaviors, studies on the influences of migration and region of residence on women empowerment especially in sub-Saharan Africa are lacking. Thus, this study investigated migration status and region of residence as correlates of women empowerment in Nigeria. Methods The study utilized data of 37,762 women aged 15-49 years from the 2024 Nigeria Demographic and Health Survey. The outcome variables were indices of household decision making, financial decision-making, sexual right, experie
+
+### Comparison of clinical indicators between perimenopausal and postmenopausal women with cardiovascular disease.
+
+- Frontiers in endocrinology (2025) | PMC12836301 | doi:10.3389/fendo.2025.1681941 | license: cc by
+- study type: None | population: postmenopausal, perimenopausal, menopausal | n_female: 1248 | chunks: 26 | methods found: True
 - reasons: ['female_pop_mentions:9']
-- evidence: "oss-sectional study that included adolescent 10-14-year-old girls from public schools. The research was undertaken with 79 girls. Results We identified that over half of the girls were sedentary, excessively exposed to screens, physically inactive,"
-- abstract: Background Adolescence represents an essential stage of life for the prevention of metabolic changes associated with diseases, especially cardiovascular diseases. Objectives The objectives of this study were to identify nutritional status and associate it with metabolic alterations in adolescent girls. Methods We conducted a cross-sectional study that included adolescent 10-14-year-old girls from public schools. The research was undertaken with 79 girls. Results We identified that over half of the girls were sedentary, excessively exposed to screens, physically inactive, and did not practice p
+- evidence: " perimenopausal and postmenopausal women due to declining estrogen levels increasing CVD risk. Methods and results From 1248 women, 276 with CVD were screened. Clinical indicators (obesity, blood pressure, BMD, hormones) were compared between perimen"
+- abstract: Background Cardiovascular disease (CVD) prevalence increases with age, particularly in perimenopausal and postmenopausal women due to declining estrogen levels increasing CVD risk. Methods and results From 1248 women, 276 with CVD were screened. Clinical indicators (obesity, blood pressure, BMD, hormones) were compared between perimenopausal and postmenopausal women and across age groups (40-44, 45-49, 50-54). Postmenopausal women had significantly higher BMI, WC/HC, BFP, BFD, SBP, DBP, E2, P, PRL ( p p p Conclusions This study elucidates how hormonal changes affect CVD development in women, p
 
-### Clinical characteristics and social burden of menstrual migraine in Japan: an online-based cross-sectional questionnaire study.
+### A phase II clinical trial of neoadjuvant chemotherapy combined with immunotherapy and different radiotherapy fractionation regimens in HR+/HER2- breast cancer.
 
-- The journal of headache and pain (2025) | PMC12659224 | doi:10.1186/s10194-025-02219-5 | license: cc by-nc-nd
-- study type: cross-sectional | population: pregnant, postmenopausal, perimenopausal, menopausal, endometri | n_female: 266392 | chunks: 17 | methods found: True
+- Frontiers in immunology (2026) | PMC13391557 | doi:10.3389/fimmu.2026.1836220 | license: cc by
+- study type: randomized controlled trial | population: premenopausal, menopausal, breast cancer, cervical | n_female: 45 | chunks: 26 | methods found: True
+- reasons: ['female_pop_mentions:6']
+- evidence: "ions, total 24 Gy); Arm 2 (16 Gy single fraction); Arm 3 (0.5 Gy twice daily for 8 cycles, cumulative 8 Gy). A total of 45 patients (15 per cohort) will be enrolled. The primary endpoint is pathological complete response (pCR). Secondary endpoints inc"
+- abstract: Background The modest neoadjuvant response in early-stage HR+/HER2- breast cancer necessitates novel treatment intensification strategies. While radiotherapy can enhance systemic efficacy via immune modulation, the optimal fractionation for integration with immunochemotherapy remains unknown. This multicenter phase II study aims to evaluate the feasibility, safety, and preliminary efficacy of Toripalimab combined with chemotherapy and tumor-directed radiotherapy, specifically investigating three distinct fractionation schedules. Methods This prospective, multicenter, three-cohort exploratory s
+
+### Association between sexual dysfunction and symptom burden in women with Chronic Obstructive Pulmonary Disease.
+
+- PloS one (2026) | PMC13577334 | doi:10.1371/journal.pone.0357921 | license: cc by
+- study type: cross-sectional | population: postpartum | n_female: 100 | chunks: 28 | methods found: True
 - reasons: ['female_pop_mentions:4']
-- evidence: "usting for potential confounders through inverse probability of treatment weighting using propensity scores. Results Of 266,392 screened patients, 4,592 were included in MM and 5,174 in non-MM. The mean age was 36.8 ± 8.0 years in MM and 35.5 ± 8.3 years in non-MM."
-- abstract: Background Menstrual migraine (MM) is a distinct and burdensome subtype of migraine; however, comprehensive data on its clinical and social impact among Japanese females remain limited. Therefore, we aimed to clarify the clinical characteristics and social burden of MM in Japan. Methods A cross-sectional, population-based web survey was conducted among Japanese females (≥ 18 years) with regular menstruation who were diagnosed with migraine. Participants were classified into MM and non-MM groups. Clinical parameters assessed between MM and non-MM included pain intensity, pain duration, and head
+- evidence: "omen with COPD and to identify its clinical and psychological determinants. Study design In this cross-sectional study, 100 consecutive women with stable COPD (mean age 57 ± 7 years) attending an outpatient chest clinic were enrolled. Main outcome measures Part"
+- abstract: Objectives To investigate sexual dysfunction as a clinically relevant but under-recognized manifestation of disease burden in women with COPD and to identify its clinical and psychological determinants. Study design In this cross-sectional study, 100 consecutive women with stable COPD (mean age 57 ± 7 years) attending an outpatient chest clinic were enrolled. Main outcome measures Participants underwent pulmonary function testing and completed the COPD Assessment Test (CAT), Modified Medical Research Council (mMRC) scale, Beck Depression Inventory, Short Form-36 (SF-36), Functional Assessment 
 
-### Effects of Social Media Narratives on Affective and Behavioral Responses to Menopause Content: Randomized Online Experimental Study.
+### Analysis of the characteristics and differences in exercise participation among seven occupational categories of female workers in China-a cross-sectional survey of 31 provinces across the country.
 
-- JMIR formative research (2026) | PMC13428204 | doi:10.2196/85788 | license: cc by
-- study type: cross-sectional | population: postmenopausal, perimenopausal, menopausal | n_female: 737 | chunks: 29 | methods found: True
-- reasons: ['female_pop_mentions:4']
-- evidence: "ecruited via Prolific, a widely used online recruitment platform for behavioral and social science research. A total of 737 women were randomly assigned to view 4 anonymized and standardized social media posts from a pool of 12 reflecting 1 of 3 nar"
-- abstract: Background Social media is an increasingly prominent channel for communicating menopause information and experiences, yet the affective and behavioral consequences of different narrative framings remain unclear. Objective We examined how distress, normalizing, and transformative narratives influenced women's immediate responses to menopause content online, drawing on established narrative framings of menopause as normality, distress, and transformation. Methods In an online experiment, UK women aged 40 to 83 years who were perimenopausal or postmenopausal were recruited via Prolific, a widely 
-
-### Perceptions of Chemoprevention Among Women at High Risk for Breast Cancer.
-
-- JAMA network open (2026) | PMC13621250 | doi:10.1001/jamanetworkopen.2026.35555 | license: cc by-nc-nd
-- study type: cohort | population: breast cancer | n_female: 17 | chunks: 22 | methods found: True
-- reasons: ['female_pop_mentions:2']
-- evidence: " analysis that explain systematic differences in patient acceptance of statins and deferral of CP agents. Results Among 17 women with high risk for BC (mean [SD] age, 54.5 [10.6] years), 3 overarching categories of themes were identified: (1) risk "
-- abstract: Importance Breast cancer (BC) chemoprevention (CP) is highly effective in reducing invasive BC risk, yet uptake among eligible women at high risk remains critically low. Prior research has not adequately examined CP decision-making alongside other primary prevention therapies, such as statins, in the practical context of multimorbidity and polypharmacy. Objective To identify cognitive, emotional, and perceptual factors associated with accepting statins while declining or deferring breast cancer chemoprevention. Design, setting, and participants In this exploratory qualitative study, in-depth s
-
-### Therapeutic potential of a psychosocial intervention in the mental health of women deprived of liberty.
-
-- Revista brasileira de enfermagem (2026) | PMC13588629 | doi:10.1590/0034-7167-2025-0348 | license: cc by
-- study type: None | population: None | n_female: 12 | chunks: 21 | methods found: True
-- reasons: ['female_pop_mentions:10']
-- evidence: "d by nurses. Methods a pilot, quantitative, preand post-test study, approved by the Ethics Committee and conducted with 12 women deprived of liberty in a women's penitentiary complex in a municipality in Minas Gerais. Sociodemographic data and data"
-- abstract: Objectives to analyze the therapeutic potential of a psychosocial intervention protocol developed and administered by nurses. Methods a pilot, quantitative, preand post-test study, approved by the Ethics Committee and conducted with 12 women deprived of liberty in a women's penitentiary complex in a municipality in Minas Gerais. Sociodemographic data and data regarding symptoms of common mental disorders and mood modulation were collected. Descriptive statistics, measures of dispersion, and non-parametric tests were used for data analysis. Results nine women completed the proposed program. Imp
-
-### Association between GLM7 glycolipid metabolism index and female infertility: A cross-sectional analysis of NHANES 2013-2020.
-
-- Medicine (2026) | PMC13433086 | doi:10.1097/md.0000000000049978 | license: cc by-nc
-- study type: cohort | population: infertil | n_female: 3792 | chunks: 27 | methods found: True
-- reasons: ['female_pop_mentions:2']
-- evidence: "ehold income, marital status, education level, smoking status, drinking status, and chronic disease history. A total of 3792 women were included in the analysis. When the GLM7 index was treated as a continuous variable, each 1-unit increase in GLM7 w"
-- abstract: The glycolipid metabolism 7 factors (GLM7) index is a novel composite glycolipid index that includes age, triglycerides, fasting blood glucose, body mass index, high-density lipoprotein cholesterol, low-density lipoprotein cholesterol, and insulin levels. It serves as a new indicator for predicting and diagnosing diseases. However, its relationship with infertility remains unclear. This study aims to investigate the association between the GLM7 index and female infertility. A cross-sectional study was conducted using data from National Health and Nutrition Examination Survey 2013-2020. Three l
+- Frontiers in public health (2026) | PMC13597825 | doi:10.3389/fpubh.2026.1923105 | license: cc by
+- study type: cross-sectional | population: None | n_female: 3740 | chunks: 40 | methods found: True
+- reasons: ['female_pop_mentions:6']
+- evidence: "preferences, motivations, and barriers among Chinese working women. Methods A cross-sectional survey was conducted with 3,740 female participants across seven occupational categories in 31 Chinese provinces. Physical exercise behavior was assessed using the Physica"
+- abstract: Background Understanding Physical exercise behavioral variations across female occupations is crucial for tailoring interventions and promoting occupational health. This study evaluates physical exercise rates, preferences, motivations, and barriers among Chinese working women. Methods A cross-sectional survey was conducted with 3,740 female participants across seven occupational categories in 31 Chinese provinces. Physical exercise behavior was assessed using the Physical Exercise Rating Scale; exercise types were classified according to China's National Fitness Guidelines; exercise motivatio
 
 
 ## rejected (1 papers)
 
-### Potential health impact of therapeutic HPV vaccines in China: a modeling study.
+### Mental health screening in women with polycystic ovary syndrome: protocol for a systematic review and meta-analysis.
 
-- BMC medicine (2026) | PMC13637135 | doi:10.1186/s12916-026-05050-0 | license: cc by
-- study type: None | population: cervical | n_female: None | chunks: 0 | methods found: True
+- Systematic reviews (2026) | PMC13656675 | doi:10.1186/s13643-026-03269-9 | license: cc by
+- study type: randomized controlled trial | population: polycystic ovary, pcos | n_female: None | chunks: 0 | methods found: True
 - reasons: ['not_primary_data', 'female_pop_mentions:9']
-- abstract: Background Therapeutic HPV vaccines (TxVs) may complement existing cervical cancer prevention strategies, particularly for women already infected with HPV who derive limited benefit from prophylactic vaccination. As China advances toward the WHO 90-70-90 cervical cancer elimination targets, understanding the potential health impact of therapeutic vaccines under varying implementation scenarios is critical. Methods We developed a two-stage hybrid model combining a dynamic HPV transmission model with a natural history model of HPV-related disease progression to project the long-term health impac
+- abstract: Background Polycystic ovary syndrome (PCOS) is a common endocrine disorder affecting women of reproductive age and is reported frequently with mental health disorders. This systematic review aims to synthesize the available evidence on mental health screening and its potential role in identifying and addressing mental health conditions among women with PCOS. Methods This systematic review will be conducted according to JBI methodology for systematic reviews of effectiveness. The search strategy will follow the Peer Review of Electronic Search Strategies (PRESS) checklist. Literature searches w
