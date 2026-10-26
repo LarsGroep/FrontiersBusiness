@@ -10,7 +10,11 @@ async function readJson(req) {
     raw += chunk;
     if (raw.length > MAX_BODY) throw new Error("too_large");
   }
-  return raw ? JSON.parse(raw) : {};
+  try {
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    throw new Error("bad_json");
+  }
 }
 
 async function claude({ system, user, model, maxTokens }) {
@@ -42,7 +46,7 @@ function handler(fn) {
       const body = await readJson(req);
       return res.status(200).json(await fn(body));
     } catch (e) {
-      const code = e.message === "too_large" ? 413 : 502;
+      const code = e.message === "too_large" ? 413 : e.message === "bad_json" ? 400 : 502;
       return res.status(code).json({ error: String(e.message).slice(0, 80) });
     }
   };

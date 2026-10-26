@@ -42,10 +42,23 @@ DEFAULT_TOPICS = {
 }
 
 
-def build_query(since_year: int | None = None, topic: str | None = None, base: str = DEFAULT_QUERY) -> str:
+# Europe PMC lists newest papers first, so each topic is walked in separate publication-year bands;
+# otherwise the dataset fills up with this year's papers only.
+YEAR_BANDS = {
+    "2020+": (2020, 2100),
+    "2010s": (2010, 2019),
+    "2000s": (2000, 2009),
+    "pre-2000": (1900, 1999),
+}
+
+
+def build_query(since_year: int | None = None, topic: str | None = None, base: str = DEFAULT_QUERY,
+                year_range: tuple[int, int] | None = None) -> str:
     q = base
     if since_year:
         q += f" AND PUB_YEAR:[{since_year} TO 2100]"
+    if year_range:
+        q += f" AND PUB_YEAR:[{year_range[0]} TO {year_range[1]}]"
     if topic:
         q = f"({topic}) AND {q}"
     return q

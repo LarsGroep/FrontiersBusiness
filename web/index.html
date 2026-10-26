@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="data:,">
 <title>Search</title>
 <style>
 :root{
@@ -129,6 +130,7 @@ footer p{margin:0 0 6px;max-width:80ch}
   .form{grid-template-columns:1fr}
 }
 @media (min-width:861px){ aside.filters details > summary{display:none} }
+@media (max-width:860px){ aside.filters h2{display:none} aside.filters details > summary{padding:8px 0;font-weight:600;cursor:pointer} }
 @media (prefers-reduced-motion:no-preference){ .entry{animation:in .28s ease both} @keyframes in{from{opacity:0}to{opacity:1}} }
 </style>
 </head>
@@ -201,7 +203,7 @@ footer p{margin:0 0 6px;max-width:80ch}
 <div class="wrap layout">
   <aside class="filters" aria-label="Filters">
     <details open>
-      <summary>Filters</summary>
+      <summary id="f-summary">Filters</summary>
       <h2>Filters</h2>
       <div class="fgroup">
         <span>Evidence level</span>
@@ -302,7 +304,11 @@ const LEXICON = [
   [/lupus/, 'lupus OR "systemic lupus erythematosus"'],
   [/multiple sclerosis|\bms\b/, '"multiple sclerosis"'],
   [/eating disorder|anorexia|bulimia|binge/, '"eating disorder" OR anorexia OR bulimia'],
-  [/postnatal|postpartum depression/, '"postpartum depression" OR "postnatal depression"']
+  [/postnatal|postpartum depression/, '"postpartum depression" OR "postnatal depression"'],
+  [/self.?harm|suicid|kill myself|end my life|hurt myself/, '"self-harm" OR "self harm" OR suicidal OR suicide'],
+  [/chest pain|chest tight/, '"chest pain" OR angina'],
+  [/short(ness)? of breath|breathless/, 'dyspnea OR dyspnoea OR breathlessness'],
+  [/swollen|swelling|oedema|edema/, 'edema OR oedema OR swelling']
 ];
 const STAGE_TERMS = {
   cycling:["premenopaus","menstrua","reproductive age"], ttc:["infertil","fertility","conceiv"],
@@ -334,6 +340,13 @@ async function rpc(fn, body, retry = true) {
 const ftopics = $("#f-topics");
 ftopics.innerHTML = Object.entries(TOPICS).map(([k,v]) =>
   `<label><input type="checkbox" value="${k}" data-topic> ${esc(v)}</label>`).join("");
+const filterBox = $("aside.filters details");
+if (matchMedia("(max-width:860px)").matches) filterBox.open = false;
+function updateFilterSummary() {
+  const n = document.querySelectorAll("aside.filters input:checked").length + ($("#f-year").value ? 1 : 0);
+  $("#f-summary").textContent = n ? `Filters (${n} on)` : "Filters";
+}
+filterBox.addEventListener("change", updateFilterSummary);
 function filters() {
   const topics = [...document.querySelectorAll("[data-topic]:checked")].map(i=>i.value);
   return {
@@ -358,9 +371,20 @@ $("#examples").addEventListener("click", e => { if (e.target.tagName === "BUTTON
 
 // ---------- tabs ----------
 const tabs = [$("#tab-search"), $("#tab-me")];
-tabs.forEach(t => t.addEventListener("click", () => {
-  tabs.forEach(x => { const on = x === t; x.setAttribute("aria-selected", on); $("#"+x.getAttribute("aria-controls")).hidden = !on; });
-}));
+function selectTab(t, focus) {
+  tabs.forEach(x => { const on = x === t; x.setAttribute("aria-selected", on); x.tabIndex = on ? 0 : -1; $("#"+x.getAttribute("aria-controls")).hidden = !on; });
+  if (focus) t.focus();
+}
+tabs.forEach((t, i) => {
+  t.addEventListener("click", () => selectTab(t));
+  t.addEventListener("keydown", e => {
+    const k = {ArrowRight: 1, ArrowLeft: -1}[e.key];
+    if (k) { e.preventDefault(); selectTab(tabs[(i + k + tabs.length) % tabs.length], true); }
+    if (e.key === "Home") { e.preventDefault(); selectTab(tabs[0], true); }
+    if (e.key === "End") { e.preventDefault(); selectTab(tabs[tabs.length - 1], true); }
+  });
+});
+selectTab(tabs[0]);
 
 // ---------- query building ----------
 function expandTerms(text) {
@@ -453,6 +477,14 @@ function redFlagHtml(text) {
 
 // ---------- search mode ----------
 let lastContext = null;
+let runId = 0; // only the newest search may update the page
+function reveal() {
+  // Bring the status line into view so the person sees that something happened.
+  const r = $("#results").getBoundingClientRect();
+  if (r.top > innerHeight * 0.6 || r.top < 0) {
+    $("#results").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start"});
+  }
+}
 function concepts(text) {
   // Split a query into concepts: each recognised everyday phrase becomes its clinical OR-group,
   // and remaining meaningful words become their own concept.
@@ -463,11 +495,14 @@ function concepts(text) {
   return [...new Set(groups)];
 }
 async function runSearch(text) {
-  text = text.trim(); if (!text) return;
-  statusEl.textContent = "Searching…"; out.innerHTML = "";
+  text = text.trim();
+  const my = ++runId;
+  if (!text) { statusEl.textContent = "Type a word or phrase to search for."; out.innerHTML = ""; reveal(); $("#q").focus(); return; }
+  statusEl.textContent = "Searching…"; out.innerHTML = ""; reveal();
   const f = filters();
   try {
     let q = text, rows = await rpc("search_evidence", {q, match_count:24, ...f});
+    if (my !== runId) return;
     let papers = groupByPaper(rows), broadened = false;
     if (papers.length < 5) {
       // Too few studies contain every word: search each concept separately and rank studies
@@ -475,6 +510,7 @@ async function runSearch(text) {
       const cs = concepts(text);
       if (cs.length) {
         const per = await Promise.all(cs.map(c => rpc("search_evidence", {q:c, match_count:30, ...f}).catch(() => [])));
+        if (my !== runId) return;
         const agg = new Map();
         papers.forEach((p, i) => agg.set(p.paper_id, {p, hits: cs.length + 1, score: 10 - i}));
         per.forEach(res => groupByPaper(res).forEach((p, i) => {
@@ -494,7 +530,7 @@ async function runSearch(text) {
     out.innerHTML = redFlagHtml(text) + overviewExtractive(papers, "At a glance") +
       `<ol class="list">${papers.map((p,i)=>entryHtml(p,i+1)).join("")}</ol>`;
     wireAi();
-  } catch (e) { statusEl.textContent = ""; out.innerHTML = `<div class="empty"><h2>Search didn't run</h2><p>${esc(e.message)}. Check your connection and try again.</p></div>`; }
+  } catch (e) { if (my !== runId) return; statusEl.textContent = ""; out.innerHTML = `<div class="empty"><h2>Search didn't run</h2><p>${esc(e.message)}. Check your connection and try again.</p></div>`; }
 }
 $("#f-search").addEventListener("submit", e => { e.preventDefault(); runSearch($("#q").value); });
 
@@ -505,19 +541,21 @@ async function runProfile() {
     history: $("#history").value.trim(), meds: $("#meds").value.trim(), question: $("#question").value.trim()
   };
   const allText = [profile.symptoms, profile.history, profile.meds, profile.question].join(" ");
-  if (!allText.trim()) { statusEl.textContent = "Add at least one symptom, condition, medicine or question."; return; }
-  statusEl.textContent = "Translating into research terms…"; out.innerHTML = "";
+  const my = ++runId;
+  if (!allText.trim()) { statusEl.textContent = "Add at least one symptom, condition, medicine or question."; out.innerHTML = ""; reveal(); $("#symptoms").focus(); return; }
+  statusEl.textContent = "Translating into research terms…"; out.innerHTML = ""; reveal();
   const f = filters(), pop = popTerms(profile.stage, profile.age);
 
   // 1. Turn the person's words into search groups (Claude if available, otherwise the built-in word list).
   let groups = null;
   const exp = await ai("/api/expand", profile);
+  if (my !== runId) return;
   if (exp && Array.isArray(exp.groups) && exp.groups.length) groups = exp.groups.slice(0, 6);
   if (!groups) {
     const split = s => s.split(/[,;\n]+/).map(x=>x.trim()).filter(Boolean);
     groups = [...split(profile.symptoms), ...split(profile.history)].slice(0,5)
       .map(item => ({label:item, query: relaxed(item)}));
-    if (profile.meds) groups.push({label:"Your medicines", query: relaxed(profile.meds)});
+    split(profile.meds).slice(0, 3).forEach(m => groups.push({label: `Medicine: ${m}`, query: relaxed(m)}));
     if (profile.question) groups.unshift({label:profile.question, query: relaxed(profile.question)});
   }
 
@@ -525,6 +563,7 @@ async function runProfile() {
   statusEl.textContent = "Searching the studies…";
   try {
     const results = await Promise.all(groups.map(g => rpc("search_evidence", {q:g.query, match_count:10, population_terms:pop, ...f}).catch(()=>[])));
+    if (my !== runId) return;
     const seen = new Set(); let n = 0; const all = [];
     const sections = groups.map((g, gi) => {
       const papers = groupByPaper(results[gi]).filter(p => !seen.has(p.paper_id)).slice(0, 5);
@@ -533,12 +572,12 @@ async function runProfile() {
       return `<section class="group"><h2>${esc(g.label)}</h2><p class="q">Searched for: ${esc(g.query)}</p>
         <ol class="list">${papers.map(p => entryHtml(p, ++n)).join("")}</ol></section>`;
     });
-    statusEl.textContent = all.length ? `${all.length} studies across ${groups.length} topics from your answers.` : "";
+    statusEl.textContent = all.length ? `${all.length} studies across ${groups.length} ${groups.length === 1 ? "topic" : "topics"} from your answers.` : "";
     if (!all.length) { out.innerHTML = redFlagHtml(allText) + emptyHtml(""); return; }
     lastContext = {question: profile.question || "What does women-only research say about these symptoms and conditions?", profile, papers: all};
     out.innerHTML = redFlagHtml(allText) + overviewExtractive(all, "What we found for you") + sections.join("");
     wireAi();
-  } catch (e) { statusEl.textContent = ""; out.innerHTML = `<div class="empty"><h2>Search didn't run</h2><p>${esc(e.message)}. Check your connection and try again.</p></div>`; }
+  } catch (e) { if (my !== runId) return; statusEl.textContent = ""; out.innerHTML = `<div class="empty"><h2>Search didn't run</h2><p>${esc(e.message)}. Check your connection and try again.</p></div>`; }
 }
 $("#f-me").addEventListener("submit", e => { e.preventDefault(); runProfile(); });
 

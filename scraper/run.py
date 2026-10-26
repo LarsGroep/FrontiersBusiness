@@ -42,6 +42,10 @@ def main() -> None:
     else:
         topics = list(europepmc.DEFAULT_TOPICS.items())
     quota = max(1, -(-args.max_papers // len(topics)))  # ceil: papers per topic
+    # Each topic is split over publication-year bands (unless a year filter was given).
+    bands = [(None, None)] if args.since_year else list(europepmc.YEAR_BANDS.items())
+    slice_quota = max(1, -(-quota // len(bands)))
+    slices = [(name, tq, band, yr) for name, tq in topics for band, yr in bands]
     query = europepmc.build_query(args.since_year, None)
     print(f"Base query: {query}\n{len(topics)} topic(s), up to {quota} new papers each", flush=True)
 
@@ -97,23 +101,25 @@ def main() -> None:
         Resumes each topic where the previous run stopped (scrape_cursors) and saves the new position.
         """
         nonlocal hit_count
-        for name, tq in topics:
-            q = europepmc.build_query(args.since_year, tq)
-            start, exhausted = db.get_cursor(conn, name) if conn else ("*", False)
+        for name, tq, band, yr in slices:
+            q = europepmc.build_query(args.since_year, tq, year_range=yr)
+            key = f"{name}:{band}" if band else name
+            start, exhausted = db.get_cursor(conn, key) if conn else ("*", False)
             if exhausted:
                 start = "*"  # wrapped around: rescan from the top to pick up newly published papers
             n, it, state = europepmc.search(q, max_results=quota * 20, start_cursor=start)
             topic_hits[name] = n
             hit_count += n
-            print(f"Topic [{name}]: {n} hits, resuming at {'start' if start == '*' else 'saved cursor'}", flush=True)
+            print(f"Topic [{key}]: {n} hits, resuming at {'start' if start == '*' else 'saved cursor'}", flush=True)
+            band_quota = topic_done[name] + slice_quota
             try:
                 for rec in it:
-                    if topic_done[name] >= quota:
+                    if topic_done[name] >= min(quota, band_quota):
                         break
                     yield name, rec
             finally:
                 if conn:
-                    db.save_cursor(conn, name, state["cursor"], state["scanned"], state["exhausted"])
+                    db.save_cursor(conn, key, state["cursor"], state["scanned"], state["exhausted"])
 
     DATA.mkdir(exist_ok=True)
     REPORTS.mkdir(exist_ok=True)
