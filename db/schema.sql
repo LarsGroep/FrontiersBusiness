@@ -99,10 +99,11 @@ update public.papers set topic = 'social' where topic = 'violence OR social OR e
 update public.papers set topic = 'ageing' where topic = 'ageing OR older OR dementia OR cognition';
 
 -- Hybrid RAG retrieval.
---   1. keyword: full-text match on chunk text (+ paper title/abstract boost)
---   2. semantic: nearest chunks to query_embedding, or (no embedding given) to the centroid of the
---      top keyword hits, which finds passages that say the same thing in different words
---   3. reciprocal-rank fusion, max 2 chunks per paper, optional boost for the reader's life stage
+--   1. candidate papers: full-text rank on title + abstract (top 80), so cost stays flat as data grows
+--   2. keyword: full-text match on those papers' passages
+--   3. semantic: passages of those papers nearest to query_embedding, or (none given) to the centroid
+--      of the top keyword hits, which finds passages that say the same thing in other words
+--   4. reciprocal-rank fusion, max 2 passages per paper, optional boost for the reader's life stage
 -- q uses web-search syntax: words are ANDed, `OR` between alternatives, "quoted phrases", -exclude.
 create or replace function public.search_evidence(
   q                text,
@@ -144,20 +145,27 @@ as $$
   with tsq as (
     select websearch_to_tsquery('english', coalesce(q, '')) as q
   ),
-  fp as (
-    select p.id, p.fts from public.papers p
-    where (labels   is null or p.label = any(labels))
+  -- Stage 1: rank whole papers on title + abstract (small table, GIN index). Bounds all later work.
+  cand as (
+    select p.id, ts_rank_cd(p.fts, tsq.q, 32) as pr
+    from public.papers p cross join tsq
+    where p.fts @@ tsq.q
+      and (labels   is null or p.label = any(labels))
       and (min_year is null or p.pub_year >= min_year)
       and (topics   is null or p.topic = any(topics))
       and (not commercial_only or p.commercial_use_ok)
+    order by pr desc
+    limit 80
+  ),
+  -- Stage 2: passages of those papers only (<= ~2k rows via chunks_paper_idx).
+  cchunks as (
+    select c.id, c.paper_id, c.fts, c.embedding, cand.pr
+    from cand join public.chunks c on c.paper_id = cand.id
   ),
   kw as (
-    select c.id, c.paper_id,
-           ts_rank_cd(c.fts, tsq.q, 32) + 0.5 * ts_rank_cd(fp.fts, tsq.q, 32) as r
-    from public.chunks c
-    join fp on fp.id = c.paper_id
-    cross join tsq
-    where c.fts @@ tsq.q
+    select cc.id, cc.paper_id, ts_rank_cd(cc.fts, tsq.q, 32) + 0.5 * cc.pr as r
+    from cchunks cc cross join tsq
+    where cc.fts @@ tsq.q
     order by r desc
     limit 150
   ),
@@ -167,18 +175,16 @@ as $$
   centroid as (
     select coalesce(
       query_embedding,
-      (select avg(c.embedding) from public.chunks c
-         join kw_ranked k on k.id = c.id
-        where k.rk <= 8 and c.embedding is not null)
+      (select avg(cc.embedding) from cchunks cc join kw_ranked k on k.id = cc.id
+        where k.rk <= 8 and cc.embedding is not null)
     ) as e
   ),
+  -- Semantic re-ranking inside the candidate set: finds the passages that say it in other words.
   sem as (
-    select c.id, c.paper_id, row_number() over (order by c.embedding <=> ce.e) as rk
-    from public.chunks c
-    join fp on fp.id = c.paper_id
-    cross join centroid ce
-    where ce.e is not null and c.embedding is not null
-    order by c.embedding <=> ce.e
+    select cc.id, cc.paper_id, row_number() over (order by cc.embedding <=> ce.e) as rk
+    from cchunks cc cross join centroid ce
+    where ce.e is not null and cc.embedding is not null
+    order by cc.embedding <=> ce.e
     limit 150
   ),
   fused as (
