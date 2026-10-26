@@ -22,8 +22,14 @@ The search page is a static page plus two optional Vercel functions. Live at htt
 - With `ANTHROPIC_API_KEY` set in the Vercel project, `/api/expand` uses Claude for that translation and `/api/answer` writes a cited plain-language summary.
 - Deploy: Vercel → Add New Project → import this repo → Root Directory `web` → Deploy.
 
+## Agent API
+`/api/search`, `/api/paper` (full text on demand, licence-aware) and `/api/stats` on the Vercel site. Tool definitions are in `AGENT_TOOLS.md`.
+
+## Storage model (lean catalogue)
+Per paper the database stores: metadata, label + evidence, a structured evidence record (Claude), the abstract, and at most 4 passages. The 4 passages are abstract + results/conclusion, and only for CC-BY/CC0 papers; other papers keep the abstract only. That's about 12 KB per paper versus ~150 KB before, so the free plan holds roughly 25–30k papers. Full text is fetched live from Europe PMC by `/api/paper`. Set `PASSAGES_PER_OPEN_PAPER` to change the 4.
+
 ## Running
-- **Fill database (parallel by topic)**: runs every 6 hours and on pushes to `scraper/`/`db/`. A setup job applies the schema, then 14 topic jobs (6 at a time) each resume where the last run stopped. Filling pauses at `DB_SIZE_LIMIT_MB` (400 MB, Supabase free plan ≈ 2,500 papers). Raise it after upgrading the plan.
+- **Fill database (parallel by topic)**: runs hourly and on pushes to `scraper/`/`db/`. A setup job applies the schema, then 14 topic jobs (6 at a time) each resume where the last run stopped. Filling pauses at `DB_SIZE_LIMIT_MB` (400 MB, Supabase free plan ≈ 2,500 papers). Raise it after upgrading the plan.
 - **Scrape women-only papers (single run)**: manual one-off runs from the Actions tab.
 - **Reports**: each run commits `reports/latest_run.json`, `reports/latest_sample.md` (a quality-check sample) and `reports/latest_papers.jsonl`.
 

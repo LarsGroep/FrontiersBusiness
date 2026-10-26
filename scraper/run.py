@@ -19,6 +19,7 @@ from pathlib import Path
 from . import db, europepmc, fulltext, label
 
 ROOT = Path(__file__).resolve().parent.parent
+PASSAGES_OPEN = int(os.getenv("PASSAGES_PER_OPEN_PAPER", "4"))
 REPORTS = ROOT / "reports"
 DATA = ROOT / "data"
 
@@ -29,7 +30,7 @@ def main() -> None:
     ap.add_argument("--since-year", type=int, default=None)
     ap.add_argument("--topic", default=None, help="single Europe PMC topic query, e.g. 'cardiovascular'; default rotates DEFAULT_TOPICS")
     ap.add_argument("--topic-index", type=int, default=None, help="run only DEFAULT_TOPICS[i] (parallel matrix jobs)")
-    ap.add_argument("--mode", choices=["all", "setup", "scrape", "report"], default="all",
+    ap.add_argument("--mode", choices=["all", "setup", "scrape", "report", "enrich"], default="all",
                     help="all = setup + scrape; scrape skips schema changes (safe to run in parallel)")
     ap.add_argument("--no-embed", action="store_true")
     args = ap.parse_args()
@@ -59,6 +60,13 @@ def main() -> None:
             purged = db.purge_stale(conn, label.LABEL_VERSION)
             if purged:
                 print(f"Purged {purged} papers labelled by an older labeller", flush=True)
+        if args.mode == "enrich":
+            if not conn or not os.getenv("ANTHROPIC_API_KEY"):
+                print("enrich: needs SUPABASE_DB_URL and ANTHROPIC_API_KEY; nothing to do", flush=True)
+                return
+            print(json.dumps(enrich(conn, args.max_papers), indent=2), flush=True)
+            conn.close()
+            return
         if conn and args.mode in ("setup", "report"):
             REPORTS.mkdir(exist_ok=True)
             status = db.db_status(conn)
@@ -153,15 +161,17 @@ def main() -> None:
                 sections_count[n] += 1
 
             verdict = label.rule_label(paper, methods_text)
-            llm = label.llm_label(paper, methods_text) if verdict["label"] != "rejected" else None
+            results_text = " ".join(t for n, _, t in sections if n in ("results", "conclusion"))
+            llm = label.llm_label(paper, methods_text, results_text) if verdict["label"] != "rejected" else None
             verdict = label.combine(verdict, llm)
             paper.update(verdict)
             labels_count[paper["label"]] += 1
 
             chunks = fulltext.build_chunks(paper, sections) if paper["label"] != "rejected" else []
-            if not paper.get("commercial_use_ok"):
-                # Licence forbids commercial reuse (CC-BY-NC/ND or unknown): store the abstract only.
-                chunks = [c for c in chunks if c["section"] == "abstract"]
+            # Lean storage (full text is fetched on demand via /api/paper):
+            #  - open licence (CC-BY/CC0): abstract + up to 3 results/conclusion passages
+            #  - licence forbids commercial reuse or unknown: abstract only
+            chunks = fulltext.select_passages(chunks, PASSAGES_OPEN if paper.get("commercial_use_ok") else 1)
             if chunks and not args.no_embed:
                 from .embed import embed_passages
                 vecs = embed_passages([f"{paper['title']} | {c['section']}: {c['content']}" for c in chunks])
@@ -218,6 +228,47 @@ def main() -> None:
     (REPORTS / "latest_run.json").write_text(json.dumps(summary, indent=2, default=str))
     write_sample(processed)
     print(json.dumps(summary, indent=2, default=str))
+
+
+def enrich(conn, limit: int) -> dict:
+    """Backfill: Claude re-checks the women-only label and writes the structured evidence record
+    for papers stored before the key existed. Best evidence first (verified, then probable)."""
+    stats = collections.Counter()
+    with conn.cursor() as cur:
+        cur.execute(
+            "select id, pmcid, title, abstract, mesh_terms from public.papers "
+            "where evidence is null and llm_label is null and label <> 'rejected' "
+            "order by case label when 'female_only_verified' then 0 when 'female_only_probable' then 1 else 2 end, fetched_at "
+            "limit %s", (limit,))
+        rows = cur.fetchall()
+    for pid, pmcid, title, abstract, mesh in rows:
+        paper = {"id": pid, "pmcid": pmcid, "title": title, "abstract": abstract, "mesh_terms": mesh}
+        try:
+            xml = europepmc.fetch_fulltext_xml(pmcid) if pmcid else None
+            sections = fulltext.parse_sections(xml) if xml else []
+            methods = " ".join(t for n, _, t in sections if n == "methods")
+            results = " ".join(t for n, _, t in sections if n in ("results", "conclusion"))
+            rule = label.rule_label(paper, methods)
+            llm = label.llm_label(paper, methods, results)
+            if not llm or "error" in llm:
+                stats["llm_errors"] += 1
+                continue
+            v = label.combine(rule, llm)
+            with conn.cursor() as cur:
+                cur.execute(
+                    "update public.papers set label=%s, label_reasons=%s, n_female=%s, population=%s, study_type=%s, "
+                    "female_evidence=%s, llm_label=%s, evidence=%s where id=%s",
+                    (v["label"], v["label_reasons"], v.get("n_female"), v.get("population"), v.get("study_type"),
+                     v.get("female_evidence"), json.dumps(llm), json.dumps(v.get("evidence") or {}), pid))
+            conn.commit()
+            stats["enriched"] += 1
+            stats["now_" + v["label"]] += 1
+        except Exception as e:
+            conn.rollback()
+            stats["errors"] += 1
+            print(f"  ! enrich {pid}: {type(e).__name__}: {str(e)[:150]}", flush=True)
+        time.sleep(0.1)
+    return dict(stats)
 
 
 def write_sample(processed: list[dict]) -> None:

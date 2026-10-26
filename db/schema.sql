@@ -34,6 +34,8 @@ create table if not exists public.papers (
 
 alter table public.papers add column if not exists label_version int not null default 1;
 alter table public.papers add column if not exists topic text;
+-- Structured evidence record extracted by Claude (population, exposure, outcomes, findings, direction).
+alter table public.papers add column if not exists evidence jsonb;
 
 create index if not exists papers_label_idx on public.papers (label);
 create index if not exists papers_year_idx  on public.papers (pub_year);
@@ -241,6 +243,9 @@ as $$
     'chunks',   (select count(*) from public.chunks),
     'women',    (select coalesce(sum(n_female), 0) from public.papers where label = 'female_only_verified' and n_female < 1000000),
     'by_label', (select jsonb_object_agg(label, n) from (select label, count(*) n from public.papers group by label) x),
+    'with_evidence', (select count(*) from public.papers where evidence is not null and evidence <> '{}'::jsonb),
+    'by_decade', (select jsonb_object_agg(d, n) from (select (pub_year / 10 * 10)::text || 's' d, count(*) n
+                    from public.papers where label = 'female_only_verified' and pub_year is not null group by 1) x),
     'by_topic', (select jsonb_object_agg(coalesce(topic, 'other'), n) from
                    (select topic, count(*) n from public.papers where label = 'female_only_verified' group by topic) x),
     'years',    (select jsonb_build_object('min', min(pub_year), 'max', max(pub_year)) from public.papers),

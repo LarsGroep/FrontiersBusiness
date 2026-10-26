@@ -1,6 +1,8 @@
 name: Fill database (parallel by topic)
-# One setup job applies the schema, then 14 topic jobs scrape in parallel, each resuming where the
-# previous run stopped. Filling pauses by itself once the database reaches DB_SIZE_LIMIT_MB.
+# Hourly: a setup job applies the schema and storage clean-up, then 14 topic jobs (6 at a time) scrape,
+# each resuming where the previous run stopped and walking four publication-year bands. An enrich job
+# adds Claude evidence records when the ANTHROPIC_API_KEY secret exists. Filling pauses by itself once
+# the database reaches DB_SIZE_LIMIT_MB.
 # To stop the schedule: GitHub → Actions → this workflow → "..." → Disable workflow.
 
 on:
@@ -8,9 +10,9 @@ on:
     inputs:
       per_topic:
         description: "New papers per topic (14 topics run in parallel)"
-        default: "100"
+        default: "150"
   schedule:
-    - cron: "41 */6 * * *"   # every 6 hours
+    - cron: "17 * * * *"   # hourly; a new run waits while one is still going (concurrency group)
   push:
     branches: [main]
     paths:
@@ -74,7 +76,7 @@ jobs:
         run: |
           N="${{ github.event.inputs.per_topic }}"
           if [ -z "$N" ]; then
-            if [ "${{ github.event_name }}" = "push" ]; then N=60; else N=100; fi
+            if [ "${{ github.event_name }}" = "push" ]; then N=60; else N=150; fi
           fi
           rm -f reports/latest_run.json reports/latest_sample.md   # never upload a stale committed report
           python -m scraper.run --mode scrape --topic-index ${{ matrix.topic }} --max-papers "$N"
@@ -88,8 +90,37 @@ jobs:
             reports/latest_run.json
           if-no-files-found: ignore
 
-  report:
+  enrich:
+    # Claude re-checks labels and writes structured evidence records for stored papers.
+    # Does nothing until the ANTHROPIC_API_KEY repository secret exists.
     needs: [setup, fill]
+    if: always() && needs.setup.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      HAS_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+    steps:
+      - uses: actions/checkout@v4
+        if: env.HAS_KEY == 'true'
+      - uses: actions/setup-python@v5
+        if: env.HAS_KEY == 'true'
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+        if: env.HAS_KEY == 'true'
+      - name: Backfill evidence records
+        if: env.HAS_KEY == 'true'
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python -m scraper.run --mode enrich --max-papers 400
+      - name: No key yet
+        if: env.HAS_KEY != 'true'
+        run: echo "ANTHROPIC_API_KEY secret not set; skipping evidence extraction."
+
+  report:
+    needs: [setup, fill, enrich]
     if: always() && needs.setup.result == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 15

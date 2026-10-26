@@ -103,3 +103,16 @@ def build_chunks(paper: dict, sections: list[tuple[str, str, str]], max_chunks: 
     for i, c in enumerate(chunks):
         c["chunk_index"] = i
     return chunks
+
+
+# Lean storage: keep the passages an agent or reader needs first; full text is fetched on demand.
+SECTION_PRIORITY = {"abstract": 0, "results": 1, "conclusion": 2, "discussion": 3, "methods": 4, "other": 5}
+
+
+def select_passages(chunks: list[dict], k: int) -> list[dict]:
+    """Abstract + the first results/conclusion passages, up to k, re-numbered."""
+    ranked = sorted(chunks, key=lambda c: (SECTION_PRIORITY.get(c["section"], 9), c["chunk_index"]))
+    keep = sorted(ranked[:k], key=lambda c: c["chunk_index"])
+    for i, c in enumerate(keep):
+        c["chunk_index"] = i
+    return keep

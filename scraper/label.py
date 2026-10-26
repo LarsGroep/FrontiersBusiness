@@ -169,34 +169,54 @@ def rule_label(paper: dict, methods_text: str) -> dict:
     }
 
 
-LLM_PROMPT = """You are screening scientific papers for a dataset of studies whose participants were ONLY women or girls (human females).
-Read the title, abstract and methods below and answer with JSON only, no prose:
-{{"female_only": true|false|null, "n_female": int|null, "n_male": int|null, "population": "short description", "study_type": "e.g. RCT, cohort, cross-sectional, qualitative, case series", "evidence_quote": "exact sentence that shows who the participants were"}}
-Rules: female_only is true only if every human participant whose data was analysed was female. Male partners, infants or comparison literature do not count as participants. Use null if the text does not say.
+LLM_PROMPT = """You are screening scientific papers for a dataset of studies whose participants were ONLY women or girls (human females), and turning each into a structured evidence record.
+Read the title, abstract, methods and results below and answer with JSON only, no prose:
+{{"female_only": true|false|null, "n_female": int|null, "n_male": int|null,
+ "population": "who took part, e.g. 'postmenopausal women with osteopenia, 50-70 y'", "age_range": "e.g. 18-45 or null",
+ "country": "country/countries or null", "study_type": "RCT | cohort | case-control | cross-sectional | qualitative | case series | other",
+ "evidence_quote": "exact sentence that shows who the participants were",
+ "intervention_or_exposure": "what was given, done or measured as the main factor, or null",
+ "comparator": "control/comparison group or null",
+ "outcomes": ["main outcomes measured"],
+ "key_findings": "1-2 sentences with the main result, including numbers if given",
+ "effect_direction": "benefit | harm | no difference | mixed | association only | descriptive",
+ "limitations": "the most important limitation in a few words, or null"}}
+Rules: female_only is true only if every human participant whose data was analysed was female. Male partners, infants or comparison literature do not count as participants. Use null when the text does not say; never guess numbers.
 
 TITLE: {title}
 ABSTRACT: {abstract}
-METHODS: {methods}"""
+METHODS: {methods}
+RESULTS: {results}"""
+
+EVIDENCE_FIELDS = ["population", "age_range", "country", "study_type", "intervention_or_exposure", "comparator",
+                   "outcomes", "key_findings", "effect_direction", "limitations", "n_female"]
 
 
-def llm_label(paper: dict, methods_text: str) -> dict | None:
+def llm_label(paper: dict, methods_text: str, results_text: str = "") -> dict | None:
     key = os.getenv("ANTHROPIC_API_KEY")
     if not key:
         return None
-    prompt = LLM_PROMPT.format(title=paper.get("title", ""), abstract=paper.get("abstract", "")[:3000], methods=methods_text[:6000])
-    try:
-        r = requests.post(
-            "https://api.anthropic.com/v1/messages",
-            headers={"x-api-key": key, "anthropic-version": "2023-06-01", "content-type": "application/json"},
-            json={"model": os.getenv("LABEL_MODEL", "claude-haiku-5-5"), "max_tokens": 400,
-                  "messages": [{"role": "user", "content": prompt}]},
-            timeout=60,
-        )
-        r.raise_for_status()
-        text = r.json()["content"][0]["text"]
-        return json.loads(text[text.find("{"): text.rfind("}") + 1])
-    except Exception as e:  # never let the verifier break the scrape
-        return {"error": str(e)[:200]}
+    prompt = LLM_PROMPT.format(title=paper.get("title", ""), abstract=(paper.get("abstract") or "")[:3000],
+                               methods=methods_text[:6000], results=results_text[:4000])
+    for attempt in range(3):
+        try:
+            r = requests.post(
+                "https://api.anthropic.com/v1/messages",
+                headers={"x-api-key": key, "anthropic-version": "2023-06-01", "content-type": "application/json"},
+                json={"model": os.getenv("LABEL_MODEL", "claude-haiku-5-5"), "max_tokens": 900,
+                      "messages": [{"role": "user", "content": prompt}]},
+                timeout=90,
+            )
+            if r.status_code in (429, 529) and attempt < 2:
+                import time
+                time.sleep(10 * (attempt + 1))
+                continue
+            r.raise_for_status()
+            text = r.json()["content"][0]["text"]
+            return json.loads(text[text.find("{"): text.rfind("}") + 1])
+        except Exception as e:  # never let the verifier break the scrape
+            err = {"error": str(e)[:200]}
+    return err
 
 
 def combine(rule: dict, llm: dict | None) -> dict:
@@ -217,4 +237,5 @@ def combine(rule: dict, llm: dict | None) -> dict:
         out["female_evidence"] = llm["evidence_quote"]
     out["population"] = llm.get("population") or rule["population"]
     out["study_type"] = llm.get("study_type") or rule["study_type"]
+    out["evidence"] = {k: llm.get(k) for k in EVIDENCE_FIELDS if llm.get(k) not in (None, "", [])}
     return out

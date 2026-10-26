@@ -11,7 +11,7 @@ PAPER_COLS = [
     "id", "pmid", "pmcid", "doi", "title", "authors", "journal", "pub_year", "abstract",
     "mesh_terms", "pub_types", "keywords", "license", "commercial_use_ok", "label", "label_reasons",
     "male_mentions", "male_snippets", "female_evidence", "n_female", "population", "study_type",
-    "llm_label", "source_url", "label_version", "topic",
+    "llm_label", "source_url", "label_version", "topic", "evidence",
 ]
 
 
@@ -71,7 +71,7 @@ def upsert_paper(conn: psycopg.Connection, paper: dict, chunks: list[dict]) -> N
     vals = []
     for c in PAPER_COLS:
         v = paper.get(c)
-        if c == "llm_label" and v is not None:
+        if c in ("llm_label", "evidence") and v is not None:
             v = json.dumps(v)
         vals.append(v)
     placeholders = ",".join(["%s"] * len(PAPER_COLS))
@@ -150,6 +150,21 @@ def maintenance(conn_url: str) -> dict:
             "where p.id = c.paper_id and not coalesce(p.commercial_use_ok, false) and c.section <> 'abstract'"
         )
         out["restricted_fulltext_passages_removed"] = cur.rowcount
+        # 2b. lean storage for open-licence papers: abstract + first results/conclusion passages
+        keep = int(os.getenv("PASSAGES_PER_OPEN_PAPER", "4"))
+        cur.execute(
+            """
+            delete from public.chunks c using (
+              select id, row_number() over (
+                partition by paper_id
+                order by case section when 'abstract' then 0 when 'results' then 1 when 'conclusion' then 2
+                                      when 'discussion' then 3 when 'methods' then 4 else 5 end, chunk_index) as rn
+              from public.chunks) r
+            where r.id = c.id and r.rn > %s
+            """,
+            (keep,),
+        )
+        out["extra_passages_removed"] = cur.rowcount
         # 3. stored keyword column on passages (matched on the fly now)
         cur.execute("select 1 from information_schema.columns where table_schema='public' and table_name='chunks' and column_name='fts'")
         had_fts = cur.fetchone() is not None
@@ -157,7 +172,7 @@ def maintenance(conn_url: str) -> dict:
         cur.execute("alter table public.chunks drop column if exists fts")
         out["dropped_passage_keyword_column"] = had_fts
         # 4. give the space back to the disk
-        if had_fts or out["restricted_fulltext_passages_removed"] > 500:
+        if had_fts or out["restricted_fulltext_passages_removed"] + out["extra_passages_removed"] > 500:
             cur.execute("vacuum full analyze public.chunks")
             out["rewrote_table"] = True
         out["size_after_mb"] = size()
