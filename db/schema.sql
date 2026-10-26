@@ -49,8 +49,8 @@ create table if not exists public.chunks (
 );
 
 create index if not exists chunks_paper_idx on public.chunks (paper_id);
-create index if not exists chunks_embedding_idx
-  on public.chunks using hnsw (embedding extensions.vector_cosine_ops);
+-- No vector index: search_evidence() compares vectors only within ~2k candidate passages, so an
+-- HNSW index (about a third of all storage) brought no speed. scraper/db.py:maintenance() drops it.
 
 create table if not exists public.scrape_runs (
   id          bigserial primary key,
@@ -69,17 +69,15 @@ create table if not exists public.scrape_cursors (
   updated_at  timestamptz not null default now()
 );
 
--- Keyword search: stemmed English full-text vectors (title/abstract weighted on papers, body text on chunks).
+-- Keyword search: stemmed English full-text vectors on title/abstract (weighted).
 alter table public.papers add column if not exists fts tsvector
   generated always as (
     setweight(to_tsvector('english', coalesce(title, '')), 'A') ||
     setweight(to_tsvector('english', coalesce(abstract, '')), 'B')
   ) stored;
-alter table public.chunks add column if not exists fts tsvector
-  generated always as (to_tsvector('english', coalesce(content, ''))) stored;
+-- Passages get no stored keyword column: words are matched on the fly for the candidate papers only.
 
 create index if not exists papers_fts_idx   on public.papers using gin (fts);
-create index if not exists chunks_fts_idx   on public.chunks using gin (fts);
 create index if not exists papers_topic_idx on public.papers (topic);
 
 -- Earlier runs stored the raw topic query; use short names.
@@ -159,7 +157,7 @@ as $$
   ),
   -- Stage 2: passages of those papers only (<= ~2k rows via chunks_paper_idx).
   cchunks as (
-    select c.id, c.paper_id, c.fts, c.embedding, cand.pr
+    select c.id, c.paper_id, to_tsvector('english', c.content) as fts, c.embedding, cand.pr
     from cand join public.chunks c on c.paper_id = cand.id
   ),
   kw as (

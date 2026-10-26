@@ -128,3 +128,37 @@ def db_size_mb(conn: psycopg.Connection) -> int:
     with conn.cursor() as cur:
         cur.execute("select pg_database_size(current_database()) / 1048576")
         return int(cur.fetchone()[0])
+
+
+def maintenance(conn_url: str) -> dict:
+    """One-off and idempotent storage clean-up, run by the setup job.
+
+    Order matters on a nearly full free-plan database: free space first (dropping an index returns
+    its disk immediately), then delete rows, then rewrite the table (VACUUM FULL needs room for a
+    temporary copy of the smaller table).
+    """
+    out: dict = {}
+    with psycopg.connect(conn_url, prepare_threshold=None, autocommit=True) as c, c.cursor() as cur:
+        cur.execute("set statement_timeout = 0")
+        size = lambda: (cur.execute("select pg_database_size(current_database()) / 1048576"), int(cur.fetchone()[0]))[1]
+        out["size_before_mb"] = size()
+        # 1. vector index unused by search_evidence(): about a third of all storage
+        cur.execute("drop index if exists public.chunks_embedding_idx")
+        # 2. full text of papers whose licence forbids commercial reuse: keep the abstract only
+        cur.execute(
+            "delete from public.chunks c using public.papers p "
+            "where p.id = c.paper_id and not coalesce(p.commercial_use_ok, false) and c.section <> 'abstract'"
+        )
+        out["restricted_fulltext_passages_removed"] = cur.rowcount
+        # 3. stored keyword column on passages (matched on the fly now)
+        cur.execute("select 1 from information_schema.columns where table_schema='public' and table_name='chunks' and column_name='fts'")
+        had_fts = cur.fetchone() is not None
+        cur.execute("drop index if exists public.chunks_fts_idx")
+        cur.execute("alter table public.chunks drop column if exists fts")
+        out["dropped_passage_keyword_column"] = had_fts
+        # 4. give the space back to the disk
+        if had_fts or out["restricted_fulltext_passages_removed"] > 500:
+            cur.execute("vacuum full analyze public.chunks")
+            out["rewrote_table"] = True
+        out["size_after_mb"] = size()
+    return out

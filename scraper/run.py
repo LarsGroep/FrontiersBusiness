@@ -54,6 +54,8 @@ def main() -> None:
         conn = db.connect()
         if conn and args.mode in ("all", "setup"):
             db.apply_schema(conn)
+            m = db.maintenance(os.environ["SUPABASE_DB_URL"])
+            print(f"Storage maintenance: {m}", flush=True)
             purged = db.purge_stale(conn, label.LABEL_VERSION)
             if purged:
                 print(f"Purged {purged} papers labelled by an older labeller", flush=True)
@@ -157,6 +159,9 @@ def main() -> None:
             labels_count[paper["label"]] += 1
 
             chunks = fulltext.build_chunks(paper, sections) if paper["label"] != "rejected" else []
+            if not paper.get("commercial_use_ok"):
+                # Licence forbids commercial reuse (CC-BY-NC/ND or unknown): store the abstract only.
+                chunks = [c for c in chunks if c["section"] == "abstract"]
             if chunks and not args.no_embed:
                 from .embed import embed_passages
                 vecs = embed_passages([f"{paper['title']} | {c['section']}: {c['content']}" for c in chunks])
