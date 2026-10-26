@@ -1,36 +1,107 @@
 {
-  "women": 9952361,
+  "women": 14040399,
   "years": {
     "max": 2027,
     "min": 2024
   },
-  "chunks": 39922,
-  "papers": 1800,
-  "updated": "2026-10-26T19:16:22.793922+00:00",
+  "chunks": 57632,
+  "papers": 2627,
+  "updated": "2026-10-26T19:38:57.618493+00:00",
   "by_label": {
-    "rejected": 38,
-    "female_only_probable": 319,
-    "female_only_verified": 1305,
-    "female_only_unverified": 138
+    "rejected": 51,
+    "female_only_probable": 474,
+    "female_only_verified": 1913,
+    "female_only_unverified": 189
   },
   "by_topic": {
-    "ageing": 23,
-    "cancer": 105,
-    "social": 85,
-    "infection": 95,
-    "menopause": 104,
-    "metabolic": 105,
-    "pregnancy": 100,
-    "autoimmune": 104,
-    "medication": 90,
-    "pain-sleep": 95,
-    "reproductive": 97,
-    "bone-exercise": 116,
-    "mental-health": 82,
-    "cardiovascular": 104
+    "ageing": 63,
+    "cancer": 154,
+    "social": 117,
+    "infection": 140,
+    "menopause": 143,
+    "metabolic": 151,
+    "pregnancy": 145,
+    "autoimmune": 151,
+    "medication": 128,
+    "pain-sleep": 135,
+    "reproductive": 145,
+    "bone-exercise": 163,
+    "mental-health": 125,
+    "cardiovascular": 153
   },
-  "verified": 1305,
-  "added_last_24h": 1800,
-  "db_size_mb": 291,
-  "cursors": {}
+  "verified": 1913,
+  "added_last_24h": 2627,
+  "db_size_mb": 415,
+  "cursors": {
+    "ageing": {
+      "scanned": 261,
+      "exhausted": false,
+      "updated": "2026-10-26 19:38:58.869287+00:00"
+    },
+    "autoimmune": {
+      "scanned": 369,
+      "exhausted": false,
+      "updated": "2026-10-26 19:30:53.375118+00:00"
+    },
+    "bone-exercise": {
+      "scanned": 372,
+      "exhausted": false,
+      "updated": "2026-10-26 19:25:47.855273+00:00"
+    },
+    "cancer": {
+      "scanned": 353,
+      "exhausted": false,
+      "updated": "2026-10-26 19:25:40.222979+00:00"
+    },
+    "cardiovascular": {
+      "scanned": 383,
+      "exhausted": false,
+      "updated": "2026-10-26 19:25:45.280883+00:00"
+    },
+    "infection": {
+      "scanned": 333,
+      "exhausted": false,
+      "updated": "2026-10-26 19:32:39.470914+00:00"
+    },
+    "medication": {
+      "scanned": 411,
+      "exhausted": false,
+      "updated": "2026-10-26 19:25:09.678500+00:00"
+    },
+    "menopause": {
+      "scanned": 439,
+      "exhausted": false,
+      "updated": "2026-10-26 19:31:50.806065+00:00"
+    },
+    "mental-health": {
+      "scanned": 386,
+      "exhausted": false,
+      "updated": "2026-10-26 19:24:33.888160+00:00"
+    },
+    "metabolic": {
+      "scanned": 401,
+      "exhausted": false,
+      "updated": "2026-10-26 19:26:01.122723+00:00"
+    },
+    "pain-sleep": {
+      "scanned": 412,
+      "exhausted": false,
+      "updated": "2026-10-26 19:32:08.836204+00:00"
+    },
+    "pregnancy": {
+      "scanned": 363,
+      "exhausted": false,
+      "updated": "2026-10-26 19:31:33.338881+00:00"
+    },
+    "reproductive": {
+      "scanned": 382,
+      "exhausted": false,
+      "updated": "2026-10-26 19:32:36.840081+00:00"
+    },
+    "social": {
+      "scanned": 376,
+      "exhausted": false,
+      "updated": "2026-10-26 19:36:45.505964+00:00"
+    }
+  }
 }
