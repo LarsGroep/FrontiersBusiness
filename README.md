@@ -34,3 +34,12 @@ python -m rag.ask "Does resistance training improve bone density in postmenopaus
 
 ## Licensing
 `commercial_use_ok` is true only for CC-BY / CC0 papers. Filter on it before serving full text in a commercial product.
+
+## Quality check log (manual review, 26 Oct 2026)
+| Labeller | Papers reviewed | "Verified" that are really women-only participant data | Notes |
+|---|---|---|---|
+| v1 (MeSH + male-word scan) | 60 | ~53% (18–19 of 35) | Essays, cell-line work, database builds and mixed-sex trials slipped through |
+| v2 (+ methods must mention women, mixed-% detection, animal rejection) | 150 | ~91% (~115 of 127) | ~85% of papers were pregnancy/maternal (ranking bias) |
+| v3 (+ 14-topic rotation, staff-interview flag, non-primary rejection) | 140 | ~95% (~98 of 103) | Balanced across topics; remaining misses: guidance papers, lab studies with small patient samples, child-outcome DHS analyses |
+
+Known limits: `n_female` is regex-extracted and sometimes wrong. About half of the "probable" papers are actually fine (held back conservatively). Adding the `ANTHROPIC_API_KEY` secret turns on the LLM verifier, which fixes both.
