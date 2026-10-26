@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HerEvidence</title>
+<meta name="description" content="Search peer-reviewed studies in which every participant was a woman.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F6F8F7; --surface:#FFFFFF; --ink:#14233B; --ink-2:#3C4A60; --muted:#66748A;
+  --rule:#D9E0E3; --rule-strong:#B7C3C9; --teal:#0E7466; --teal-soft:#E1F1EE;
+  --marker:#FFE27A; --marker-ink:#14233B; --warn:#9A3B1E; --warn-soft:#FBEDE6;
+  --focus:#2F6FEB; --radius-s:4px; --radius-m:8px;
+  --serif:"Newsreader",Georgia,serif; --sans:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F1828; --surface:#152135; --ink:#E8EEF2; --ink-2:#C2CCD6; --muted:#8E9BAD;
+    --rule:#26354C; --rule-strong:#3A4B65; --teal:#5CC2B2; --teal-soft:#16352F;
+    --marker:#C9A93A; --marker-ink:#0F1828; --warn:#F0A07F; --warn-soft:#3A2219; --focus:#8AB4FF;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F1828; --surface:#152135; --ink:#E8EEF2; --ink-2:#C2CCD6; --muted:#8E9BAD;
+  --rule:#26354C; --rule-strong:#3A4B65; --teal:#5CC2B2; --teal-soft:#16352F;
+  --marker:#C9A93A; --marker-ink:#0F1828; --warn:#F0A07F; --warn-soft:#3A2219; --focus:#8AB4FF;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 var(--sans)}
+a{color:inherit;text-decoration-color:var(--rule-strong);text-underline-offset:3px}
+a:hover{text-decoration-color:currentColor}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:2px}
+button,input,select,textarea{font:inherit;color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+
+/* header */
+header.site{padding:40px 0 28px;border-bottom:1px solid var(--rule)}
+.brand{font-family:var(--serif);font-weight:600;font-size:22px;letter-spacing:-.01em;margin:0 0 22px}
+.brand span{color:var(--teal)}
+h1{font-family:var(--serif);font-weight:500;font-size:clamp(30px,4.2vw,46px);line-height:1.1;letter-spacing:-.015em;margin:0;max-width:20ch}
+.lede{color:var(--ink-2);max-width:62ch;margin:14px 0 0;font-size:17px}
+.stats{margin:18px 0 0;color:var(--muted);font-size:14px}
+.stats strong{color:var(--ink);font-weight:600}
+
+/* composer */
+.composer{margin:28px 0 0}
+.modes{display:flex;gap:4px;border-bottom:1px solid var(--rule)}
+.modes button{background:none;border:0;border-bottom:2px solid transparent;padding:10px 14px 9px;font-weight:600;color:var(--muted);cursor:pointer;margin-bottom:-1px}
+.modes button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--teal)}
+.panel{padding:18px 0 0}
+.searchrow{display:flex;gap:8px}
+.searchrow input{flex:1;min-width:0;padding:12px 14px;border:1px solid var(--rule-strong);border-radius:var(--radius-m);background:var(--surface);font-size:17px}
+.btn{border:0;border-radius:var(--radius-m);padding:12px 18px;font-weight:600;background:var(--ink);color:var(--paper);cursor:pointer;white-space:nowrap}
+.btn:disabled{opacity:.55;cursor:default}
+.btn.quiet{background:none;color:var(--ink);border:1px solid var(--rule-strong)}
+.hint{font-size:14px;color:var(--muted);margin:8px 0 0}
+.examples{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+.examples button{background:none;border:1px solid var(--rule);border-radius:999px;padding:4px 11px;font-size:14px;color:var(--ink-2);cursor:pointer}
+.examples button:hover{border-color:var(--rule-strong);color:var(--ink)}
+
+.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 18px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field.full{grid-column:1/-1}
+.field label{font-weight:600;font-size:14px}
+.field small{color:var(--muted);font-size:13px}
+.field input,.field select,.field textarea{padding:10px 12px;border:1px solid var(--rule-strong);border-radius:var(--radius-m);background:var(--surface)}
+.field textarea{min-height:76px;resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips label{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--rule);border-radius:999px;padding:5px 11px;font-size:14px;font-weight:500;cursor:pointer;background:var(--surface)}
+.chips input{accent-color:var(--teal);margin:0}
+.chips label:has(input:checked){border-color:var(--teal);background:var(--teal-soft)}
+.privacy{font-size:13px;color:var(--muted);margin:12px 0 0;max-width:70ch}
+
+/* layout */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:40px;padding-top:30px;padding-bottom:60px}
+aside.filters{order:2;font-size:14px}
+aside.filters h2{font-family:var(--serif);font-weight:500;font-size:19px;margin:0 0 10px}
+.fgroup{padding:12px 0;border-top:1px solid var(--rule)}
+.fgroup > span{display:block;font-weight:600;margin-bottom:6px}
+.fgroup label{display:flex;gap:8px;align-items:flex-start;padding:2px 0;color:var(--ink-2);cursor:pointer}
+.fgroup input[type=checkbox]{accent-color:var(--teal);margin-top:4px}
+.fgroup select{width:100%;padding:7px 9px;border:1px solid var(--rule-strong);border-radius:var(--radius-s);background:var(--surface)}
+.fgroup p{margin:4px 0 0;color:var(--muted);font-size:13px}
+
+main.results{order:1;min-width:0}
+.status{color:var(--muted);font-size:15px;margin:0 0 14px;min-height:1.5em}
+.redflag{border-left:3px solid var(--warn);background:var(--warn-soft);padding:12px 14px;border-radius:0 var(--radius-m) var(--radius-m) 0;margin:0 0 22px;font-size:14px;max-width:72ch}
+.redflag strong{color:var(--warn)}
+
+.overview{border:1px solid var(--rule);border-radius:var(--radius-m);background:var(--surface);padding:18px 20px;margin:0 0 26px}
+.overview h2{font-family:var(--serif);font-weight:500;font-size:22px;margin:0 0 8px}
+.overview .body{max-width:72ch}
+.overview .body p{margin:0 0 10px}
+.overview .body ul{margin:0 0 10px;padding-left:20px}
+.overview .meta{font-size:13px;color:var(--muted);margin-top:10px}
+.cite{font-size:12px;vertical-align:super;color:var(--teal);font-weight:600;text-decoration:none;padding:0 1px}
+.ai-btn{margin-top:4px}
+
+.group{margin:0 0 30px}
+.group > h2{font-family:var(--serif);font-weight:500;font-size:24px;margin:0 0 4px}
+.group > .q{font-size:13px;color:var(--muted);margin:0 0 6px;word-break:break-word}
+
+ol.list{list-style:none;margin:0;padding:0}
+.entry{padding:18px 0;border-top:1px solid var(--rule)}
+.entry .num{font-size:12px;color:var(--muted);font-weight:600;margin-right:6px}
+.entry h3{font-family:var(--serif);font-weight:500;font-size:20px;line-height:1.3;margin:0}
+.entry h3 a{text-decoration:none}
+.entry h3 a:hover{text-decoration:underline}
+.facts{display:flex;flex-wrap:wrap;gap:6px 14px;margin:7px 0 0;font-size:13.5px;color:var(--muted)}
+.facts .women{color:var(--teal);font-weight:600}
+.facts .kind{color:var(--ink-2);font-weight:600}
+.tag{display:inline-block;font-size:12px;font-weight:600;border-radius:var(--radius-s);padding:1px 7px;border:1px solid var(--rule-strong);color:var(--ink-2)}
+.tag.ok{border-color:transparent;background:var(--teal-soft);color:var(--teal)}
+.tag.pop{border-color:transparent;background:var(--marker);color:var(--marker-ink)}
+.passage{margin:10px 0 0;max-width:74ch;color:var(--ink-2)}
+.passage .sec{font-size:12px;font-weight:600;color:var(--muted);margin-right:6px}
+mark{background:linear-gradient(transparent 12%,var(--marker) 12%,var(--marker) 88%,transparent 88%);color:var(--marker-ink);padding:0 1px;border-radius:2px}
+details.more{margin:8px 0 0;font-size:14px}
+details.more summary{cursor:pointer;color:var(--muted)}
+.empty{padding:26px 0;border-top:1px solid var(--rule);max-width:62ch}
+.empty h2{font-family:var(--serif);font-weight:500;font-size:22px;margin:0 0 6px}
+footer{border-top:1px solid var(--rule);padding:22px 0 40px;font-size:13px;color:var(--muted)}
+footer p{margin:0 0 6px;max-width:80ch}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+@media (max-width:860px){
+  .layout{grid-template-columns:1fr;gap:10px;padding-top:20px}
+  aside.filters{order:0}
+  aside.filters details{border:1px solid var(--rule);border-radius:var(--radius-m);padding:4px 12px;background:var(--surface)}
+  .form{grid-template-columns:1fr}
+  header.site{padding-top:28px}
+}
+@media (min-width:861px){ aside.filters details > summary{display:none} }
+@media (prefers-reduced-motion:no-preference){ .entry{animation:in .28s ease both} @keyframes in{from{opacity:0}to{opacity:1}} }
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <p class="brand">Her<span>Evidence</span></p>
+    <h1>Research where every participant was a woman</h1>
+    <p class="lede">Most medical evidence was gathered mainly from men. Search open-access, peer-reviewed studies whose participants were all women or girls, or start from your own symptoms and history.</p>
+    <p class="stats" id="stats">Loading the library…</p>
+
+    <div class="composer">
+      <div class="modes" role="tablist" aria-label="How to search">
+        <button role="tab" id="tab-search" aria-controls="panel-search" aria-selected="true">Search studies</button>
+        <button role="tab" id="tab-me" aria-controls="panel-me" aria-selected="false">Start from my symptoms</button>
+      </div>
+
+      <section class="panel" id="panel-search" role="tabpanel" aria-labelledby="tab-search">
+        <form id="f-search" class="searchrow" role="search">
+          <label for="q" class="sr">Search terms</label>
+          <input id="q" name="q" type="search" autocomplete="off" placeholder="e.g. hot flushes sleep, statins side effects, iron deficiency fatigue">
+          <button class="btn" type="submit">Search</button>
+        </form>
+        <p class="hint">Plain words work. Use <b>OR</b> between alternatives and "quotes" for exact phrases.</p>
+        <div class="examples" id="examples"></div>
+      </section>
+
+      <section class="panel" id="panel-me" role="tabpanel" aria-labelledby="tab-me" hidden>
+        <form id="f-me">
+          <div class="form">
+            <div class="field full">
+              <label for="symptoms">Symptoms or concerns</label>
+              <textarea id="symptoms" placeholder="e.g. night sweats, waking at 3am, joint pain, low mood"></textarea>
+              <small>Separate them with commas. Everyday words are fine.</small>
+            </div>
+            <div class="field">
+              <label for="age">Age</label>
+              <input id="age" type="number" min="10" max="110" inputmode="numeric" placeholder="e.g. 51">
+            </div>
+            <div class="field">
+              <label for="stage">Life stage</label>
+              <select id="stage">
+                <option value="">Not relevant / prefer not to say</option>
+                <option value="cycling">Having periods</option>
+                <option value="ttc">Trying to conceive</option>
+                <option value="pregnant">Pregnant</option>
+                <option value="postpartum">After birth / breastfeeding</option>
+                <option value="peri">Perimenopause</option>
+                <option value="post">After menopause</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label for="history">Conditions you've been diagnosed with</label>
+              <input id="history" placeholder="e.g. PCOS, hypothyroidism, migraine">
+            </div>
+            <div class="field full">
+              <label for="meds">Medicines or treatments you use</label>
+              <input id="meds" placeholder="e.g. HRT, levothyroxine, the pill">
+            </div>
+            <div class="field full">
+              <label for="question">Your question (optional)</label>
+              <input id="question" placeholder="e.g. What helps with sleep during perimenopause?">
+            </div>
+          </div>
+          <p style="margin:16px 0 0"><button class="btn" type="submit">Find studies for me</button></p>
+          <p class="privacy">Nothing you type here is saved. Only the search terms are sent to the study database. If AI summaries are switched on, your answers are sent to Claude to write the summary.</p>
+        </form>
+      </section>
+    </div>
+  </div>
+</header>
+
+<div class="wrap layout">
+  <aside class="filters" aria-label="Filters">
+    <details open>
+      <summary>Filters</summary>
+      <h2>Filters</h2>
+      <div class="fgroup">
+        <span>Evidence level</span>
+        <label><input type="checkbox" id="f-probable"> Include probable women-only studies</label>
+        <p>Verified studies passed every check. Probable ones mention other groups too.</p>
+      </div>
+      <div class="fgroup">
+        <label for="f-year"><span style="font-weight:600;color:var(--ink)">Published from</span></label>
+        <select id="f-year">
+          <option value="">Any year</option>
+          <option>2024</option><option>2020</option><option>2015</option><option>2010</option>
+        </select>
+      </div>
+      <div class="fgroup">
+        <span>Topic</span>
+        <div id="f-topics"></div>
+      </div>
+      <div class="fgroup">
+        <span>Reuse</span>
+        <label><input type="checkbox" id="f-commercial"> Only openly licensed for reuse (CC-BY / CC0)</label>
+      </div>
+    </details>
+  </aside>
+
+  <main class="results" id="results" aria-live="polite">
+    <p class="status" id="status"></p>
+    <div id="out"></div>
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p><b>This is research, not medical advice.</b> Studies describe groups of women, not you. Talk to a doctor, midwife or pharmacist before changing treatment.</p>
+    <p>Sources: open-access articles indexed by Europe PMC whose participants were all female, checked automatically for male participants. Each entry links to the original paper.</p>
+  </div>
+</footer>
+
+<script>
+(() => {
+"use strict";
+const SUPABASE_URL = "https://jvlrbsusjvuxsgijgxpb.supabase.co";
+const SUPABASE_KEY = "sb_publishable_aA-czPmRvwj2QODVXOUS3A_-AHkUK7F"; // read-only public key
+
+const TOPICS = {
+  "cardiovascular":"Heart & blood pressure", "cancer":"Cancer", "mental-health":"Mental health",
+  "metabolic":"Diabetes, weight & nutrition", "bone-exercise":"Bones, muscles & exercise",
+  "medication":"Medicines & side effects", "autoimmune":"Autoimmune & thyroid", "menopause":"Menopause",
+  "pregnancy":"Pregnancy & after birth", "reproductive":"Periods, fertility & contraception",
+  "infection":"Infections & vaccines", "pain-sleep":"Pain, migraine & sleep",
+  "social":"Violence, work & social life", "ageing":"Ageing & memory"
+};
+const STUDY_LABEL = {"randomized controlled trial":"Randomised trial","cohort":"Cohort study","cross-sectional":"Survey / cross-sectional",
+  "case-control":"Case-control study","qualitative":"Interview study","meta-analysis":"Meta-analysis"};
+
+// Everyday words -> terms researchers use. Each value is a web-search OR group.
+const LEXICON = [
+  [/hot flash|hot flush|flushes|flashes/, '"hot flushes" OR "hot flashes" OR vasomotor'],
+  [/night sweat/, '"night sweats" OR vasomotor'],
+  [/brain fog|foggy|memory|forgetful|concentrat/, 'cognition OR cognitive OR memory OR "brain fog"'],
+  [/can'?t sleep|insomnia|waking|wake up|poor sleep|sleep/, 'insomnia OR "sleep quality" OR sleep'],
+  [/tired|exhaust|fatigue|no energy|low energy/, 'fatigue OR tiredness OR energy'],
+  [/period pain|cramps|painful period/, 'dysmenorrhea OR dysmenorrhoea OR "menstrual pain"'],
+  [/heavy period|heavy bleeding|flooding/, '"heavy menstrual bleeding" OR menorrhagia'],
+  [/irregular period|missed period|no period/, '"irregular menstruation" OR oligomenorrhea OR amenorrhea'],
+  [/pms|pmdd|before my period|premenstrual/, 'premenstrual OR PMS OR PMDD'],
+  [/low libido|sex drive|libido|desire/, '"sexual desire" OR libido OR "sexual function"'],
+  [/vaginal dry|dryness|painful sex|pain during sex/, '"vaginal dryness" OR "genitourinary syndrome" OR dyspareunia OR "vulvovaginal atrophy"'],
+  [/joint pain|aching joints|stiff joints/, '"joint pain" OR arthralgia'],
+  [/back pain/, '"back pain" OR "low back pain"'],
+  [/pelvic pain/, '"pelvic pain" OR endometriosis'],
+  [/headache|migraine/, 'migraine OR headache'],
+  [/low mood|sad|depress/, 'depression OR "depressive symptoms" OR mood'],
+  [/anxi|panic|worry/, 'anxiety OR "anxiety symptoms"'],
+  [/mood swing|irritab/, 'mood OR irritability'],
+  [/hair loss|thinning hair/, '"hair loss" OR alopecia'],
+  [/acne|spots/, 'acne'],
+  [/weight gain|gaining weight|belly fat/, '"weight gain" OR obesity OR adiposity'],
+  [/bloat/, 'bloating OR "irritable bowel"'],
+  [/leak|incontinen|bladder/, '"urinary incontinence" OR "overactive bladder"'],
+  [/uti|urinary infection|cystitis/, '"urinary tract infection" OR cystitis'],
+  [/palpitation|racing heart|heart flutter/, 'palpitations OR "heart rate"'],
+  [/high blood pressure|hypertension/, 'hypertension OR "blood pressure"'],
+  [/bone|osteopor|fracture/, 'osteoporosis OR "bone mineral density" OR fracture'],
+  [/dizz|faint/, 'dizziness OR syncope'],
+  [/nausea|morning sickness|vomit/, 'nausea OR vomiting OR "hyperemesis"'],
+  [/breast pain|sore breasts/, '"breast pain" OR mastalgia'],
+  [/breastfeed|milk supply/, 'breastfeeding OR lactation'],
+  [/infertil|can'?t get pregnant|trying to conceive/, 'infertility OR fertility OR conception'],
+  [/miscarri/, 'miscarriage OR "pregnancy loss"'],
+  [/pcos|polycystic/, '"polycystic ovary syndrome" OR PCOS'],
+  [/endometriosis/, 'endometriosis'],
+  [/thyroid|hashimoto/, 'thyroid OR hypothyroidism OR Hashimoto'],
+  [/diabetes|blood sugar/, 'diabetes OR glucose OR "insulin resistance"'],
+  [/hrt|hormone replacement|hormone therapy|estrogen|oestrogen/, '"hormone therapy" OR "hormone replacement" OR estrogen'],
+  [/the pill|contracepti|iud|coil/, 'contraception OR contraceptive OR "oral contraceptive"'],
+  [/levothyrox/, 'levothyroxine OR "thyroid hormone"'],
+  [/statin/, 'statin OR statins'],
+  [/antidepress|ssri/, 'antidepressant OR SSRI'],
+  [/anemi|anaemi|iron/, 'anemia OR anaemia OR "iron deficiency"'],
+  [/fibromyalg/, 'fibromyalgia'],
+  [/lupus/, 'lupus OR "systemic lupus erythematosus"'],
+  [/multiple sclerosis|\bms\b/, '"multiple sclerosis"'],
+  [/eating disorder|anorexia|bulimia|binge/, '"eating disorder" OR anorexia OR bulimia'],
+  [/postnatal|postpartum depression/, '"postpartum depression" OR "postnatal depression"']
+];
+const STAGE_TERMS = {
+  cycling:["premenopaus","menstrua","reproductive age"], ttc:["infertil","fertility","conceiv"],
+  pregnant:["pregnan","antenatal","gestation"], postpartum:["postpartum","breastfeed","lactat"],
+  peri:["perimenopaus","menopaus"], post:["postmenopaus","menopaus"]
+};
+const STOP = new Set("a an and are as at be but by can do does for from has have how i if in into is it its me my no not of on or our she so than that the their them then there these they this to was we what when where which who why will with you your about after before during between help helps get".split(" "));
+const RED_FLAGS = /chest pain|can'?t breathe|short(ness)? of breath|faint|suicid|self.?harm|kill myself|heavy bleeding.*pregnan|bleeding.*pregnan|severe (head|abdominal|belly) pain|seizure|stroke|numb|vision loss|lump/;
+
+const $ = (s, el=document) => el.querySelector(s);
+const out = $("#out"), statusEl = $("#status");
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const safeMarked = s => esc(s).replace(/&lt;mark&gt;/g,"<mark>").replace(/&lt;\/mark&gt;/g,"</mark>");
+const fmt = n => Number(n||0).toLocaleString("en-GB");
+const yr = (a, b) => a === b ? `in ${a}` : `${a}–${b}`;
+let aiAvailable = null; // null = unknown, then true/false
+
+async function rpc(fn, body) {
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
+    method:"POST", headers:{apikey:SUPABASE_KEY,"Content-Type":"application/json"}, body:JSON.stringify(body||{})
+  });
+  if (!r.ok) throw new Error(`Search service answered ${r.status}`);
+  return r.json();
+}
+
+// ---------- filters ----------
+const ftopics = $("#f-topics");
+ftopics.innerHTML = Object.entries(TOPICS).map(([k,v]) =>
+  `<label><input type="checkbox" value="${k}" data-topic> ${esc(v)}</label>`).join("");
+function filters() {
+  const topics = [...document.querySelectorAll("[data-topic]:checked")].map(i=>i.value);
+  return {
+    labels: $("#f-probable").checked ? ["female_only_verified","female_only_probable"] : ["female_only_verified"],
+    min_year: $("#f-year").value ? Number($("#f-year").value) : null,
+    topics: topics.length ? topics : null,
+    commercial_only: $("#f-commercial").checked
+  };
+}
+
+// ---------- stats ----------
+rpc("evidence_stats").then(s => {
+  const y = s.years || {};
+  $("#stats").innerHTML = `<strong>${fmt(s.verified)}</strong> verified women-only studies` +
+    (s.women ? `, with about <strong>${fmt(s.women)}</strong> women taking part` : "") +
+    (y.min ? `, published ${yr(y.min, y.max)}` : "") + `. The library grows every few hours.`;
+}).catch(() => { $("#stats").textContent = "The study library is unavailable right now. Try again in a minute."; });
+
+// ---------- examples ----------
+const EX = ["hot flushes sleep", "iron deficiency fatigue", "statins side effects", "endometriosis pain treatment", "postpartum depression", "exercise bone density"];
+$("#examples").innerHTML = EX.map(e => `<button type="button">${esc(e)}</button>`).join("");
+$("#examples").addEventListener("click", e => { if (e.target.tagName === "BUTTON") { $("#q").value = e.target.textContent; runSearch(e.target.textContent); } });
+
+// ---------- tabs ----------
+const tabs = [$("#tab-search"), $("#tab-me")];
+tabs.forEach(t => t.addEventListener("click", () => {
+  tabs.forEach(x => { const on = x === t; x.setAttribute("aria-selected", on); $("#"+x.getAttribute("aria-controls")).hidden = !on; });
+}));
+
+// ---------- query building ----------
+function expandTerms(text) {
+  const low = text.toLowerCase(), groups = [];
+  for (const [rx, q] of LEXICON) if (rx.test(low)) groups.push(q);
+  return groups;
+}
+function relaxed(text) {
+  // OR-join the meaningful words plus any lexicon expansions, so results appear even when no study has every word.
+  const lex = expandTerms(text);
+  const words = text.toLowerCase().replace(/["()]/g," ").split(/[^a-z0-9\-']+/).filter(w => w.length > 2 && !STOP.has(w) && w !== "or");
+  // When the word list recognised the phrase, its clinical terms are more precise than the loose words.
+  const parts = [...new Set(lex.length && text.trim().split(/\s+/).length <= 4 ? lex : [...lex, ...words])];
+  return parts.join(" OR ");
+}
+function popTerms(stage, age) {
+  const t = [...(STAGE_TERMS[stage] || [])];
+  if (age && age < 19) t.push("adolescen", "girls");
+  if (age && age >= 65) t.push("older women", "elderly");
+  return t.length ? t : null;
+}
+
+// ---------- AI (optional server functions) ----------
+async function ai(path, body) {
+  if (aiAvailable === false) return null;
+  try {
+    const r = await fetch(path, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)});
+    if (r.status === 503 || r.status === 404) { aiAvailable = false; return null; }
+    if (!r.ok) return null;
+    aiAvailable = true;
+    return await r.json();
+  } catch { return null; }
+}
+
+// ---------- rendering ----------
+function groupByPaper(rows) {
+  const m = new Map();
+  for (const r of rows) {
+    if (!m.has(r.paper_id)) m.set(r.paper_id, {...r, passages:[]});
+    m.get(r.paper_id).passages.push({section:r.section, snippet:r.snippet});
+  }
+  return [...m.values()];
+}
+function entryHtml(p, n) {
+  const link = p.source_url || (p.doi ? `https://doi.org/${p.doi}` : "#");
+  const kind = STUDY_LABEL[p.study_type] || null;
+  const facts = [
+    p.n_female ? `<span class="women">${fmt(p.n_female)} women</span>` : null,
+    kind ? `<span class="kind">${esc(kind)}</span>` : null,
+    p.journal ? `<span>${esc(p.journal)}${p.pub_year ? ", " + p.pub_year : ""}</span>` : (p.pub_year ? `<span>${p.pub_year}</span>` : null),
+    p.label === "female_only_verified" ? `<span class="tag ok">Verified women-only</span>` : `<span class="tag">Probably women-only</span>`,
+    p.population_match ? `<span class="tag pop">Matches your life stage</span>` : null
+  ].filter(Boolean).join("");
+  const [first, ...rest] = p.passages;
+  const passage = x => `<p class="passage"><span class="sec">${esc(x.section)}</span>${safeMarked(x.snippet)}</p>`;
+  return `<li class="entry" id="ref-${n}">
+    <h3><span class="num">[${n}]</span><a href="${esc(link)}" target="_blank" rel="noopener">${esc(p.title)}</a></h3>
+    <div class="facts">${facts}</div>
+    ${passage(first)}
+    ${rest.length ? `<details class="more"><summary>Another matching passage</summary>${rest.map(passage).join("")}</details>` : ""}
+  </li>`;
+}
+function overviewExtractive(papers, title) {
+  const types = {}; let women = 0;
+  for (const p of papers) { const k = STUDY_LABEL[p.study_type] || "Other designs"; types[k] = (types[k]||0)+1; if (p.n_female && p.n_female < 1e6) women += p.n_female; }
+  const years = papers.map(p=>p.pub_year).filter(Boolean);
+  const typeList = Object.entries(types).sort((a,b)=>b[1]-a[1]).map(([k,v]) => `${k.toLowerCase()} (${v})`).join(", ");
+  return `<section class="overview" id="overview">
+    <h2>${esc(title)}</h2>
+    <div class="body"><p>${papers.length} studies matched${women ? `, together covering about ${fmt(women)} women` : ""}. Designs: ${esc(typeList)}.${years.length ? ` Published ${yr(Math.min(...years), Math.max(...years))}.` : ""}</p>
+    <p>Randomised trials and large cohort studies are the strongest evidence. Interview studies describe experiences rather than effects.</p></div>
+    ${aiAvailable === false ? "" : `<button class="btn quiet ai-btn" type="button" id="ai-go">Summarise these studies with Claude</button>`}
+  </section>`;
+}
+function renderAiSummary(text, n) {
+  const html = esc(text)
+    .replace(/\[(\d{1,2})\]/g, (m, d) => Number(d) <= n ? `<a class="cite" href="#ref-${d}">[${d}]</a>` : m)
+    .split(/\n{2,}/).map(par => /^\s*[-•]/.test(par)
+      ? "<ul>" + par.split(/\n/).map(l => `<li>${l.replace(/^\s*[-•]\s*/,"")}</li>`).join("") + "</ul>"
+      : `<p>${par.replace(/\n/g,"<br>")}</p>`).join("");
+  return html;
+}
+function emptyHtml(q) {
+  return `<div class="empty"><h2>No studies matched</h2><p>Try fewer or more everyday words, turn on probable studies in the filters, or remove the topic and year filters. The library adds new studies every few hours.</p>${q ? `<p class="hint">Searched for: ${esc(q)}</p>` : ""}</div>`;
+}
+function redFlagHtml(text) {
+  return RED_FLAGS.test(text.toLowerCase())
+    ? `<div class="redflag" role="note"><strong>Some of what you describe can need urgent care.</strong> If you have chest pain, trouble breathing, fainting, sudden weakness or numbness, heavy bleeding in pregnancy, or thoughts of harming yourself, contact emergency services (112 in Europe, 911 in the US) or your doctor now. Research cannot replace that.</div>` : "";
+}
+
+// ---------- search mode ----------
+let lastContext = null;
+async function runSearch(text) {
+  text = text.trim(); if (!text) return;
+  statusEl.textContent = "Searching…"; out.innerHTML = "";
+  const f = filters();
+  try {
+    let q = text, rows = await rpc("search_evidence", {q, match_count:24, ...f});
+    let broadened = false;
+    if (groupByPaper(rows).length < 5) {
+      const q2 = relaxed(text);
+      if (q2 && q2 !== q) { const more = await rpc("search_evidence", {q:q2, match_count:24, ...f}); if (more.length > rows.length) { rows = more; q = q2; broadened = true; } }
+    }
+    const papers = groupByPaper(rows).slice(0, 12);
+    statusEl.textContent = papers.length ? `${papers.length} studies${broadened ? ", including broader matches for related terms" : ""}.` : "";
+    if (!papers.length) { out.innerHTML = emptyHtml(q); return; }
+    lastContext = {question:text, profile:null, papers};
+    out.innerHTML = redFlagHtml(text) + overviewExtractive(papers, "At a glance") +
+      `<ol class="list">${papers.map((p,i)=>entryHtml(p,i+1)).join("")}</ol>`;
+    wireAi();
+  } catch (e) { statusEl.textContent = ""; out.innerHTML = `<div class="empty"><h2>Search didn't run</h2><p>${esc(e.message)}. Check your connection and try again.</p></div>`; }
+}
+$("#f-search").addEventListener("submit", e => { e.preventDefault(); runSearch($("#q").value); });
+
+// ---------- symptom / history mode ----------
+async function runProfile() {
+  const profile = {
+    symptoms: $("#symptoms").value.trim(), age: Number($("#age").value) || null, stage: $("#stage").value,
+    history: $("#history").value.trim(), meds: $("#meds").value.trim(), question: $("#question").value.trim()
+  };
+  const allText = [profile.symptoms, profile.history, profile.meds, profile.question].join(" ");
+  if (!allText.trim()) { statusEl.textContent = "Add at least one symptom, condition, medicine or question."; return; }
+  statusEl.textContent = "Translating into research terms…"; out.innerHTML = "";
+  const f = filters(), pop = popTerms(profile.stage, profile.age);
+
+  // 1. Turn the person's words into search groups (Claude if available, otherwise the built-in word list).
+  let groups = null;
+  const exp = await ai("/api/expand", profile);
+  if (exp && Array.isArray(exp.groups) && exp.groups.length) groups = exp.groups.slice(0, 6);
+  if (!groups) {
+    const split = s => s.split(/[,;\n]+/).map(x=>x.trim()).filter(Boolean);
+    groups = [...split(profile.symptoms), ...split(profile.history)].slice(0,5)
+      .map(item => ({label:item, query: relaxed(item)}));
+    if (profile.meds) groups.push({label:"Your medicines", query: relaxed(profile.meds)});
+    if (profile.question) groups.unshift({label:profile.question, query: relaxed(profile.question)});
+  }
+
+  // 2. Search each group in parallel, boosting studies that match the life stage.
+  statusEl.textContent = "Searching the studies…";
+  try {
+    const results = await Promise.all(groups.map(g => rpc("search_evidence", {q:g.query, match_count:10, population_terms:pop, ...f}).catch(()=>[])));
+    const seen = new Set(); let n = 0; const all = [];
+    const sections = groups.map((g, gi) => {
+      const papers = groupByPaper(results[gi]).filter(p => !seen.has(p.paper_id)).slice(0, 5);
+      papers.forEach(p => { seen.add(p.paper_id); all.push(p); });
+      if (!papers.length) return `<section class="group"><h2>${esc(g.label)}</h2><p class="q">No women-only studies matched yet (${esc(g.query)}).</p></section>`;
+      return `<section class="group"><h2>${esc(g.label)}</h2><p class="q">Searched for: ${esc(g.query)}</p>
+        <ol class="list">${papers.map(p => entryHtml(p, ++n)).join("")}</ol></section>`;
+    });
+    statusEl.textContent = all.length ? `${all.length} studies across ${groups.length} topics from your answers.` : "";
+    if (!all.length) { out.innerHTML = redFlagHtml(allText) + emptyHtml(""); return; }
+    lastContext = {question: profile.question || "What does women-only research say about these symptoms and conditions?", profile, papers: all};
+    out.innerHTML = redFlagHtml(allText) + overviewExtractive(all, "What we found for you") + sections.join("");
+    wireAi();
+  } catch (e) { statusEl.textContent = ""; out.innerHTML = `<div class="empty"><h2>Search didn't run</h2><p>${esc(e.message)}. Check your connection and try again.</p></div>`; }
+}
+$("#f-me").addEventListener("submit", e => { e.preventDefault(); runProfile(); });
+
+// ---------- AI summary ----------
+function wireAi() {
+  const b = $("#ai-go"); if (!b) return;
+  b.addEventListener("click", async () => {
+    b.disabled = true; b.textContent = "Reading the studies…";
+    const ctx = lastContext;
+    const res = await ai("/api/answer", {
+      question: ctx.question, profile: ctx.profile,
+      evidence: ctx.papers.slice(0, 14).map((p, i) => ({n:i+1, title:p.title, year:p.pub_year, journal:p.journal, study_type:p.study_type,
+        n_female:p.n_female, population:p.population, passages:p.passages.map(x => x.snippet.replace(/<\/?mark>/g,""))}))
+    });
+    const body = $("#overview .body");
+    if (!res || !res.text) {
+      b.remove();
+      body.insertAdjacentHTML("beforeend", `<p class="meta">AI summaries aren't switched on for this site yet. The studies below are still the full evidence.</p>`);
+      return;
+    }
+    $("#overview h2").textContent = "What these studies say";
+    body.innerHTML = renderAiSummary(res.text, ctx.papers.length) +
+      `<p class="meta">Written by Claude from the ${Math.min(ctx.papers.length,14)} studies listed below. Check the cited papers before relying on it.</p>`;
+    b.remove();
+  });
+}
+})();
+</script>
+</body>
+</html>
