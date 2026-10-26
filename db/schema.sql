@@ -86,15 +86,25 @@ returns table (
 language sql stable
 set search_path = public, extensions
 as $$
-  select c.id, c.paper_id, c.section, c.content,
-         1 - (c.embedding <=> query_embedding) as similarity,
+  -- Take the nearest 200 chunks, then keep at most 2 per paper so answers draw on several studies.
+  with candidates as (
+    select c.id, c.paper_id, c.section, c.content,
+           1 - (c.embedding <=> query_embedding) as similarity
+    from public.chunks c
+    join public.papers p on p.id = c.paper_id
+    where (labels   is null or p.label = any(labels))
+      and (min_year is null or p.pub_year >= min_year)
+      and (sections is null or c.section = any(sections))
+    order by c.embedding <=> query_embedding
+    limit 200
+  ), ranked as (
+    select *, row_number() over (partition by paper_id order by similarity desc) as rn from candidates
+  )
+  select r.id, r.paper_id, r.section, r.content, r.similarity,
          p.title, p.journal, p.pub_year, p.doi, p.pmcid, p.label, p.n_female, p.study_type
-  from public.chunks c
-  join public.papers p on p.id = c.paper_id
-  where (labels   is null or p.label = any(labels))
-    and (min_year is null or p.pub_year >= min_year)
-    and (sections is null or c.section = any(sections))
-  order by c.embedding <=> query_embedding
+  from ranked r join public.papers p on p.id = r.paper_id
+  where r.rn <= 2
+  order by r.similarity desc
   limit least(match_count, 50);
 $$;
 
