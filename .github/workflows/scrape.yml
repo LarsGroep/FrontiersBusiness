@@ -1,4 +1,5 @@
 name: Scrape women-only papers
+# Runs on GitHub-hosted runners (free for public repos).
 
 on:
   workflow_dispatch:
