@@ -453,19 +453,42 @@ function redFlagHtml(text) {
 
 // ---------- search mode ----------
 let lastContext = null;
+function concepts(text) {
+  // Split a query into concepts: each recognised everyday phrase becomes its clinical OR-group,
+  // and remaining meaningful words become their own concept.
+  const low = text.toLowerCase(), groups = [], rxs = [];
+  for (const [rx, q] of LEXICON) if (rx.test(low)) { groups.push(q); rxs.push(rx); }
+  const words = low.replace(/["()]/g," ").split(/[^a-z0-9\-']+/).filter(w => w.length > 2 && !STOP.has(w) && w !== "or");
+  for (const w of words) if (!rxs.some(rx => rx.test(w))) groups.push(w);
+  return [...new Set(groups)];
+}
 async function runSearch(text) {
   text = text.trim(); if (!text) return;
   statusEl.textContent = "Searching…"; out.innerHTML = "";
   const f = filters();
   try {
     let q = text, rows = await rpc("search_evidence", {q, match_count:24, ...f});
-    let broadened = false;
-    if (groupByPaper(rows).length < 5) {
-      const q2 = relaxed(text);
-      if (q2 && q2 !== q) { const more = await rpc("search_evidence", {q:q2, match_count:24, ...f}); if (more.length > rows.length) { rows = more; q = q2; broadened = true; } }
+    let papers = groupByPaper(rows), broadened = false;
+    if (papers.length < 5) {
+      // Too few studies contain every word: search each concept separately and rank studies
+      // that match several concepts first, then by their best rank within a concept.
+      const cs = concepts(text);
+      if (cs.length) {
+        const per = await Promise.all(cs.map(c => rpc("search_evidence", {q:c, match_count:30, ...f}).catch(() => [])));
+        const agg = new Map();
+        papers.forEach((p, i) => agg.set(p.paper_id, {p, hits: cs.length + 1, score: 10 - i}));
+        per.forEach(res => groupByPaper(res).forEach((p, i) => {
+          const a = agg.get(p.paper_id) || {p, hits: 0, score: 0};
+          a.hits += 1; a.score += 1 / (i + 5);
+          if (a.p.passages.length < 2) a.p.passages.push(...p.passages.slice(0, 2 - a.p.passages.length));
+          agg.set(p.paper_id, a);
+        }));
+        papers = [...agg.values()].sort((a, b) => b.hits - a.hits || b.score - a.score).map(a => a.p);
+        q = cs.join("  +  "); broadened = true;
+      }
     }
-    const papers = groupByPaper(rows).slice(0, 12);
-    statusEl.textContent = papers.length ? `${papers.length} studies${broadened ? ", including broader matches for related terms" : ""}.` : "";
+    papers = papers.slice(0, 12);
+    statusEl.textContent = papers.length ? `${papers.length} studies${broadened ? " (no study had every word; studies matching the most of your terms come first)" : ""}.` : "";
     if (!papers.length) { out.innerHTML = emptyHtml(q); return; }
     lastContext = {question:text, profile:null, papers};
     out.innerHTML = redFlagHtml(text) + overviewExtractive(papers, "At a glance") +
