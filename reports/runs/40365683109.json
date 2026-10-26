@@ -1,0 +1,89 @@
+{
+  "finished_at": "2026-10-26T17:13:14+00:00",
+  "seconds": 325,
+  "query": "(KW:\"Female\" AND KW:\"Humans\" AND OPEN_ACCESS:Y AND HAS_FT:Y AND SRC:MED) NOT KW:\"Male\" NOT PUB_TYPE:\"review\" NOT PUB_TYPE:\"editorial\" NOT PUB_TYPE:\"comment\"",
+  "europepmc_hit_count": 289345,
+  "db_connected": true,
+  "llm_verifier": false,
+  "stats": {
+    "chunks": 1592,
+    "loaded_to_db": 60,
+    "processed": 60
+  },
+  "labels": {
+    "female_only_verified": 35,
+    "female_only_probable": 10,
+    "female_only_unverified": 15
+  },
+  "sections_found": {
+    "introduction": 53,
+    "other": 136,
+    "methods": 67,
+    "results": 40,
+    "conclusion": 31,
+    "discussion": 52
+  },
+  "commercial_use_ok": 40,
+  "with_n_female": 27,
+  "study_types": {
+    "qualitative": 11,
+    "unknown": 23,
+    "cross-sectional": 7,
+    "cohort": 17,
+    "randomized controlled trial": 2
+  },
+  "top_journals": [
+    [
+      "PloS one",
+      15
+    ],
+    [
+      "The American journal of case reports",
+      8
+    ],
+    [
+      "Revista brasileira de enfermagem",
+      7
+    ],
+    [
+      "Science advances",
+      5
+    ],
+    [
+      "Sociology of health & illness",
+      1
+    ],
+    [
+      "Acta anaesthesiologica Scandinavica",
+      1
+    ],
+    [
+      "Disasters",
+      1
+    ],
+    [
+      "Prenatal diagnosis",
+      1
+    ],
+    [
+      "International braz j urol : official journal of the Brazilian Society of Urology",
+      1
+    ],
+    [
+      "Nature communications",
+      1
+    ]
+  ],
+  "years": {
+    "2026": 59,
+    "2027": 1
+  },
+  "db_totals": {
+    "papers_by_label": {
+      "female_only_verified": 35,
+      "female_only_unverified": 15,
+      "female_only_probable": 10
+    },
+    "chunks": 1592
+  }
+}
