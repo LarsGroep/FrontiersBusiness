@@ -32,6 +32,8 @@ create table if not exists public.papers (
   fetched_at         timestamptz not null default now()
 );
 
+alter table public.papers add column if not exists label_version int not null default 1;
+
 create index if not exists papers_label_idx on public.papers (label);
 create index if not exists papers_year_idx  on public.papers (pub_year);
 
@@ -61,7 +63,7 @@ create table if not exists public.scrape_runs (
 create or replace function public.match_chunks(
   query_embedding extensions.vector(384),
   match_count     int     default 8,
-  labels          text[]  default array['female_only_verified','female_only_probable'],
+  labels          text[]  default array['female_only_verified'],
   min_year        int     default null,
   sections        text[]  default null
 )

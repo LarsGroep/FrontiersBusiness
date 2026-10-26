@@ -37,6 +37,9 @@ def main() -> None:
         conn = db.connect()
         if conn:
             db.apply_schema(conn)
+            purged = db.purge_stale(conn, label.LABEL_VERSION)
+            if purged:
+                print(f"Purged {purged} papers labelled by an older labeller", flush=True)
             seen = db.existing_ids(conn)
     except Exception as e:
         import os, re as _re

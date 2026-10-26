@@ -12,6 +12,8 @@ import re
 
 import requests
 
+LABEL_VERSION = 2  # bump to re-label everything on the next run
+
 # Words that suggest male participants. \b keeps "men" from matching "women" and "male" from "female".
 MALE_RX = re.compile(
     r"\b(men|man|males?|boys?|fathers?|sons|husbands?|male participants|male patients|"
@@ -23,7 +25,27 @@ MALE_RX = re.compile(
 BENIGN_MALE_CONTEXT = re.compile(
     r"(partner|spouse|husband|father|son|infant|offspring|newborn|baby|neonat|fetus|fetal|child|"
     r"previous stud|prior stud|than men|unlike men|compared (?:to|with) men|in men,|among men in|literature|"
-    r"male[- ]dominated|male[- ]factor|male infertility|sex of the (?:infant|baby|child|fetus))",
+    r"male[- ]dominated|male[- ]factor|male infertility|sex of the (?:infant|baby|child|fetus)|"
+    r"exclud\w*|were not included|only (?:women|female))",
+    re.I,
+)
+# "56% female", "female (n = 69, 56%)": a female share below 100% means men were in the sample.
+MIXED_PCT_RX = re.compile(
+    r"(\d{1,2}(?:\.\d+)?)\s*%\s*(?:were\s+|of\s+(?:the\s+)?(?:participants|patients|sample)\s+were\s+)?(?:female|women|girls)\b"
+    r"|\b(?:females?|women|girls)\s*\(\s*n\s*=\s*\d+\s*[,;]\s*(\d{1,2}(?:\.\d+)?)\s*%"
+    r"|\b\d+\s+(?:females?|women|girls)\s*\(\s*(\d{1,2}(?:\.\d+)?)\s*%",
+    re.I,
+)
+SEX_VARIABLE_RX = re.compile(r"\b(?:by sex|sex[- ]disaggregated|gender \(male|sex \(male|male\s*/\s*female|female\s*/\s*male)\b", re.I)
+NONHUMAN_RX = re.compile(
+    r"\b(mice|mouse|murine|rats?|rodents?|macaques?|primates?|zebrafish|mosquito(?:es)?|drosophila|"
+    r"cell lines?|in vitro|organoids?|explants?|sows?|ewes?|heifers?|cows?|mares?)\b",
+    re.I,
+)
+# Positive evidence that women were the study population.
+FEMALE_POP_RX = re.compile(
+    r"\b(?:women|female participants|female patients|female subjects|pregnant|mothers|girls|"
+    r"postmenopausal|premenopausal|nulliparous|primiparous|multiparous|gravid\w*|puerper\w*)\b",
     re.I,
 )
 FEMALE_N_RX = re.compile(
@@ -82,21 +104,41 @@ def rule_label(paper: dict, methods_text: str) -> dict:
     population = ", ".join(t for t in POPULATION_TERMS if t in low)[:200] or None
     study_type = next((name for name, rx in STUDY_TYPES if rx.search(scan)), None)
 
+    # Mixed-sex signals that do not use the word "male"/"men".
+    for m in MIXED_PCT_RX.finditer(scan):
+        pct = float(next(g for g in m.groups() if g))
+        if pct < 99:
+            hard.append(_snippet(scan, m))
+    for m in SEX_VARIABLE_RX.finditer(methods_text):
+        hard.append(_snippet(methods_text, m))
+
+    # Animal / in-vitro work: MeSH "Female" often refers to the animals or donor cells.
+    nonhuman = len(NONHUMAN_RX.findall(methods_text or scan))
+    female_pop = len(FEMALE_POP_RX.findall(methods_text)) if methods_text else len(FEMALE_POP_RX.findall(scan))
+
     if has_male or not (has_female and has_humans):
         label = "rejected"
+    elif nonhuman >= 3 and female_pop < 3:
+        label = "rejected"
+        reasons.append(f"animal_or_in_vitro:{nonhuman}")
     elif hard:
         label = "female_only_probable"
         reasons.append(f"male_terms_in_text:{len(hard)}")
     elif not methods_text:
         label = "female_only_unverified"
         reasons.append("no_methods_section")
+    elif female_pop < 2 and not n_female:
+        label = "female_only_unverified"
+        reasons.append("no_female_population_evidence")
     else:
         label = "female_only_verified"
+    reasons.append(f"female_pop_mentions:{female_pop}")
 
     return {
         "label": label,
         "label_reasons": reasons,
         "male_mentions": len(hard),
+        "label_version": LABEL_VERSION,
         "male_snippets": hard[:5],
         "female_evidence": evidence,
         "n_female": n_female,

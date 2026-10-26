@@ -9,14 +9,17 @@ import requests
 BASE = "https://www.ebi.ac.uk/europepmc/webservices/rest"
 HEADERS = {"User-Agent": "FrontiersBusiness-women-evidence/0.1 (github.com/LarsGroep/FrontiersBusiness)"}
 
-# First-pass filter (verified live: ~289k hits, Oct 2026): indexers tagged the study population as human + female and NOT male.
+# First-pass filter (verified live: ~121k hits, Oct 2026): indexers tagged the study population as human + female and NOT male.
 # Open access + full text in Europe PMC so the RAG can use methods/results, not just abstracts.
 # Reviews/editorials excluded: we want primary data from women.
 DEFAULT_QUERY = (
     # Europe PMC exposes MeSH headings through the KW field (there is no MESH field).
     '(KW:"Female" AND KW:"Humans" AND OPEN_ACCESS:Y AND HAS_FT:Y AND SRC:MED) '
     'NOT KW:"Male" '
-    'NOT PUB_TYPE:"review" NOT PUB_TYPE:"editorial" NOT PUB_TYPE:"comment"'
+    'NOT PUB_TYPE:"review" NOT PUB_TYPE:"editorial" NOT PUB_TYPE:"comment" '
+    'NOT PUB_TYPE:"letter" NOT PUB_TYPE:"case reports" '
+    # The methods section itself must talk about women as the study population.
+    'AND METHODS:("women" OR "pregnant" OR "mothers" OR "female participants" OR "female patients" OR "girls")'
 )
 
 

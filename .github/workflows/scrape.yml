@@ -58,7 +58,7 @@ jobs:
         run: |
           MAX="${{ github.event.inputs.max_papers }}"
           if [ -z "$MAX" ]; then
-            if [ "${{ github.event_name }}" = "push" ]; then MAX=60; else MAX=1000; fi
+            if [ "${{ github.event_name }}" = "push" ]; then MAX=150; else MAX=1000; fi
           fi
           ARGS="--max-papers $MAX"
           [ -n "${{ github.event.inputs.since_year }}" ] && ARGS="$ARGS --since-year ${{ github.event.inputs.since_year }}"

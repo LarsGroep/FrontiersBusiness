@@ -11,7 +11,7 @@ PAPER_COLS = [
     "id", "pmid", "pmcid", "doi", "title", "authors", "journal", "pub_year", "abstract",
     "mesh_terms", "pub_types", "keywords", "license", "commercial_use_ok", "label", "label_reasons",
     "male_mentions", "male_snippets", "female_evidence", "n_female", "population", "study_type",
-    "llm_label", "source_url",
+    "llm_label", "source_url", "label_version",
 ]
 
 
@@ -27,6 +27,15 @@ def apply_schema(conn: psycopg.Connection) -> None:
     with conn.cursor() as cur:
         cur.execute(sql)
     conn.commit()
+
+
+def purge_stale(conn: psycopg.Connection, version: int) -> int:
+    """Remove papers labelled by an older labeller so they are re-scraped and re-labelled."""
+    with conn.cursor() as cur:
+        cur.execute("delete from public.papers where label_version < %s", (version,))
+        n = cur.rowcount
+    conn.commit()
+    return n
 
 
 def existing_ids(conn: psycopg.Connection) -> set[str]:
