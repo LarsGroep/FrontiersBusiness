@@ -1,0 +1,129 @@
+name: Fill database (parallel by topic)
+# One setup job applies the schema, then 14 topic jobs scrape in parallel, each resuming where the
+# previous run stopped. Filling pauses by itself once the database reaches DB_SIZE_LIMIT_MB.
+# To stop the schedule: GitHub → Actions → this workflow → "..." → Disable workflow.
+
+on:
+  workflow_dispatch:
+    inputs:
+      per_topic:
+        description: "New papers per topic (14 topics run in parallel)"
+        default: "100"
+  schedule:
+    - cron: "41 */6 * * *"   # every 6 hours
+  push:
+    branches: [main]
+    paths:
+      - "scraper/**"
+      - "db/**"
+      - "requirements.txt"
+      - ".github/workflows/fill.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: scrape
+  cancel-in-progress: false
+
+env:
+  DB_SIZE_LIMIT_MB: "400"   # Supabase free plan = 500 MB; raise after upgrading
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Apply schema
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: python -m scraper.run --mode setup
+
+  fill:
+    needs: setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 14
+      matrix:
+        topic: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Cache embedding model
+        uses: actions/cache@v4
+        with:
+          path: /home/runner/.cache/fastembed
+          key: fastembed-bge-small-en-v1.5
+      - run: pip install -r requirements.txt
+      - name: Scrape topic ${{ matrix.topic }}
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          FASTEMBED_CACHE_PATH: /home/runner/.cache/fastembed
+        run: |
+          N="${{ github.event.inputs.per_topic }}"
+          if [ -z "$N" ]; then
+            if [ "${{ github.event_name }}" = "push" ]; then N=60; else N=100; fi
+          fi
+          python -m scraper.run --mode scrape --topic-index ${{ matrix.topic }} --max-papers "$N"
+      - name: Upload run data
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fill-${{ github.run_id }}-topic-${{ matrix.topic }}
+          path: |
+            data/
+            reports/latest_run.json
+          if-no-files-found: ignore
+
+  report:
+    needs: [setup, fill]
+    if: always() && needs.setup.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Database status
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: python -m scraper.run --mode report
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: fill-${{ github.run_id }}-topic-*
+          path: artifacts
+      - name: Merge papers for review
+        run: |
+          mkdir -p reports
+          cat artifacts/*/data/papers_latest.jsonl > reports/latest_papers.jsonl 2>/dev/null || true
+          python - <<'PY'
+          import json, glob
+          runs = {}
+          for f in glob.glob("artifacts/*/reports/latest_run.json"):
+              d = json.load(open(f))
+              for t, v in (d.get("topics") or {}).items():
+                  runs[t] = {**v, "labels": d.get("labels"), "seconds": d.get("seconds")}
+          json.dump(runs, open("reports/fill_latest.json", "w"), indent=2)
+          PY
+      - name: Commit report
+        run: |
+          git config user.name "scrape-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add reports
+          git diff --cached --quiet || git commit -m "Fill report run ${{ github.run_id }} [skip ci]"
+          git pull --rebase origin main && git push origin HEAD:main

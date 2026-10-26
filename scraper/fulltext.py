@@ -90,7 +90,7 @@ def chunk_text(text: str, size: int = 1400, overlap: int = 200) -> list[str]:
     return final
 
 
-def build_chunks(paper: dict, sections: list[tuple[str, str, str]], max_chunks: int = 40) -> list[dict]:
+def build_chunks(paper: dict, sections: list[tuple[str, str, str]], max_chunks: int = 24) -> list[dict]:
     chunks = []
     if paper.get("abstract"):
         chunks.append({"section": "abstract", "content": paper["abstract"]})

@@ -24,22 +24,22 @@ DEFAULT_QUERY = (
 
 
 # Topic rotation so the dataset is not dominated by pregnancy / reproductive-health papers.
-DEFAULT_TOPICS = [
-    "cardiovascular OR hypertension OR stroke OR heart",
-    "cancer OR tumor OR oncology",
-    "depression OR anxiety OR mental health OR psychiatric",
-    "diabetes OR obesity OR metabolic OR nutrition",
-    "osteoporosis OR bone OR musculoskeletal OR exercise OR physical activity",
-    "pharmacokinetics OR drug OR medication OR adverse events",
-    "autoimmune OR lupus OR rheumatoid OR multiple sclerosis OR thyroid",
-    "menopause OR perimenopause OR postmenopausal",
-    "pregnancy OR maternal OR postpartum OR breastfeeding",
-    "contraception OR fertility OR endometriosis OR PCOS OR menstrual",
-    "HIV OR infection OR vaccine OR HPV",
-    "pain OR migraine OR sleep OR fatigue",
-    "violence OR social OR employment OR education",
-    "ageing OR older OR dementia OR cognition",
-]
+DEFAULT_TOPICS = {
+    "cardiovascular": "cardiovascular OR hypertension OR stroke OR heart",
+    "cancer": "cancer OR tumor OR oncology",
+    "mental-health": "depression OR anxiety OR mental health OR psychiatric",
+    "metabolic": "diabetes OR obesity OR metabolic OR nutrition",
+    "bone-exercise": "osteoporosis OR bone OR musculoskeletal OR exercise OR physical activity",
+    "medication": "pharmacokinetics OR drug OR medication OR adverse events",
+    "autoimmune": "autoimmune OR lupus OR rheumatoid OR multiple sclerosis OR thyroid",
+    "menopause": "menopause OR perimenopause OR postmenopausal",
+    "pregnancy": "pregnancy OR maternal OR postpartum OR breastfeeding",
+    "reproductive": "contraception OR fertility OR endometriosis OR PCOS OR menstrual",
+    "infection": "HIV OR infection OR vaccine OR HPV",
+    "pain-sleep": "pain OR migraine OR sleep OR fatigue",
+    "social": "violence OR social OR employment OR education",
+    "ageing": "ageing OR older OR dementia OR cognition",
+}
 
 
 def build_query(since_year: int | None = None, topic: str | None = None, base: str = DEFAULT_QUERY) -> str:
@@ -65,33 +65,41 @@ def _get(url: str, params: dict | None = None, tries: int = 4) -> requests.Respo
     raise RuntimeError(f"Europe PMC request failed: {url}")
 
 
-def search(query: str, max_results: int, page_size: int = 100) -> tuple[int, Iterator[dict]]:
-    """Return (hitCount, iterator over 'core' records)."""
-    first = _get(f"{BASE}/search", {
-        "query": query, "format": "json", "resultType": "core",
-        "pageSize": min(page_size, max_results), "cursorMark": "*",
-    }).json()
+def search(query: str, max_results: int, page_size: int = 100, start_cursor: str = "*") -> tuple[int, Iterator[dict], dict]:
+    """Return (hitCount, iterator over 'core' records, state).
+
+    state["cursor"] is the cursorMark of the page currently being yielded, so a later run can resume
+    there (that page is re-read and already-stored papers are skipped). state["exhausted"] turns True
+    when the result list ends.
+    """
+    def fetch(cursor: str) -> dict:
+        return _get(f"{BASE}/search", {
+            "query": query, "format": "json", "resultType": "core",
+            "pageSize": page_size, "cursorMark": cursor,
+        }).json()
+
+    state = {"cursor": start_cursor, "exhausted": False, "scanned": 0}
+    first = fetch(start_cursor)
     hit_count = int(first.get("hitCount", 0))
 
     def it() -> Iterator[dict]:
-        page, n = first, 0
+        page = first
         while True:
             results = page.get("resultList", {}).get("result", [])
             for rec in results:
                 yield rec
-                n += 1
-                if n >= max_results:
+                state["scanned"] += 1
+                if state["scanned"] >= max_results:
                     return
             nxt = page.get("nextCursorMark")
-            if not results or not nxt or nxt == page.get("request", {}).get("cursorMark"):
+            if not results or not nxt or nxt == state["cursor"]:
+                state["exhausted"] = True
                 return
             time.sleep(0.2)
-            page = _get(f"{BASE}/search", {
-                "query": query, "format": "json", "resultType": "core",
-                "pageSize": page_size, "cursorMark": nxt,
-            }).json()
+            state["cursor"] = nxt
+            page = fetch(nxt)
 
-    return hit_count, it()
+    return hit_count, it(), state
 
 
 def fetch_fulltext_xml(pmcid: str) -> str | None:

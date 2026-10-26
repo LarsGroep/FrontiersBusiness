@@ -1,11 +1,14 @@
 """Scrape -> label -> chunk -> embed -> load.
 
-python -m scraper.run --max-papers 200 [--since-year 2010] [--topic "cardiovascular"]
+python -m scraper.run --max-papers 200 [--since-year 2010] [--topic "cardiovascular"] [--topic-index 3]
+python -m scraper.run --mode setup     # apply schema + purge stale labels (run once before parallel jobs)
+python -m scraper.run --mode report    # write reports/db_status.json
 Writes reports/latest_run.json + reports/latest_sample.md always; loads Supabase when SUPABASE_DB_URL is set.
 """
 from __future__ import annotations
 
 import argparse
+import os
 import collections
 import json
 import random
@@ -25,11 +28,19 @@ def main() -> None:
     ap.add_argument("--max-papers", type=int, default=200, help="max NEW papers to process this run")
     ap.add_argument("--since-year", type=int, default=None)
     ap.add_argument("--topic", default=None, help="single Europe PMC topic query, e.g. 'cardiovascular'; default rotates DEFAULT_TOPICS")
+    ap.add_argument("--topic-index", type=int, default=None, help="run only DEFAULT_TOPICS[i] (parallel matrix jobs)")
+    ap.add_argument("--mode", choices=["all", "setup", "scrape", "report"], default="all",
+                    help="all = setup + scrape; scrape skips schema changes (safe to run in parallel)")
     ap.add_argument("--no-embed", action="store_true")
     args = ap.parse_args()
 
     started = time.time()
-    topics = [args.topic] if args.topic else europepmc.DEFAULT_TOPICS
+    if args.topic:
+        topics = [(args.topic, args.topic)]
+    elif args.topic_index is not None:
+        topics = [list(europepmc.DEFAULT_TOPICS.items())[args.topic_index]]
+    else:
+        topics = list(europepmc.DEFAULT_TOPICS.items())
     quota = max(1, -(-args.max_papers // len(topics)))  # ceil: papers per topic
     query = europepmc.build_query(args.since_year, None)
     print(f"Base query: {query}\n{len(topics)} topic(s), up to {quota} new papers each", flush=True)
@@ -37,14 +48,29 @@ def main() -> None:
     seen: set[str] = set()
     try:
         conn = db.connect()
-        if conn:
+        if conn and args.mode in ("all", "setup"):
             db.apply_schema(conn)
             purged = db.purge_stale(conn, label.LABEL_VERSION)
             if purged:
                 print(f"Purged {purged} papers labelled by an older labeller", flush=True)
+        if conn and args.mode in ("setup", "report"):
+            REPORTS.mkdir(exist_ok=True)
+            status = db.db_status(conn)
+            (REPORTS / "db_status.json").write_text(json.dumps(status, indent=2, default=str))
+            print(json.dumps(status, indent=2, default=str))
+            conn.close()
+            return
+        if conn:
+            limit = int(os.getenv("DB_SIZE_LIMIT_MB", "400"))
+            size = db.db_size_mb(conn)
+            if size >= limit:
+                print(f"Database is {size} MB (limit {limit} MB): not adding papers. "
+                      f"Raise DB_SIZE_LIMIT_MB after upgrading the Supabase plan.", flush=True)
+                conn.close()
+                return
             seen = db.existing_ids(conn)
     except Exception as e:
-        import os, re as _re
+        import re as _re
         msg = str(e)
         pw = _re.search(r"://[^:]+:([^@]+)@", os.getenv("SUPABASE_DB_URL", ""))
         if pw:
@@ -66,19 +92,28 @@ def main() -> None:
     topic_hits: dict[str, int] = {}
 
     def records():
-        """Yield (topic, record) per topic until that topic's quota of NEW papers is processed."""
+        """Yield (topic, record) per topic until that topic's quota of NEW papers is processed.
+
+        Resumes each topic where the previous run stopped (scrape_cursors) and saves the new position.
+        """
         nonlocal hit_count
-        for t in topics:
-            q = europepmc.build_query(args.since_year, t)
-            # Scan well past the quota so re-runs move beyond papers we already have.
-            n, it = europepmc.search(q, max_results=quota * 10 + len(seen))
-            topic_hits[t] = n
+        for name, tq in topics:
+            q = europepmc.build_query(args.since_year, tq)
+            start, exhausted = db.get_cursor(conn, name) if conn else ("*", False)
+            if exhausted:
+                start = "*"  # wrapped around: rescan from the top to pick up newly published papers
+            n, it, state = europepmc.search(q, max_results=quota * 20, start_cursor=start)
+            topic_hits[name] = n
             hit_count += n
-            print(f"Topic [{t}]: {n} hits", flush=True)
-            for rec in it:
-                if topic_done[t] >= quota:
-                    break
-                yield t, rec
+            print(f"Topic [{name}]: {n} hits, resuming at {'start' if start == '*' else 'saved cursor'}", flush=True)
+            try:
+                for rec in it:
+                    if topic_done[name] >= quota:
+                        break
+                    yield name, rec
+            finally:
+                if conn:
+                    db.save_cursor(conn, name, state["cursor"], state["scanned"], state["exhausted"])
 
     DATA.mkdir(exist_ok=True)
     REPORTS.mkdir(exist_ok=True)
@@ -89,7 +124,8 @@ def main() -> None:
     sections_count = collections.Counter()
     processed: list[dict] = []
 
-    for topic, rec in records():
+    gen = records()
+    for topic, rec in gen:
         if stats["processed"] >= args.max_papers:
             break
         paper = europepmc.parse_record(rec)
@@ -134,6 +170,7 @@ def main() -> None:
             print(f"  {stats['processed']} papers | labels {dict(labels_count)}", flush=True)
         time.sleep(0.1)
 
+    gen.close()  # runs the generator's finally: saves the cursor of the topic in progress
     out_jsonl.close()
     summary = {
         "finished_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -142,7 +179,7 @@ def main() -> None:
         "europepmc_hit_count": hit_count,
         "topics": {t: {"hits": topic_hits.get(t), "processed": topic_done[t],
                        "verified": sum(1 for p in processed if p.get("topic") == t and p["label"] == "female_only_verified")}
-                   for t in topics},
+                   for t, _ in topics},
         "db_connected": bool(conn),
         "llm_verifier": any(p.get("llm_label") for p in processed),
         "stats": dict(stats),

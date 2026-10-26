@@ -38,6 +38,24 @@ def purge_stale(conn: psycopg.Connection, version: int) -> int:
     return n
 
 
+def get_cursor(conn: psycopg.Connection, topic: str) -> tuple[str, bool]:
+    with conn.cursor() as cur:
+        cur.execute("select cursor_mark, exhausted from public.scrape_cursors where topic=%s", (topic,))
+        row = cur.fetchone()
+    return (row[0], row[1]) if row else ("*", False)
+
+
+def save_cursor(conn: psycopg.Connection, topic: str, cursor_mark: str, scanned: int, exhausted: bool) -> None:
+    with conn.cursor() as cur:
+        cur.execute(
+            "insert into public.scrape_cursors (topic, cursor_mark, scanned, exhausted, updated_at) "
+            "values (%s,%s,%s,%s,now()) on conflict (topic) do update set cursor_mark=excluded.cursor_mark, "
+            "scanned=public.scrape_cursors.scanned + excluded.scanned, exhausted=excluded.exhausted, updated_at=now()",
+            (topic, cursor_mark, scanned, exhausted),
+        )
+    conn.commit()
+
+
 def existing_ids(conn: psycopg.Connection) -> set[str]:
     with conn.cursor() as cur:
         cur.execute("select id from public.papers")
@@ -87,3 +105,23 @@ def db_summary(conn: psycopg.Connection) -> dict:
         cur.execute("select count(*) from public.chunks")
         n_chunks = cur.fetchone()[0]
     return {"papers_by_label": labels, "chunks": n_chunks}
+
+
+def db_status(conn: psycopg.Connection) -> dict:
+    """Dataset overview for reports/db_status.json."""
+    with conn.cursor() as cur:
+        cur.execute("select public.evidence_stats()")
+        stats = cur.fetchone()[0]
+        cur.execute("select count(*) from public.papers where fetched_at > now() - interval '24 hours'")
+        stats["added_last_24h"] = cur.fetchone()[0]
+        cur.execute("select topic, scanned, exhausted, updated_at from public.scrape_cursors order by topic")
+        cur.execute("select round(pg_database_size(current_database()) / 1048576.0)")
+        stats["db_size_mb"] = int(cur.fetchone()[0])
+        stats["cursors"] = {t: {"scanned": n, "exhausted": e, "updated": str(u)} for t, n, e, u in cur.fetchall()}
+    return stats
+
+
+def db_size_mb(conn: psycopg.Connection) -> int:
+    with conn.cursor() as cur:
+        cur.execute("select pg_database_size(current_database()) / 1048576")
+        return int(cur.fetchone()[0])

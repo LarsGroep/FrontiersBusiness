@@ -1,0 +1,25 @@
+{
+  "women": 421,
+  "years": {
+    "max": 2025,
+    "min": 2025
+  },
+  "chunks": 18,
+  "papers": 6,
+  "updated": "2026-10-26T19:42:28.705499+01:00",
+  "by_label": {
+    "female_only_verified": 6
+  },
+  "by_topic": {
+    "cardiovascular": 6
+  },
+  "verified": 6,
+  "added_last_24h": 6,
+  "cursors": {
+    "cardiovascular": {
+      "scanned": 7,
+      "exhausted": true,
+      "updated": "2026-10-26 19:42:29.010151+01:00"
+    }
+  }
+}

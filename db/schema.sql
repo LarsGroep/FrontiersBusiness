@@ -60,6 +60,190 @@ create table if not exists public.scrape_runs (
   stats       jsonb
 );
 
+-- Where each topic's Europe PMC scan stopped, so repeated runs keep moving forward.
+create table if not exists public.scrape_cursors (
+  topic       text primary key,
+  cursor_mark text not null,
+  scanned     int  not null default 0,
+  exhausted   boolean not null default false,
+  updated_at  timestamptz not null default now()
+);
+
+-- Keyword search: stemmed English full-text vectors (title/abstract weighted on papers, body text on chunks).
+alter table public.papers add column if not exists fts tsvector
+  generated always as (
+    setweight(to_tsvector('english', coalesce(title, '')), 'A') ||
+    setweight(to_tsvector('english', coalesce(abstract, '')), 'B')
+  ) stored;
+alter table public.chunks add column if not exists fts tsvector
+  generated always as (to_tsvector('english', coalesce(content, ''))) stored;
+
+create index if not exists papers_fts_idx   on public.papers using gin (fts);
+create index if not exists chunks_fts_idx   on public.chunks using gin (fts);
+create index if not exists papers_topic_idx on public.papers (topic);
+
+-- Earlier runs stored the raw topic query; use short names.
+update public.papers set topic = 'cardiovascular' where topic = 'cardiovascular OR hypertension OR stroke OR heart';
+update public.papers set topic = 'cancer' where topic = 'cancer OR tumor OR oncology';
+update public.papers set topic = 'mental-health' where topic = 'depression OR anxiety OR mental health OR psychiatric';
+update public.papers set topic = 'metabolic' where topic = 'diabetes OR obesity OR metabolic OR nutrition';
+update public.papers set topic = 'bone-exercise' where topic = 'osteoporosis OR bone OR musculoskeletal OR exercise OR physical activity';
+update public.papers set topic = 'medication' where topic = 'pharmacokinetics OR drug OR medication OR adverse events';
+update public.papers set topic = 'autoimmune' where topic = 'autoimmune OR lupus OR rheumatoid OR multiple sclerosis OR thyroid';
+update public.papers set topic = 'menopause' where topic = 'menopause OR perimenopause OR postmenopausal';
+update public.papers set topic = 'pregnancy' where topic = 'pregnancy OR maternal OR postpartum OR breastfeeding';
+update public.papers set topic = 'reproductive' where topic = 'contraception OR fertility OR endometriosis OR PCOS OR menstrual';
+update public.papers set topic = 'infection' where topic = 'HIV OR infection OR vaccine OR HPV';
+update public.papers set topic = 'pain-sleep' where topic = 'pain OR migraine OR sleep OR fatigue';
+update public.papers set topic = 'social' where topic = 'violence OR social OR employment OR education';
+update public.papers set topic = 'ageing' where topic = 'ageing OR older OR dementia OR cognition';
+
+-- Hybrid RAG retrieval.
+--   1. keyword: full-text match on chunk text (+ paper title/abstract boost)
+--   2. semantic: nearest chunks to query_embedding, or (no embedding given) to the centroid of the
+--      top keyword hits, which finds passages that say the same thing in different words
+--   3. reciprocal-rank fusion, max 2 chunks per paper, optional boost for the reader's life stage
+-- q uses web-search syntax: words are ANDed, `OR` between alternatives, "quoted phrases", -exclude.
+create or replace function public.search_evidence(
+  q                text,
+  match_count      int      default 12,
+  labels           text[]   default array['female_only_verified'],
+  min_year         int      default null,
+  topics           text[]   default null,
+  population_terms text[]   default null,
+  commercial_only  boolean  default false,
+  query_embedding  extensions.vector(384) default null
+)
+returns table (
+  chunk_id          bigint,
+  paper_id          text,
+  section           text,
+  snippet           text,
+  content           text,
+  score             float,
+  kw_rank           int,
+  sem_rank          int,
+  population_match  boolean,
+  title             text,
+  authors           text,
+  journal           text,
+  pub_year          int,
+  doi               text,
+  pmcid             text,
+  source_url        text,
+  label             text,
+  n_female          int,
+  study_type        text,
+  population        text,
+  topic             text,
+  commercial_use_ok boolean
+)
+language sql stable
+set search_path = public, extensions
+as $$
+  with tsq as (
+    select websearch_to_tsquery('english', coalesce(q, '')) as q
+  ),
+  fp as (
+    select p.id, p.fts from public.papers p
+    where (labels   is null or p.label = any(labels))
+      and (min_year is null or p.pub_year >= min_year)
+      and (topics   is null or p.topic = any(topics))
+      and (not commercial_only or p.commercial_use_ok)
+  ),
+  kw as (
+    select c.id, c.paper_id,
+           ts_rank_cd(c.fts, tsq.q, 32) + 0.5 * ts_rank_cd(fp.fts, tsq.q, 32) as r
+    from public.chunks c
+    join fp on fp.id = c.paper_id
+    cross join tsq
+    where c.fts @@ tsq.q
+    order by r desc
+    limit 150
+  ),
+  kw_ranked as (
+    select id, paper_id, row_number() over (order by r desc) as rk from kw
+  ),
+  centroid as (
+    select coalesce(
+      query_embedding,
+      (select avg(c.embedding) from public.chunks c
+         join kw_ranked k on k.id = c.id
+        where k.rk <= 8 and c.embedding is not null)
+    ) as e
+  ),
+  sem as (
+    select c.id, c.paper_id, row_number() over (order by c.embedding <=> ce.e) as rk
+    from public.chunks c
+    join fp on fp.id = c.paper_id
+    cross join centroid ce
+    where ce.e is not null and c.embedding is not null
+    order by c.embedding <=> ce.e
+    limit 150
+  ),
+  fused as (
+    select id, paper_id,
+           sum(w / (60.0 + rk)) as score,
+           min(case when src = 'kw'  then rk end) as kw_rank,
+           min(case when src = 'sem' then rk end) as sem_rank
+    from (
+      select id, paper_id, rk, 'kw'  as src, 1.0 as w from kw_ranked
+      union all
+      select id, paper_id, rk, 'sem' as src, 0.8 as w from sem
+    ) u
+    group by id, paper_id
+  ),
+  per_paper as (
+    select f.*, row_number() over (partition by f.paper_id order by f.score desc) as prk from fused f
+  ),
+  scored as (
+    select pp.id as chunk_id, pp.paper_id, pp.score, pp.kw_rank, pp.sem_rank,
+           p.title, p.authors, p.journal, p.pub_year, p.doi, p.pmcid, p.source_url, p.label,
+           p.n_female, p.study_type, p.population, p.topic, p.commercial_use_ok,
+           coalesce(population_terms is not null and exists (
+             select 1 from unnest(population_terms) t
+             where t <> '' and (p.title ilike '%' || t || '%'
+                             or p.abstract ilike '%' || t || '%'
+                             or coalesce(p.population, '') ilike '%' || t || '%')
+           ), false) as pop_match
+    from per_paper pp
+    join public.papers p on p.id = pp.paper_id
+    where pp.prk <= 2
+  )
+  select s.chunk_id, s.paper_id, c.section,
+         ts_headline('english', c.content, tsq.q,
+                     'MaxWords=45, MinWords=18, MaxFragments=2, FragmentDelimiter=" … ", StartSel=<mark>, StopSel=</mark>'),
+         c.content,
+         (s.score * (case when s.pop_match then 1.25 else 1.0 end))::float,
+         s.kw_rank::int, s.sem_rank::int, s.pop_match,
+         s.title, s.authors, s.journal, s.pub_year, s.doi, s.pmcid, s.source_url,
+         s.label, s.n_female, s.study_type, s.population, s.topic, s.commercial_use_ok
+  from scored s
+  join public.chunks c on c.id = s.chunk_id
+  cross join tsq
+  order by 6 desc
+  limit least(greatest(match_count, 1), 50);
+$$;
+
+-- Dataset overview for the search app.
+create or replace function public.evidence_stats()
+returns jsonb
+language sql stable
+set search_path = public
+as $$
+  select jsonb_build_object(
+    'papers',   (select count(*) from public.papers),
+    'verified', (select count(*) from public.papers where label = 'female_only_verified'),
+    'chunks',   (select count(*) from public.chunks),
+    'women',    (select coalesce(sum(n_female), 0) from public.papers where label = 'female_only_verified' and n_female < 1000000),
+    'by_label', (select jsonb_object_agg(label, n) from (select label, count(*) n from public.papers group by label) x),
+    'by_topic', (select jsonb_object_agg(coalesce(topic, 'other'), n) from
+                   (select topic, count(*) n from public.papers where label = 'female_only_verified' group by topic) x),
+    'years',    (select jsonb_build_object('min', min(pub_year), 'max', max(pub_year)) from public.papers),
+    'updated',  (select max(fetched_at) from public.papers)
+  );
+$$;
+
 -- Semantic search used by the RAG.
 create or replace function public.match_chunks(
   query_embedding extensions.vector(384),
@@ -112,6 +296,7 @@ $$;
 alter table public.papers      enable row level security;
 alter table public.chunks      enable row level security;
 alter table public.scrape_runs enable row level security;
+alter table public.scrape_cursors enable row level security;
 
 drop policy if exists "public read papers" on public.papers;
 create policy "public read papers" on public.papers for select to anon, authenticated using (true);
@@ -119,3 +304,5 @@ drop policy if exists "public read chunks" on public.chunks;
 create policy "public read chunks" on public.chunks for select to anon, authenticated using (true);
 
 grant execute on function public.match_chunks(extensions.vector, int, text[], int, text[]) to anon, authenticated;
+grant execute on function public.search_evidence(text, int, text[], int, text[], text[], boolean, extensions.vector) to anon, authenticated;
+grant execute on function public.evidence_stats() to anon, authenticated;
