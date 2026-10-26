@@ -1,89 +1,165 @@
 {
-  "finished_at": "2026-10-26T17:33:14+00:00",
-  "seconds": 1048,
-  "query": "(KW:\"Female\" AND KW:\"Humans\" AND OPEN_ACCESS:Y AND HAS_FT:Y AND SRC:MED) NOT KW:\"Male\" NOT PUB_TYPE:\"review\" NOT PUB_TYPE:\"editorial\" NOT PUB_TYPE:\"comment\" NOT PUB_TYPE:\"letter\" NOT PUB_TYPE:\"case reports\" AND METHODS:(\"women\" OR \"pregnant\" OR \"mothers\" OR \"female participants\" OR \"female patients\" OR \"girls\")",
-  "europepmc_hit_count": 120676,
+  "finished_at": "2026-10-26T17:49:57+00:00",
+  "seconds": 872,
+  "query": "(KW:\"Female\" AND KW:\"Humans\" AND OPEN_ACCESS:Y AND HAS_FT:Y AND SRC:MED) NOT KW:\"Male\" NOT PUB_TYPE:\"review\" NOT PUB_TYPE:\"editorial\" NOT PUB_TYPE:\"comment\" NOT PUB_TYPE:\"letter\" NOT PUB_TYPE:\"case reports\" AND METHODS:(\"women\" OR \"female participants\" OR \"female patients\" OR \"girls\")",
+  "europepmc_hit_count": 710530,
+  "topics": {
+    "cardiovascular OR hypertension OR stroke OR heart": {
+      "hits": 43928,
+      "processed": 10,
+      "verified": 7
+    },
+    "cancer OR tumor OR oncology": {
+      "hits": 47196,
+      "processed": 10,
+      "verified": 8
+    },
+    "depression OR anxiety OR mental health OR psychiatric": {
+      "hits": 100493,
+      "processed": 10,
+      "verified": 5
+    },
+    "diabetes OR obesity OR metabolic OR nutrition": {
+      "hits": 55125,
+      "processed": 10,
+      "verified": 9
+    },
+    "osteoporosis OR bone OR musculoskeletal OR exercise OR physical activity": {
+      "hits": 45926,
+      "processed": 10,
+      "verified": 8
+    },
+    "pharmacokinetics OR drug OR medication OR adverse events": {
+      "hits": 34564,
+      "processed": 10,
+      "verified": 7
+    },
+    "autoimmune OR lupus OR rheumatoid OR multiple sclerosis OR thyroid": {
+      "hits": 75074,
+      "processed": 10,
+      "verified": 8
+    },
+    "menopause OR perimenopause OR postmenopausal": {
+      "hits": 17373,
+      "processed": 10,
+      "verified": 8
+    },
+    "pregnancy OR maternal OR postpartum OR breastfeeding": {
+      "hits": 70581,
+      "processed": 10,
+      "verified": 9
+    },
+    "contraception OR fertility OR endometriosis OR PCOS OR menstrual": {
+      "hits": 33350,
+      "processed": 10,
+      "verified": 7
+    },
+    "HIV OR infection OR vaccine OR HPV": {
+      "hits": 37963,
+      "processed": 10,
+      "verified": 6
+    },
+    "pain OR migraine OR sleep OR fatigue": {
+      "hits": 34016,
+      "processed": 10,
+      "verified": 8
+    },
+    "violence OR social OR employment OR education": {
+      "hits": 71963,
+      "processed": 10,
+      "verified": 5
+    },
+    "ageing OR older OR dementia OR cognition": {
+      "hits": 42978,
+      "processed": 10,
+      "verified": 8
+    }
+  },
   "db_connected": true,
   "llm_verifier": false,
   "stats": {
-    "chunks": 4015,
-    "loaded_to_db": 150,
-    "processed": 150,
-    "skipped_existing_or_no_pmcid": 1
+    "chunks": 3738,
+    "loaded_to_db": 140,
+    "processed": 140,
+    "skipped_existing_or_no_pmcid": 2
   },
   "labels": {
-    "female_only_verified": 127,
-    "female_only_probable": 23
+    "female_only_verified": 103,
+    "female_only_probable": 26,
+    "female_only_unverified": 10,
+    "rejected": 1
   },
   "sections_found": {
-    "introduction": 144,
-    "methods": 167,
-    "results": 140,
-    "discussion": 155,
-    "conclusion": 117,
+    "introduction": 129,
+    "methods": 150,
+    "results": 132,
+    "discussion": 144,
+    "conclusion": 99,
     "other": 245
   },
-  "commercial_use_ok": 83,
-  "with_n_female": 129,
+  "commercial_use_ok": 82,
+  "with_n_female": 121,
   "study_types": {
-    "cohort": 63,
-    "randomized controlled trial": 18,
-    "unknown": 12,
-    "qualitative": 17,
+    "cohort": 76,
+    "randomized controlled trial": 10,
     "cross-sectional": 36,
-    "case-control": 4
+    "unknown": 12,
+    "qualitative": 5,
+    "case-control": 1
   },
   "top_journals": [
     [
-      "BMC pregnancy and childbirth",
-      30
-    ],
-    [
-      "PloS one",
-      17
-    ],
-    [
-      "BMJ open",
-      12
-    ],
-    [
-      "BMJ global health",
+      "Medicine",
       8
     ],
     [
-      "BMC public health",
-      6
+      "BMC women's health",
+      8
     ],
     [
-      "Maternal & child nutrition",
-      3
+      "BMJ open",
+      7
     ],
     [
-      "Scientific reports",
-      3
+      "Frontiers in endocrinology",
+      7
     ],
     [
       "Frontiers in public health",
+      7
+    ],
+    [
+      "JAMA network open",
+      4
+    ],
+    [
+      "Journal of global health",
       3
     ],
     [
-      "International breastfeeding journal",
+      "Menopause (New York, N.Y.)",
       3
     ],
     [
-      "BMC infectious diseases",
-      2
+      "BMC medicine",
+      3
+    ],
+    [
+      "PloS one",
+      3
     ]
   ],
   "years": {
     "2025": 4,
-    "2026": 146
+    "2026": 136
   },
   "db_totals": {
     "papers_by_label": {
-      "female_only_verified": 127,
-      "female_only_probable": 23
+      "female_only_verified": 103,
+      "female_only_probable": 26,
+      "female_only_unverified": 10,
+      "rejected": 1
     },
-    "chunks": 4015
+    "chunks": 3738
   }
 }
