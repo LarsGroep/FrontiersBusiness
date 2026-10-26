@@ -1,0 +1,86 @@
+name: Scrape women-only papers
+
+on:
+  workflow_dispatch:
+    inputs:
+      max_papers:
+        description: "Max NEW papers to process"
+        default: "300"
+      since_year:
+        description: "Only papers from this year on (empty = all)"
+        default: ""
+      topic:
+        description: "Optional extra Europe PMC query, e.g. cardiovascular"
+        default: ""
+  schedule:
+    - cron: "17 3 * * 1"   # every Monday 03:17 UTC
+  push:
+    branches: [main]
+    paths:
+      - "scraper/**"
+      - "db/**"
+      - "requirements.txt"
+      - ".github/workflows/scrape.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: scrape
+  cancel-in-progress: false
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Cache embedding model
+        uses: actions/cache@v4
+        with:
+          path: /home/runner/.cache/fastembed
+          key: fastembed-bge-small-en-v1.5
+
+      - run: pip install -r requirements.txt
+
+      - name: Scrape, label, embed, load
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          FASTEMBED_CACHE_PATH: /home/runner/.cache/fastembed
+        run: |
+          MAX="${{ github.event.inputs.max_papers }}"
+          if [ -z "$MAX" ]; then
+            if [ "${{ github.event_name }}" = "push" ]; then MAX=60; else MAX=1000; fi
+          fi
+          ARGS="--max-papers $MAX"
+          [ -n "${{ github.event.inputs.since_year }}" ] && ARGS="$ARGS --since-year ${{ github.event.inputs.since_year }}"
+          [ -n "${{ github.event.inputs.topic }}" ] && ARGS="$ARGS --topic \"${{ github.event.inputs.topic }}\""
+          eval python -m scraper.run $ARGS
+
+      - name: Upload full run data
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: papers-${{ github.run_id }}
+          path: data/
+          if-no-files-found: ignore
+
+      - name: Commit run report
+        if: always()
+        run: |
+          git config user.name "scrape-bot"
+          git config user.email "actions@users.noreply.github.com"
+          mkdir -p reports/runs
+          [ -f reports/latest_run.json ] && cp reports/latest_run.json "reports/runs/${{ github.run_id }}.json"
+          # keep a metadata-only snapshot of the latest run (no embeddings) for review
+          [ -f data/papers_latest.jsonl ] && cp data/papers_latest.jsonl reports/latest_papers.jsonl
+          git add reports
+          git diff --cached --quiet || git commit -m "Scrape report run ${{ github.run_id }} [skip ci]"
+          git pull --rebase origin main && git push origin HEAD:main
