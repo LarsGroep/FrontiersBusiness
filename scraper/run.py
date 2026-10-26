@@ -135,31 +135,39 @@ def main() -> None:
             continue
         seen.add(paper["id"])
 
-        xml = europepmc.fetch_fulltext_xml(paper["pmcid"])
-        sections = fulltext.parse_sections(xml) if xml else []
-        if not xml:
-            stats["no_fulltext"] += 1
-        methods_text = " ".join(t for n, _, t in sections if n == "methods")
-        for n, _, _ in sections:
-            sections_count[n] += 1
+        try:
+            xml = europepmc.fetch_fulltext_xml(paper["pmcid"])
+            sections = fulltext.parse_sections(xml) if xml else []
+            if not xml:
+                stats["no_fulltext"] += 1
+            methods_text = " ".join(t for n, _, t in sections if n == "methods")
+            for n, _, _ in sections:
+                sections_count[n] += 1
 
-        verdict = label.rule_label(paper, methods_text)
-        llm = label.llm_label(paper, methods_text) if verdict["label"] != "rejected" else None
-        verdict = label.combine(verdict, llm)
-        paper.update(verdict)
-        labels_count[paper["label"]] += 1
+            verdict = label.rule_label(paper, methods_text)
+            llm = label.llm_label(paper, methods_text) if verdict["label"] != "rejected" else None
+            verdict = label.combine(verdict, llm)
+            paper.update(verdict)
+            labels_count[paper["label"]] += 1
 
-        chunks = fulltext.build_chunks(paper, sections) if paper["label"] != "rejected" else []
-        if chunks and not args.no_embed:
-            from .embed import embed_passages
-            vecs = embed_passages([f"{paper['title']} | {c['section']}: {c['content']}" for c in chunks])
-            for c, v in zip(chunks, vecs):
-                c["embedding"] = v
-        stats["chunks"] += len(chunks)
+            chunks = fulltext.build_chunks(paper, sections) if paper["label"] != "rejected" else []
+            if chunks and not args.no_embed:
+                from .embed import embed_passages
+                vecs = embed_passages([f"{paper['title']} | {c['section']}: {c['content']}" for c in chunks])
+                for c, v in zip(chunks, vecs):
+                    c["embedding"] = v
+            stats["chunks"] += len(chunks)
 
-        if conn:
-            db.upsert_paper(conn, paper, chunks)
-            stats["loaded_to_db"] += 1
+            if conn:
+                db.upsert_paper(conn, paper, chunks)
+                stats["loaded_to_db"] += 1
+
+        except Exception as e:  # one bad paper (parse error, write race) must not stop the whole topic
+            stats["errors"] += 1
+            print(f"  ! skipped {paper['id']}: {type(e).__name__}: {str(e)[:200]}", flush=True)
+            if conn:
+                conn.rollback()
+            continue
 
         out_jsonl.write(json.dumps({**paper, "n_chunks": len(chunks), "has_methods": bool(methods_text),
                                     "sections": [n for n, _, _ in sections]}) + "\n")

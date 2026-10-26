@@ -54,6 +54,7 @@ def save_cursor(conn: psycopg.Connection, topic: str, cursor_mark: str, scanned:
             (topic, cursor_mark, scanned, exhausted),
         )
     conn.commit()
+    print(f"Saved cursor for [{topic}]: scanned {scanned}, exhausted={exhausted}", flush=True)
 
 
 def existing_ids(conn: psycopg.Connection) -> set[str]:
@@ -85,7 +86,9 @@ def upsert_paper(conn: psycopg.Connection, paper: dict, chunks: list[dict]) -> N
         if chunks:
             cur.executemany(
                 "insert into public.chunks (paper_id, chunk_index, section, content, embedding) "
-                "values (%s,%s,%s,%s,%s::extensions.vector)",
+                "values (%s,%s,%s,%s,%s::extensions.vector) "
+                "on conflict (paper_id, chunk_index) do update set section=excluded.section, "
+                "content=excluded.content, embedding=excluded.embedding",
                 [(paper["id"], c["chunk_index"], c["section"], c["content"], _vec(c["embedding"]) if c.get("embedding") else None) for c in chunks],
             )
     conn.commit()
@@ -114,9 +117,9 @@ def db_status(conn: psycopg.Connection) -> dict:
         stats = cur.fetchone()[0]
         cur.execute("select count(*) from public.papers where fetched_at > now() - interval '24 hours'")
         stats["added_last_24h"] = cur.fetchone()[0]
-        cur.execute("select topic, scanned, exhausted, updated_at from public.scrape_cursors order by topic")
         cur.execute("select round(pg_database_size(current_database()) / 1048576.0)")
         stats["db_size_mb"] = int(cur.fetchone()[0])
+        cur.execute("select topic, scanned, exhausted, updated_at from public.scrape_cursors order by topic")
         stats["cursors"] = {t: {"scanned": n, "exhausted": e, "updated": str(u)} for t, n, e, u in cur.fetchall()}
     return stats
 

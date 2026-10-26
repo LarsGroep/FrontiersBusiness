@@ -300,6 +300,8 @@ alter table public.scrape_cursors enable row level security;
 
 drop policy if exists "public read papers" on public.papers;
 create policy "public read papers" on public.papers for select to anon, authenticated using (true);
+drop policy if exists "public read cursors" on public.scrape_cursors;
+create policy "public read cursors" on public.scrape_cursors for select to anon, authenticated using (true);
 drop policy if exists "public read chunks" on public.chunks;
 create policy "public read chunks" on public.chunks for select to anon, authenticated using (true);
 

@@ -76,6 +76,7 @@ jobs:
           if [ -z "$N" ]; then
             if [ "${{ github.event_name }}" = "push" ]; then N=60; else N=100; fi
           fi
+          rm -f reports/latest_run.json reports/latest_sample.md   # never upload a stale committed report
           python -m scraper.run --mode scrape --topic-index ${{ matrix.topic }} --max-papers "$N"
       - name: Upload run data
         if: always()
