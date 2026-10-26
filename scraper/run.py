@@ -32,11 +32,26 @@ def main() -> None:
     query = europepmc.build_query(args.since_year, args.topic)
     print(f"Query: {query}", flush=True)
 
-    conn = db.connect()
     seen: set[str] = set()
+    try:
+        conn = db.connect()
+        if conn:
+            db.apply_schema(conn)
+            seen = db.existing_ids(conn)
+    except Exception as e:
+        import os, re as _re
+        msg = str(e)
+        pw = _re.search(r"://[^:]+:([^@]+)@", os.getenv("SUPABASE_DB_URL", ""))
+        if pw:
+            msg = msg.replace(pw.group(1), "***")
+        REPORTS.mkdir(exist_ok=True)
+        (REPORTS / "latest_run.json").write_text(json.dumps({
+            "finished_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "db_error": f"{type(e).__name__}: {msg[:800]}",
+        }, indent=2))
+        print(f"DATABASE CONNECTION FAILED: {type(e).__name__}: {msg[:800]}", flush=True)
+        raise SystemExit(1)
     if conn:
-        db.apply_schema(conn)
-        seen = db.existing_ids(conn)
         print(f"Connected to Supabase, {len(seen)} papers already stored", flush=True)
     else:
         print("SUPABASE_DB_URL not set: dry run (reports + local JSONL only)", flush=True)
