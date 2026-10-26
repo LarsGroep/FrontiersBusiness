@@ -33,6 +33,7 @@ create table if not exists public.papers (
 );
 
 alter table public.papers add column if not exists label_version int not null default 1;
+alter table public.papers add column if not exists topic text;
 
 create index if not exists papers_label_idx on public.papers (label);
 create index if not exists papers_year_idx  on public.papers (pub_year);

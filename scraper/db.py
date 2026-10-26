@@ -11,7 +11,7 @@ PAPER_COLS = [
     "id", "pmid", "pmcid", "doi", "title", "authors", "journal", "pub_year", "abstract",
     "mesh_terms", "pub_types", "keywords", "license", "commercial_use_ok", "label", "label_reasons",
     "male_mentions", "male_snippets", "female_evidence", "n_female", "population", "study_type",
-    "llm_label", "source_url", "label_version",
+    "llm_label", "source_url", "label_version", "topic",
 ]
 
 

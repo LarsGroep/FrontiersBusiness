@@ -11,7 +11,7 @@ on:
         description: "Only papers from this year on (empty = all)"
         default: ""
       topic:
-        description: "Optional extra Europe PMC query, e.g. cardiovascular"
+        description: "Single topic query (empty = rotate through all topic areas)"
         default: ""
   schedule:
     - cron: "17 3 * * 1"   # every Monday 03:17 UTC
@@ -58,7 +58,7 @@ jobs:
         run: |
           MAX="${{ github.event.inputs.max_papers }}"
           if [ -z "$MAX" ]; then
-            if [ "${{ github.event_name }}" = "push" ]; then MAX=150; else MAX=1000; fi
+            if [ "${{ github.event_name }}" = "push" ]; then MAX=140; else MAX=1000; fi
           fi
           ARGS="--max-papers $MAX"
           [ -n "${{ github.event.inputs.since_year }}" ] && ARGS="$ARGS --since-year ${{ github.event.inputs.since_year }}"

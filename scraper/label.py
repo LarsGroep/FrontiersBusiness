@@ -12,7 +12,7 @@ import re
 
 import requests
 
-LABEL_VERSION = 2  # bump to re-label everything on the next run
+LABEL_VERSION = 3  # bump to re-label everything on the next run
 
 # Words that suggest male participants. \b keeps "men" from matching "women" and "male" from "female".
 MALE_RX = re.compile(
@@ -26,7 +26,8 @@ BENIGN_MALE_CONTEXT = re.compile(
     r"(partner|spouse|husband|father|son|infant|offspring|newborn|baby|neonat|fetus|fetal|child|"
     r"previous stud|prior stud|than men|unlike men|compared (?:to|with) men|in men,|among men in|literature|"
     r"male[- ]dominated|male[- ]factor|male infertility|sex of the (?:infant|baby|child|fetus)|"
-    r"exclud\w*|were not included|only (?:women|female))",
+    r"exclud\w*|were not included|only (?:women|female)|"
+    r"population|census|inhabitants|residents|male (?:interviewer|researcher|staff|headmaster)|wives|wife|househol)",
     re.I,
 )
 # "56% female", "female (n = 69, 56%)": a female share below 100% means men were in the sample.
@@ -42,6 +43,15 @@ NONHUMAN_RX = re.compile(
     r"cell lines?|in vitro|organoids?|explants?|sows?|ewes?|heifers?|cows?|mares?)\b",
     re.I,
 )
+# Other (often mixed-sex) groups whose data was also collected, e.g. staff interviews.
+OTHER_GROUPS_RX = re.compile(
+    r"\b(health ?care (?:workers?|professionals?|providers?)|health workers?|key informants?|clinicians|"
+    r"midwives|nurses|teachers|husbands|male partners|fathers|community leaders|stakeholders|boys)\b", re.I)
+QUAL_RX = re.compile(r"\b(interview\w*|focus group\w*|FGDs?|KIIs?)\b", re.I)
+NON_PRIMARY_TITLE_RX = re.compile(r"scoping review|systematic review|meta-analysis|umbrella review|modell?ing study|"
+                                  r"simulation|where are we|narrative review|position statement|guideline", re.I)
+PROTOCOL_RX = re.compile(r"\bprotocol\b", re.I)
+
 # Positive evidence that women were the study population.
 FEMALE_POP_RX = re.compile(
     r"\b(?:women|female participants|female patients|female subjects|pregnant|mothers|girls|"
@@ -116,14 +126,26 @@ def rule_label(paper: dict, methods_text: str) -> dict:
     nonhuman = len(NONHUMAN_RX.findall(methods_text or scan))
     female_pop = len(FEMALE_POP_RX.findall(methods_text)) if methods_text else len(FEMALE_POP_RX.findall(scan))
 
+    title = paper.get("title") or ""
+    other_groups = sorted({g.lower() for g in OTHER_GROUPS_RX.findall(methods_text)}) if QUAL_RX.search(methods_text or "") else []
+
     if has_male or not (has_female and has_humans):
         label = "rejected"
+    elif NON_PRIMARY_TITLE_RX.search(title):
+        label = "rejected"
+        reasons.append("not_primary_data")
+    elif PROTOCOL_RX.search(title):
+        label = "female_only_unverified"
+        reasons.append("study_protocol_no_results")
     elif nonhuman >= 3 and female_pop < 3:
         label = "rejected"
         reasons.append(f"animal_or_in_vitro:{nonhuman}")
     elif hard:
         label = "female_only_probable"
         reasons.append(f"male_terms_in_text:{len(hard)}")
+    elif other_groups:
+        label = "female_only_probable"
+        reasons.append("other_participant_groups:" + ",".join(other_groups[:4]))
     elif not methods_text:
         label = "female_only_unverified"
         reasons.append("no_methods_section")

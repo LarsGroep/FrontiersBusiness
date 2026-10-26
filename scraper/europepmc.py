@@ -9,7 +9,7 @@ import requests
 BASE = "https://www.ebi.ac.uk/europepmc/webservices/rest"
 HEADERS = {"User-Agent": "FrontiersBusiness-women-evidence/0.1 (github.com/LarsGroep/FrontiersBusiness)"}
 
-# First-pass filter (verified live: ~121k hits, Oct 2026): indexers tagged the study population as human + female and NOT male.
+# First-pass filter (verified live: ~110k hits, Oct 2026): indexers tagged the study population as human + female and NOT male.
 # Open access + full text in Europe PMC so the RAG can use methods/results, not just abstracts.
 # Reviews/editorials excluded: we want primary data from women.
 DEFAULT_QUERY = (
@@ -19,8 +19,27 @@ DEFAULT_QUERY = (
     'NOT PUB_TYPE:"review" NOT PUB_TYPE:"editorial" NOT PUB_TYPE:"comment" '
     'NOT PUB_TYPE:"letter" NOT PUB_TYPE:"case reports" '
     # The methods section itself must talk about women as the study population.
-    'AND METHODS:("women" OR "pregnant" OR "mothers" OR "female participants" OR "female patients" OR "girls")'
+    'AND METHODS:("women" OR "female participants" OR "female patients" OR "girls")'
 )
+
+
+# Topic rotation so the dataset is not dominated by pregnancy / reproductive-health papers.
+DEFAULT_TOPICS = [
+    "cardiovascular OR hypertension OR stroke OR heart",
+    "cancer OR tumor OR oncology",
+    "depression OR anxiety OR mental health OR psychiatric",
+    "diabetes OR obesity OR metabolic OR nutrition",
+    "osteoporosis OR bone OR musculoskeletal OR exercise OR physical activity",
+    "pharmacokinetics OR drug OR medication OR adverse events",
+    "autoimmune OR lupus OR rheumatoid OR multiple sclerosis OR thyroid",
+    "menopause OR perimenopause OR postmenopausal",
+    "pregnancy OR maternal OR postpartum OR breastfeeding",
+    "contraception OR fertility OR endometriosis OR PCOS OR menstrual",
+    "HIV OR infection OR vaccine OR HPV",
+    "pain OR migraine OR sleep OR fatigue",
+    "violence OR social OR employment OR education",
+    "ageing OR older OR dementia OR cognition",
+]
 
 
 def build_query(since_year: int | None = None, topic: str | None = None, base: str = DEFAULT_QUERY) -> str:

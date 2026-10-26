@@ -24,13 +24,15 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--max-papers", type=int, default=200, help="max NEW papers to process this run")
     ap.add_argument("--since-year", type=int, default=None)
-    ap.add_argument("--topic", default=None, help="optional extra Europe PMC query, e.g. 'cardiovascular'")
+    ap.add_argument("--topic", default=None, help="single Europe PMC topic query, e.g. 'cardiovascular'; default rotates DEFAULT_TOPICS")
     ap.add_argument("--no-embed", action="store_true")
     args = ap.parse_args()
 
     started = time.time()
-    query = europepmc.build_query(args.since_year, args.topic)
-    print(f"Query: {query}", flush=True)
+    topics = [args.topic] if args.topic else europepmc.DEFAULT_TOPICS
+    quota = max(1, -(-args.max_papers // len(topics)))  # ceil: papers per topic
+    query = europepmc.build_query(args.since_year, None)
+    print(f"Base query: {query}\n{len(topics)} topic(s), up to {quota} new papers each", flush=True)
 
     seen: set[str] = set()
     try:
@@ -59,9 +61,24 @@ def main() -> None:
     else:
         print("SUPABASE_DB_URL not set: dry run (reports + local JSONL only)", flush=True)
 
-    # Scan up to 5x the target so re-runs move past papers we already have.
-    hit_count, records = europepmc.search(query, max_results=args.max_papers * 5 + len(seen))
-    print(f"Europe PMC hits for query: {hit_count}", flush=True)
+    hit_count = 0
+    topic_done = collections.Counter()
+    topic_hits: dict[str, int] = {}
+
+    def records():
+        """Yield (topic, record) per topic until that topic's quota of NEW papers is processed."""
+        nonlocal hit_count
+        for t in topics:
+            q = europepmc.build_query(args.since_year, t)
+            # Scan well past the quota so re-runs move beyond papers we already have.
+            n, it = europepmc.search(q, max_results=quota * 10 + len(seen))
+            topic_hits[t] = n
+            hit_count += n
+            print(f"Topic [{t}]: {n} hits", flush=True)
+            for rec in it:
+                if topic_done[t] >= quota:
+                    break
+                yield t, rec
 
     DATA.mkdir(exist_ok=True)
     REPORTS.mkdir(exist_ok=True)
@@ -72,10 +89,11 @@ def main() -> None:
     sections_count = collections.Counter()
     processed: list[dict] = []
 
-    for rec in records:
+    for topic, rec in records():
         if stats["processed"] >= args.max_papers:
             break
         paper = europepmc.parse_record(rec)
+        paper["topic"] = topic
         if not paper["pmcid"] or paper["id"] in seen:
             stats["skipped_existing_or_no_pmcid"] += 1
             continue
@@ -111,6 +129,7 @@ def main() -> None:
                                     "sections": [n for n, _, _ in sections]}) + "\n")
         processed.append({**paper, "n_chunks": len(chunks), "has_methods": bool(methods_text)})
         stats["processed"] += 1
+        topic_done[topic] += 1
         if stats["processed"] % 25 == 0:
             print(f"  {stats['processed']} papers | labels {dict(labels_count)}", flush=True)
         time.sleep(0.1)
@@ -121,6 +140,9 @@ def main() -> None:
         "seconds": round(time.time() - started),
         "query": query,
         "europepmc_hit_count": hit_count,
+        "topics": {t: {"hits": topic_hits.get(t), "processed": topic_done[t],
+                       "verified": sum(1 for p in processed if p.get("topic") == t and p["label"] == "female_only_verified")}
+                   for t in topics},
         "db_connected": bool(conn),
         "llm_verifier": any(p.get("llm_label") for p in processed),
         "stats": dict(stats),
