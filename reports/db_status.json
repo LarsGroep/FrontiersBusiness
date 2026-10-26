@@ -1,36 +1,36 @@
 {
-  "women": 7045102,
+  "women": 9952361,
   "years": {
     "max": 2027,
     "min": 2024
   },
-  "chunks": 23605,
-  "papers": 1033,
-  "updated": "2026-10-26T18:52:28.387719+00:00",
+  "chunks": 39922,
+  "papers": 1800,
+  "updated": "2026-10-26T19:16:22.793922+00:00",
   "by_label": {
-    "rejected": 20,
-    "female_only_probable": 185,
-    "female_only_verified": 746,
-    "female_only_unverified": 82
+    "rejected": 38,
+    "female_only_probable": 319,
+    "female_only_verified": 1305,
+    "female_only_unverified": 138
   },
   "by_topic": {
     "ageing": 23,
-    "cancer": 63,
-    "social": 43,
-    "infection": 53,
-    "menopause": 60,
-    "metabolic": 58,
-    "pregnancy": 57,
-    "autoimmune": 62,
-    "medication": 54,
-    "pain-sleep": 52,
-    "reproductive": 51,
-    "bone-exercise": 65,
-    "mental-health": 44,
-    "cardiovascular": 61
+    "cancer": 105,
+    "social": 85,
+    "infection": 95,
+    "menopause": 104,
+    "metabolic": 105,
+    "pregnancy": 100,
+    "autoimmune": 104,
+    "medication": 90,
+    "pain-sleep": 95,
+    "reproductive": 97,
+    "bone-exercise": 116,
+    "mental-health": 82,
+    "cardiovascular": 104
   },
-  "verified": 746,
-  "added_last_24h": 1033,
-  "db_size_mb": 181,
+  "verified": 1305,
+  "added_last_24h": 1800,
+  "db_size_mb": 291,
   "cursors": {}
 }
