@@ -244,6 +244,17 @@ as $$
     'women',    (select coalesce(sum(n_female), 0) from public.papers where label = 'female_only_verified' and n_female < 1000000),
     'by_label', (select jsonb_object_agg(label, n) from (select label, count(*) n from public.papers group by label) x),
     'with_evidence', (select count(*) from public.papers where evidence is not null and evidence <> '{}'::jsonb),
+    'by_license', (select jsonb_object_agg(l, jsonb_build_object('papers', n, 'verified', v)) from
+                    (select coalesce(nullif(license, ''), 'unknown') l, count(*) n,
+                            count(*) filter (where label = 'female_only_verified') v
+                     from public.papers group by 1) x),
+    'open_licence', (select jsonb_build_object('papers', count(*) filter (where commercial_use_ok),
+                            'verified', count(*) filter (where commercial_use_ok and label = 'female_only_verified'))
+                     from public.papers),
+    'journals', (select count(distinct journal) from public.papers),
+    'top_journals', (select jsonb_agg(jsonb_build_array(journal, n)) from
+                      (select journal, count(*) n from public.papers where journal is not null
+                       group by 1 order by 2 desc limit 15) x),
     'by_decade', (select jsonb_object_agg(d, n) from (select (pub_year / 10 * 10)::text || 's' d, count(*) n
                     from public.papers where label = 'female_only_verified' and pub_year is not null group by 1) x),
     'by_topic', (select jsonb_object_agg(coalesce(topic, 'other'), n) from
