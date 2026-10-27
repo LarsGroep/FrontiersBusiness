@@ -22,7 +22,7 @@ say "Pi has ${RAM_MB} MB RAM; system disk is ${ROOT_DEV}"
 USE_DATA_DISK=0
 if findmnt -rno TARGET "$DATA_MOUNT" >/dev/null 2>&1; then
   USE_DATA_DISK=1
-  say "Data disk found at $DATA_MOUNT ($(findmnt -no SOURCE "$DATA_MOUNT"), $(df -h --output=avail "$DATA_MOUNT" | tail -1 | xargs) free): database and backups go there"
+  say "Data disk found at $DATA_MOUNT ($(findmnt -no SOURCE "$DATA_MOUNT"), $(df -h --output=avail "$DATA_MOUNT" | tail -1 | xargs) free): the database goes there, backups stay on the SD card"
 elif [[ "$ROOT_DEV" != /dev/nvme* ]]; then
   warn "No data disk at $DATA_MOUNT and the system runs from ${ROOT_DEV} (SD card?). A database on an SD card is slow and wears it out."
   warn "Recommended: plug in the USB drive and run  bash pi/prepare-usb.sh  first, then this script again."
