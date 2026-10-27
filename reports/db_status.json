@@ -1,45 +1,45 @@
 {
-  "women": 103416854,
+  "women": 109691919,
   "years": {
     "max": 2027,
     "min": 1986
   },
-  "chunks": 54376,
-  "papers": 18596,
-  "updated": "2026-10-27T02:01:39.918755+00:00",
+  "chunks": 57367,
+  "papers": 19653,
+  "updated": "2026-10-27T02:23:06.885736+00:00",
   "by_label": {
-    "rejected": 505,
-    "female_only_probable": 3333,
-    "female_only_verified": 13417,
-    "female_only_unverified": 1341
+    "rejected": 532,
+    "female_only_probable": 3514,
+    "female_only_verified": 14178,
+    "female_only_unverified": 1429
   },
   "by_topic": {
-    "ageing": 830,
-    "cancer": 1046,
-    "social": 742,
-    "infection": 947,
-    "menopause": 1089,
-    "metabolic": 1029,
-    "pregnancy": 924,
-    "autoimmune": 1046,
-    "medication": 875,
-    "pain-sleep": 959,
-    "reproductive": 1001,
-    "bone-exercise": 994,
-    "mental-health": 910,
-    "cardiovascular": 1025
+    "ageing": 884,
+    "cancer": 1100,
+    "social": 783,
+    "infection": 1004,
+    "menopause": 1154,
+    "metabolic": 1087,
+    "pregnancy": 978,
+    "autoimmune": 1108,
+    "medication": 924,
+    "pain-sleep": 1008,
+    "reproductive": 1059,
+    "bone-exercise": 1041,
+    "mental-health": 962,
+    "cardiovascular": 1086
   },
-  "verified": 13417,
+  "verified": 14178,
   "by_decade": {
     "1980s": 3,
     "1990s": 10,
     "2000s": 2278,
-    "2010s": 4613,
-    "2020s": 6513
+    "2010s": 4988,
+    "2020s": 6899
   },
   "with_evidence": 0,
-  "added_last_24h": 18596,
-  "db_size_mb": 267,
+  "added_last_24h": 19653,
+  "db_size_mb": 281,
   "cursors": {
     "ageing": {
       "scanned": 261,
@@ -47,24 +47,24 @@
       "updated": "2026-10-26 19:38:58.869287+00:00"
     },
     "ageing:2000s": {
-      "scanned": 6884,
+      "scanned": 7968,
       "exhausted": true,
-      "updated": "2026-10-27 02:03:21.929110+00:00"
+      "updated": "2026-10-27 02:24:06.829663+00:00"
     },
     "ageing:2010s": {
-      "scanned": 1329,
+      "scanned": 1423,
       "exhausted": false,
-      "updated": "2026-10-27 02:01:40.663692+00:00"
+      "updated": "2026-10-27 02:23:07.460658+00:00"
     },
     "ageing:2020+": {
-      "scanned": 1923,
+      "scanned": 2160,
       "exhausted": false,
-      "updated": "2026-10-27 01:59:00.783665+00:00"
+      "updated": "2026-10-27 02:20:45.372875+00:00"
     },
     "ageing:pre-2000": {
-      "scanned": 42,
+      "scanned": 45,
       "exhausted": true,
-      "updated": "2026-10-27 02:03:22.249244+00:00"
+      "updated": "2026-10-27 02:24:07.112844+00:00"
     },
     "autoimmune": {
       "scanned": 369,
@@ -72,24 +72,24 @@
       "updated": "2026-10-26 19:30:53.375118+00:00"
     },
     "autoimmune:2000s": {
-      "scanned": 8555,
+      "scanned": 10211,
       "exhausted": true,
-      "updated": "2026-10-27 01:56:30.932078+00:00"
+      "updated": "2026-10-27 02:18:44.985822+00:00"
     },
     "autoimmune:2010s": {
-      "scanned": 1209,
+      "scanned": 1397,
       "exhausted": false,
-      "updated": "2026-10-27 01:54:24.308393+00:00"
+      "updated": "2026-10-27 02:16:43.239520+00:00"
     },
     "autoimmune:2020+": {
-      "scanned": 1871,
+      "scanned": 2030,
       "exhausted": false,
-      "updated": "2026-10-27 01:51:51.057224+00:00"
+      "updated": "2026-10-27 02:13:58.508406+00:00"
     },
     "autoimmune:pre-2000": {
-      "scanned": 84,
+      "scanned": 90,
       "exhausted": true,
-      "updated": "2026-10-27 01:56:31.221968+00:00"
+      "updated": "2026-10-27 02:18:45.339992+00:00"
     },
     "bone-exercise": {
       "scanned": 372,
@@ -97,24 +97,24 @@
       "updated": "2026-10-26 19:25:47.855273+00:00"
     },
     "bone-exercise:2000s": {
-      "scanned": 6829,
+      "scanned": 8132,
       "exhausted": true,
-      "updated": "2026-10-27 01:50:53.502742+00:00"
+      "updated": "2026-10-27 02:12:10.776233+00:00"
     },
     "bone-exercise:2010s": {
-      "scanned": 1322,
+      "scanned": 1448,
       "exhausted": false,
-      "updated": "2026-10-27 01:49:16.327307+00:00"
+      "updated": "2026-10-27 02:10:36.687366+00:00"
     },
     "bone-exercise:2020+": {
-      "scanned": 1831,
+      "scanned": 1974,
       "exhausted": false,
-      "updated": "2026-10-27 01:47:00.698068+00:00"
+      "updated": "2026-10-27 02:08:00.615157+00:00"
     },
     "bone-exercise:pre-2000": {
       "scanned": 0,
       "exhausted": true,
-      "updated": "2026-10-27 01:50:53.813089+00:00"
+      "updated": "2026-10-27 02:12:11.210915+00:00"
     },
     "cancer": {
       "scanned": 353,
@@ -122,24 +122,24 @@
       "updated": "2026-10-26 19:25:40.222979+00:00"
     },
     "cancer:2000s": {
-      "scanned": 9399,
+      "scanned": 11182,
       "exhausted": true,
-      "updated": "2026-10-27 01:49:37.543646+00:00"
+      "updated": "2026-10-27 02:12:41.776713+00:00"
     },
     "cancer:2010s": {
-      "scanned": 1157,
+      "scanned": 1250,
       "exhausted": false,
-      "updated": "2026-10-27 01:48:23.068051+00:00"
+      "updated": "2026-10-27 02:10:58.697651+00:00"
     },
     "cancer:2020+": {
-      "scanned": 1610,
+      "scanned": 1713,
       "exhausted": false,
-      "updated": "2026-10-27 01:46:10.344386+00:00"
+      "updated": "2026-10-27 02:08:50.093065+00:00"
     },
     "cancer:pre-2000": {
-      "scanned": 84,
+      "scanned": 90,
       "exhausted": true,
-      "updated": "2026-10-27 01:49:37.759085+00:00"
+      "updated": "2026-10-27 02:12:42.183052+00:00"
     },
     "cardiovascular": {
       "scanned": 383,
@@ -147,24 +147,24 @@
       "updated": "2026-10-26 19:25:45.280883+00:00"
     },
     "cardiovascular:2000s": {
-      "scanned": 5625,
+      "scanned": 6510,
       "exhausted": true,
-      "updated": "2026-10-27 01:50:35.475482+00:00"
+      "updated": "2026-10-27 02:12:38.500430+00:00"
     },
     "cardiovascular:2010s": {
-      "scanned": 1318,
+      "scanned": 1449,
       "exhausted": false,
-      "updated": "2026-10-27 01:48:52.727849+00:00"
+      "updated": "2026-10-27 02:11:08.207687+00:00"
     },
     "cardiovascular:2020+": {
-      "scanned": 1942,
+      "scanned": 2099,
       "exhausted": false,
-      "updated": "2026-10-27 01:45:53.630445+00:00"
+      "updated": "2026-10-27 02:07:51.412901+00:00"
     },
     "cardiovascular:pre-2000": {
-      "scanned": 84,
+      "scanned": 90,
       "exhausted": true,
-      "updated": "2026-10-27 01:50:35.833856+00:00"
+      "updated": "2026-10-27 02:12:38.867360+00:00"
     },
     "infection": {
       "scanned": 333,
@@ -172,24 +172,24 @@
       "updated": "2026-10-26 19:32:39.470914+00:00"
     },
     "infection:2000s": {
-      "scanned": 5457,
+      "scanned": 6317,
       "exhausted": true,
-      "updated": "2026-10-27 01:55:43.124129+00:00"
+      "updated": "2026-10-27 02:18:41.182291+00:00"
     },
     "infection:2010s": {
-      "scanned": 1088,
+      "scanned": 1134,
       "exhausted": false,
-      "updated": "2026-10-27 01:55:42.918301+00:00"
+      "updated": "2026-10-27 02:18:40.870299+00:00"
     },
     "infection:2020+": {
-      "scanned": 1345,
+      "scanned": 1471,
       "exhausted": false,
-      "updated": "2026-10-27 01:53:24.557130+00:00"
+      "updated": "2026-10-27 02:16:03.439497+00:00"
     },
     "infection:pre-2000": {
-      "scanned": 56,
+      "scanned": 60,
       "exhausted": true,
-      "updated": "2026-10-27 01:55:57.354591+00:00"
+      "updated": "2026-10-27 02:18:54.990368+00:00"
     },
     "medication": {
       "scanned": 411,
@@ -197,24 +197,24 @@
       "updated": "2026-10-26 19:25:09.678500+00:00"
     },
     "medication:2000s": {
-      "scanned": 5320,
+      "scanned": 6166,
       "exhausted": true,
-      "updated": "2026-10-27 01:48:45.931431+00:00"
+      "updated": "2026-10-27 02:10:43.383782+00:00"
     },
     "medication:2010s": {
-      "scanned": 1337,
+      "scanned": 1509,
       "exhausted": false,
-      "updated": "2026-10-27 01:48:45.544171+00:00"
+      "updated": "2026-10-27 02:10:42.959973+00:00"
     },
     "medication:2020+": {
-      "scanned": 1889,
+      "scanned": 2011,
       "exhausted": false,
-      "updated": "2026-10-27 01:46:10.734540+00:00"
+      "updated": "2026-10-27 02:08:26.043716+00:00"
     },
     "medication:pre-2000": {
-      "scanned": 56,
+      "scanned": 60,
       "exhausted": true,
-      "updated": "2026-10-27 01:49:05.103542+00:00"
+      "updated": "2026-10-27 02:11:17.293448+00:00"
     },
     "menopause": {
       "scanned": 439,
@@ -222,24 +222,24 @@
       "updated": "2026-10-26 19:31:50.806065+00:00"
     },
     "menopause:2000s": {
-      "scanned": 4876,
+      "scanned": 5634,
       "exhausted": true,
-      "updated": "2026-10-27 01:55:24.323433+00:00"
+      "updated": "2026-10-27 02:18:29.212472+00:00"
     },
     "menopause:2010s": {
-      "scanned": 1317,
+      "scanned": 1449,
       "exhausted": false,
-      "updated": "2026-10-27 01:54:50.299443+00:00"
+      "updated": "2026-10-27 02:17:42.106078+00:00"
     },
     "menopause:2020+": {
-      "scanned": 1733,
+      "scanned": 1832,
       "exhausted": false,
-      "updated": "2026-10-27 01:52:19.011873+00:00"
+      "updated": "2026-10-27 02:13:55.618040+00:00"
     },
     "menopause:pre-2000": {
-      "scanned": 14,
+      "scanned": 15,
       "exhausted": true,
-      "updated": "2026-10-27 01:55:24.634778+00:00"
+      "updated": "2026-10-27 02:18:29.578988+00:00"
     },
     "mental-health": {
       "scanned": 386,
@@ -247,24 +247,24 @@
       "updated": "2026-10-26 19:24:33.888160+00:00"
     },
     "mental-health:2000s": {
-      "scanned": 12681,
+      "scanned": 15137,
       "exhausted": true,
-      "updated": "2026-10-27 01:51:24.259962+00:00"
+      "updated": "2026-10-27 02:11:57.529224+00:00"
     },
     "mental-health:2010s": {
-      "scanned": 1283,
+      "scanned": 1393,
       "exhausted": false,
-      "updated": "2026-10-27 01:48:57.391352+00:00"
+      "updated": "2026-10-27 02:09:08.551814+00:00"
     },
     "mental-health:2020+": {
-      "scanned": 1738,
+      "scanned": 1828,
       "exhausted": false,
-      "updated": "2026-10-27 01:46:07.882892+00:00"
+      "updated": "2026-10-27 02:06:56.398587+00:00"
     },
     "mental-health:pre-2000": {
-      "scanned": 112,
+      "scanned": 120,
       "exhausted": true,
-      "updated": "2026-10-27 01:51:24.651325+00:00"
+      "updated": "2026-10-27 02:11:57.916702+00:00"
     },
     "metabolic": {
       "scanned": 401,
@@ -272,24 +272,24 @@
       "updated": "2026-10-26 19:26:01.122723+00:00"
     },
     "metabolic:2000s": {
-      "scanned": 7047,
+      "scanned": 8167,
       "exhausted": true,
-      "updated": "2026-10-27 01:50:00.697217+00:00"
+      "updated": "2026-10-27 02:10:50.859870+00:00"
     },
     "metabolic:2010s": {
-      "scanned": 1200,
+      "scanned": 1275,
       "exhausted": false,
-      "updated": "2026-10-27 01:48:56.033296+00:00"
+      "updated": "2026-10-27 02:09:33.481577+00:00"
     },
     "metabolic:2020+": {
-      "scanned": 1759,
+      "scanned": 1867,
       "exhausted": false,
-      "updated": "2026-10-27 01:46:14.573985+00:00"
+      "updated": "2026-10-27 02:07:24.543933+00:00"
     },
     "metabolic:pre-2000": {
-      "scanned": 84,
+      "scanned": 90,
       "exhausted": true,
-      "updated": "2026-10-27 01:50:01.095513+00:00"
+      "updated": "2026-10-27 02:10:51.178161+00:00"
     },
     "pain-sleep": {
       "scanned": 412,
@@ -297,24 +297,24 @@
       "updated": "2026-10-26 19:32:08.836204+00:00"
     },
     "pain-sleep:2000s": {
-      "scanned": 4837,
+      "scanned": 5476,
       "exhausted": true,
-      "updated": "2026-10-27 01:58:11.433049+00:00"
+      "updated": "2026-10-27 02:17:43.759492+00:00"
     },
     "pain-sleep:2010s": {
-      "scanned": 1430,
+      "scanned": 1543,
       "exhausted": false,
-      "updated": "2026-10-27 01:58:11.040824+00:00"
+      "updated": "2026-10-27 02:17:43.392336+00:00"
     },
     "pain-sleep:2020+": {
-      "scanned": 1881,
+      "scanned": 2094,
       "exhausted": false,
-      "updated": "2026-10-27 01:54:51.618427+00:00"
+      "updated": "2026-10-27 02:15:31.420416+00:00"
     },
     "pain-sleep:pre-2000": {
-      "scanned": 14,
+      "scanned": 15,
       "exhausted": true,
-      "updated": "2026-10-27 01:58:30.829711+00:00"
+      "updated": "2026-10-27 02:17:58.371239+00:00"
     },
     "pregnancy": {
       "scanned": 363,
@@ -322,24 +322,24 @@
       "updated": "2026-10-26 19:31:33.338881+00:00"
     },
     "pregnancy:2000s": {
-      "scanned": 8953,
+      "scanned": 10405,
       "exhausted": true,
-      "updated": "2026-10-27 01:57:10.153250+00:00"
+      "updated": "2026-10-27 02:18:31.601327+00:00"
     },
     "pregnancy:2010s": {
-      "scanned": 1341,
+      "scanned": 1430,
       "exhausted": false,
-      "updated": "2026-10-27 01:55:46.740196+00:00"
+      "updated": "2026-10-27 02:17:10.917352+00:00"
     },
     "pregnancy:2020+": {
-      "scanned": 1718,
+      "scanned": 1857,
       "exhausted": false,
-      "updated": "2026-10-27 01:53:32.059786+00:00"
+      "updated": "2026-10-27 02:14:55.153531+00:00"
     },
     "pregnancy:pre-2000": {
-      "scanned": 126,
+      "scanned": 135,
       "exhausted": true,
-      "updated": "2026-10-27 01:57:10.509921+00:00"
+      "updated": "2026-10-27 02:18:31.910108+00:00"
     },
     "reproductive": {
       "scanned": 382,
@@ -347,24 +347,24 @@
       "updated": "2026-10-26 19:32:36.840081+00:00"
     },
     "reproductive:2000s": {
-      "scanned": 5237,
+      "scanned": 6039,
       "exhausted": true,
-      "updated": "2026-10-27 01:56:30.001233+00:00"
+      "updated": "2026-10-27 02:17:15.312340+00:00"
     },
     "reproductive:2010s": {
-      "scanned": 1142,
+      "scanned": 1276,
       "exhausted": false,
-      "updated": "2026-10-27 01:55:48.149930+00:00"
+      "updated": "2026-10-27 02:16:31.382645+00:00"
     },
     "reproductive:2020+": {
-      "scanned": 1613,
+      "scanned": 1713,
       "exhausted": false,
-      "updated": "2026-10-27 01:53:23.420015+00:00"
+      "updated": "2026-10-27 02:14:33.097375+00:00"
     },
     "reproductive:pre-2000": {
-      "scanned": 70,
+      "scanned": 75,
       "exhausted": true,
-      "updated": "2026-10-27 01:56:30.320074+00:00"
+      "updated": "2026-10-27 02:17:15.520243+00:00"
     },
     "social": {
       "scanned": 376,
@@ -372,24 +372,24 @@
       "updated": "2026-10-26 19:36:45.505964+00:00"
     },
     "social:2000s": {
-      "scanned": 9098,
+      "scanned": 10560,
       "exhausted": true,
-      "updated": "2026-10-27 02:02:19.383264+00:00"
+      "updated": "2026-10-27 02:23:48.002722+00:00"
     },
     "social:2010s": {
-      "scanned": 1337,
+      "scanned": 1465,
       "exhausted": false,
-      "updated": "2026-10-27 02:00:29.706781+00:00"
+      "updated": "2026-10-27 02:22:52.910273+00:00"
     },
     "social:2020+": {
-      "scanned": 1583,
+      "scanned": 1714,
       "exhausted": false,
-      "updated": "2026-10-27 01:57:49.438744+00:00"
+      "updated": "2026-10-27 02:20:25.736365+00:00"
     },
     "social:pre-2000": {
-      "scanned": 70,
+      "scanned": 75,
       "exhausted": true,
-      "updated": "2026-10-27 02:02:19.687093+00:00"
+      "updated": "2026-10-27 02:23:48.342892+00:00"
     }
   }
 }
