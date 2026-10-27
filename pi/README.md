@@ -12,7 +12,7 @@ If the Pi is offline, the website automatically falls back to the Supabase searc
 
 ## What you need
 - **Raspberry Pi 5:** 8 GB recommended (4 GB works), with the official power supply (27 W) and a case with a fan.
-- **Data drive (USB or NVMe):** holds the database and backups; 256 GB+ is plenty.
+- **Data drive (USB or NVMe):** holds the database (backups stay on the SD card); 16 GB is enough for ~100k papers, 256 GB+ for much more.
   - A **USB SSD** (or NVMe in a USB enclosure) in a **blue USB 3 port** works well.
   - A plain USB flash stick also works, but it is slower and wears out sooner, so keep off-site backups.
   - The Pi's system can stay on its SD card; only the operating system lives there.
@@ -34,7 +34,7 @@ bash pi/install.sh
 ```
 - `prepare-usb.sh` lists the drives and only formats the one you name. You type its name twice, and it never offers the system disk.
 - Windows formats (NTFS/exFAT) aren't safe for a database, so the drive must be reformatted. Copy off anything you want to keep first.
-- `install.sh` puts the database and nightly backups on the USB drive. The database is set to only start when the drive is mounted.
+- `install.sh` puts the database on the USB drive and the nightly backups on the SD card, so either one can fail without losing everything. The database is set to only start when the drive is mounted.
 The script does the following, and prints the token you'll need in step 4:
 - installs PostgreSQL (tuned for the Pi + SSD) and Python;
 - creates the database and a service user;
@@ -76,13 +76,13 @@ bash /opt/herevidence/pi/expose.sh
 | API documentation | `http://127.0.0.1:8000/docs` on the Pi |
 
 ## Backups
-- **Nightly:** a copy goes to `/mnt/evidence/backups` (on the USB drive) at 03:30, keeping the last 7.
-- **Off-site:** those copies sit on the same drive as the database, so also copy them off the Pi weekly, e.g. with `rclone` to Google Drive / OneDrive:
+- **Nightly:** a copy goes to `/var/backups/herevidence` (on the SD card, separate from the database drive) at 03:30, keeping the last 7.
+- **Off-site:** the Pi can still be lost or stolen, so also copy them off the Pi weekly, e.g. with `rclone` to Google Drive / OneDrive:
   ```bash
   sudo apt-get install -y rclone && rclone config    # add a remote called "cloud"
-  rclone copy /mnt/evidence/backups cloud:herevidence
+  rclone copy /var/backups/herevidence cloud:herevidence
   ```
-- **Restore:** `sudo -u herevidence pg_restore -d herdb --clean /mnt/evidence/backups/herdb-YYYYMMDD.dump`
+- **Restore:** `sudo -u herevidence pg_restore -d herdb --clean /var/backups/herevidence/herdb-YYYYMMDD.dump`
 - **If the USB drive is unplugged:** the database and API stop (by design) and the website falls back to Supabase. Plug it back in and run `sudo systemctl restart postgresql herevidence-api`.
 
 ## Expected size and speed

@@ -28,7 +28,8 @@ elif [[ "$ROOT_DEV" != /dev/nvme* ]]; then
   warn "Recommended: plug in the USB drive and run  bash pi/prepare-usb.sh  first, then this script again."
   read -r -p "Continue with the database on the system disk anyway? [y/N] " ans; [[ "$ans" =~ ^[Yy]$ ]] || exit 1
 fi
-BACKUP_DIR=$([ "$USE_DATA_DISK" = 1 ] && echo "$DATA_MOUNT/backups" || echo /var/backups/herevidence)
+# Backups go on the system disk: with the database on the USB drive, a dead drive can be restored from them.
+BACKUP_DIR=/var/backups/herevidence
 
 # ---------- packages ----------
 say "Installing PostgreSQL, Python and tools"
