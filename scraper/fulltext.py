@@ -4,7 +4,7 @@ from __future__ import annotations
 import re
 from lxml import etree
 
-SKIP_SECTIONS = re.compile(r"acknowledg|funding|conflict|competing|author contrib|supplement|data availab|abbreviation|ethics declar|consent for publ", re.I)
+SKIP_SECTIONS = re.compile(r"acknowledg|funding|conflict|competing|author contrib|supplement|supporting information|data availab|abbreviation|ethic|consent for publ|declaration", re.I)
 
 SECTION_MAP = [
     ("methods", re.compile(r"method|material|participant|subject|patient|design|procedure|population|setting|sample|statistic|measure", re.I)),

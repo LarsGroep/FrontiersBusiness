@@ -9,7 +9,7 @@ const COLS = "id,pmid,pmcid,doi,title,authors,journal,pub_year,abstract,license,
 
 const decode = (s) => s.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;|&apos;/g, "'").replace(/&amp;/g, "&");
 const text = (s) => decode(s.replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
-const SKIP = /acknowledg|funding|conflict|competing|author contrib|supplement|data availab|abbreviation|consent/i;
+const SKIP = /acknowledg|funding|conflict|competing|author contrib|supplement|supporting information|data availab|abbreviation|consent|ethic|declaration/i;
 
 function sectionsFromJats(xml, maxChars) {
   const body = (xml.match(/<body[\s\S]*<\/body>/) || [""])[0]
