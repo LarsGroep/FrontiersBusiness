@@ -29,6 +29,7 @@
     "mental-health": 1426,
     "cardiovascular": 1621
   },
+  "journals": 1492,
   "verified": 20589,
   "by_decade": {
     "1980s": 3,
@@ -37,6 +38,106 @@
     "2010s": 8147,
     "2020s": 10151
   },
+  "by_license": {
+    "cc0": {
+      "papers": 229,
+      "verified": 169
+    },
+    "cc by": {
+      "papers": 18790,
+      "verified": 13393
+    },
+    "unknown": {
+      "papers": 418,
+      "verified": 315
+    },
+    "cc by-nc": {
+      "papers": 3405,
+      "verified": 2313
+    },
+    "cc by-nd": {
+      "papers": 38,
+      "verified": 34
+    },
+    "cc by-sa": {
+      "papers": 58,
+      "verified": 48
+    },
+    "cc by-nc-nd": {
+      "papers": 5389,
+      "verified": 4106
+    },
+    "cc by-nc-sa": {
+      "papers": 245,
+      "verified": 211
+    }
+  },
+  "open_licence": {
+    "papers": 19115,
+    "verified": 13644
+  },
+  "top_journals": [
+    [
+      "PloS one",
+      2396
+    ],
+    [
+      "BMC pregnancy and childbirth",
+      1612
+    ],
+    [
+      "Scientific reports",
+      1170
+    ],
+    [
+      "BMJ open",
+      1005
+    ],
+    [
+      "BMC women's health",
+      945
+    ],
+    [
+      "BMC public health",
+      881
+    ],
+    [
+      "Nutrients",
+      654
+    ],
+    [
+      "British journal of cancer",
+      616
+    ],
+    [
+      "Medicine",
+      531
+    ],
+    [
+      "BMC cancer",
+      506
+    ],
+    [
+      "International journal of environmental research and public health",
+      471
+    ],
+    [
+      "Breast cancer research : BCR",
+      403
+    ],
+    [
+      "Frontiers in endocrinology",
+      382
+    ],
+    [
+      "Frontiers in public health",
+      321
+    ],
+    [
+      "Reproductive health",
+      320
+    ]
+  ],
   "with_evidence": 0,
   "added_last_24h": 28572,
   "db_size_mb": 402,
