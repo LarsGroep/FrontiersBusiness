@@ -138,6 +138,7 @@ footer p{margin:0 0 6px;max-width:80ch}
 <header class="site">
   <div class="wrap">
     <p class="stats" id="stats">Loading…</p>
+    <p class="stats" id="ftstats" hidden></p>
 
     <div class="composer">
       <div class="modes" role="tablist" aria-label="How to search">
@@ -364,6 +365,30 @@ rpc("evidence_stats").then(s => {
     (y.min ? `, published ${yr(y.min, y.max)}` : "") + ".";
 }).catch(() => { $("#stats").textContent = "Database unavailable. Try again in a minute."; });
 
+// ---------- full-text search on the Raspberry Pi (optional) ----------
+let fulltextOn = false;
+fetch("/api/fulltext?health=1").then(r => r.ok ? r.json() : null).then(h => {
+  if (!h || !h.ok) return;
+  fulltextOn = true;
+  const el = $("#ftstats");
+  el.innerHTML = `Whole-text search is on: <strong>${fmt(h.with_fulltext)}</strong> papers searchable word for word.`;
+  el.hidden = false;
+}).catch(() => {});
+function ftParams(f, extra) {
+  const p = new URLSearchParams();
+  for (const [k, v] of Object.entries(extra)) if (v != null && v !== "") p.set(k, v);
+  if (f.labels.length > 1) p.set("include_probable", "true");
+  if (f.min_year) p.set("min_year", f.min_year);
+  if (f.topics) p.set("topics", f.topics.join(","));
+  if (f.commercial_only) p.set("open_licence_only", "true");
+  return p;
+}
+async function ft(f, extra) {
+  const r = await fetch("/api/fulltext?" + ftParams(f, extra));
+  if (!r.ok) throw new Error(`full-text search answered ${r.status}`);
+  return r.json();
+}
+
 // ---------- examples ----------
 const EX = ["hot flushes sleep", "iron deficiency fatigue", "statins side effects", "endometriosis pain treatment", "postpartum depression", "exercise bone density"];
 $("#examples").innerHTML = EX.map(e => `<button type="button">${esc(e)}</button>`).join("");
@@ -436,7 +461,8 @@ function entryHtml(p, n) {
     kind ? `<span class="kind">${esc(kind)}</span>` : null,
     p.journal ? `<span>${esc(p.journal)}${p.pub_year ? ", " + p.pub_year : ""}</span>` : (p.pub_year ? `<span>${p.pub_year}</span>` : null),
     p.label === "female_only_verified" ? `<span class="tag ok">Verified women-only</span>` : `<span class="tag">Probably women-only</span>`,
-    p.population_match ? `<span class="tag pop">Matches your life stage</span>` : null
+    p.population_match ? `<span class="tag pop">Matches your life stage</span>` : null,
+    p.mentions > 1 ? `<span>${p.mentions} matching passages</span>` : null
   ].filter(Boolean).join("");
   const [first, ...rest] = p.passages;
   const passage = x => `<p class="passage"><span class="sec">${esc(x.section)}</span>${safeMarked(x.snippet)}</p>`;
@@ -445,16 +471,22 @@ function entryHtml(p, n) {
     <div class="facts">${facts}</div>
     ${passage(first)}
     ${rest.length ? `<details class="more"><summary>Another matching passage</summary>${rest.map(passage).join("")}</details>` : ""}
+    ${p.fulltext_note ? `<p class="hint">${esc(p.fulltext_note)}</p>` : ""}
   </li>`;
 }
-function overviewExtractive(papers, title) {
+function matchedSentence(shown, total, women) {
+  const w = women ? ` about ${fmt(women)} women` : "";
+  if (total && total > shown) return `${fmt(total)} studies matched.${w ? ` The ${shown} shown below include${w}.` : ` The best ${shown} are shown below.`}`;
+  return `${shown} ${shown === 1 ? "study" : "studies"} matched${w ? `, together covering${w}` : ""}.`;
+}
+function overviewExtractive(papers, title, total) {
   const types = {}; let women = 0;
   for (const p of papers) { const k = STUDY_LABEL[p.study_type] || "Other designs"; types[k] = (types[k]||0)+1; if (p.n_female && p.n_female < 1e6) women += p.n_female; }
   const years = papers.map(p=>p.pub_year).filter(Boolean);
   const typeList = Object.entries(types).sort((a,b)=>b[1]-a[1]).map(([k,v]) => `${k.toLowerCase()} (${v})`).join(", ");
   return `<section class="overview" id="overview">
     <h2>${esc(title)}</h2>
-    <div class="body"><p>${papers.length} studies matched${women ? `, together covering about ${fmt(women)} women` : ""}. Designs: ${esc(typeList)}.${years.length ? ` Published ${yr(Math.min(...years), Math.max(...years))}.` : ""}</p>
+    <div class="body"><p>${matchedSentence(papers.length, total, women)} Designs: ${esc(typeList)}.${years.length ? ` Published ${yr(Math.min(...years), Math.max(...years))}.` : ""}</p>
     <p>Randomised trials and large cohort studies are the strongest evidence. Interview studies describe experiences rather than effects.</p></div>
     ${aiAvailable === false ? "" : `<button class="btn quiet ai-btn" type="button" id="ai-go">Summarise these studies with Claude</button>`}
   </section>`;
@@ -500,6 +532,10 @@ async function runSearch(text) {
   if (!text) { statusEl.textContent = "Type a word or phrase to search for."; out.innerHTML = ""; reveal(); $("#q").focus(); return; }
   statusEl.textContent = "Searching…"; out.innerHTML = ""; reveal();
   const f = filters();
+  if (fulltextOn) {
+    try { await runFulltextSearch(text, f, my); return; }
+    catch (e) { if (my !== runId) return; /* Pi unreachable: fall back to the main database below */ }
+  }
   try {
     let q = text, rows = await rpc("search_evidence", {q, match_count:24, ...f});
     if (my !== runId) return;
@@ -534,6 +570,48 @@ async function runSearch(text) {
 }
 $("#f-search").addEventListener("submit", e => { e.preventDefault(); runSearch($("#q").value); });
 
+const PER_PAGE = 12;
+async function runFulltextSearch(text, f, my) {
+  let q = text, data = await ft(f, {q, page: 1, per_page: PER_PAGE});
+  if (my !== runId) return;
+  let broadened = false;
+  if (data.total === 0) {
+    // No study has every word: look for studies with any of the concepts (most matches rank first).
+    const q2 = concepts(text).join(" OR ");
+    if (q2 && q2 !== q) {
+      const d2 = await ft(f, {q: q2, page: 1, per_page: PER_PAGE});
+      if (my !== runId) return;
+      if (d2.total) { data = d2; q = q2; broadened = true; }
+    }
+  }
+  if (!data.total) { statusEl.textContent = ""; out.innerHTML = emptyHtml(text); return; }
+  let papers = data.results, page = 1;
+  lastContext = {question: text, profile: null, papers};
+  statusEl.textContent = `${fmt(data.total)} ${data.total === 1 ? "study mentions" : "studies mention"} ${broadened ? "some of your terms (none had every word)" : "your search"}. Whole text of every paper searched.`;
+  const csv = "/api/fulltext?" + ftParams(f, {q, export: "csv"});
+  out.innerHTML = redFlagHtml(text) + overviewExtractive(papers, "At a glance", data.total) +
+    `<p class="hint"><a href="${esc(csv)}">Download all ${fmt(data.total)} as a spreadsheet (CSV)</a></p>` +
+    `<ol class="list" id="ft-list">${papers.map((p, i) => entryHtml(p, i + 1)).join("")}</ol>` +
+    (data.total > papers.length ? `<p><button class="btn quiet" type="button" id="ft-more">Show ${Math.min(PER_PAGE, data.total - papers.length)} more</button></p>` : "");
+  wireAi();
+  const more = $("#ft-more");
+  if (more) more.addEventListener("click", async () => {
+    more.disabled = true; more.textContent = "Loading…";
+    try {
+      const next = await ft(f, {q, page: page + 1, per_page: PER_PAGE});
+      if (my !== runId) return;
+      page += 1;
+      const start = papers.length;
+      papers = papers.concat(next.results);
+      lastContext.papers = papers;
+      $("#ft-list").insertAdjacentHTML("beforeend", next.results.map((p, i) => entryHtml(p, start + i + 1)).join(""));
+      const left = data.total - papers.length;
+      if (left > 0 && next.results.length) { more.disabled = false; more.textContent = `Show ${Math.min(PER_PAGE, left)} more`; }
+      else more.remove();
+    } catch (e) { more.disabled = false; more.textContent = "Couldn't load more. Try again"; }
+  });
+}
+
 // ---------- symptom / history mode ----------
 async function runProfile() {
   const profile = {
@@ -562,14 +640,26 @@ async function runProfile() {
   // 2. Search each group in parallel, boosting studies that match the life stage.
   statusEl.textContent = "Searching the studies…";
   try {
-    const results = await Promise.all(groups.map(g => rpc("search_evidence", {q:g.query, match_count:10, population_terms:pop, ...f}).catch(()=>[])));
+    // Whole-text search on the Pi when it is online (with exact totals), otherwise the main database.
+    const fetchGroup = async g => {
+      if (fulltextOn) {
+        try { const d = await ft(f, {q: g.query, page: 1, per_page: 10, population: pop ? pop.join(",") : ""}); return {papers: d.results, total: d.total}; }
+        catch (e) { /* fall through */ }
+      }
+      const rows = await rpc("search_evidence", {q: g.query, match_count: 10, population_terms: pop, ...f}).catch(() => []);
+      return {papers: groupByPaper(rows), total: null};
+    };
+    const results = await Promise.all(groups.map(fetchGroup));
     if (my !== runId) return;
     const seen = new Set(); let n = 0; const all = [];
     const sections = groups.map((g, gi) => {
-      const papers = groupByPaper(results[gi]).filter(p => !seen.has(p.paper_id)).slice(0, 5);
+      const {total} = results[gi];
+      const papers = results[gi].papers.filter(p => !seen.has(p.paper_id)).slice(0, 5);
       papers.forEach(p => { seen.add(p.paper_id); all.push(p); });
       if (!papers.length) return `<section class="group"><h2>${esc(g.label)}</h2><p class="q">No women-only studies matched yet (${esc(g.query)}).</p></section>`;
-      return `<section class="group"><h2>${esc(g.label)}</h2><p class="q">Searched for: ${esc(g.query)}</p>
+      const count = total && total > papers.length
+        ? ` · ${papers.length} of ${fmt(total)} studies <button class="btn quiet" type="button" data-showall="${esc(g.query)}">Show all ${fmt(total)}</button>` : "";
+      return `<section class="group"><h2>${esc(g.label)}</h2><p class="q">Searched for: ${esc(g.query)}${count}</p>
         <ol class="list">${papers.map(p => entryHtml(p, ++n)).join("")}</ol></section>`;
     });
     statusEl.textContent = all.length ? `${all.length} studies across ${groups.length} ${groups.length === 1 ? "topic" : "topics"} from your answers.` : "";
@@ -580,6 +670,13 @@ async function runProfile() {
   } catch (e) { if (my !== runId) return; statusEl.textContent = ""; out.innerHTML = `<div class="empty"><h2>Search didn't run</h2><p>${esc(e.message)}. Check your connection and try again.</p></div>`; }
 }
 $("#f-me").addEventListener("submit", e => { e.preventDefault(); runProfile(); });
+out.addEventListener("click", e => {
+  const b = e.target.closest("[data-showall]");
+  if (!b) return;
+  selectTab(tabs[0]);
+  $("#q").value = b.dataset.showall;
+  runSearch(b.dataset.showall);
+});
 
 // ---------- AI summary ----------
 function wireAi() {

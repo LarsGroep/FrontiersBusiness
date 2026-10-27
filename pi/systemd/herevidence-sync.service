@@ -1,0 +1,21 @@
+[Unit]
+Description=Women-only evidence: sync catalogue, fetch missing full text, scrape new papers
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=herevidence
+WorkingDirectory=/opt/herevidence
+EnvironmentFile=/etc/herevidence.env
+ExecStart=/opt/herevidence/.venv/bin/python -m pi.sync catalogue
+ExecStart=/opt/herevidence/.venv/bin/python -m pi.sync fulltext --limit 3000 --workers 4
+ExecStart=/bin/sh -c '/opt/herevidence/.venv/bin/python -m pi.scrape --max-papers "${PI_SCRAPE_PER_RUN:-300}"'
+Nice=10
+IOSchedulingClass=idle
+TimeoutStartSec=3h
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/run/postgresql

@@ -1,0 +1,23 @@
+[Unit]
+Description=Women-only evidence full-text search API
+After=network-online.target postgresql.service
+Wants=network-online.target
+Requires=postgresql.service
+
+[Service]
+User=herevidence
+WorkingDirectory=/opt/herevidence
+EnvironmentFile=/etc/herevidence.env
+ExecStart=/opt/herevidence/.venv/bin/uvicorn pi.api:app --host 127.0.0.1 --port 8000 --workers 2 --proxy-headers
+Restart=always
+RestartSec=5
+# Keep the API responsive even while the hourly sync runs
+Nice=-2
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/run/postgresql
+
+[Install]
+WantedBy=multi-user.target

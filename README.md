@@ -22,6 +22,9 @@ The search page is a static page plus two optional Vercel functions. Live at htt
 - With `ANTHROPIC_API_KEY` set in the Vercel project, `/api/expand` uses Claude for that translation and `/api/answer` writes a cited plain-language summary.
 - Deploy: Vercel → Add New Project → import this repo → Root Directory `web` → Deploy.
 
+## Raspberry Pi full-text server (pi/)
+Optional home server (Pi 5 + NVMe SSD). It stores the full text of every paper with a word index: every mention, exact totals, paging and CSV export. It also keeps scraping without Supabase's size limit. The website uses it through `/api/fulltext` when `PI_API_URL` + `PI_API_TOKEN` are set in Vercel, and falls back to Supabase otherwise. Step-by-step guide: `pi/README.md`.
+
 ## Agent API
 `/api/search`, `/api/paper` (full text on demand, licence-aware) and `/api/stats` on the Vercel site. Tool definitions are in `AGENT_TOOLS.md`.
 
