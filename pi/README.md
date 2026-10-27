@@ -3,7 +3,7 @@
 The Pi keeps the **full text of every paper** with a word index, so the website finds every study that mentions a term anywhere in the text. It shows exact totals, lets you page through all results and download them as a CSV. It also keeps scraping new papers without Supabase's 500 MB limit.
 
 ```
-Europe PMC ──► Pi: scraper + sync ──► PostgreSQL on the NVMe SSD ──► search API (port 8000)
+Europe PMC ──► Pi: scraper + sync ──► PostgreSQL on the USB/SSD drive ──► search API (port 8000)
 Supabase catalogue ──┘                                                   │  Tailscale Funnel (HTTPS)
                                                                          ▼
                                    Vercel site /api/fulltext (keeps the token secret) ──► browser
@@ -12,23 +12,29 @@ If the Pi is offline, the website automatically falls back to the Supabase searc
 
 ## What you need
 - **Raspberry Pi 5:** 8 GB recommended (4 GB works), with the official power supply (27 W) and a case with a fan.
-- **NVMe SSD (256 GB+) on an M.2 HAT/base for the Pi 5.** Boot the Pi from this SSD.
+- **Data drive (USB or NVMe):** holds the database and backups; 256 GB+ is plenty.
+  - A **USB SSD** (or NVMe in a USB enclosure) in a **blue USB 3 port** works well.
+  - A plain USB flash stick also works, but it is slower and wears out sooner, so keep off-site backups.
+  - The Pi's system can stay on its SD card; only the operating system lives there.
 - **Internet** via an Ethernet cable (better than Wi-Fi for a server).
 - **A free Tailscale account** (tailscale.com) to reach the Pi over HTTPS.
 
-## 1. Put Raspberry Pi OS on the SSD
-1. On your computer, open **Raspberry Pi Imager** and choose **Raspberry Pi 5 → Raspberry Pi OS Lite (64-bit)**.
-2. Choose the SSD as storage (in a USB-NVMe adapter), or flash an SD card first and copy to the SSD with *SD Card Copier*.
-3. In the Imager settings, set a hostname (e.g. `evidence`), your user + password, and enable SSH.
-4. Start the Pi from the SSD and log in: `ssh <user>@evidence.local`.
+## 1. Put Raspberry Pi OS on the SD card
+1. On your computer, open **Raspberry Pi Imager** and choose **Raspberry Pi 5 → Raspberry Pi OS Lite (64-bit)**. Write it to the SD card.
+2. In the Imager settings, set a hostname (e.g. `evidence`), your user + password, and enable SSH.
+3. Start the Pi, plug the USB drive into a **blue USB 3 port**, and log in: `ssh <user>@evidence.local`.
 
 ## 2. Install
 ```bash
 sudo apt-get update && sudo apt-get install -y git
 git clone https://github.com/LarsGroep/FrontiersBusiness.git
 cd FrontiersBusiness
+bash pi/prepare-usb.sh    # ERASES the USB drive: formats it (ext4), mounts it at /mnt/evidence, auto-mounts at boot
 bash pi/install.sh
 ```
+- `prepare-usb.sh` lists the drives and only formats the one you name. You type its name twice, and it never offers the system disk.
+- Windows formats (NTFS/exFAT) aren't safe for a database, so the drive must be reformatted. Copy off anything you want to keep first.
+- `install.sh` puts the database and nightly backups on the USB drive. The database is set to only start when the drive is mounted.
 The script does the following, and prints the token you'll need in step 4:
 - installs PostgreSQL (tuned for the Pi + SSD) and Python;
 - creates the database and a service user;
@@ -58,6 +64,7 @@ bash /opt/herevidence/pi/expose.sh
 ## Everyday use
 | What | Command |
 |---|---|
+| Is the USB drive mounted? | `df -h /mnt/evidence` |
 | Is everything running? | `systemctl status herevidence-api herevidence-sync.timer herevidence-backup.timer` |
 | How full is the database? | `sudo -u herevidence bash -c 'set -a; . /etc/herevidence.env; cd /opt/herevidence && .venv/bin/python -m pi.sync status'` |
 | Watch the sync / scraper | `journalctl -u herevidence-sync -f` |
@@ -69,13 +76,14 @@ bash /opt/herevidence/pi/expose.sh
 | API documentation | `http://127.0.0.1:8000/docs` on the Pi |
 
 ## Backups
-- **Nightly:** a copy goes to `/var/backups/herevidence` at 03:30, keeping the last 7.
-- **Off-site:** those copies sit on the same SSD, so also copy them off the Pi weekly, e.g. with `rclone` to Google Drive / OneDrive:
+- **Nightly:** a copy goes to `/mnt/evidence/backups` (on the USB drive) at 03:30, keeping the last 7.
+- **Off-site:** those copies sit on the same drive as the database, so also copy them off the Pi weekly, e.g. with `rclone` to Google Drive / OneDrive:
   ```bash
   sudo apt-get install -y rclone && rclone config    # add a remote called "cloud"
-  rclone copy /var/backups/herevidence cloud:herevidence
+  rclone copy /mnt/evidence/backups cloud:herevidence
   ```
-- **Restore:** `sudo -u herevidence pg_restore -d herdb --clean /var/backups/herevidence/herdb-YYYYMMDD.dump`
+- **Restore:** `sudo -u herevidence pg_restore -d herdb --clean /mnt/evidence/backups/herdb-YYYYMMDD.dump`
+- **If the USB drive is unplugged:** the database and API stop (by design) and the website falls back to Supabase. Plug it back in and run `sudo systemctl restart postgresql herevidence-api`.
 
 ## Expected size and speed
 - **Size:** about 35–50 KB per paper (full text + indexes), so ~1–1.5 GB for 28.5k papers and ~4–6 GB for the ~110k women-only pool. A 256 GB SSD has room for many times that.

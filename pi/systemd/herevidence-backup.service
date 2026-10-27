@@ -5,6 +5,7 @@ After=postgresql.service
 [Service]
 Type=oneshot
 User=herevidence
+EnvironmentFile=/etc/herevidence.env
 ExecStart=/bin/bash /opt/herevidence/pi/backup.sh
 Nice=10
 IOSchedulingClass=idle
