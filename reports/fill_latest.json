@@ -1,27 +1,146 @@
 {
-  "cancer": {
-    "hits": 6,
+  "menopause": {
+    "hits": 1,
     "processed": 114,
-    "verified": 80,
+    "verified": 92,
     "labels": {
-      "female_only_verified": 80,
       "female_only_probable": 13,
-      "rejected": 10,
-      "female_only_unverified": 11
+      "female_only_unverified": 7,
+      "female_only_verified": 92,
+      "rejected": 2
     },
-    "seconds": 257
+    "seconds": 322
   },
   "medication": {
     "hits": 4,
     "processed": 114,
-    "verified": 81,
+    "verified": 91,
     "labels": {
-      "female_only_unverified": 16,
+      "female_only_verified": 91,
+      "female_only_probable": 8,
+      "female_only_unverified": 12,
+      "rejected": 3
+    },
+    "seconds": 345
+  },
+  "infection": {
+    "hits": 4,
+    "processed": 114,
+    "verified": 89,
+    "labels": {
+      "female_only_verified": 89,
+      "rejected": 5,
+      "female_only_probable": 11,
+      "female_only_unverified": 9
+    },
+    "seconds": 246
+  },
+  "ageing": {
+    "hits": 3,
+    "processed": 114,
+    "verified": 79,
+    "labels": {
+      "female_only_verified": 79,
+      "female_only_probable": 23,
+      "rejected": 4,
+      "female_only_unverified": 8
+    },
+    "seconds": 302
+  },
+  "social": {
+    "hits": 5,
+    "processed": 114,
+    "verified": 67,
+    "labels": {
+      "female_only_verified": 67,
+      "female_only_probable": 40,
+      "female_only_unverified": 6,
+      "rejected": 1
+    },
+    "seconds": 272
+  },
+  "mental-health": {
+    "hits": 8,
+    "processed": 114,
+    "verified": 75,
+    "labels": {
+      "female_only_verified": 75,
+      "female_only_unverified": 11,
+      "female_only_probable": 25,
+      "rejected": 3
+    },
+    "seconds": 283
+  },
+  "metabolic": {
+    "hits": 6,
+    "processed": 114,
+    "verified": 85,
+    "labels": {
+      "female_only_verified": 85,
       "female_only_probable": 15,
-      "female_only_verified": 81,
+      "female_only_unverified": 14
+    },
+    "seconds": 286
+  },
+  "pregnancy": {
+    "hits": 9,
+    "processed": 114,
+    "verified": 80,
+    "labels": {
+      "female_only_verified": 80,
+      "female_only_probable": 20,
+      "female_only_unverified": 12,
       "rejected": 2
     },
-    "seconds": 313
+    "seconds": 340
+  },
+  "bone-exercise": {
+    "hits": 0,
+    "processed": 114,
+    "verified": 81,
+    "labels": {
+      "female_only_verified": 81,
+      "female_only_unverified": 15,
+      "female_only_probable": 15,
+      "rejected": 3
+    },
+    "seconds": 242
+  },
+  "reproductive": {
+    "hits": 5,
+    "processed": 114,
+    "verified": 89,
+    "labels": {
+      "female_only_verified": 89,
+      "female_only_probable": 9,
+      "rejected": 6,
+      "female_only_unverified": 10
+    },
+    "seconds": 317
+  },
+  "autoimmune": {
+    "hits": 6,
+    "processed": 114,
+    "verified": 86,
+    "labels": {
+      "female_only_verified": 86,
+      "rejected": 8,
+      "female_only_probable": 14,
+      "female_only_unverified": 6
+    },
+    "seconds": 351
+  },
+  "cancer": {
+    "hits": 6,
+    "processed": 114,
+    "verified": 81,
+    "labels": {
+      "female_only_verified": 81,
+      "female_only_probable": 12,
+      "rejected": 13,
+      "female_only_unverified": 8
+    },
+    "seconds": 310
   },
   "cardiovascular": {
     "hits": 6,
@@ -29,141 +148,22 @@
     "verified": 91,
     "labels": {
       "female_only_verified": 91,
-      "rejected": 2,
       "female_only_unverified": 6,
-      "female_only_probable": 15
+      "female_only_probable": 16,
+      "rejected": 1
     },
-    "seconds": 281
-  },
-  "bone-exercise": {
-    "hits": 0,
-    "processed": 114,
-    "verified": 84,
-    "labels": {
-      "female_only_verified": 84,
-      "female_only_probable": 23,
-      "rejected": 5,
-      "female_only_unverified": 2
-    },
-    "seconds": 293
-  },
-  "menopause": {
-    "hits": 1,
-    "processed": 114,
-    "verified": 99,
-    "labels": {
-      "female_only_verified": 99,
-      "female_only_probable": 12,
-      "rejected": 2,
-      "female_only_unverified": 1
-    },
-    "seconds": 237
-  },
-  "infection": {
-    "hits": 4,
-    "processed": 114,
-    "verified": 78,
-    "labels": {
-      "female_only_verified": 78,
-      "female_only_probable": 21,
-      "female_only_unverified": 10,
-      "rejected": 5
-    },
-    "seconds": 317
-  },
-  "social": {
-    "hits": 5,
-    "processed": 114,
-    "verified": 62,
-    "labels": {
-      "female_only_verified": 62,
-      "female_only_unverified": 4,
-      "female_only_probable": 46,
-      "rejected": 2
-    },
-    "seconds": 291
+    "seconds": 322
   },
   "pain-sleep": {
     "hits": 1,
-    "processed": 114,
-    "verified": 77,
+    "processed": 100,
+    "verified": 69,
     "labels": {
-      "female_only_verified": 77,
-      "female_only_unverified": 11,
-      "female_only_probable": 25,
-      "rejected": 1
-    },
-    "seconds": 238
-  },
-  "ageing": {
-    "hits": 3,
-    "processed": 114,
-    "verified": 77,
-    "labels": {
-      "female_only_verified": 77,
-      "female_only_probable": 24,
-      "female_only_unverified": 8,
-      "rejected": 5
-    },
-    "seconds": 296
-  },
-  "reproductive": {
-    "hits": 5,
-    "processed": 114,
-    "verified": 87,
-    "labels": {
-      "female_only_verified": 87,
-      "female_only_probable": 11,
-      "female_only_unverified": 12,
-      "rejected": 4
-    },
-    "seconds": 251
-  },
-  "metabolic": {
-    "hits": 6,
-    "processed": 114,
-    "verified": 87,
-    "labels": {
-      "female_only_verified": 87,
-      "female_only_probable": 24,
-      "female_only_unverified": 3
-    },
-    "seconds": 316
-  },
-  "mental-health": {
-    "hits": 8,
-    "processed": 114,
-    "verified": 76,
-    "labels": {
-      "female_only_probable": 24,
-      "female_only_verified": 76,
+      "female_only_verified": 69,
+      "female_only_probable": 17,
       "female_only_unverified": 11,
       "rejected": 3
     },
-    "seconds": 296
-  },
-  "autoimmune": {
-    "hits": 6,
-    "processed": 114,
-    "verified": 92,
-    "labels": {
-      "female_only_verified": 92,
-      "female_only_probable": 9,
-      "female_only_unverified": 8,
-      "rejected": 5
-    },
-    "seconds": 323
-  },
-  "pregnancy": {
-    "hits": 9,
-    "processed": 114,
-    "verified": 75,
-    "labels": {
-      "female_only_verified": 75,
-      "female_only_probable": 28,
-      "female_only_unverified": 10,
-      "rejected": 1
-    },
-    "seconds": 286
+    "seconds": 253
   }
 }
