@@ -15,15 +15,17 @@ say()  { printf '\n\033[1m==> %s\033[0m\n' "$*"; }
 warn() { printf '\033[33m!! %s\033[0m\n' "$*"; }
 
 # ---------- checks ----------
-[ "$(uname -m)" = "aarch64" ] || warn "Expected a 64-bit Raspberry Pi OS (aarch64); found $(uname -m)."
+# Works on a Raspberry Pi and on a normal Debian/Ubuntu server (VPS). Fresh VPS images log in as root without sudo.
+if [ "$(id -u)" = 0 ] && ! command -v sudo >/dev/null; then apt-get update -qq && apt-get install -y -qq sudo >/dev/null; fi
+IS_PI=0; grep -qi "raspberry pi" /proc/device-tree/model 2>/dev/null && IS_PI=1
 RAM_MB=$(awk '/MemTotal/ {print int($2/1024)}' /proc/meminfo)
 ROOT_DEV=$(findmnt -no SOURCE /)
-say "Pi has ${RAM_MB} MB RAM; system disk is ${ROOT_DEV}"
+say "$([ $IS_PI = 1 ] && echo 'Raspberry Pi' || echo 'Server') with ${RAM_MB} MB RAM; system disk is ${ROOT_DEV}"
 USE_DATA_DISK=0
 if findmnt -rno TARGET "$DATA_MOUNT" >/dev/null 2>&1; then
   USE_DATA_DISK=1
   say "Data disk found at $DATA_MOUNT ($(findmnt -no SOURCE "$DATA_MOUNT"), $(df -h --output=avail "$DATA_MOUNT" | tail -1 | xargs) free): the database goes there, backups stay on the SD card"
-elif [[ "$ROOT_DEV" != /dev/nvme* ]]; then
+elif [ "$IS_PI" = 1 ] && [[ "$ROOT_DEV" == /dev/mmcblk* ]]; then
   warn "No data disk at $DATA_MOUNT and the system runs from ${ROOT_DEV} (SD card?). A database on an SD card is slow and wears it out."
   warn "Recommended: plug in the USB drive and run  bash pi/prepare-usb.sh  first, then this script again."
   read -r -p "Continue with the database on the system disk anyway? [y/N] " ans; [[ "$ans" =~ ^[Yy]$ ]] || exit 1
@@ -35,6 +37,9 @@ BACKUP_DIR=/var/backups/herevidence
 say "Installing PostgreSQL, Python and tools"
 sudo apt-get update -qq
 sudo apt-get install -y -qq postgresql python3-venv python3-dev git curl rsync openssl >/dev/null
+# pgvector: vector search for the RAG agent (embeddings + clustering); skipped if the OS has no package for it
+PGV=$(ls /etc/postgresql | sort -V | tail -1)
+sudo apt-get install -y -qq "postgresql-$PGV-pgvector" >/dev/null 2>&1 && say "pgvector installed" || warn "pgvector package not available; vector search can be added later"
 
 # ---------- PostgreSQL tuning for the Pi + SSD ----------
 PGVER=$(ls /etc/postgresql | sort -V | tail -1)
@@ -129,9 +134,10 @@ Done. Next steps:
   1. First fill (copies 28k+ papers, then downloads full text; ~2-4 hours, safe to stop/restart):
        bash $APP_DIR/pi/first-fill.sh
   2. Make the API reachable for the website:
-       bash $APP_DIR/pi/expose.sh
+       VPS / server with a public IP:  bash $APP_DIR/pi/expose-https.sh
+       Raspberry Pi at home:           bash $APP_DIR/pi/expose.sh
   3. In Vercel (project larsfrontiers2 → Settings → Environment Variables) add:
-       PI_API_URL   = the https address printed by expose.sh
+       PI_API_URL   = the https address printed by that script
        PI_API_TOKEN = $TOKEN
      then redeploy.
 EOF

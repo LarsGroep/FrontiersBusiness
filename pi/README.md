@@ -92,3 +92,14 @@ bash /opt/herevidence/pi/expose.sh
 ## Licences
 - **Open licences (CC-BY/CC0):** full text is stored and can be read via `/paper/{id}`.
 - **Restricted licences (NC/ND/unknown):** only the word index is stored, so they show up in search results and counts, but the API returns just the abstract and a link.
+
+## On a VPS instead of a Pi (e.g. STRATO, Hetzner)
+The same scripts work on a Debian 12/13 or Ubuntu 22.04/24.04 server (x86 or ARM), logged in as root or a sudo user:
+```bash
+apt-get update && apt-get install -y git
+git clone https://github.com/LarsGroep/FrontiersBusiness.git && cd FrontiersBusiness
+bash pi/install.sh                              # database, API, hourly sync, nightly backup (+ pgvector for the RAG agent)
+bash /opt/herevidence/pi/first-fill.sh          # copies the catalogue + full text (~1-2 h on a VPS)
+bash /opt/herevidence/pi/expose-https.sh        # Caddy + Let's Encrypt at https://<ip>.sslip.io, firewall: 22/80/443 only
+```
+No USB step and no Tailscale: the server has a public IP. Set `DOMAIN=api.yourdomain` before `expose-https.sh` to use your own domain.
