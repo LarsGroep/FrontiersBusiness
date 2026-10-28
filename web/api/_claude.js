@@ -1,4 +1,5 @@
 // Shared helper for the optional Claude-powered endpoints.
+// Never logs request content (privacy: the chat is stateless).
 // Without ANTHROPIC_API_KEY the endpoints answer 503 and the page falls back to its built-in features.
 
 const MAX_BODY = 60_000;
@@ -17,7 +18,7 @@ async function readJson(req) {
   }
 }
 
-async function claude({ system, user, model, maxTokens }) {
+async function claude({ system, user, messages, model, maxTokens }) {
   const r = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
@@ -29,7 +30,7 @@ async function claude({ system, user, model, maxTokens }) {
       model,
       max_tokens: maxTokens,
       system,
-      messages: [{ role: "user", content: user }],
+      messages: messages || [{ role: "user", content: user }],
     }),
   });
   if (!r.ok) throw new Error(`claude_${r.status}`);
@@ -46,7 +47,7 @@ function handler(fn) {
       const body = await readJson(req);
       return res.status(200).json(await fn(body));
     } catch (e) {
-      const code = e.message === "too_large" ? 413 : e.message === "bad_json" ? 400 : 502;
+      const code = e.message === "too_large" ? 413 : e.message === "bad_json" || e.message === "bad_messages" ? 400 : 502;
       return res.status(code).json({ error: String(e.message).slice(0, 80) });
     }
   };

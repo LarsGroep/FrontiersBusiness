@@ -1,0 +1,7 @@
+{
+  "regions": ["fra1"],
+  "cleanUrls": true,
+  "headers": [
+    { "source": "/api/chat", "headers": [{ "key": "Cache-Control", "value": "no-store" }, { "key": "Referrer-Policy", "value": "no-referrer" }] }
+  ]
+}

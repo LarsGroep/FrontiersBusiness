@@ -60,3 +60,13 @@ python -m rag.ask "Does resistance training improve bone density in postmenopaus
 | v3 (+ 14-topic rotation, staff-interview flag, non-primary rejection) | 140 | ~95% (~98 of 103) | Balanced across topics; remaining misses: guidance papers, lab studies with small patient samples, child-outcome DHS analyses |
 
 Known limits: `n_female` is regex-extracted and sometimes wrong. About half of the "probable" papers are actually fine (held back conservatively). Adding the `ANTHROPIC_API_KEY` secret turns on the LLM verifier, which fixes both.
+
+## Chat agent (information product)
+`/chat` (page) + `/api/chat` (Vercel, region fra1). A research guide that explains what women-only studies found, matched to the person's situation, under strict guardrails (`web/api/_guardrails.js`):
+- **Never:** diagnosis, personal risk figures, treatment/dosing advice, or "you don't need care". Every answer is checked by rules, rewritten once if needed, else replaced by a safe fallback. Every answer cites studies and ends with "This is research information, not medical advice."
+- **Emergencies:** red-flag symptoms (chest pain, breathing trouble, suicidal thoughts, bleeding in pregnancy, ...) trigger an urgent-care notice before any AI call (112 / 113).
+- **Privacy:**
+  - Stateless: the conversation lives only in the browser tab, and nothing from a request is logged or stored.
+  - A profile is used only after an explicit consent tick. Age is turned into a 5-year band and names, contact details, dates and ID numbers are stripped.
+  - The study database only receives search terms.
+- **Needs:** `ANTHROPIC_API_KEY` in Vercel (models `ANSWER_MODEL`, default claude-sonnet-5-5, and `EXPAND_MODEL`, default claude-haiku-5-5). To keep the AI step inside the EU, switch the Claude call to Amazon Bedrock's EU profile.

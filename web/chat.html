@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="data:,">
+<title>Ask the research</title>
+<style>
+:root{--paper:#F6F8F7;--surface:#FFFFFF;--ink:#14233B;--ink-2:#3C4A60;--muted:#5F6D82;--rule:#D9E0E3;--rule-strong:#B7C3C9;
+  --teal:#0E7466;--teal-soft:#E1F1EE;--warn:#9A3B1E;--warn-soft:#FBEDE6;--focus:#2F6FEB;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#0F1828;--surface:#152135;--ink:#E8EEF2;--ink-2:#C2CCD6;--muted:#9AA7B8;
+  --rule:#26354C;--rule-strong:#3A4B65;--teal:#5CC2B2;--teal-soft:#16352F;--warn:#F0A07F;--warn-soft:#3A2219;--focus:#8AB4FF;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#0F1828;--surface:#152135;--ink:#E8EEF2;--ink-2:#C2CCD6;--muted:#9AA7B8;--rule:#26354C;--rule-strong:#3A4B65;
+  --teal:#5CC2B2;--teal-soft:#16352F;--warn:#F0A07F;--warn-soft:#3A2219;--focus:#8AB4FF;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+button,input,select,textarea{font:inherit;color:inherit}
+.wrap{max-width:820px;margin:0 auto;padding:16px}
+a{color:inherit;text-underline-offset:3px}
+.top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--rule);padding-bottom:10px}
+.top h1{font-size:20px;margin:0}
+.note{font-size:13.5px;color:var(--muted);margin:10px 0 0}
+details.profile{margin:14px 0 0;border:1px solid var(--rule);border-radius:8px;background:var(--surface);padding:6px 14px}
+details.profile summary{cursor:pointer;font-weight:600;padding:6px 0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px;padding:8px 0 12px}
+.f{display:flex;flex-direction:column;gap:4px}.f.full{grid-column:1/-1}
+.f label{font-size:14px;font-weight:600}
+.f input,.f select,textarea{padding:9px 11px;border:1px solid var(--rule-strong);border-radius:8px;background:var(--surface)}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:14px;background:var(--teal-soft);border-radius:8px;padding:10px 12px;margin:0 0 10px}
+.consent input{margin-top:4px;accent-color:var(--teal);width:18px;height:18px;flex:none}
+#log{margin:18px 0 0;display:flex;flex-direction:column;gap:16px}
+.msg{max-width:100%}
+.msg.user{align-self:flex-end;background:var(--ink);color:var(--paper);border-radius:12px 12px 2px 12px;padding:10px 14px;max-width:85%;white-space:pre-wrap}
+.msg.bot{background:var(--surface);border:1px solid var(--rule);border-radius:12px 12px 12px 2px;padding:14px 16px}
+.msg.bot p{margin:0 0 10px}.msg.bot p:last-child{margin:0}
+.urgent{border-left:3px solid var(--warn);background:var(--warn-soft);padding:10px 12px;border-radius:0 8px 8px 0;font-size:14px;margin:0 0 12px}
+.urgent strong{color:var(--warn)}
+.cite{font-size:12px;vertical-align:super;color:var(--teal);font-weight:700;text-decoration:none}
+details.src{margin:10px 0 0;font-size:14px}details.src summary{cursor:pointer;color:var(--muted)}
+details.src ol{padding-left:22px;margin:8px 0 0}details.src li{margin:0 0 8px}
+details.src .m{color:var(--muted);font-size:13px}
+form.ask{display:flex;gap:8px;margin:18px 0 0;position:sticky;bottom:0;background:var(--paper);padding:10px 0 14px}
+form.ask textarea{flex:1;min-width:0;min-height:48px;max-height:180px;resize:vertical}
+.btn{border:0;border-radius:8px;padding:0 18px;min-height:48px;font-weight:600;background:var(--ink);color:var(--paper);cursor:pointer}
+.btn:disabled{opacity:.55;cursor:default}
+.quiet{background:none;border:1px solid var(--rule-strong);color:var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:14px}
+.status{color:var(--muted);font-size:14px;min-height:1.4em;margin:8px 0 0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (max-width:640px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <h1>Ask the research</h1>
+    <a href="/">Search studies instead</a>
+  </div>
+  <p class="note">You are talking to an AI. It explains what peer-reviewed studies <b>in women</b> found and cites them. It does not diagnose and does not give treatment advice: this is research information, not medical advice. In an emergency call 112.</p>
+
+  <details class="profile" id="profile">
+    <summary>Add your situation (optional) for answers matched to you</summary>
+    <label class="consent"><input type="checkbox" id="consent">
+      <span>I agree that the health details below are used <b>only to find and explain research for this answer</b>. They are not stored, not saved to an account and deleted when the answer is sent. You can leave this unticked and still ask questions.</span></label>
+    <div class="grid">
+      <div class="f"><label for="age">Age</label><input id="age" type="number" min="10" max="110" inputmode="numeric"></div>
+      <div class="f"><label for="stage">Life stage</label>
+        <select id="stage"><option value="">Not relevant / prefer not to say</option><option value="cycling">Having periods</option>
+          <option value="ttc">Trying to conceive</option><option value="pregnant">Pregnant</option><option value="postpartum">After birth / breastfeeding</option>
+          <option value="peri">Perimenopause</option><option value="post">After menopause</option></select></div>
+      <div class="f full"><label for="symptoms">Symptoms or concerns</label><input id="symptoms" placeholder="e.g. night sweats, poor sleep"></div>
+      <div class="f full"><label for="history">Conditions you've been diagnosed with</label><input id="history" placeholder="e.g. migraine, hypothyroidism"></div>
+      <div class="f full"><label for="meds">Medicines or treatments you use</label><input id="meds" placeholder="e.g. HRT, levothyroxine"></div>
+    </div>
+    <p class="note" style="margin:0 0 10px">Don't enter your name, date of birth or contact details. Age is rounded to a 5-year range before anything is sent.</p>
+  </details>
+
+  <div id="log" aria-live="polite"></div>
+  <p class="status" id="status"></p>
+
+  <form class="ask" id="ask">
+    <label for="q" class="sr">Your question</label>
+    <textarea id="q" rows="2" placeholder="e.g. What does research in women say about magnesium for migraine?"></textarea>
+    <button class="btn" id="send" type="submit">Ask</button>
+  </form>
+  <p class="note"><button class="quiet" id="clear" type="button">Clear conversation</button> The conversation exists only in this tab and disappears when you close it.</p>
+</div>
+
+<script>
+(() => {
+"use strict";
+const $ = (id) => document.getElementById(id);
+let history = [];   // in memory only: never written to storage
+let busy = false;
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const safeUrl = (u) => (/^https:\/\//.test(u || "") ? u : null);
+
+function profile() {
+  if (!$("consent").checked) return null;
+  return { age: $("age").value, stage: $("stage").value, symptoms: $("symptoms").value, history: $("history").value, meds: $("meds").value };
+}
+
+function renderAnswer(text, studies, id) {
+  const paras = esc(text).split(/\n{2,}/).map((p) =>
+    "<p>" + p.replace(/\n/g, "<br>").replace(/\[(\d{1,2})\]/g, (m, n) =>
+      studies.some((s) => s.n === +n) ? `<a class="cite" href="#${id}-s${n}">[${n}]</a>` : m) + "</p>").join("");
+  const src = studies.length ? `<details class="src"><summary>${studies.length} women-only studies used</summary><ol>` +
+    studies.map((s) => {
+      const u = safeUrl(s.url);
+      const t = u ? `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(s.title)}</a>` : esc(s.title);
+      return `<li id="${id}-s${s.n}">${t}<div class="m">${esc([s.journal, s.year, s.study_type, s.n_women ? s.n_women + " women" : ""].filter(Boolean).join(" · "))}</div></li>`;
+    }).join("") + "</ol></details>" : "";
+  return paras + src;
+}
+
+function add(role, html) {
+  const d = document.createElement("div");
+  d.className = "msg " + role;
+  d.innerHTML = html;
+  $("log").appendChild(d);
+  d.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  return d;
+}
+
+$("ask").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const q = $("q").value.trim();
+  if (!q || busy) return;
+  busy = true; $("send").disabled = true; $("q").value = "";
+  add("user", esc(q));
+  history.push({ role: "user", content: q });
+  $("status").textContent = "Searching women-only studies…";
+  try {
+    const r = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages: history.slice(-8), profile: profile(), consent: $("consent").checked }) });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(data.error || "error");
+    const id = "a" + history.length;
+    add("bot", (data.urgent ? `<div class="urgent" role="alert"><strong>Please read first.</strong> ${esc(data.urgent)}</div>` : "") +
+      renderAnswer(data.answer, data.studies || [], id));
+    history.push({ role: "assistant", content: data.answer });
+    $("status").textContent = "";
+  } catch (err) {
+    history.pop();
+    $("status").textContent = err.message === "ai_not_configured"
+      ? "The AI chat is not switched on yet (no AI key configured). You can still use the study search."
+      : "Something went wrong. Please try again.";
+  } finally {
+    busy = false; $("send").disabled = false; $("q").focus();
+  }
+});
+$("q").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("ask").requestSubmit(); } });
+$("clear").addEventListener("click", () => { history = []; $("log").innerHTML = ""; $("status").textContent = "Conversation cleared."; });
+})();
+</script>
+</body>
+</html>
