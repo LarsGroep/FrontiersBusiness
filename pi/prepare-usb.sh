@@ -16,7 +16,7 @@ ROOT_DISK=$(lsblk -no PKNAME "$(findmnt -no SOURCE /)" 2>/dev/null || true)
 echo "Disks on this Pi (the system disk is ${ROOT_DISK:-unknown} and is never offered):"
 echo
 lsblk -d -o NAME,SIZE,TRAN,MODEL | head -1
-for d in $(lsblk -dnro NAME,TYPE | awk -v root="$ROOT_DISK" '$2=="disk" && $1!=root {print $1}'); do
+for d in $(lsblk -dnro NAME,TYPE | awk -v root="$ROOT_DISK" '$2=="disk" && $1!=root && $1 !~ /^(zram|loop|ram)/ {print $1}'); do
   lsblk -dn -o NAME,SIZE,TRAN,MODEL "/dev/$d"
 done
 echo
