@@ -4,6 +4,9 @@ name: Analyse (embeddings + MeSH areas + themes) for the Pi
 # publishes the result tables as a release file. The Pi loads them with  bash /opt/herevidence/pi/import-analysis.sh
 
 on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/analyse.yml", "pi/analysis.py", "pi/schema_analysis.sql"]
   workflow_dispatch:
     inputs:
       themes:
