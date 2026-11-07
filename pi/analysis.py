@@ -126,31 +126,42 @@ def tag_areas(conn) -> dict:
 
 
 # ---------------------------------------------------------------- embeddings
-def embed(batch: int = 64, threads: int = 2) -> dict:
+def embed(batch: int = 64, threads: int = 2, chunk: int = 512) -> dict:
+    """Embed title + abstract of every included paper that has no vector yet (resumable).
+
+    Reads the to-do list once and streams it through the model; for big runs the vector index is dropped first
+    and rebuilt at the end (one build is far cheaper than ~30k incremental HNSW inserts).
+    """
     from fastembed import TextEmbedding  # imported here so the other steps work without it
 
     conn = store.connect()
+    rows = conn.execute("""select id, title || '. ' || coalesce(abstract, '') from papers p where label = any(%s)
+                           and not exists (select 1 from paper_vec v where v.paper_id = p.id) order by id""",
+                        (list(INCLUDE_LABELS),)).fetchall()
+    todo = len(rows)
+    if not todo:
+        conn.close()
+        return {"embedded": 0}
+    big = todo > 5000
+    if big:
+        conn.execute("drop index if exists paper_vec_hnsw"); conn.commit()
     model = TextEmbedding(model_name=MODEL, cache_dir=MODEL_DIR, threads=threads)
-    todo = conn.execute("""select count(*) from papers p where label = any(%s)
-                           and not exists (select 1 from paper_vec v where v.paper_id = p.id)""",
-                        (list(INCLUDE_LABELS),)).fetchone()[0]
     done, started = 0, time.time()
-    while True:
-        rows = conn.execute("""select id, title, coalesce(abstract, '') from papers p where label = any(%s)
-                               and not exists (select 1 from paper_vec v where v.paper_id = p.id)
-                               order by id limit %s""", (list(INCLUDE_LABELS), batch)).fetchall()
-        if not rows:
-            break
-        texts = [f"{t}. {a}"[:2000] for _, t, a in rows]
-        vecs = list(model.embed(texts, batch_size=16))
+    for i in range(0, todo, chunk):
+        part = rows[i:i + chunk]
+        vecs = model.embed([t[:2000] for _, t in part], batch_size=batch)
         with conn.cursor() as c:
             c.executemany("insert into paper_vec (paper_id, model, embedding) values (%s,%s,%s::vector) "
                           "on conflict (paper_id) do nothing",
-                          [(pid, MODEL, "[" + ",".join(f"{x:.6f}" for x in v) + "]") for (pid, _, _), v in zip(rows, vecs)])
+                          [(pid, MODEL, "[" + ",".join(f"{x:.6f}" for x in v) + "]") for (pid, _), v in zip(part, vecs)])
         conn.commit()
-        done += len(rows)
+        done += len(part)
         rate = done / max(1e-6, time.time() - started)
         print(f"  embedded {done}/{todo}  ({rate:.1f}/s, ~{(todo - done) / max(rate, 0.01) / 60:.0f} min left)", flush=True)
+    if big:
+        print("  building vector index", flush=True)
+        conn.execute("create index if not exists paper_vec_hnsw on paper_vec using hnsw (embedding vector_cosine_ops)")
+        conn.commit()
     conn.close()
     return {"embedded": done}
 
