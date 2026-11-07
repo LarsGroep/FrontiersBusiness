@@ -51,6 +51,22 @@ CARDIO_TERMS = {
     "Visual Disturbances": ["visual disturbances", "blurred vision", "visual disturbance"],
     "Anxiety": ["anxiety", "feeling of doom", "sense of impending doom"],
 }
+# Patient-recognisable symptoms only. MeSH "Signs and Symptoms" also holds body-weight measures, fetal/neonatal
+# signs and lab findings (birth weight, fetal distress, proteinuria), which are not things a woman notices.
+PATIENT_SYMPTOMS = set(CARDIO_TERMS) | {
+    "Angina Pectoris", "Angina, Stable", "Angina, Unstable", "Microvascular Angina", "Dyspnea, Paroxysmal",
+    "Orthopnea", "Cyanosis", "Tachycardia", "Bradycardia", "Hot Flashes", "Night Sweats", "Hyperhidrosis",
+    "Vomiting", "Constipation", "Diarrhea", "Flatulence", "Pelvic Pain", "Dysmenorrhea", "Dyspareunia",
+    "Low Back Pain", "Musculoskeletal Pain", "Arthralgia", "Myalgia", "Chronic Pain", "Pain, Intractable",
+    "Migraine Disorders", "Paresthesia", "Hypoesthesia", "Confusion", "Memory Disorders", "Cognitive Dysfunction",
+    "Tremor", "Muscle Weakness", "Muscle Cramp", "Fever", "Pruritus", "Urinary Incontinence",
+    "Urinary Incontinence, Stress", "Urinary Incontinence, Urge", "Nocturia", "Snoring", "Hoarseness",
+    "Tinnitus", "Hearing Loss", "Vision, Low", "Anorexia", "Polydipsia", "Polyuria", "Mastodynia", "Hirsutism",
+    "Alopecia", "Hemoptysis", "Epistaxis", "Intermittent Claudication",
+}
+# Sentences where a symptom is a covariate, a table/figure caption or an abbreviation list, not a finding.
+NOT_A_FINDING = re.compile(r"\b(adjusted for|confound\w*|covariate\w*|abbreviations?|table \d|figure \d|fig\. \d|"
+                           r"model \d|exclusion criteria|excluded if|were excluded)\b", re.I)
 NEGATION = re.compile(r"\b(no|not|without|absence of|absent|denied|denies|free of|neither|nor|negative for)\b", re.I)
 SENT = re.compile(r"(?<=[.!?])\s+(?=[A-Z])")
 SECTIONS = ("results", "conclusion")
@@ -104,14 +120,14 @@ def lexicon() -> dict[str, str]:
 
 
 def compile_matcher(terms: dict[str, str]) -> re.Pattern:
-    alts = sorted(terms, key=len, reverse=True)   # longest first, so "upper back pain" wins over "back pain"
+    alts = sorted((t for t, name in terms.items() if name in PATIENT_SYMPTOMS), key=len, reverse=True)   # longest first, so "upper back pain" wins over "back pain"
     return re.compile(r"\b(" + "|".join(re.escape(t) for t in alts) + r")\b", re.I)
 
 
 def extract(text: str, section: str, matcher: re.Pattern, terms: dict[str, str]):
     for sent in SENT.split(text or ""):
-        if len(sent) > 1200:
-            sent = sent[:1200]
+        if len(sent) > 1200 or NOT_A_FINDING.search(sent):
+            continue
         for m in matcher.finditer(sent):
             before = sent[max(0, m.start() - 60):m.start()]
             neg = bool(NEGATION.search(" ".join(before.split()[-6:])))
@@ -148,7 +164,8 @@ def run(area: str) -> dict:
         n_mentions += len(rows)
         print(f"  {min(i + 200, len(ids))}/{len(ids)} papers, {n_mentions} mentions", flush=True)
     conn.close()
-    return {"area": area, "papers": len(ids), "mentions": n_mentions, "lexicon_terms": len(terms)}
+    return {"area": area, "papers": len(ids), "mentions": n_mentions,
+            "lexicon_terms": sum(1 for n in terms.values() if n in PATIENT_SYMPTOMS)}
 
 
 def summary(area: str, sample: int = 40, seed: int = 7) -> dict:
