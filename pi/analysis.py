@@ -81,7 +81,10 @@ def load_mesh(conn) -> int:
     if path is None:
         raise RuntimeError("could not download the MeSH descriptor file from NLM")
     rows = []
-    with gzip.open(path, "rb") as fh:
+    # NLM may send the .gz with Content-Encoding: gzip, in which case it arrives already unpacked.
+    with open(path, "rb") as probe:
+        packed = probe.read(2) == b"\x1f\x8b"
+    with (gzip.open(path, "rb") if packed else open(path, "rb")) as fh:
         for _, el in etree.iterparse(fh, events=("end",), tag="DescriptorRecord"):
             ui = el.findtext("DescriptorUI")
             name = el.findtext("DescriptorName/String")
