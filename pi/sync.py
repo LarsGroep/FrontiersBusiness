@@ -24,8 +24,40 @@ SUPABASE_KEY = os.getenv("SUPABASE_PUBLISHABLE_KEY", "sb_publishable_aA-czPmRvwj
 CATALOGUE_COLS = ",".join(store.PAPER_FIELDS)
 
 
+def catalogue_from_pi(url: str, token: str) -> dict:
+    """Copy the catalogue from a Pi API (/catalogue), used by the GitHub analysis run: the Pi is the source of truth."""
+    conn = store.connect()
+    store.apply_schema(conn)
+    after, total = "", 0
+    while True:
+        for attempt in range(5):
+            try:
+                r = requests.get(url, params={"after": after, "limit": 500}, headers={"x-api-key": token}, timeout=120)
+                r.raise_for_status()
+                page = r.json()
+                break
+            except requests.RequestException as e:
+                if attempt == 4:
+                    raise
+                print(f"  retry ({e.__class__.__name__})", flush=True)
+                time.sleep(5 * (attempt + 1))
+        store.upsert_papers(conn, page["rows"], source="pi")
+        total += len(page["rows"])
+        print(f"  catalogue (Pi): {total} papers", flush=True)
+        if not page["next"]:
+            break
+        after = page["next"]
+    conn.close()
+    return {"catalogue_rows": total, "source": "pi"}
+
+
 def catalogue(page_size: int = 1000) -> dict:
-    """Copy every paper row from Supabase (read-only public key), keyset-paginated by id."""
+    """Copy every paper row from Supabase (read-only public key), keyset-paginated by id.
+
+    With PI_CATALOGUE_URL + PI_API_TOKEN set (GitHub analysis run), the Pi's catalogue is copied instead.
+    """
+    if os.getenv("PI_CATALOGUE_URL") and os.getenv("PI_API_TOKEN"):
+        return catalogue_from_pi(os.environ["PI_CATALOGUE_URL"], os.environ["PI_API_TOKEN"])
     conn = store.connect()
     store.apply_schema(conn)
     last, total = "", 0

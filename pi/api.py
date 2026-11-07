@@ -11,6 +11,7 @@ GET /clusters                   theme tree (embeddings + k-means), disease areas
 GET /clusters/{id}              studies in one theme or sub-theme, most typical first
 GET /similar/{id}               nearest studies by embedding
 GET /papers?area=&cluster=      browse studies without a search term (newest first)
+GET /catalogue?after=&limit=    catalogue rows (metadata, labels, abstracts) for the GitHub analysis run
 /search and /export.csv also take  cluster=<id>  and  area=<'C04 Neoplasms'>  filters.
 
 All endpoints except /health need header `x-api-key: $PI_API_TOKEN` when that variable is set,
@@ -327,3 +328,13 @@ def papers(area: str | None = None, cluster: int | None = None, page: int = Quer
             d.pop(k, None)
         results.append(d)
     return {"area": area, "cluster": cluster, "total": total, "page": page, "per_page": per_page, "results": results}
+
+
+@app.get("/catalogue", dependencies=[Depends(guard)])
+def catalogue(after: str = "", limit: int = Query(500, ge=1, le=1000)):
+    """Catalogue rows in id order (keyset paging with `after`), so the GitHub analysis run reads the Pi, not Supabase."""
+    cols = ",".join(store.PAPER_FIELDS)
+    with pool.connection() as c:
+        cur = c.execute(f"select {cols} from papers where id > %s order by id limit %s", (after, limit))
+        rows = [dict(zip(store.PAPER_FIELDS, r)) for r in cur.fetchall()]
+    return {"rows": rows, "next": rows[-1]["id"] if len(rows) == limit else None}

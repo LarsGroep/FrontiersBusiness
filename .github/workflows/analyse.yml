@@ -53,9 +53,28 @@ jobs:
       - run: pip install -r requirements.txt -r pi/requirements.txt -r pi/requirements-analysis.txt
 
       - name: pgvector + catalogue copy
+        env:
+          # With these two repository secrets set, the catalogue comes from the Pi (source of truth, incl. papers
+          # only the Pi has scraped); without them it falls back to Supabase.
+          PI_CATALOGUE_URL: ${{ secrets.PI_API_URL && format('{0}/catalogue', secrets.PI_API_URL) || '' }}
+          PI_API_TOKEN: ${{ secrets.PI_API_TOKEN }}
         run: |
           docker exec ${{ job.services.postgres.id }} psql -U postgres -d herdb -qc "create extension if not exists vector"
           python -m pi.sync catalogue | tail -3
+
+      - name: Reuse vectors from the last release (only new papers get embedded)
+        continue-on-error: true
+        run: |
+          curl -fsSL -o prev.dump https://github.com/${{ github.repository }}/releases/download/analysis-latest/analysis.dump
+          docker cp prev.dump ${{ job.services.postgres.id }}:/tmp/prev.dump
+          docker exec -i ${{ job.services.postgres.id }} psql -U postgres -d herdb -q -f - < pi/schema_analysis.sql
+          # Keep only vectors whose paper is in this catalogue (foreign key), via a staging table.
+          docker exec ${{ job.services.postgres.id }} psql -U postgres -d herdb -qc "create table prev_vec (like paper_vec)"
+          docker exec ${{ job.services.postgres.id }} pg_restore --data-only -t paper_vec -f /tmp/prev.sql /tmp/prev.dump
+          docker exec ${{ job.services.postgres.id }} sed -i 's/^COPY public.paper_vec /COPY public.prev_vec /' /tmp/prev.sql
+          docker exec ${{ job.services.postgres.id }} psql -U postgres -d herdb -q -f /tmp/prev.sql
+          docker exec ${{ job.services.postgres.id }} psql -U postgres -d herdb -Atc \
+            "insert into paper_vec select v.* from prev_vec v join papers p on p.id = v.paper_id on conflict do nothing; drop table prev_vec; select 'reused vectors: '||count(*) from paper_vec"
 
       - name: MeSH areas, embeddings, themes
         run: |
