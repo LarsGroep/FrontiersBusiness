@@ -86,7 +86,7 @@ sudo -u postgres psql -tAc "select 1 from pg_database where datname='herdb'" | g
 # ---------- code + Python environment ----------
 say "Installing the app in $APP_DIR"
 sudo mkdir -p "$APP_DIR"
-sudo rsync -a --delete --exclude .git --exclude data --exclude reports --exclude .venv "$REPO_DIR"/ "$APP_DIR"/
+sudo rsync -a --delete --exclude .git --exclude data --exclude reports --exclude .venv --exclude models "$REPO_DIR"/ "$APP_DIR"/
 sudo chown -R "$APP_USER": "$APP_DIR"
 sudo -u "$APP_USER" python3 -m venv "$APP_DIR/.venv"
 sudo -u "$APP_USER" "$APP_DIR/.venv/bin/pip" install -q --upgrade pip
