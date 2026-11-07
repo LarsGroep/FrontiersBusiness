@@ -7,6 +7,10 @@ GET /search?q=...               every matching study, ranked, with exact total a
 GET /export.csv?q=...           all matching studies as CSV
 GET /paper/{id}                 one study; full text for open licences only
 GET /stats                      dataset overview
+GET /clusters                   theme tree (embeddings + k-means), disease areas, top symptoms
+GET /clusters/{id}              studies in one theme or sub-theme, most typical first
+GET /similar/{id}               nearest studies by embedding
+/search and /export.csv also take  cluster=<id>  and  area=<'C04 Neoplasms'>  filters.
 
 All endpoints except /health need header `x-api-key: $PI_API_TOKEN` when that variable is set,
 so only your website / agent can use the Pi directly.
@@ -65,8 +69,15 @@ def guard(request: Request) -> None:
 
 
 # ---------- helpers ----------
-def filters(labels, min_year, topics, open_licence_only):
+def filters(labels, min_year, topics, open_licence_only, cluster=None, area=None):
     where, args = ["p.label = any(%(labels)s)"], {"labels": labels}
+    if cluster:
+        col = "l1" if cluster < 100 else "l2"
+        where.append(f"exists (select 1 from paper_cluster pc where pc.paper_id = p.id and pc.{col} = %(cluster)s)")
+        args["cluster"] = cluster
+    if area:
+        where.append("exists (select 1 from paper_area pa where pa.paper_id = p.id and pa.area = %(area)s)")
+        args["area"] = area
     if min_year:
         where.append("p.pub_year >= %(min_year)s"); args["min_year"] = min_year
     if topics:
@@ -97,9 +108,10 @@ def health():
 @app.get("/search", dependencies=[Depends(guard)])
 def search(q: str = Query(..., min_length=1, max_length=500), page: int = Query(1, ge=1, le=1000),
            per_page: int = Query(12, ge=1, le=100), include_probable: bool = False, min_year: int | None = None,
-           topics: str | None = None, population: str | None = None, open_licence_only: bool = False):
+           topics: str | None = None, population: str | None = None, open_licence_only: bool = False,
+           cluster: int | None = None, area: str | None = None):
     labels = LABELS_DEFAULT + (["female_only_probable"] if include_probable else [])
-    where, args = filters(labels, min_year, split(topics), open_licence_only)
+    where, args = filters(labels, min_year, split(topics), open_licence_only, cluster, area)
     pop = split(population) or []
     args.update(q=q, pop=[f"%{t}%" for t in pop], limit=per_page, offset=(page - 1) * per_page)
     with pool.connection() as c:
@@ -156,9 +168,10 @@ def search(q: str = Query(..., min_length=1, max_length=500), page: int = Query(
 
 @app.get("/export.csv", dependencies=[Depends(guard)])
 def export_csv(q: str = Query(..., min_length=1, max_length=500), include_probable: bool = False,
-               min_year: int | None = None, topics: str | None = None, open_licence_only: bool = False):
+               min_year: int | None = None, topics: str | None = None, open_licence_only: bool = False,
+               cluster: int | None = None, area: str | None = None):
     labels = LABELS_DEFAULT + (["female_only_probable"] if include_probable else [])
-    where, args = filters(labels, min_year, split(topics), open_licence_only)
+    where, args = filters(labels, min_year, split(topics), open_licence_only, cluster, area)
     args["q"] = q
     with pool.connection() as c:
         rows = c.execute(f"""
@@ -212,3 +225,52 @@ def stats():
                                     where label='female_only_verified' and pub_year is not null group by 1 order by 1""").fetchall())
     keys = ["papers", "verified", "with_fulltext", "fulltext_pending", "open_licence", "year_min", "year_max", "db_size"]
     return {**dict(zip(keys, row)), "verified_by_decade": decades}
+
+
+# ---------- analysis: themes, disease areas, similar studies ----------
+@app.get("/clusters", dependencies=[Depends(guard)])
+def clusters():
+    with pool.connection() as c:
+        rows = c.execute("""select id, level, parent, size, label, top_mesh, areas, symptoms, years, examples, run_id
+                            from clusters order by level, size desc""").fetchall()
+        areas = c.execute("""select pa.area, count(*) from paper_area pa join papers p on p.id = pa.paper_id
+                             where p.label = 'female_only_verified' group by 1 order by 2 desc""").fetchall()
+        symptoms = c.execute("""select ps.symptom, count(*) from paper_symptom ps join papers p on p.id = ps.paper_id
+                                where p.label = 'female_only_verified' group by 1 order by 2 desc limit 60""").fetchall()
+    keys = ["id", "level", "parent", "size", "label", "top_mesh", "areas", "symptoms", "years", "examples", "run_id"]
+    items = [dict(zip(keys, r)) for r in rows]
+    themes = [x for x in items if x["level"] == 1]
+    for t in themes:
+        t["children"] = [x for x in items if x["parent"] == t["id"]]
+    return {"run_id": items[0]["run_id"] if items else None, "themes": themes,
+            "areas": [{"area": a, "n": n} for a, n in areas], "symptoms": [{"symptom": s, "n": n} for s, n in symptoms]}
+
+
+@app.get("/clusters/{cluster_id}", dependencies=[Depends(guard)])
+def cluster_papers(cluster_id: int, page: int = Query(1, ge=1, le=1000), per_page: int = Query(20, ge=1, le=100)):
+    col = "l1" if cluster_id < 100 else "l2"
+    with pool.connection() as c:
+        meta = c.execute("select id, level, parent, size, label, top_mesh, areas, symptoms, years from clusters where id=%s",
+                         (cluster_id,)).fetchone()
+        if not meta:
+            raise HTTPException(404, "no such cluster")
+        rows = c.execute(f"""select p.id, p.title, p.journal, p.pub_year, p.label, p.study_type, p.n_female, p.population,
+                                    p.source_url, pc.dist
+                             from paper_cluster pc join papers p on p.id = pc.paper_id
+                             where pc.{col} = %s order by pc.dist limit %s offset %s""",
+                         (cluster_id, per_page, (page - 1) * per_page)).fetchall()
+    keys = ["id", "level", "parent", "size", "label", "top_mesh", "areas", "symptoms", "years"]
+    pk = ["paper_id", "title", "journal", "pub_year", "label", "study_type", "n_female", "population", "source_url", "dist"]
+    return {**dict(zip(keys, meta)), "page": page, "per_page": per_page, "results": [dict(zip(pk, r)) for r in rows]}
+
+
+@app.get("/similar/{paper_id}", dependencies=[Depends(guard)])
+def similar(paper_id: str, k: int = Query(10, ge=1, le=50)):
+    with pool.connection() as c:
+        rows = c.execute("""select p.id, p.title, p.journal, p.pub_year, p.label, p.source_url,
+                                   1 - (v.embedding <=> q.embedding) as similarity
+                            from paper_vec q, paper_vec v join papers p on p.id = v.paper_id
+                            where q.paper_id = %s and v.paper_id <> q.paper_id
+                            order by v.embedding <=> q.embedding limit %s""", (paper_id, k)).fetchall()
+    keys = ["paper_id", "title", "journal", "pub_year", "label", "source_url", "similarity"]
+    return {"paper_id": paper_id, "results": [{**dict(zip(keys, r)), "similarity": round(float(r[6]), 4)} for r in rows]}

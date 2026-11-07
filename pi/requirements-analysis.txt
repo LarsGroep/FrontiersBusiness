@@ -1,0 +1,4 @@
+# Embeddings + clustering (pi/analysis.py). Installed by pi/analyse.sh, kept apart from the API requirements.
+fastembed>=0.4
+scikit-learn>=1.4
+numpy>=1.26
