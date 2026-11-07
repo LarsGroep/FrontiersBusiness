@@ -5,6 +5,8 @@
 set -euo pipefail
 DIR=${BACKUP_DIR:-/var/backups/herevidence}
 mkdir -p "$DIR"
+# Right after a boot the database may still be recovering; wait up to 15 minutes for it.
+for _ in $(seq 90); do psql -d herdb -Atc 'select 1' >/dev/null 2>&1 && break; sleep 10; done
 pg_dump -Fc -Z 6 herdb > "$DIR/herdb-$(date +%Y%m%d).dump.tmp"
 mv "$DIR/herdb-$(date +%Y%m%d).dump.tmp" "$DIR/herdb-$(date +%Y%m%d).dump"
 ls -1t "$DIR"/herdb-*.dump | tail -n +8 | xargs -r rm --
