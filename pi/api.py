@@ -228,8 +228,20 @@ def stats():
 
 
 # ---------- analysis: themes, disease areas, similar studies ----------
+_clusters_cache: dict = {}
+
+
 @app.get("/clusters", dependencies=[Depends(guard)])
 def clusters():
+    # The theme tree only changes when a new analysis is imported (which restarts the API), so cache it.
+    if _clusters_cache.get("at", 0) > time.time() - 3600:
+        return _clusters_cache["data"]
+    data = _clusters_uncached()
+    _clusters_cache.update(at=time.time(), data=data)
+    return data
+
+
+def _clusters_uncached():
     with pool.connection() as c:
         rows = c.execute("""select id, level, parent, size, label, top_mesh, areas, symptoms, years, examples, run_id
                             from clusters order by level, size desc""").fetchall()

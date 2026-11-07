@@ -18,9 +18,12 @@ sudo -u herevidence psql -d herdb -qc "truncate paper_cluster, clusters, paper_s
 # Papers the runner had but the Pi doesn't (should not happen; same catalogue) would break the foreign keys,
 # so restore into the tables and report counts afterwards.
 sudo -u herevidence pg_restore -d herdb --data-only --no-owner "$FILE"
+# Fresh tables have no planner statistics; without them area/theme-filtered searches time out.
+sudo -u herevidence psql -d herdb -qc "analyze paper_area, paper_cluster, paper_vec, paper_symptom, clusters, mesh"
 sudo -u herevidence psql -d herdb -Atc "insert into meta (key, value, updated_at)
   select 'cluster_run', max(run_id), now() from clusters
   on conflict (key) do update set value = excluded.value, updated_at = now()"
 sudo -u herevidence psql -d herdb -Atc "select 'vectors '||(select count(*) from paper_vec)||', areas '||(select count(*) from paper_area)
   ||', themes '||(select count(*) from clusters where level=1)||', sub-themes '||(select count(*) from clusters where level=2)"
+sudo systemctl restart herevidence-api   # drops the cached theme list
 echo "== Done"
