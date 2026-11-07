@@ -269,9 +269,39 @@ def summary() -> None:
     conn.close()
 
 
+def export(out_dir: str) -> dict:
+    """Write the theme tree, disease areas and top symptoms as JSON (same shape as the API's /clusters)."""
+    conn = store.connect()
+    rows = conn.execute("""select id, level, parent, size, label, top_mesh, areas, symptoms, years, examples, run_id
+                           from clusters order by level, size desc""").fetchall()
+    keys = ["id", "level", "parent", "size", "label", "top_mesh", "areas", "symptoms", "years", "examples", "run_id"]
+    items = [dict(zip(keys, r)) for r in rows]
+    themes = [x for x in items if x["level"] == 1]
+    for t in themes:
+        t["children"] = [x for x in items if x["parent"] == t["id"]]
+    areas = conn.execute("""select pa.area, count(*), count(*) filter (where p.label='female_only_verified')
+                            from paper_area pa join papers p on p.id = pa.paper_id group by 1 order by 2 desc""").fetchall()
+    symptoms = conn.execute("""select ps.symptom, count(*) from paper_symptom ps group by 1 order by 2 desc limit 80""").fetchall()
+    totals = conn.execute("""select count(*), count(*) filter (where label='female_only_verified'),
+                                    (select count(*) from paper_vec),
+                                    count(*) filter (where not exists (select 1 from paper_area pa where pa.paper_id = papers.id))
+                             from papers""").fetchone()
+    out = {"run_id": items[0]["run_id"] if items else None,
+           "totals": dict(zip(["papers", "verified", "embedded", "no_disease_area"], totals)),
+           "themes": themes,
+           "areas": [{"area": a, "n": n, "verified": v} for a, n, v in areas],
+           "symptoms": [{"symptom": s_, "n": n} for s_, n in symptoms]}
+    os.makedirs(out_dir, exist_ok=True)
+    with open(os.path.join(out_dir, "clusters.json"), "w") as f:
+        json.dump(out, f, indent=1, default=str)
+    conn.close()
+    return {"themes": len(themes), "file": os.path.join(out_dir, "clusters.json")}
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("step", choices=["mesh", "embed", "cluster", "all", "summary"])
+    ap.add_argument("step", choices=["mesh", "embed", "cluster", "all", "summary", "export"])
+    ap.add_argument("--out", default="analysis-out")
     ap.add_argument("--k", type=int, default=30, help="number of broad themes")
     ap.add_argument("--threads", type=int, default=2)
     a = ap.parse_args()
@@ -289,6 +319,8 @@ def main() -> None:
         out["cluster"] = cluster(k1=a.k)
     if a.step == "summary":
         return summary()
+    if a.step == "export":
+        out["export"] = export(a.out)
     print(json.dumps(out, indent=2))
 
 

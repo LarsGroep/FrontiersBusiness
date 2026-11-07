@@ -1,0 +1,79 @@
+name: Analyse (embeddings + MeSH areas + themes) for the Pi
+# The Pi (1 GB RAM) is too small to embed ~30k papers next to its database, so this runner does the heavy work:
+# it copies the catalogue (same source as the Pi's sync), runs pi/analysis.py against its own Postgres, and
+# publishes the result tables as a release file. The Pi loads them with  bash /opt/herevidence/pi/import-analysis.sh
+
+on:
+  workflow_dispatch:
+    inputs:
+      themes:
+        description: "Number of broad themes (k)"
+        default: "30"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: analyse
+  cancel-in-progress: false
+
+jobs:
+  analyse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    services:
+      postgres:
+        image: pgvector/pgvector:pg17
+        env:
+          POSTGRES_PASSWORD: analyse
+          POSTGRES_DB: herdb
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      PI_DB_URL: postgresql://postgres:analyse@localhost:5432/herdb
+      PI_MODEL_DIR: /home/runner/.cache/herevidence-models
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Cache embedding model + MeSH
+        uses: actions/cache@v4
+        with:
+          path: /home/runner/.cache/herevidence-models
+          key: herevidence-models-bge-small-mesh-v1
+
+      - run: pip install -r requirements.txt -r pi/requirements.txt -r pi/requirements-analysis.txt
+
+      - name: pgvector + catalogue copy
+        run: |
+          docker exec ${{ job.services.postgres.id }} psql -U postgres -d herdb -qc "create extension if not exists vector"
+          python -m pi.sync catalogue | tail -3
+
+      - name: MeSH areas, embeddings, themes
+        run: |
+          python -m pi.analysis all --k "${{ github.event.inputs.themes || '30' }}" --threads 4
+          python -m pi.analysis summary > analysis-out-summary.txt
+          python -m pi.analysis export --out analysis-out
+          cp analysis-out-summary.txt analysis-out/summary.txt
+          head -80 analysis-out/summary.txt
+
+      - name: Dump the analysis tables
+        run: |
+          docker exec ${{ job.services.postgres.id }} pg_dump -U postgres -d herdb -Fc --data-only \
+            -t paper_vec -t mesh -t paper_area -t paper_symptom -t clusters -t paper_cluster -f /tmp/analysis.dump
+          docker cp ${{ job.services.postgres.id }}:/tmp/analysis.dump analysis-out/analysis.dump
+          ls -lh analysis-out
+
+      - name: Publish as release "analysis-latest"
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view analysis-latest >/dev/null 2>&1 || \
+            gh release create analysis-latest --title "Analysis tables (latest)" \
+              --notes "Embeddings, MeSH disease areas and theme clusters for the Pi. Load with pi/import-analysis.sh."
+          gh release upload analysis-latest analysis-out/analysis.dump analysis-out/clusters.json analysis-out/summary.txt --clobber
