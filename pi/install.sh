@@ -30,8 +30,10 @@ elif [ "$IS_PI" = 1 ] && [[ "$ROOT_DEV" == /dev/mmcblk* ]]; then
   warn "Recommended: plug in the USB drive and run  bash pi/prepare-usb.sh  first, then this script again."
   read -r -p "Continue with the database on the system disk anyway? [y/N] " ans; [[ "$ans" =~ ^[Yy]$ ]] || exit 1
 fi
-# Backups go on the system disk: with the database on the USB drive, a dead drive can be restored from them.
-BACKUP_DIR=/var/backups/herevidence
+# With a data disk, everything that is not the operating system lives on it: database, app + Python packages,
+# embedding model and backups (Lars's choice, 7 Nov 2026: SD card holds only the OS; backups share the drive,
+# so a dead drive loses both). Without a data disk, everything stays on the system disk.
+if [ "$USE_DATA_DISK" = 1 ]; then BACKUP_DIR=$DATA_MOUNT/backups; else BACKUP_DIR=/var/backups/herevidence; fi
 
 # ---------- packages ----------
 say "Installing PostgreSQL, Python and tools"
@@ -85,6 +87,13 @@ sudo -u postgres psql -tAc "select 1 from pg_database where datname='herdb'" | g
 
 # ---------- code + Python environment ----------
 say "Installing the app in $APP_DIR"
+if [ "$USE_DATA_DISK" = 1 ] && [ ! -L "$APP_DIR" ]; then
+  # Put the app (code, .venv, models) on the data disk; /opt/herevidence becomes a link to it.
+  sudo mkdir -p "$DATA_MOUNT/app"
+  [ -d "$APP_DIR" ] && sudo rsync -a "$APP_DIR"/ "$DATA_MOUNT/app"/ && sudo rm -rf "$APP_DIR"
+  sudo ln -s "$DATA_MOUNT/app" "$APP_DIR"
+  say "App folder now on the data disk: $APP_DIR -> $DATA_MOUNT/app"
+fi
 sudo mkdir -p "$APP_DIR"
 sudo rsync -a --delete --exclude .git --exclude data --exclude reports --exclude .venv --exclude models "$REPO_DIR"/ "$APP_DIR"/
 sudo chown -R "$APP_USER": "$APP_DIR"
@@ -121,9 +130,14 @@ sudo -u "$APP_USER" bash -c "set -a; . $ENV_FILE; set +a; cd $APP_DIR && .venv/b
 # ---------- services ----------
 say "Installing services (API, hourly sync, nightly backup)"
 sudo mkdir -p "$BACKUP_DIR" && sudo chown "$APP_USER": "$BACKUP_DIR"
+# Move backups from the old location on the SD card to the data disk.
+if [ "$BACKUP_DIR" != /var/backups/herevidence ] && ls /var/backups/herevidence/herdb-*.dump >/dev/null 2>&1; then
+  sudo mv /var/backups/herevidence/herdb-*.dump "$BACKUP_DIR"/ && sudo chown "$APP_USER": "$BACKUP_DIR"/* && sudo rmdir /var/backups/herevidence 2>/dev/null || true
+fi
 sudo cp "$APP_DIR"/pi/systemd/*.service "$APP_DIR"/pi/systemd/*.timer /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable --now herevidence-api.service herevidence-sync.timer herevidence-backup.timer
+sudo systemctl restart herevidence-api.service   # pick up new code
 sleep 3
 curl -fsS http://127.0.0.1:8000/health && echo
 

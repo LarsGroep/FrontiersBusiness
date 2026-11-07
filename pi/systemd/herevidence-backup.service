@@ -1,4 +1,6 @@
 [Unit]
+# App, database and backups live on the data disk (a no-op on servers without one).
+RequiresMountsFor=/mnt/evidence
 Description=Nightly backup of the evidence database
 After=postgresql.service
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Nightly database backup (run by herevidence-backup.timer). Keeps the last 7.
-# Backups live on the system disk (SD card), apart from the database drive. Also copy them off the Pi weekly
-# (e.g. `rclone copy "$BACKUP_DIR" remote:herevidence`), see pi/README.md.
+# Backups live in $BACKUP_DIR (on the Pi: the data disk, /mnt/evidence/backups). They share the drive with the
+# database, so copy them off the Pi now and then (e.g. `rclone copy "$BACKUP_DIR" remote:herevidence`).
 set -euo pipefail
 DIR=${BACKUP_DIR:-/var/backups/herevidence}
 mkdir -p "$DIR"

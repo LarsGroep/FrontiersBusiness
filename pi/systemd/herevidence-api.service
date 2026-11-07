@@ -1,4 +1,6 @@
 [Unit]
+# App, database and backups live on the data disk (a no-op on servers without one).
+RequiresMountsFor=/mnt/evidence
 Description=Women-only evidence full-text search API
 After=network-online.target postgresql.service
 Wants=network-online.target
