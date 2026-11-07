@@ -303,14 +303,22 @@ def papers(area: str | None = None, cluster: int | None = None, page: int = Quer
     if not area and not cluster:
         raise HTTPException(400, "give area and/or cluster")
     labels = LABELS_DEFAULT + (["female_only_probable"] if include_probable else [])
-    where, args = filters(labels, None, None, False, cluster, area)
-    args.update(limit=per_page, offset=(page - 1) * per_page)
+    # Start from the small, indexed area/theme tables and look papers up by id; scanning papers is too slow on the Pi.
+    parts, args = [], {"labels": labels, "limit": per_page, "offset": (page - 1) * per_page}
+    if area:
+        parts.append("select paper_id from paper_area where area = %(area)s"); args["area"] = area
+    if cluster:
+        col = "l1" if cluster < 100 else "l2"
+        parts.append(f"select paper_id from paper_cluster where {col} = %(cluster)s"); args["cluster"] = cluster
+    ids = " intersect ".join(parts)
     with pool.connection() as c:
-        total = c.execute(f"select count(*) from papers p where {where}", args).fetchone()[0]
+        total = c.execute(f"""select count(*) from ({ids}) i join papers p on p.id = i.paper_id
+                              where p.label = any(%(labels)s)""", args).fetchone()[0]
         rows = c.execute(f"""select p.id, p.title, p.authors, p.journal, p.pub_year, p.doi, p.pmcid, p.source_url, p.label,
                                     p.study_type, p.n_female, p.population, p.topic, p.commercial_use_ok, p.license,
                                     null, false, 0
-                             from papers p where {where}
+                             from ({ids}) i join papers p on p.id = i.paper_id
+                             where p.label = any(%(labels)s)
                              order by p.pub_year desc nulls last, p.id limit %(limit)s offset %(offset)s""", args).fetchall()
     results = []
     for r in rows:
