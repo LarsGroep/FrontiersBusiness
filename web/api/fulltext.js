@@ -6,6 +6,7 @@
 //   GET /api/fulltext?clusters=1             -> Pi /clusters (theme tree, disease areas, symptoms)
 //   GET /api/fulltext?cluster_id=12&page=    -> Pi /clusters/12 (studies in a theme)
 //   GET /api/fulltext?similar=PMC123         -> Pi /similar/PMC123
+//   GET /api/fulltext?browse=1&area=&cluster= -> Pi /papers (studies in an area/theme, no search term)
 //   /search and export also pass  cluster=<id>  and  area=<MeSH area>
 // Needs PI_API_URL and PI_API_TOKEN in the Vercel project; answers 503 when the Pi is not set up or offline.
 const PI = (process.env.PI_API_URL || "").replace(/\/+$/, "");
@@ -26,6 +27,10 @@ module.exports = async (req, res) => {
     const fwd = new URLSearchParams();
     ["page", "per_page"].forEach((k) => p.get(k) && /^\d{1,4}$/.test(p.get(k)) && fwd.set(k, p.get(k)));
     path = `/clusters/${p.get("cluster_id")}?${fwd}`;
+  } else if (p.get("browse")) {
+    const fwd = new URLSearchParams();
+    ["area", "cluster", "page", "per_page", "include_probable"].forEach((k) => p.get(k) && fwd.set(k, p.get(k).slice(0, 120)));
+    path = `/papers?${fwd}`;
   } else if (p.get("similar")) {
     if (!ID.test(p.get("similar"))) return res.status(400).json({ error: "bad_id" });
     path = `/similar/${p.get("similar")}`;

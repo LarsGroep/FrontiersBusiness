@@ -10,6 +10,7 @@ GET /stats                      dataset overview
 GET /clusters                   theme tree (embeddings + k-means), disease areas, top symptoms
 GET /clusters/{id}              studies in one theme or sub-theme, most typical first
 GET /similar/{id}               nearest studies by embedding
+GET /papers?area=&cluster=      browse studies without a search term (newest first)
 /search and /export.csv also take  cluster=<id>  and  area=<'C04 Neoplasms'>  filters.
 
 All endpoints except /health need header `x-api-key: $PI_API_TOKEN` when that variable is set,
@@ -245,17 +246,28 @@ def _clusters_uncached():
     with pool.connection() as c:
         rows = c.execute("""select id, level, parent, size, label, top_mesh, areas, symptoms, years, examples, run_id
                             from clusters order by level, size desc""").fetchall()
-        areas = c.execute("""select pa.area, count(*) from paper_area pa join papers p on p.id = pa.paper_id
-                             where p.label = 'female_only_verified' group by 1 order by 2 desc""").fetchall()
+        areas = c.execute("""select pa.area, count(*), count(*) filter (where p.label = 'female_only_verified')
+                             from paper_area pa join papers p on p.id = pa.paper_id
+                             where p.label in ('female_only_verified', 'female_only_probable')
+                             group by 1 order by 3 desc""").fetchall()
+        by_theme = c.execute("""select pc.l1, pa.area, count(*) from paper_cluster pc
+                                join paper_area pa on pa.paper_id = pc.paper_id group by 1, 2""").fetchall()
+        totals = c.execute("""select count(*), count(*) filter (where label = 'female_only_verified'),
+                                     (select count(*) from paper_vec) from papers""").fetchone()
         symptoms = c.execute("""select ps.symptom, count(*) from paper_symptom ps join papers p on p.id = ps.paper_id
                                 where p.label = 'female_only_verified' group by 1 order by 2 desc limit 60""").fetchall()
     keys = ["id", "level", "parent", "size", "label", "top_mesh", "areas", "symptoms", "years", "examples", "run_id"]
     items = [dict(zip(keys, r)) for r in rows]
     themes = [x for x in items if x["level"] == 1]
+    counts = defaultdict(dict)
+    for l1, area, n in by_theme:
+        counts[l1][area] = n
     for t in themes:
         t["children"] = [x for x in items if x["parent"] == t["id"]]
+        t["area_counts"] = counts.get(t["id"], {})   # exact number of studies per disease area in this theme
     return {"run_id": items[0]["run_id"] if items else None, "themes": themes,
-            "areas": [{"area": a, "n": n} for a, n in areas], "symptoms": [{"symptom": s, "n": n} for s, n in symptoms]}
+            "totals": dict(zip(["papers", "verified", "embedded"], totals)),
+            "areas": [{"area": a, "n": n, "verified": v} for a, n, v in areas], "symptoms": [{"symptom": s, "n": n} for s, n in symptoms]}
 
 
 @app.get("/clusters/{cluster_id}", dependencies=[Depends(guard)])
@@ -286,3 +298,28 @@ def similar(paper_id: str, k: int = Query(10, ge=1, le=50)):
                             order by v.embedding <=> q.embedding limit %s""", (paper_id, k)).fetchall()
     keys = ["paper_id", "title", "journal", "pub_year", "label", "source_url", "similarity"]
     return {"paper_id": paper_id, "results": [{**dict(zip(keys, r)), "similarity": round(float(r[6]), 4)} for r in rows]}
+
+
+@app.get("/papers", dependencies=[Depends(guard)])
+def papers(area: str | None = None, cluster: int | None = None, page: int = Query(1, ge=1, le=1000),
+           per_page: int = Query(20, ge=1, le=100), include_probable: bool = False):
+    """Browse studies in a disease area and/or theme, newest first (no search term needed)."""
+    if not area and not cluster:
+        raise HTTPException(400, "give area and/or cluster")
+    labels = LABELS_DEFAULT + (["female_only_probable"] if include_probable else [])
+    where, args = filters(labels, None, None, False, cluster, area)
+    args.update(limit=per_page, offset=(page - 1) * per_page)
+    with pool.connection() as c:
+        total = c.execute(f"select count(*) from papers p where {where}", args).fetchone()[0]
+        rows = c.execute(f"""select p.id, p.title, p.authors, p.journal, p.pub_year, p.doi, p.pmcid, p.source_url, p.label,
+                                    p.study_type, p.n_female, p.population, p.topic, p.commercial_use_ok, p.license,
+                                    null, false, 0
+                             from papers p where {where}
+                             order by p.pub_year desc nulls last, p.id limit %(limit)s offset %(offset)s""", args).fetchall()
+    results = []
+    for r in rows:
+        d = paper_row(r)
+        for k in ("abstract", "population_match", "score"):
+            d.pop(k, None)
+        results.append(d)
+    return {"area": area, "cluster": cluster, "total": total, "page": page, "per_page": per_page, "results": results}

@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="data:,">
+<title>Themes</title>
+<style>
+:root{
+  --paper:#F6F8F7; --surface:#FFFFFF; --ink:#14233B; --ink-2:#3C4A60; --muted:#66748A;
+  --rule:#D9E0E3; --rule-strong:#B7C3C9; --teal:#0E7466; --teal-soft:#E1F1EE;
+  --heart:#B4233C; --heart-soft:#FBE7EA; --focus:#2F6FEB; --radius-m:8px;
+  --serif:"Newsreader",Georgia,serif; --sans:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F1828; --surface:#152135; --ink:#E8EEF2; --ink-2:#C2CCD6; --muted:#8E9BAD;
+    --rule:#26354C; --rule-strong:#3A4B65; --teal:#5CC2B2; --teal-soft:#16352F;
+    --heart:#F28B9C; --heart-soft:#3A1C24; --focus:#8AB4FF; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F1828; --surface:#152135; --ink:#E8EEF2; --ink-2:#C2CCD6; --muted:#8E9BAD;
+  --rule:#26354C; --rule-strong:#3A4B65; --teal:#5CC2B2; --teal-soft:#16352F;
+  --heart:#F28B9C; --heart-soft:#3A1C24; --focus:#8AB4FF; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 var(--sans)}
+a{color:inherit;text-underline-offset:3px;text-decoration-color:var(--rule-strong)}
+a:hover{text-decoration-color:currentColor}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+button,input,select{font:inherit;color:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:0 16px}
+header{padding:14px 0;border-bottom:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:8px 20px;align-items:baseline}
+header nav{display:flex;gap:14px;font-size:14px}
+header nav a[aria-current]{font-weight:700;text-decoration:none}
+.stats{color:var(--muted);font-size:14px;margin:0}
+.stats b{color:var(--ink)}
+.focusbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:14px 0;border-bottom:1px solid var(--rule)}
+.focusbar label{font-weight:600}
+select{max-width:100%}
+select,input[type=search]{padding:8px 10px;border:1px solid var(--rule-strong);border-radius:var(--radius-m);background:var(--surface)}
+.btn{border:0;border-radius:var(--radius-m);padding:8px 14px;font-weight:600;background:var(--ink);color:var(--paper);cursor:pointer}
+.btn.quiet{background:none;color:var(--ink);border:1px solid var(--rule-strong)}
+.areanote{color:var(--muted);font-size:14px}
+.layout{display:grid;grid-template-columns:360px minmax(0,1fr);gap:28px;padding:18px 0 60px}
+.themes{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
+.themes li button{all:unset;box-sizing:border-box;display:block;width:100%;padding:9px 8px;border-bottom:1px solid var(--rule);cursor:pointer}
+.themes li button:hover{background:var(--surface)}
+.themes li button[aria-pressed="true"]{background:var(--teal-soft)}
+.tl{font-weight:600;font-size:14px;line-height:1.35}
+.tm{display:flex;gap:8px;align-items:center;margin-top:5px;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.bar{flex:1;height:6px;background:var(--rule);border-radius:3px;overflow:hidden;position:relative}
+.bar i{position:absolute;inset:0 auto 0 0;background:var(--teal);border-radius:3px}
+.bar i.hl{background:var(--heart)}
+.hlnum{color:var(--heart);font-weight:700}
+h2{font-family:var(--serif);font-weight:500;font-size:24px;margin:0 0 4px;line-height:1.25}
+h3{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:18px 0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--rule);border-radius:999px;padding:3px 10px;font-size:13px;background:var(--surface);color:var(--ink-2)}
+button.chip{cursor:pointer}
+button.chip[aria-pressed="true"]{border-color:var(--teal);background:var(--teal-soft);color:var(--ink)}
+.chip.heart{border-color:var(--heart);background:var(--heart-soft);color:var(--ink)}
+.searchrow{display:flex;gap:8px;margin:16px 0 4px}
+.searchrow input{flex:1;min-width:0}
+.count{color:var(--muted);font-size:14px;margin:10px 0}
+.papers{list-style:none;margin:0;padding:0}
+.papers > li{padding:12px 0;border-top:1px solid var(--rule)}
+.pt{font-weight:600}
+.pm{font-size:13px;color:var(--muted);margin-top:2px}
+.pm .tag{display:inline-block;padding:0 6px;border-radius:4px;background:var(--teal-soft);color:var(--ink);font-size:12px}
+.snip{font-size:14px;color:var(--ink-2);margin-top:4px}
+.snip mark{background:#FFE27A;color:#14233B;padding:0 1px}
+.link{background:none;border:0;padding:0;color:var(--teal);font-size:13px;font-weight:600;cursor:pointer;margin-top:4px}
+.sim{margin:6px 0 0 14px;padding-left:12px;border-left:2px solid var(--rule);font-size:13px}
+.sim li{margin:3px 0}
+.pager{display:flex;gap:8px;align-items:center;margin-top:14px}
+.empty,.err{color:var(--muted);padding:20px 0}
+.err{color:var(--heart)}
+.overview{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}
+.kpi{background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius-m);padding:10px 12px}
+.kpi b{display:block;font-size:22px;font-variant-numeric:tabular-nums}
+.kpi span{font-size:12px;color:var(--muted)}
+@media (max-width:860px){.layout{grid-template-columns:1fr}.themes{max-height:46vh;overflow:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <nav><a href="/">Search</a><a href="/themes.html" aria-current="page">Themes</a><a href="/chat">Ask the research</a></nav>
+    <p class="stats" id="stats">Loading themes…</p>
+  </header>
+
+  <div class="focusbar">
+    <label for="area">Disease area</label>
+    <select id="area"></select>
+    <span class="areanote" id="areanote"></span>
+  </div>
+
+  <div class="layout">
+    <section aria-label="Themes">
+      <ul class="themes" id="themes"></ul>
+    </section>
+    <section id="detail" aria-live="polite"></section>
+  </div>
+</div>
+
+<script>
+const API = "/api/fulltext";
+const DEFAULT_AREA = "C14 Cardiovascular Diseases";
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const nice = (a) => a.replace(/^[A-Z]\d\d /, "");
+const fmt = (n) => Number(n || 0).toLocaleString("en-GB");
+
+let data = null;
+const state = { area: DEFAULT_AREA, theme: null, sub: null, q: "", page: 1 };
+
+async function get(params) {
+  const r = await fetch(API + "?" + new URLSearchParams(params));
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error === "fulltext_offline" ? "The study server is offline or busy; try again in a moment." : (j.error || r.status));
+  return j;
+}
+
+function readHash() {
+  const h = new URLSearchParams(location.hash.slice(1));
+  if (h.has("area")) state.area = h.get("area");
+  state.theme = h.get("theme") ? +h.get("theme") : null;
+  state.sub = h.get("sub") ? +h.get("sub") : null;
+  state.q = h.get("q") || "";
+}
+function writeHash() {
+  const h = new URLSearchParams();
+  if (state.area !== DEFAULT_AREA) h.set("area", state.area);
+  if (state.theme) h.set("theme", state.theme);
+  if (state.sub) h.set("sub", state.sub);
+  if (state.q) h.set("q", state.q);
+  history.replaceState(null, "", h.toString() ? "#" + h : location.pathname);
+}
+
+// How many studies of the chosen disease area sit in a theme.
+const areaIn = (t) => (state.area ? (t.area_counts ? t.area_counts[state.area] : (t.areas.find((a) => a.area === state.area) || {}).n) || 0 : 0);
+
+function renderAreas() {
+  const sel = $("#area");
+  sel.innerHTML = `<option value="">All areas</option>` + data.areas
+    .map((a) => `<option value="${esc(a.area)}">${esc(nice(a.area))} (${fmt(a.verified)})</option>`).join("");
+  sel.value = state.area;
+  const a = data.areas.find((x) => x.area === state.area);
+  $("#areanote").textContent = a
+    ? `${fmt(a.verified)} verified women-only studies (${fmt(a.n)} incl. probable) · ${(100 * a.verified / data.totals.verified).toFixed(1)}% of the dataset`
+    : "";
+}
+
+function renderThemes() {
+  const list = [...data.themes];
+  const max = Math.max(...list.map((t) => t.size));
+  if (state.area) list.sort((a, b) => areaIn(b) - areaIn(a) || b.size - a.size);
+  $("#themes").innerHTML = list.map((t) => {
+    const n = areaIn(t);
+    return `<li><button aria-pressed="${t.id === state.theme}" data-id="${t.id}">
+      <div class="tl">${esc(t.label)}</div>
+      <div class="tm"><span>${fmt(t.size)}</span>
+        <span class="bar"><i style="width:${(100 * t.size / max).toFixed(1)}%"></i>${state.area ? `<i class="hl" style="width:${(100 * n / max).toFixed(1)}%"></i>` : ""}</span>
+        ${state.area ? `<span class="hlnum" title="${esc(nice(state.area))} studies in this theme">${n ? fmt(n) : "–"}</span>` : ""}
+      </div></button></li>`;
+  }).join("");
+}
+
+function chipList(items, key, cls = "") {
+  return items.length ? `<div class="chips">${items.map((x) => `<span class="chip ${cls}">${esc(x[key])} · ${fmt(x.n)}</span>`).join("")}</div>` : `<span class="areanote">none</span>`;
+}
+
+function renderDetail() {
+  const el = $("#detail");
+  const t = data.themes.find((x) => x.id === state.theme);
+  let head;
+  if (!t) {
+    const a = data.areas.find((x) => x.area === state.area);
+    const inThemes = data.themes.filter((x) => areaIn(x) > 0).length;
+    head = state.area ? `<h2>${esc(nice(state.area))}</h2>
+      <div class="overview">
+        <div class="kpi"><b>${fmt(a?.verified)}</b><span>verified women-only studies</span></div>
+        <div class="kpi"><b>${fmt(a?.n)}</b><span>incl. probable</span></div>
+        <div class="kpi"><b>${inThemes}</b><span>of ${data.themes.length} themes include it</span></div>
+      </div>
+      <p class="areanote">Pick a theme on the left to narrow down, or search within this area.</p>`
+      : `<h2>All studies</h2><p class="areanote">Pick a disease area or a theme.</p>`;
+  } else {
+    head = `<h2>${esc(t.label)}</h2>
+      <p class="areanote">${fmt(t.size)} studies${t.years?.min ? ` · ${t.years.min}–${t.years.max} (median ${t.years.median})` : ""}</p>
+      <h3>Sub-themes</h3><div class="chips">${t.children.map((c) =>
+        `<button class="chip" aria-pressed="${c.id === state.sub}" data-sub="${c.id}">${esc(c.label)} · ${fmt(c.size)}</button>`).join("")}</div>
+      <h3>Disease areas</h3>${chipList(t.areas.map((a) => ({...a, area: nice(a.area)})), "area")}
+      <h3>Symptoms (MeSH)</h3>${chipList(t.symptoms, "symptom", "heart")}
+      <h3>Distinctive MeSH terms</h3><div class="chips">${t.top_mesh.map((m) => `<span class="chip">${esc(m.term)} · ${Math.round(m.share * 100)}%</span>`).join("")}</div>`;
+  }
+  const scope = [t ? (state.sub ? "this sub-theme" : "this theme") : "", state.area ? nice(state.area) : ""].filter(Boolean).join(" · ");
+  el.innerHTML = head + (state.area || t ? `
+    <form class="searchrow" id="sform"><input type="search" id="q" placeholder="Search within ${esc(scope)}" value="${esc(state.q)}">
+    <button class="btn">Search</button>${state.q ? `<button type="button" class="btn quiet" id="clearq">Clear</button>` : ""}</form>
+    <div id="results"><p class="count">Loading studies…</p></div>` : "");
+  if (state.area || t) loadPapers();
+}
+
+function paperItem(r) {
+  const meta = [r.journal, r.pub_year, r.n_female ? `${fmt(r.n_female)} women` : "", r.study_type].filter(Boolean).map(esc).join(" · ");
+  const label = r.label === "female_only_verified" ? "" : ` <span class="tag">probable</span>`;
+  const snip = (r.passages || []).slice(0, 1).map((p) => `<div class="snip">${p.snippet}</div>`).join("");
+  const url = r.source_url || (r.pmcid ? `https://europepmc.org/article/PMC/${r.pmcid.replace(/^PMC/, "")}` : "#");
+  return `<li><div class="pt"><a href="${esc(url)}" target="_blank" rel="noopener">${esc(r.title)}</a></div>
+    <div class="pm">${meta}${label}</div>${snip}
+    <button class="link" data-similar="${esc(r.paper_id)}">Similar studies</button><div class="simbox"></div></li>`;
+}
+
+async function loadPapers() {
+  const box = $("#results");
+  const cluster = state.sub || state.theme || "";
+  const params = { per_page: 20, page: state.page };
+  if (state.area) params.area = state.area;
+  if (cluster) params.cluster = cluster;
+  let j;
+  try {
+    if (state.q) j = await get({ ...params, q: state.q });
+    else if (cluster && !state.area) j = await get({ cluster_id: cluster, page: state.page, per_page: 20 });
+    else j = await get({ ...params, browse: 1 });
+  } catch (e) { box.innerHTML = `<p class="err">${esc(e.message)}</p>`; return; }
+  const total = j.total ?? j.size ?? 0;
+  const pages = Math.max(1, Math.ceil(total / 20));
+  box.innerHTML = `<p class="count">${fmt(total)} studies${state.q ? ` matching “${esc(state.q)}”` : ""}${state.q ? "" : cluster && !state.area ? " · most typical first" : " · newest first"}</p>
+    ${j.results.length ? `<ul class="papers">${j.results.map(paperItem).join("")}</ul>` : `<p class="empty">No studies here.</p>`}
+    ${pages > 1 ? `<div class="pager"><button class="btn quiet" id="prev" ${state.page <= 1 ? "disabled" : ""}>Previous</button>
+      <span class="areanote">Page ${state.page} of ${fmt(pages)}</span>
+      <button class="btn quiet" id="next" ${state.page >= pages ? "disabled" : ""}>Next</button></div>` : ""}`;
+}
+
+async function showSimilar(btn) {
+  const box = btn.nextElementSibling;
+  if (box.innerHTML) { box.innerHTML = ""; return; }
+  box.innerHTML = `<p class="areanote">Loading…</p>`;
+  try {
+    const j = await get({ similar: btn.dataset.similar });
+    box.innerHTML = `<ul class="sim">${j.results.slice(0, 6).map((r) => `<li><a href="${esc(r.source_url || "#")}" target="_blank" rel="noopener">${esc(r.title)}</a> <span class="areanote">· ${r.pub_year ?? ""} · ${(r.similarity * 100).toFixed(0)}% similar</span></li>`).join("")}</ul>`;
+  } catch (e) { box.innerHTML = `<p class="err">${esc(e.message)}</p>`; }
+}
+
+function rerender(full = true) { writeHash(); if (full) { renderAreas(); renderThemes(); } renderDetail(); }
+
+document.addEventListener("click", (e) => {
+  const th = e.target.closest("#themes button");
+  if (th) { const id = +th.dataset.id; state.theme = state.theme === id ? null : id; state.sub = null; state.page = 1; return rerender(); }
+  const sb = e.target.closest("[data-sub]");
+  if (sb) { const id = +sb.dataset.sub; state.sub = state.sub === id ? null : id; state.page = 1; return rerender(false); }
+  const sim = e.target.closest("[data-similar]");
+  if (sim) return showSimilar(sim);
+  if (e.target.id === "prev") { state.page--; loadPapers(); scrollTo({ top: 0 }); }
+  if (e.target.id === "next") { state.page++; loadPapers(); scrollTo({ top: 0 }); }
+  if (e.target.id === "clearq") { state.q = ""; state.page = 1; rerender(false); }
+});
+document.addEventListener("submit", (e) => {
+  if (e.target.id !== "sform") return;
+  e.preventDefault(); state.q = $("#q").value.trim(); state.page = 1; writeHash(); loadPapers();
+});
+$("#area").addEventListener("change", (e) => { state.area = e.target.value; state.page = 1; rerender(); });
+
+(async () => {
+  readHash();
+  try { data = await get({ clusters: 1 }); }
+  catch (e) { $("#stats").textContent = e.message; return; }
+  const t = data.totals || {};
+  $("#stats").innerHTML = `<b>${fmt(data.themes.reduce((s, x) => s + x.size, 0))}</b> women-only studies in <b>${data.themes.length}</b> themes, grouped by what they are about.`;
+  if (state.area && !data.areas.some((a) => a.area === state.area)) state.area = "";
+  rerender();
+})();
+</script>
+</body>
+</html>
