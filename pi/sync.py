@@ -12,6 +12,7 @@ import argparse
 import json
 import os
 import time
+from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import requests
@@ -28,27 +29,53 @@ def catalogue_from_pi(url: str, token: str) -> dict:
     """Copy the catalogue from a Pi API (/catalogue), used by the GitHub analysis run: the Pi is the source of truth."""
     conn = store.connect()
     store.apply_schema(conn)
-    after, total = "", 0
+    total = 0
+    for rows in _pi_pages(url, token, 200):
+        store.upsert_papers(conn, rows, source="pi")
+        total += len(rows)
+        print(f"  catalogue (Pi): {total} papers", flush=True)
+    conn.close()
+    return {"catalogue_rows": total, "source": "pi"}
+
+
+def _pi_pages(url: str, token: str, limit: int):
+    """Yield pages from a keyset-paged Pi endpoint, retrying dropped tunnel connections."""
+    after = ""
     while True:
-        for attempt in range(5):
+        for attempt in range(8):
             try:
-                r = requests.get(url, params={"after": after, "limit": 500}, headers={"x-api-key": token}, timeout=120)
+                r = requests.get(url, params={"after": after, "limit": limit}, headers={"x-api-key": token}, timeout=180)
                 r.raise_for_status()
                 page = r.json()
                 break
-            except requests.RequestException as e:
-                if attempt == 4:
+            except Exception as e:   # incl. SSL EOF from the tunnel mid-transfer, which is not a RequestException
+                if attempt == 7:
                     raise
                 print(f"  retry ({e.__class__.__name__})", flush=True)
                 time.sleep(5 * (attempt + 1))
-        store.upsert_papers(conn, page["rows"], source="pi")
-        total += len(page["rows"])
-        print(f"  catalogue (Pi): {total} papers", flush=True)
+        yield page["rows"]
         if not page["next"]:
-            break
+            return
         after = page["next"]
+
+
+def vectors_from_pi(url: str, token: str) -> dict:
+    """Copy stored embeddings from the Pi (/vectors) for papers present here, so only new papers get embedded."""
+    conn = store.connect()
+    conn.execute((Path(__file__).resolve().parent / "schema_analysis.sql").read_text()); conn.commit()
+    total = kept = 0
+    for rows in _pi_pages(url, token, 500):
+        with conn.cursor() as c:
+            c.executemany("""insert into paper_vec (paper_id, model, embedding)
+                             select %s, %s, %s::vector where exists (select 1 from papers where id = %s)
+                             on conflict (paper_id) do nothing""",
+                          [(r["id"], r["model"], r["embedding"], r["id"]) for r in rows])
+        conn.commit()
+        total += len(rows)
+        print(f"  vectors (Pi): {total}", flush=True)
+    kept = conn.execute("select count(*) from paper_vec").fetchone()[0]
     conn.close()
-    return {"catalogue_rows": total, "source": "pi"}
+    return {"vectors_read": total, "vectors_kept": kept}
 
 
 def catalogue(page_size: int = 1000) -> dict:
@@ -147,12 +174,14 @@ def status() -> dict:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("step", choices=["catalogue", "fulltext", "status"])
+    ap.add_argument("step", choices=["catalogue", "fulltext", "status", "vectors"])
     ap.add_argument("--limit", type=int, default=0, help="fulltext: max papers this run (0 = all pending)")
     ap.add_argument("--workers", type=int, default=4)
     a = ap.parse_args()
     if a.step == "catalogue":
         out = catalogue()
+    elif a.step == "vectors":
+        out = vectors_from_pi(os.environ["PI_VECTORS_URL"], os.environ["PI_API_TOKEN"])
     elif a.step == "fulltext":
         out = fetch_fulltext(a.limit, a.workers)
     else:

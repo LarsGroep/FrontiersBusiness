@@ -12,6 +12,7 @@ GET /clusters/{id}              studies in one theme or sub-theme, most typical 
 GET /similar/{id}               nearest studies by embedding
 GET /papers?area=&cluster=      browse studies without a search term (newest first)
 GET /catalogue?after=&limit=    catalogue rows (metadata, labels, abstracts) for the GitHub analysis run
+GET /vectors?after=&limit=      stored paper embeddings, so the analysis run only embeds new papers
 /search and /export.csv also take  cluster=<id>  and  area=<'C04 Neoplasms'>  filters.
 
 All endpoints except /health need header `x-api-key: $PI_API_TOKEN` when that variable is set,
@@ -338,3 +339,13 @@ def catalogue(after: str = "", limit: int = Query(500, ge=1, le=1000)):
         cur = c.execute(f"select {cols} from papers where id > %s order by id limit %s", (after, limit))
         rows = [dict(zip(store.PAPER_FIELDS, r)) for r in cur.fetchall()]
     return {"rows": rows, "next": rows[-1]["id"] if len(rows) == limit else None}
+
+
+@app.get("/vectors", dependencies=[Depends(guard)])
+def vectors(after: str = "", limit: int = Query(500, ge=1, le=1000)):
+    """Stored embeddings in id order (keyset paging), reused by the GitHub analysis run."""
+    with pool.connection() as c:
+        rows = c.execute("select paper_id, model, embedding::text from paper_vec where paper_id > %s order by paper_id limit %s",
+                         (after, limit)).fetchall()
+    return {"rows": [{"id": i, "model": m, "embedding": e} for i, m, e in rows],
+            "next": rows[-1][0] if len(rows) == limit else None}

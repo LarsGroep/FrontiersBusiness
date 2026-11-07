@@ -6,7 +6,7 @@ name: Analyse (embeddings + MeSH areas + themes) for the Pi
 on:
   push:
     branches: [main]
-    paths: [".github/workflows/analyse.yml", "pi/analysis.py", "pi/schema_analysis.sql"]
+    paths: ["pi/analysis.py", "pi/schema_analysis.sql"]
   workflow_dispatch:
     inputs:
       themes:
@@ -33,6 +33,9 @@ jobs:
         ports: ["5432:5432"]
         options: >-
           --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 20
+    defaults:
+      run:
+        shell: bash   # = bash -eo pipefail: a failing command before "| tail" fails the step
     env:
       PI_DB_URL: postgresql://postgres:analyse@localhost:5432/herdb
       PI_MODEL_DIR: /home/runner/.cache/herevidence-models
@@ -61,20 +64,31 @@ jobs:
         run: |
           docker exec ${{ job.services.postgres.id }} psql -U postgres -d herdb -qc "create extension if not exists vector"
           python -m pi.sync catalogue | tail -3
+          # Never publish an analysis of a truncated catalogue (it would replace the good one on the Pi).
+          n=$(docker exec ${{ job.services.postgres.id }} psql -U postgres -d herdb -Atc "select count(*) from papers")
+          echo "catalogue rows: $n"
+          [ "$n" -ge 20000 ] || { echo "::error::catalogue has only $n papers; stopping"; exit 1; }
 
-      - name: Reuse vectors from the last release (only new papers get embedded)
-        continue-on-error: true
+      - name: Reuse stored vectors (only new papers get embedded)
+        env:
+          PI_VECTORS_URL: ${{ secrets.PI_API_URL && format('{0}/vectors', secrets.PI_API_URL) || '' }}
+          PI_API_TOKEN: ${{ secrets.PI_API_TOKEN }}
         run: |
-          curl -fsSL -o prev.dump https://github.com/${{ github.repository }}/releases/download/analysis-latest/analysis.dump
-          docker cp prev.dump ${{ job.services.postgres.id }}:/tmp/prev.dump
-          docker exec -i ${{ job.services.postgres.id }} psql -U postgres -d herdb -q -f - < pi/schema_analysis.sql
-          # Keep only vectors whose paper is in this catalogue (foreign key), via a staging table.
-          docker exec ${{ job.services.postgres.id }} psql -U postgres -d herdb -qc "create table prev_vec (like paper_vec)"
-          docker exec ${{ job.services.postgres.id }} pg_restore --data-only -t paper_vec -f /tmp/prev.sql /tmp/prev.dump
-          docker exec ${{ job.services.postgres.id }} sed -i 's/^COPY public.paper_vec /COPY public.prev_vec /' /tmp/prev.sql
-          docker exec ${{ job.services.postgres.id }} psql -U postgres -d herdb -q -f /tmp/prev.sql
-          docker exec ${{ job.services.postgres.id }} psql -U postgres -d herdb -Atc \
-            "insert into paper_vec select v.* from prev_vec v join papers p on p.id = v.paper_id on conflict do nothing; drop table prev_vec; select 'reused vectors: '||count(*) from paper_vec"
+          if [ -n "$PI_VECTORS_URL" ] && [ -n "$PI_API_TOKEN" ]; then
+            python -m pi.sync vectors | tail -3          # from the Pi (source of truth)
+          else
+            # fallback: the last published release
+            curl -fsSL -o prev.dump https://github.com/${{ github.repository }}/releases/download/analysis-latest/analysis.dump || exit 0
+            docker cp prev.dump ${{ job.services.postgres.id }}:/tmp/prev.dump
+            docker exec -i ${{ job.services.postgres.id }} psql -U postgres -d herdb -q -f - < pi/schema_analysis.sql
+            docker exec ${{ job.services.postgres.id }} psql -U postgres -d herdb -qc "create table prev_vec (like paper_vec)"
+            docker exec ${{ job.services.postgres.id }} pg_restore --data-only -t paper_vec -f /tmp/prev.sql /tmp/prev.dump
+            docker exec ${{ job.services.postgres.id }} sed -i 's/^COPY public.paper_vec /COPY public.prev_vec /' /tmp/prev.sql
+            docker exec ${{ job.services.postgres.id }} psql -U postgres -d herdb -q -f /tmp/prev.sql
+            docker exec ${{ job.services.postgres.id }} psql -U postgres -d herdb -Atc \
+              "insert into paper_vec select v.* from prev_vec v join papers p on p.id = v.paper_id on conflict do nothing; drop table prev_vec"
+          fi
+          docker exec ${{ job.services.postgres.id }} psql -U postgres -d herdb -Atc "select 'reused vectors: '||count(*) from paper_vec"
 
       - name: MeSH areas, embeddings, themes
         run: |
