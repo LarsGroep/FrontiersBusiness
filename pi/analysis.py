@@ -12,7 +12,7 @@ Runs on a Raspberry Pi 5 with 1 GB RAM: the model is bge-small-en-v1.5 (ONNX via
 from __future__ import annotations
 
 import argparse
-import io
+import gzip
 import json
 import math
 import os
@@ -28,7 +28,7 @@ from . import store
 MODEL = "BAAI/bge-small-en-v1.5"
 MODEL_DIR = os.getenv("PI_MODEL_DIR", "/opt/herevidence/models")
 MESH_YEARS = [time.gmtime().tm_year, time.gmtime().tm_year - 1, time.gmtime().tm_year + 1]
-MESH_URL = "https://nlmpubs.nlm.nih.gov/projects/mesh/MESH_FILES/asciimesh/d{year}.bin"
+MESH_XML_URL = "https://nlmpubs.nlm.nih.gov/projects/mesh/MESH_FILES/xmlmesh/desc{year}.gz"
 INCLUDE_LABELS = ("female_only_verified", "female_only_probable")
 
 AREAS = {
@@ -56,33 +56,43 @@ def norm_term(t: str) -> str:
 
 # ---------------------------------------------------------------- MeSH
 def load_mesh(conn) -> int:
+    """Load MeSH descriptor names + tree numbers from NLM's yearly XML (the ASCII format ended in Jan 2026).
+
+    Streams the ~17 MB gzip to the data disk and parses it record by record, so memory stays small on the Pi.
+    """
     n = conn.execute("select count(*) from mesh").fetchone()[0]
     if n > 20000:
         return n
-    text = None
+    from lxml import etree
+
+    os.makedirs(MODEL_DIR, exist_ok=True)
+    path = None
     for year in MESH_YEARS:
-        r = requests.get(MESH_URL.format(year=year), timeout=300)
-        if r.ok and r.content[:20].strip():
-            text = r.content.decode("utf-8", "replace")
-            print(f"  MeSH {year}: {len(r.content) / 1e6:.0f} MB", flush=True)
+        url = MESH_XML_URL.format(year=year)
+        with requests.get(url, stream=True, timeout=300, allow_redirects=False) as r:
+            if r.status_code != 200 or "html" in r.headers.get("content-type", ""):
+                continue
+            path = os.path.join(MODEL_DIR, f"desc{year}.gz")
+            with open(path, "wb") as f:
+                for chunk in r.iter_content(1 << 20):
+                    f.write(chunk)
+            print(f"  MeSH {year}: {os.path.getsize(path) / 1e6:.0f} MB downloaded", flush=True)
             break
-    if text is None:
-        raise RuntimeError("could not download the MeSH ASCII file from NLM")
-    rows, cur = [], {}
-    for line in io.StringIO(text):
-        line = line.rstrip("\n")
-        if line == "*NEWRECORD":
-            if cur.get("MH"):
-                rows.append((cur["MH"], cur.get("UI"), cur.get("MN", [])))
-            cur = {}
-        elif line.startswith("MH = "):
-            cur["MH"] = line[5:]
-        elif line.startswith("UI = "):
-            cur["UI"] = line[5:]
-        elif line.startswith("MN = "):
-            cur.setdefault("MN", []).append(line[5:])
-    if cur.get("MH"):
-        rows.append((cur["MH"], cur.get("UI"), cur.get("MN", [])))
+    if path is None:
+        raise RuntimeError("could not download the MeSH descriptor file from NLM")
+    rows = []
+    with gzip.open(path, "rb") as fh:
+        for _, el in etree.iterparse(fh, events=("end",), tag="DescriptorRecord"):
+            ui = el.findtext("DescriptorUI")
+            name = el.findtext("DescriptorName/String")
+            trees = [t.text for t in el.findall("TreeNumberList/TreeNumber")]
+            if name:
+                rows.append((name, ui, trees))
+            el.clear()
+            while el.getprevious() is not None:
+                del el.getparent()[0]
+    if len(rows) < 20000:
+        raise RuntimeError(f"MeSH file looks incomplete ({len(rows)} descriptors)")
     with conn.cursor() as c:
         c.execute("delete from mesh")
         c.executemany("insert into mesh (name, ui, trees) values (%s,%s,%s) on conflict (name) do nothing", rows)
@@ -113,7 +123,7 @@ def tag_areas(conn) -> dict:
 
 
 # ---------------------------------------------------------------- embeddings
-def embed(batch: int = 128, threads: int = 3) -> dict:
+def embed(batch: int = 64, threads: int = 2) -> dict:
     from fastembed import TextEmbedding  # imported here so the other steps work without it
 
     conn = store.connect()
@@ -129,7 +139,7 @@ def embed(batch: int = 128, threads: int = 3) -> dict:
         if not rows:
             break
         texts = [f"{t}. {a}"[:2000] for _, t, a in rows]
-        vecs = list(model.embed(texts, batch_size=32))
+        vecs = list(model.embed(texts, batch_size=16))
         with conn.cursor() as c:
             c.executemany("insert into paper_vec (paper_id, model, embedding) values (%s,%s,%s::vector) "
                           "on conflict (paper_id) do nothing",
@@ -260,7 +270,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("step", choices=["mesh", "embed", "cluster", "all", "summary"])
     ap.add_argument("--k", type=int, default=30, help="number of broad themes")
-    ap.add_argument("--threads", type=int, default=3)
+    ap.add_argument("--threads", type=int, default=2)
     a = ap.parse_args()
     conn = store.connect()
     conn.execute((Path(__file__).resolve().parent / "schema_analysis.sql").read_text()); conn.commit()
