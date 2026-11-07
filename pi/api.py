@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import csv
 import io
+import json
 import os
 import threading
 import time
@@ -246,16 +247,12 @@ def _clusters_uncached():
     with pool.connection() as c:
         rows = c.execute("""select id, level, parent, size, label, top_mesh, areas, symptoms, years, examples, run_id
                             from clusters order by level, size desc""").fetchall()
-        areas = c.execute("""select pa.area, count(*), count(*) filter (where p.label = 'female_only_verified')
-                             from paper_area pa join papers p on p.id = pa.paper_id
-                             where p.label in ('female_only_verified', 'female_only_probable')
-                             group by 1 order by 3 desc""").fetchall()
         by_theme = c.execute("""select pc.l1, pa.area, count(*) from paper_cluster pc
                                 join paper_area pa on pa.paper_id = pc.paper_id group by 1, 2""").fetchall()
-        totals = c.execute("""select count(*), count(*) filter (where label = 'female_only_verified'),
-                                     (select count(*) from paper_vec) from papers""").fetchone()
-        symptoms = c.execute("""select ps.symptom, count(*) from paper_symptom ps join papers p on p.id = ps.paper_id
-                                where p.label = 'female_only_verified' group by 1 order by 2 desc limit 60""").fetchall()
+        # Area counts and totals are computed once at import (pi/import-analysis.sh); joining papers here is too slow.
+        row = c.execute("select value from meta where key = 'analysis_stats'").fetchone()
+        stats = json.loads(row[0]) if row else {"totals": {}, "areas": []}
+        symptoms = c.execute("""select symptom, count(*) from paper_symptom group by 1 order by 2 desc limit 60""").fetchall()
     keys = ["id", "level", "parent", "size", "label", "top_mesh", "areas", "symptoms", "years", "examples", "run_id"]
     items = [dict(zip(keys, r)) for r in rows]
     themes = [x for x in items if x["level"] == 1]
@@ -266,8 +263,7 @@ def _clusters_uncached():
         t["children"] = [x for x in items if x["parent"] == t["id"]]
         t["area_counts"] = counts.get(t["id"], {})   # exact number of studies per disease area in this theme
     return {"run_id": items[0]["run_id"] if items else None, "themes": themes,
-            "totals": dict(zip(["papers", "verified", "embedded"], totals)),
-            "areas": [{"area": a, "n": n, "verified": v} for a, n, v in areas], "symptoms": [{"symptom": s, "n": n} for s, n in symptoms]}
+            "totals": stats.get("totals", {}), "areas": stats.get("areas") or [], "symptoms": [{"symptom": s, "n": n} for s, n in symptoms]}
 
 
 @app.get("/clusters/{cluster_id}", dependencies=[Depends(guard)])
