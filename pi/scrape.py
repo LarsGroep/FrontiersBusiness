@@ -43,8 +43,17 @@ def run(max_papers: int, since_year: int | None = None, topic: str | None = None
             print(f"  ! search {key}: {e}", flush=True)
             continue
         added_here = 0
+
+        def safe(records=records, key=key):
+            """Stop this slice (cursor is saved) instead of the whole run when a result page fails to load."""
+            try:
+                yield from records
+            except Exception as e:
+                stats["page_errors"] += 1
+                print(f"  ! {key}: result page failed ({type(e).__name__}); moving to the next slice", flush=True)
+
         try:
-            for rec in records:
+            for rec in safe():
                 if added_here >= per_slice or stats["added"] >= max_papers:
                     break
                 paper = europepmc.parse_record(rec)
@@ -75,7 +84,7 @@ def run(max_papers: int, since_year: int | None = None, topic: str | None = None
         print(f"  {key}: +{added_here}", flush=True)
 
     conn.close()
-    return {"added": stats["added"], "errors": stats["errors"], "labels": dict(labels)}
+    return {"added": stats["added"], "errors": stats["errors"], "page_errors": stats["page_errors"], "labels": dict(labels)}
 
 
 def main() -> None:
