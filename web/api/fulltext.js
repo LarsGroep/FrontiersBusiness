@@ -3,10 +3,14 @@
 //   GET /api/fulltext?q=...&page=&per_page=  -> Pi /search (every matching study, exact total)
 //   GET /api/fulltext?q=...&export=csv       -> Pi /export.csv (download of all matches)
 //   GET /api/fulltext?paper=PMC123           -> Pi /paper/PMC123
+//   GET /api/fulltext?clusters=1             -> Pi /clusters (theme tree, disease areas, symptoms)
+//   GET /api/fulltext?cluster_id=12&page=    -> Pi /clusters/12 (studies in a theme)
+//   GET /api/fulltext?similar=PMC123         -> Pi /similar/PMC123
+//   /search and export also pass  cluster=<id>  and  area=<MeSH area>
 // Needs PI_API_URL and PI_API_TOKEN in the Vercel project; answers 503 when the Pi is not set up or offline.
 const PI = (process.env.PI_API_URL || "").replace(/\/+$/, "");
 const TOKEN = process.env.PI_API_TOKEN || "";
-const PASS = ["q", "page", "per_page", "include_probable", "min_year", "topics", "population", "open_licence_only"];
+const PASS = ["q", "page", "per_page", "include_probable", "min_year", "topics", "population", "open_licence_only", "cluster", "area"];
 
 module.exports = async (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -14,9 +18,20 @@ module.exports = async (req, res) => {
   const url = new URL(req.url, "http://x");
   const p = url.searchParams;
   let path;
+  const ID = /^(PMC|MED)\d+$/;
   if (p.get("health")) path = "/health";
+  else if (p.get("clusters")) path = "/clusters";
+  else if (p.get("cluster_id")) {
+    if (!/^\d{1,5}$/.test(p.get("cluster_id"))) return res.status(400).json({ error: "bad_cluster" });
+    const fwd = new URLSearchParams();
+    ["page", "per_page"].forEach((k) => p.get(k) && /^\d{1,4}$/.test(p.get(k)) && fwd.set(k, p.get(k)));
+    path = `/clusters/${p.get("cluster_id")}?${fwd}`;
+  } else if (p.get("similar")) {
+    if (!ID.test(p.get("similar"))) return res.status(400).json({ error: "bad_id" });
+    path = `/similar/${p.get("similar")}`;
+  }
   else if (p.get("paper")) {
-    if (!/^(PMC|MED)\d+$/.test(p.get("paper"))) return res.status(400).json({ error: "bad_id" });
+    if (!ID.test(p.get("paper"))) return res.status(400).json({ error: "bad_id" });
     path = `/paper/${p.get("paper")}`;
   } else {
     if (!p.get("q")) return res.status(400).json({ error: "missing_q" });
