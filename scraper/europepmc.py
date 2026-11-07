@@ -42,6 +42,23 @@ DEFAULT_TOPICS = {
 }
 
 
+# Focused topics, run on demand (python -m pi.scrape --topic cardio-mesh). MeSH headings (KW field) are precise,
+# unlike free-text words such as "heart" that match almost any paper. Counted 7 Nov 2026: ~7,000 women-only OA papers.
+CARDIO_MESH = [
+    "Cardiovascular Diseases", "Heart Diseases", "Hypertension", "Hypertension, Pregnancy-Induced", "Pre-Eclampsia",
+    "Myocardial Infarction", "Coronary Artery Disease", "Coronary Disease", "Myocardial Ischemia", "Heart Failure",
+    "Stroke", "Ischemic Stroke", "Atrial Fibrillation", "Arrhythmias, Cardiac", "Cardiomyopathies", "Atherosclerosis",
+    "Angina Pectoris", "Chest Pain", "Venous Thrombosis", "Venous Thromboembolism", "Pulmonary Embolism",
+    "Cardiotoxicity", "Takotsubo Cardiomyopathy", "Peripheral Arterial Disease", "Cerebrovascular Disorders",
+    "Vascular Diseases", "Hypertension, Pulmonary", "Blood Pressure", "Microvascular Angina", "Coronary Vessel Anomalies",
+    "Aortic Stenosis", "Heart Valve Diseases", "Endothelium, Vascular", "Vascular Stiffness", "Cardiovascular System",
+]
+EXTRA_TOPICS = {
+    "cardio-mesh": " OR ".join(f'KW:"{m}"' for m in CARDIO_MESH),
+}
+ALL_TOPICS = {**DEFAULT_TOPICS, **EXTRA_TOPICS}
+
+
 # Europe PMC lists newest papers first, so each topic is walked in separate publication-year bands;
 # otherwise the dataset fills up with this year's papers only.
 YEAR_BANDS = {

@@ -1,6 +1,7 @@
 """Keep growing the Pi database beyond Supabase's size limit.
 
   python -m pi.scrape --max-papers 300
+  python -m pi.scrape --topic cardio-mesh --max-papers 6000     # one focused topic (see europepmc.ALL_TOPICS)
 
 Same pipeline as the GitHub scraper (women-only query, 14 topics x 4 publication-year bands,
 rule-based labeller, optional Claude check when ANTHROPIC_API_KEY is set), but each paper is
@@ -17,11 +18,12 @@ from scraper import europepmc, fulltext, label
 from . import store
 
 
-def run(max_papers: int, since_year: int | None = None) -> dict:
+def run(max_papers: int, since_year: int | None = None, topic: str | None = None) -> dict:
     conn = store.connect()
     store.apply_schema(conn)
     seen = {r[0] for r in conn.execute("select id from papers").fetchall()}
-    slices = [(name, tq, band, yr) for name, tq in europepmc.DEFAULT_TOPICS.items()
+    topics = {topic: europepmc.ALL_TOPICS[topic]} if topic else europepmc.DEFAULT_TOPICS
+    slices = [(name, tq, band, yr) for name, tq in topics.items()
               for band, yr in europepmc.YEAR_BANDS.items()]
     per_slice = max(1, -(-max_papers // len(slices)))
     stats, labels = collections.Counter(), collections.Counter()
@@ -35,7 +37,8 @@ def run(max_papers: int, since_year: int | None = None) -> dict:
             start = "*"   # wrapped around: rescan from the top for newly published papers
         q = europepmc.build_query(since_year, tq, year_range=yr)
         try:
-            _, records, state = europepmc.search(q, max_results=per_slice * 30, start_cursor=start)
+            # Focused runs scan the whole slice (most hits are new); the rotation reads up to 30x its quota.
+            _, records, state = europepmc.search(q, max_results=10**6 if topic else per_slice * 30, start_cursor=start)
         except Exception as e:
             print(f"  ! search {key}: {e}", flush=True)
             continue
@@ -79,8 +82,10 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--max-papers", type=int, default=300)
     ap.add_argument("--since-year", type=int, default=None)
+    ap.add_argument("--topic", choices=sorted(europepmc.ALL_TOPICS), default=None,
+                    help="scrape only this topic (all 4 year bands) instead of the 14-topic rotation")
     a = ap.parse_args()
-    print(json.dumps(run(a.max_papers, a.since_year), indent=2))
+    print(json.dumps(run(a.max_papers, a.since_year, a.topic), indent=2))
 
 
 if __name__ == "__main__":
