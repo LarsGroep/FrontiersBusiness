@@ -39,6 +39,10 @@ def upsert_papers(conn: psycopg.Connection, rows: list[dict], source: str) -> in
         f"insert into papers ({','.join(cols)}) values ({','.join(['%s'] * len(cols))}) "
         f"on conflict (id) do update set "
         + ",".join(f"{c}=excluded.{c}" for c in PAPER_FIELDS if c != "id")
+        # Only rewrite rows that really changed: an update rebuilds the paper's (large) full-text index entries,
+        # so rewriting all ~30k unchanged rows every hour made the sync crawl and blocked searches.
+        + " where (" + ",".join(f"papers.{c}" for c in PAPER_FIELDS if c != "id") + ") is distinct from ("
+        + ",".join(f"excluded.{c}" for c in PAPER_FIELDS if c != "id") + ")"
     )
     vals = []
     for r in rows:
