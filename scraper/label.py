@@ -84,6 +84,29 @@ def _snippet(text: str, m: re.Match, width: int = 90) -> str:
     return text[a:b].replace("\n", " ")
 
 
+# Perinatal studies whose real subjects are babies, foetuses or birth tissue. MeSH tags them "Female" because of the
+# mother, but the participants are infants of both sexes (found in a 50-paper check of cardio papers, 8 Nov 2026).
+INFANT_TITLE_RX = re.compile(
+    r"\b(?:infants? born to|(?:very |extremely |late )?preterm infants|neonates|newborns|in infants|"
+    r"umbilical (?:artery|arteries|vein|cord)|cord blood|fetal [\w -]{0,30}(?:cells|tissue)|"
+    r"placental? [\w -]{0,20}(?:cells|explants?|tissue)|offspring)\b", re.I)
+INFANT_MESH = {"infant, newborn", "infant, premature", "infant, very low birth weight", "infant, extremely premature",
+               "fetus", "umbilical arteries", "umbilical veins", "fetal blood"}
+INFANT_WORD_RX = re.compile(r"\b(?:infants?|neonates?|newborns?|fetus(?:es)?|foetus(?:es)?|preterm births?)\b", re.I)
+
+
+def infant_subjects(paper: dict, methods_text: str) -> bool:
+    """True when the study's subjects look like infants/foetuses/birth tissue rather than the women themselves."""
+    title = paper.get("title") or ""
+    if INFANT_TITLE_RX.search(title):
+        return True
+    mesh = {m.lower() for m in paper.get("mesh_terms") or []}
+    if mesh & INFANT_MESH:
+        text = methods_text or paper.get("abstract") or ""
+        return len(INFANT_WORD_RX.findall(text)) > max(2, len(FEMALE_POP_RX.findall(text)))
+    return False
+
+
 def rule_label(paper: dict, methods_text: str) -> dict:
     mesh = {m.lower() for m in paper.get("mesh_terms") or []}
     reasons = []
@@ -146,6 +169,9 @@ def rule_label(paper: dict, methods_text: str) -> dict:
     elif other_groups:
         label = "female_only_probable"
         reasons.append("other_participant_groups:" + ",".join(other_groups[:4]))
+    elif infant_subjects(paper, methods_text):
+        label = "female_only_probable"
+        reasons.append("infant_or_fetal_subjects")
     elif not methods_text:
         label = "female_only_unverified"
         reasons.append("no_methods_section")
