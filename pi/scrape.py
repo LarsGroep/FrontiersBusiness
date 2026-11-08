@@ -11,11 +11,19 @@ from __future__ import annotations
 
 import argparse
 import collections
+from concurrent.futures import ThreadPoolExecutor
 import json
 import time
 
 from scraper import europepmc, fulltext, label
 from . import store
+
+
+def _fetch_xml(pmcid: str):
+    try:
+        return europepmc.fetch_fulltext_xml(pmcid)
+    except Exception as e:   # handed back to the caller, which logs it for that paper
+        return e
 
 
 def run(max_papers: int, since_year: int | None = None, topic: str | None = None) -> dict:
@@ -52,17 +60,19 @@ def run(max_papers: int, since_year: int | None = None, topic: str | None = None
                 stats["page_errors"] += 1
                 print(f"  ! {key}: result page failed ({type(e).__name__}); moving to the next slice", flush=True)
 
-        try:
-            for rec in safe():
-                if added_here >= per_slice or stats["added"] >= max_papers:
-                    break
-                paper = europepmc.parse_record(rec)
-                if not paper["pmcid"] or paper["id"] in seen:
-                    continue
-                seen.add(paper["id"])
-                paper["topic"] = name
+        pending: list[dict] = []
+
+        def flush() -> None:
+            """Fetch full texts for the pending papers 4 at a time, then label and store them one by one."""
+            nonlocal added_here
+            if not pending:
+                return
+            with ThreadPoolExecutor(max_workers=4) as pool:
+                xmls = list(pool.map(_fetch_xml, [p["pmcid"] for p in pending]))
+            for paper, xml in zip(pending, xmls):
                 try:
-                    xml = europepmc.fetch_fulltext_xml(paper["pmcid"])
+                    if isinstance(xml, Exception):
+                        raise xml
                     sections = fulltext.parse_sections(xml) if xml else []
                     methods = " ".join(t for k, _, t in sections if k == "methods")
                     results = " ".join(t for k, _, t in sections if k in ("results", "conclusion"))
@@ -78,7 +88,26 @@ def run(max_papers: int, since_year: int | None = None, topic: str | None = None
                     conn.rollback()
                     stats["errors"] += 1
                     print(f"  ! {paper['id']}: {type(e).__name__}: {str(e)[:120]}", flush=True)
-                time.sleep(0.2)
+            pending.clear()
+
+        last_saved = 0
+        try:
+            for rec in safe():
+                if added_here + len(pending) >= per_slice or stats["added"] + len(pending) >= max_papers:
+                    break
+                paper = europepmc.parse_record(rec)
+                if paper["pmcid"] and paper["id"] not in seen:
+                    seen.add(paper["id"])
+                    paper["topic"] = name
+                    pending.append(paper)
+                    if len(pending) >= 8:
+                        flush()
+                # Save the position now and then, so a shutdown does not lose a whole band's progress.
+                if state["scanned"] - last_saved >= 100:
+                    flush()
+                    store.save_cursor(conn, key, state["cursor"], state["scanned"], state["exhausted"])
+                    last_saved = state["scanned"]
+            flush()
         finally:
             store.save_cursor(conn, key, state["cursor"], state["scanned"], state["exhausted"])
         print(f"  {key}: +{added_here}", flush=True)
