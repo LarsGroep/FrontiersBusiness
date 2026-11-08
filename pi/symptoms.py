@@ -67,6 +67,34 @@ PATIENT_SYMPTOMS = set(CARDIO_TERMS) | {
 # Sentences where a symptom is a covariate, a table/figure caption or an abbreviation list, not a finding.
 NOT_A_FINDING = re.compile(r"\b(adjusted for|confound\w*|covariate\w*|abbreviations?|table \d|figure \d|fig\. \d|"
                            r"model \d|exclusion criteria|excluded if|were excluded)\b", re.I)
+# Is the sentence a finding about the women studied (a count, a percentage, "reported", "presented with", side
+# effects), or background/aims/instruments? Fixed, auditable patterns; checked by hand on samples (see project notes).
+FINDING_RX = re.compile(
+    r"\b(?:reported|reporting|experienced|presented with|presenting with|complained of|complaints?|suffered|"
+    r"developed|occurred in|was (?:observed|found|present)|were (?:observed|found|present|common|frequent)|"
+    r"most (?:common|frequent)(?:ly)?|prevalence|incidence|frequency|proportion|rates? of|side[- ]effects?|"
+    r"adverse (?:events?|effects?|reactions?)|toxicit\w+|associated with (?:a )?(?:higher|lower|increased|reduced)|"
+    r"(?:higher|lower|greater|more|fewer) (?:in|among|than)|odds|hazard|risk of|scores? (?:of|were|was)|"
+    r"(?:women|patients|participants|mothers|girls) (?:with|who)\b|showed|symptom burden|burden of|"
+    r"\d+(?:\.\d+)?\s*%|\(n\s*=|\bn\s*=\s*\d)", re.I)
+NOT_FINDING_RX = re.compile(
+    r"^(?:background|introduction|objectives?|aims?|purpose|context|rationale)\b|"
+    r"\b(?:we (?:aimed|sought|hypothesi[sz]ed|investigated whether)|this study (?:aimed|aims|investigated|examined)|"
+    r"the (?:aim|objective|purpose) of|is (?:a|an|the) (?:common|leading|major|frequent|well-known)|"
+    r"(?:is|are) (?:known|thought|believed) to|has been (?:shown|reported|associated|linked)|previous(?:ly)? (?:stud|report)|"
+    r"(?:may|can|could) (?:cause|lead to|result in|present)|is defined as|is characteri[sz]ed by|"
+    r"(?:scale|questionnaire|inventory|instrument|checklist) (?:was|were) used|was used to (?:assess|measure|detect)|"
+    r"(?:treat|manage|prevent)(?:s|ed|ing|ment of)? (?:cerebral|neonatal|fetal)|"
+    r"(?:neonat|newborn|infant|fetus|fetal|foetal|offspring)\w*)\b", re.I)
+ABBREV_RX = re.compile(r"\b[A-Z][A-Z0-9-]{1,7}[a-z]?\s*[:=]\s*\(?[A-Za-z]")   # "CPP: chronic pelvic pain"
+
+
+def is_finding(sentence: str, section: str) -> bool:
+    if len(ABBREV_RX.findall(sentence)) >= 2 or NOT_FINDING_RX.search(sentence):
+        return False
+    return bool(FINDING_RX.search(sentence)) or section in ("results",)
+
+
 NEGATION = re.compile(r"\b(no|not|without|absence of|absent|denied|denies|free of|neither|nor|negative for)\b", re.I)
 SENT = re.compile(r"(?<=[.!?])\s+(?=[A-Z])")
 SECTIONS = ("results", "conclusion")
@@ -78,8 +106,10 @@ create table if not exists symptom_mention (
   term      text not null,     -- the words matched
   section   text not null,     -- abstract | results | conclusion
   negated   boolean not null,
-  sentence  text not null
+  sentence  text not null,
+  finding   boolean            -- is_finding(): a report about the women studied, not background/aims/instruments
 );
+alter table symptom_mention add column if not exists finding boolean;
 create index if not exists symptom_mention_paper_idx on symptom_mention (paper_id);
 create index if not exists symptom_mention_symptom_idx on symptom_mention (symptom);
 """
@@ -131,7 +161,7 @@ def extract(text: str, section: str, matcher: re.Pattern, terms: dict[str, str])
         for m in matcher.finditer(sent):
             before = sent[max(0, m.start() - 60):m.start()]
             neg = bool(NEGATION.search(" ".join(before.split()[-6:])))
-            yield terms[m.group(1).lower()], m.group(1), section, neg, sent.strip()[:400]
+            yield terms[m.group(1).lower()], m.group(1), section, neg, sent.strip()[:400], is_finding(sent, section)
 
 
 def run(area: str) -> dict:
@@ -152,14 +182,15 @@ def run(area: str) -> dict:
         rows = []
         for pid in chunk:
             seen = set()
-            for sym, term, section, neg, sent in [*extract(abstracts.get(pid), "abstract", matcher, terms),
+            for sym, term, section, neg, sent, fnd in [*extract(abstracts.get(pid), "abstract", matcher, terms),
                                                   *(x for kind, t in secs[pid] for x in extract(t, kind, matcher, terms))]:
                 key = (sym, section, neg, sent)
                 if key not in seen:
                     seen.add(key)
-                    rows.append((pid, sym, term, section, neg, sent))
+                    rows.append((pid, sym, term, section, neg, sent, fnd))
         with conn.cursor() as c:
-            c.executemany("insert into symptom_mention values (%s,%s,%s,%s,%s,%s)", rows)
+            c.executemany("insert into symptom_mention (paper_id, symptom, term, section, negated, sentence, finding) "
+                          "values (%s,%s,%s,%s,%s,%s,%s)", rows)
         conn.commit()
         n_mentions += len(rows)
         print(f"  {min(i + 200, len(ids))}/{len(ids)} papers, {n_mentions} mentions", flush=True)
@@ -168,33 +199,37 @@ def run(area: str) -> dict:
             "lexicon_terms": sum(1 for n in terms.values() if n in PATIENT_SYMPTOMS)}
 
 
-def summary(area: str, sample: int = 40, seed: int = 7) -> dict:
+def summary(area: str, sample: int = 80, seed: int = 8) -> dict:
     conn = store.connect()
     q = "select paper_id from paper_area where area = %(area)s"
     top = conn.execute(f"""select symptom, count(distinct paper_id) from symptom_mention
-                           where not negated and paper_id in ({q}) group by 1 order by 2 desc limit 30""",
+                           where not negated and finding and paper_id in ({q}) group by 1 order by 2 desc limit 30""",
                        {"area": area}).fetchall()
     # symptom -> condition: the paper's own MeSH terms that fall in this area
     pairs = conn.execute(f"""select sm.symptom, c.term, count(distinct sm.paper_id) n
                              from symptom_mention sm
                              join paper_area pa on pa.paper_id = sm.paper_id and pa.area = %(area)s
                              cross join lateral unnest(pa.terms) as c(term)
-                             where not sm.negated
+                             where not sm.negated and sm.finding
                              group by 1, 2 having count(distinct sm.paper_id) >= 3 order by n desc limit 40""",
                          {"area": area}).fetchall()
     with_any = conn.execute(f"""select count(distinct paper_id) from symptom_mention
-                                where not negated and paper_id in ({q})""", {"area": area}).fetchone()[0]
+                                where not negated and finding and paper_id in ({q})""", {"area": area}).fetchone()[0]
+    n_finding = conn.execute(f"""select count(*) filter (where finding and not negated), count(*) filter (where not negated)
+                                 from symptom_mention where paper_id in ({q})""", {"area": area}).fetchone()
     total = conn.execute(f"select count(*) from ({q}) x", {"area": area}).fetchone()[0]
     neg = conn.execute(f"select count(*) filter (where negated), count(*) from symptom_mention where paper_id in ({q})",
                        {"area": area}).fetchone()
-    rows = conn.execute(f"""select paper_id, symptom, term, section, negated, sentence from symptom_mention
-                            where paper_id in ({q})""", {"area": area}).fetchall()
+    rows = conn.execute(f"""select paper_id, symptom, term, section, negated, sentence, finding from symptom_mention
+                            where paper_id in ({q}) and not negated""", {"area": area}).fetchall()
     random.Random(seed).shuffle(rows)
     conn.close()
     out = {"area": area, "papers": total, "papers_with_symptoms": with_any, "mentions": neg[1], "negated": neg[0],
+           "findings": n_finding[0], "non_negated": n_finding[1],
            "top_symptoms": [{"symptom": s, "papers": n} for s, n in top],
            "symptom_condition": [{"symptom": s, "condition": c, "papers": n} for s, c, n in pairs],
-           "sample": [dict(zip(["paper_id", "symptom", "term", "section", "negated", "sentence"], r)) for r in rows[:sample]]}
+           "sample": [dict(zip(["paper_id", "symptom", "term", "section", "negated", "sentence", "finding"], r))
+                      for r in rows[:sample]]}
     return out
 
 
