@@ -1,0 +1,11 @@
+[Unit]
+Description=Load a newer analysis release from GitHub, if there is one
+RequiresMountsFor=/mnt/evidence
+After=postgresql.service network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /opt/herevidence/pi/auto-import.sh
+MemoryMax=450M
+Nice=10

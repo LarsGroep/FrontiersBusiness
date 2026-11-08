@@ -1,0 +1,10 @@
+[Unit]
+Description=Check hourly for a new analysis release
+
+[Timer]
+OnBootSec=10min
+OnCalendar=*-*-* *:41
+Persistent=true
+
+[Install]
+WantedBy=timers.target

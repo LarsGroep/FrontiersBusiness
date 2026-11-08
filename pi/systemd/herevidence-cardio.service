@@ -1,0 +1,19 @@
+[Unit]
+Description=Collect women-only cardiovascular papers (cardio-mesh), resumable
+RequiresMountsFor=/mnt/evidence
+After=postgresql.service network-online.target
+Wants=network-online.target
+
+[Service]
+User=herevidence
+WorkingDirectory=/opt/herevidence
+EnvironmentFile=/etc/herevidence.env
+ExecStart=/opt/herevidence/.venv/bin/python -m pi.scrape --topic cardio-mesh --max-papers 20000
+Restart=on-failure
+RestartSec=120
+Nice=10
+MemoryHigh=200M
+MemoryMax=250M
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,6 @@
+[Unit]
+Description=Herevidence safety guard (heat, memory, disk)
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /opt/herevidence/pi/guard.sh
