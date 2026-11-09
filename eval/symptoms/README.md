@@ -10,4 +10,4 @@ Fixed sample of women-only cardiovascular abstracts used to measure symptom extr
 - `scores.json` — precision, pooled recall (with 95% Wilson intervals) and Cohen's kappa. Written on every label push.
 
 **Label "yes"** when the sentence reports that the women studied had or reported this symptom. **"no"** for background,
-aims, definitions, outcome names, negated mentions, other people (infants, partners) or a word that isn't a symptom.
+aims, definitions, outcome names, negated mentions, other people (infants, partners) or a word that isn't a symptom. Also **"no"** when the symptom was only measured or tested and the sentence reports no effect or no difference (decided by Lars, 9 Nov).
