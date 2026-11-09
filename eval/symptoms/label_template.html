@@ -1,0 +1,170 @@
+<title>Symptom Test Set</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400&display=swap">
+<style>
+/* Layout: one sentence at a time on a reading column, a quiet progress strip above, three verdict keys below. */
+:root {
+  --bg: #f6f7f5; --panel: #ffffff; --fg: #1d2421; --muted: #5d6a64; --line: #d9dfdb;
+  --accent: #7a2e4f; --mark: #f3dbe5; --yes: #2f6b45; --no: #8a3b2a; --unsure: #7a6420;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #151a18; --panel: #1d2421; --fg: #e6ebe8; --muted: #9aa8a1; --line: #33403a;
+  --accent: #e39bbb; --mark: #4d2537; --yes: #7fc79a; --no: #f0a08c; --unsure: #e2c873; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #151a18; --panel: #1d2421; --fg: #e6ebe8; --muted: #9aa8a1; --line: #33403a;
+  --accent: #e39bbb; --mark: #4d2537; --yes: #7fc79a; --no: #f0a08c; --unsure: #e2c873; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 24px 48px; }
+main { max-width: 760px; margin: 0 auto; display: grid; gap: 20px; }
+header { display: grid; gap: 6px; }
+h1 { font-family: var(--serif); font-weight: 600; font-size: 1.7rem; margin: 0; text-wrap: balance; }
+.sub { color: var(--muted); margin: 0; max-width: 65ch; }
+.bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.track { flex: 1 1 200px; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.track i { display: block; height: 100%; background: var(--accent); width: 0; transition: width .2s; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 22px; display: grid; gap: 14px; min-width: 0; }
+.meta { font-size: .78rem; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.meta a { color: var(--accent); }
+.paper { font-family: var(--serif); font-size: .98rem; color: var(--muted); margin: 0; }
+.sentence { font-family: var(--serif); font-size: 1.22rem; line-height: 1.6; margin: 0; overflow-wrap: anywhere; }
+.sentence mark { background: var(--mark); color: inherit; padding: 1px 3px; border-radius: 3px; box-shadow: inset 0 -2px 0 var(--accent); }
+.question { font-weight: 500; margin: 0; }
+.keys { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.keys button { font: inherit; font-weight: 600; padding: 12px 8px; border-radius: 6px; border: 1.5px solid var(--line); background: var(--panel); color: var(--fg); cursor: pointer; display: grid; gap: 2px; }
+.keys button small { font-weight: 400; font-size: .75rem; color: var(--muted); }
+.keys button kbd { font-family: var(--mono); font-size: .72rem; color: var(--muted); }
+.keys [data-v="yes"].on { border-color: var(--yes); color: var(--yes); background: color-mix(in srgb, var(--yes) 10%, var(--panel)); }
+.keys [data-v="no"].on { border-color: var(--no); color: var(--no); background: color-mix(in srgb, var(--no) 10%, var(--panel)); }
+.keys [data-v="unsure"].on { border-color: var(--unsure); color: var(--unsure); background: color-mix(in srgb, var(--unsure) 10%, var(--panel)); }
+.keys button:focus-visible, .nav button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.nav { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; }
+.nav button { font: inherit; font-size: .88rem; padding: 7px 12px; border-radius: 5px; border: 1px solid var(--line); background: transparent; color: var(--fg); cursor: pointer; }
+.nav button:disabled { opacity: .4; cursor: default; }
+.status { font-size: .82rem; color: var(--muted); min-height: 1.2em; }
+details { font-size: .9rem; color: var(--muted); }
+details summary { cursor: pointer; color: var(--fg); font-weight: 500; }
+details ul { margin: 8px 0 0; padding-left: 20px; display: grid; gap: 4px; max-width: 65ch; }
+.notice { border: 1px dashed var(--line); border-radius: 6px; padding: 14px; color: var(--muted); }
+.team { font-size: .82rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+@media (max-width: 480px) { .sentence { font-size: 1.08rem; } .card { padding: 16px; } }
+@media (prefers-reduced-motion: reduce) { .track i { transition: none; } }
+</style>
+
+<main>
+  <header>
+    <h1>Symptom Test Set</h1>
+    <p class="sub">Women-only cardiovascular abstracts. For each highlighted phrase, say whether the sentence reports that the women in this study had or reported that symptom. Label on your own; you won't see anyone else's answers.</p>
+  </header>
+
+  <details>
+    <summary>How to decide</summary>
+    <ul>
+      <li><b>Yes</b>: the study's women had or reported it ("38% reported fatigue", "women presented with chest pain", a side effect they experienced).</li>
+      <li><b>No</b>: background or aims, a definition or outcome name, a negated mention ("without dyspnea"), other people (infants, partners), a table caption, or a word that isn't a symptom here.</li>
+      <li><b>Unsure</b>: you can't tell from the sentence. Open the paper if it helps.</li>
+    </ul>
+  </details>
+
+  <div class="bar"><span id="count">0 of 0 labelled</span><div class="track"><i id="fill"></i></div><span id="pos"></span></div>
+
+  <section class="card" id="card" aria-live="polite">
+    <div class="meta"><span id="pid"></span><a id="link" href="#" target="_blank" rel="noopener">Open on Europe PMC</a></div>
+    <p class="paper" id="title"></p>
+    <p class="sentence" id="sentence"></p>
+    <p class="question">Did the women studied have or report <span id="span"></span>?</p>
+    <div class="keys">
+      <button type="button" id="k-yes" data-v="yes">Yes <small>a finding about them</small><kbd>Y</kbd></button>
+      <button type="button" id="k-no" data-v="no">No <small>anything else</small><kbd>N</kbd></button>
+      <button type="button" id="k-unsure" data-v="unsure">Unsure <small>can't tell</small><kbd>U</kbd></button>
+    </div>
+    <div class="nav">
+      <button type="button" id="prev">← Previous</button>
+      <button type="button" id="skip">Next unlabelled</button>
+      <button type="button" id="next">Next →</button>
+    </div>
+    <div class="status" id="status">Connecting…</div>
+  </section>
+
+  <div class="team" id="team"></div>
+</main>
+
+<script>
+const CANDIDATES = __CANDIDATES__;
+const $ = id => document.getElementById(id);
+let i = 0, labels = {}, ref = null, saving = Promise.resolve(), canSave = false;
+
+function esc(s) { return s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+function render() {
+  const c = CANDIDATES[i];
+  if (!c) { $("card").innerHTML = '<div class="notice">No candidates loaded yet.</div>'; return; }
+  $("pid").textContent = c.paper_id + (c.pmid ? " · PMID " + c.pmid : "");
+  $("link").href = "https://europepmc.org/article/MED/" + encodeURIComponent(c.pmid || "");
+  $("title").textContent = c.title;
+  const s = c.sentence;
+  $("sentence").innerHTML = esc(s.slice(0, c.start)) + "<mark>" + esc(s.slice(c.start, c.end)) + "</mark>" + esc(s.slice(c.end));
+  $("span").textContent = "“" + s.slice(c.start, c.end) + "”";
+  for (const v of ["yes", "no", "unsure"]) $("k-" + v).classList.toggle("on", labels[c.id] === v);
+  const n = CANDIDATES.filter(x => labels[x.id]).length;
+  $("count").textContent = n + " of " + CANDIDATES.length + " labelled";
+  $("fill").style.width = (100 * n / CANDIDATES.length) + "%";
+  $("pos").textContent = "#" + (i + 1);
+  $("prev").disabled = i === 0; $("next").disabled = i === CANDIDATES.length - 1;
+}
+function nextUnlabelled(from) {
+  for (let k = 1; k <= CANDIDATES.length; k++) { const j = (from + k) % CANDIDATES.length; if (!labels[CANDIDATES[j].id]) return j; }
+  return from;
+}
+function setLabel(v) {
+  const c = CANDIDATES[i];
+  if (!canSave) { $("status").textContent = "Saving needs a signed-in account with at least contributor access to this page."; return; }
+  labels[c.id] = v;
+  render();
+  const snapshot = { labels: { ...labels }, updated: new Date().toISOString() };
+  saving = saving.then(() => ref.set(snapshot)).then(
+    () => { $("status").textContent = "Saved."; },
+    e => { $("status").textContent = "Couldn't save (" + (e && e.code || "error") + "). Your last answer isn't stored yet; try again in a moment."; });
+  setTimeout(() => { i = nextUnlabelled(i); render(); }, 160);
+}
+for (const v of ["yes", "no", "unsure"]) $("k-" + v).addEventListener("click", () => setLabel(v));
+$("prev").onclick = () => { if (i > 0) { i--; render(); } };
+$("next").onclick = () => { if (i < CANDIDATES.length - 1) { i++; render(); } };
+$("skip").onclick = () => { i = nextUnlabelled(i); render(); };
+document.addEventListener("keydown", e => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const k = e.key.toLowerCase();
+  if (k === "y") setLabel("yes"); else if (k === "n") setLabel("no"); else if (k === "u") setLabel("unsure");
+  else if (k === "arrowleft") $("prev").click(); else if (k === "arrowright") $("next").click();
+});
+render();
+
+(async () => {
+  const timer = setTimeout(() => { $("status").textContent = "Couldn't reach the label store. You can read the sentences, but answers won't be saved."; }, 10000);
+  try {
+    const [db, user] = await Promise.all([claude.use("db"), claude.use("user")]);
+    if (!db || !user) { clearTimeout(timer); $("status").textContent = "Sign in to save labels."; return; }
+    const uid = await user.id();
+    if (!uid) { clearTimeout(timer); $("status").textContent = "Sign in to save labels."; return; }
+    ref = db.doc("labels/" + uid);
+    const snap = await ref.get();
+    clearTimeout(timer);
+    labels = (snap.data() && snap.data().labels) || {};
+    canSave = true;
+    i = labels[CANDIDATES[0]?.id] ? nextUnlabelled(0) : 0;
+    $("status").textContent = Object.keys(labels).length ? "Welcome back. Picking up where you left off." : "Ready. Keys: Y, N, U, and the arrow keys.";
+    render();
+    if (user.isOwner()) {
+      try {
+        const all = await db.collection("labels").get();
+        const counts = all.docs.map(d => Object.keys((d.data() || {}).labels || {}).length);
+        $("team").textContent = counts.length ? "Annotators so far: " + counts.length + " (" + counts.map(n => n + " labelled").join(", ") + ")." : "";
+      } catch (e) { /* progress overview is optional */ }
+    }
+  } catch (e) {
+    clearTimeout(timer);
+    $("status").textContent = "Couldn't load your saved labels (" + (e && e.code || "error") + "). Reload the page to try again.";
+  }
+})();
+</script>
