@@ -76,6 +76,7 @@ FINDING_RX = re.compile(
     r"adverse (?:events?|effects?|reactions?)|toxicit\w+|associated with (?:a )?(?:higher|lower|increased|reduced)|"
     r"(?:higher|lower|greater|more|fewer) (?:in|among|than)|odds|hazard|risk of|scores? (?:of|were|was)|"
     r"(?:women|patients|participants|mothers|girls) (?:with|who)\b|showed|symptom burden|burden of|"
+    r"(?:more|less) (?:frequent|common)|frequently|commonly|"
     r"\d+(?:\.\d+)?\s*%|\(n\s*=|\bn\s*=\s*\d)", re.I)
 NOT_FINDING_RX = re.compile(
     r"^(?:background|introduction|objectives?|aims?|purpose|context|rationale)\b|"
@@ -85,8 +86,12 @@ NOT_FINDING_RX = re.compile(
     r"(?:may|can|could) (?:cause|lead to|result in|present)|is defined as|is characteri[sz]ed by|"
     r"(?:scale|questionnaire|inventory|instrument|checklist) (?:was|were) used|was used to (?:assess|measure|detect)|"
     r"(?:treat|manage|prevent)(?:s|ed|ing|ment of)? (?:cerebral|neonatal|fetal)|"
-    r"(?:neonat|newborn|infant|fetus|fetal|foetal|offspring)\w*)\b", re.I)
-ABBREV_RX = re.compile(r"\b[A-Z][A-Z0-9-]{1,7}[a-z]?\s*[:=]\s*\(?[A-Za-z]")   # "CPP: chronic pelvic pain"
+    r"(?:neonat|newborn|infant|fetus|fetal|foetal|offspring)\w*|"
+    # outcome definitions and table captions/footnotes (held-out check, 9 Nov)
+    r"(?:was|were|is|are) defined as|defined as|composite (?:outcome|endpoint)|primary (?:outcome|endpoint) was|"
+    r"bold (?:value|font)|results are (?:number|n|mean)|values are|baseline characteristics|"
+    r"abbreviations?|data are (?:presented|shown|expressed))\b", re.I)
+ABBREV_RX = re.compile(r"\b[A-Z][A-Z0-9-]{1,7}[a-z]?\s*[:=,]\s*\(?[A-Z]?[A-Za-z]")   # "CPP: chronic…", "GAD-7, General…"
 
 
 def is_finding(sentence: str, section: str) -> bool:
@@ -199,7 +204,7 @@ def run(area: str) -> dict:
             "lexicon_terms": sum(1 for n in terms.values() if n in PATIENT_SYMPTOMS)}
 
 
-def summary(area: str, sample: int = 80, seed: int = 8) -> dict:
+def summary(area: str, sample: int = 80, seed: int = 9) -> dict:
     conn = store.connect()
     q = "select paper_id from paper_area where area = %(area)s"
     top = conn.execute(f"""select symptom, count(distinct paper_id) from symptom_mention
