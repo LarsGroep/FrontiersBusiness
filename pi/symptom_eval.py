@@ -295,7 +295,14 @@ def score(d: str) -> dict:
     labels = json.load(open(os.path.join(d, "labels.json")))      # {annotator: {candidate_id: yes|no|unsure}}
     names = sorted(labels)
     both = [c["id"] for c in cands if not c.get("auto") and all(c["id"] in labels[n] for n in names)]
-    agree = kappa([labels[names[0]][i] for i in both], [labels[names[1]][i] for i in both]) if len(names) >= 2 else None
+    # agreement for every pair of annotators, on the items both labelled
+    agree = {}
+    for x in range(len(names)):
+        for y in range(x + 1, len(names)):
+            a, b = labels[names[x]], labels[names[y]]
+            ids = [c["id"] for c in cands if not c.get("auto") and c["id"] in a and c["id"] in b]
+            agree[f"{names[x]}~{names[y]}"] = {"items": len(ids), "agree": sum(a[i] == b[i] for i in ids),
+                                              "kappa": kappa([a[i] for i in ids], [b[i] for i in ids])}
     # gold: both say yes -> yes; both say no -> no; anything else is a disagreement to settle (gold.json overrides)
     gold_file = os.path.join(d, "gold.json")
     settled = json.load(open(gold_file)) if os.path.exists(gold_file) else {}
