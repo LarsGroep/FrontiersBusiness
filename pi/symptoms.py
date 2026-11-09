@@ -70,7 +70,7 @@ NOT_A_FINDING = re.compile(r"\b(adjusted for|confound\w*|covariate\w*|abbreviati
 # Is the sentence a finding about the women studied (a count, a percentage, "reported", "presented with", side
 # effects), or background/aims/instruments? Fixed, auditable patterns; checked by hand on samples (see project notes).
 FINDING_RX = re.compile(
-    r"\b(?:reported|reporting|experienced|presented with|presenting with|complained of|complaints?|suffered|"
+    r"\b(?:reported|reporting|experienced|experiences?|presented with|presenting with|complained of|complaints?|suffered|"
     r"developed|occurred in|was (?:observed|found|present)|were (?:observed|found|present|common|frequent)|"
     r"most (?:common|frequent)(?:ly)?|prevalence|incidence|frequency|proportion|rates? of|side[- ]effects?|"
     r"adverse (?:events?|effects?|reactions?)|toxicit\w+|associated with (?:a )?(?:higher|lower|increased|reduced)|"
@@ -90,7 +90,8 @@ NOT_FINDING_RX = re.compile(
     # outcome definitions and table captions/footnotes (held-out check, 9 Nov)
     r"(?:was|were|is|are) defined as|defined as|composite (?:outcome|endpoint)|primary (?:outcome|endpoint) was|"
     r"bold (?:value|font)|results are (?:number|n|mean)|values are|baseline characteristics|"
-    r"abbreviations?|data are (?:presented|shown|expressed))\b", re.I)
+    r"abbreviations?|data are (?:presented|shown|expressed)|criteri(?:a|on)|standard deviation|"
+    r"body mass index|\w+ ?= ?(?:blood|body|history|[<>≥≤]))\b", re.I)
 ABBREV_RX = re.compile(r"\b[A-Z][A-Z0-9-]{1,7}[a-z]?\s*[:=,]\s*\(?[A-Z]?[A-Za-z]")   # "CPP: chronic…", "GAD-7, General…"
 
 
