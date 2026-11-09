@@ -34,7 +34,7 @@ from .analysis import MODEL_DIR
 
 AREA = "C14 Cardiovascular Diseases"
 SALT = "anarcha-symptom-test-v1"        # fixed: the sample order never changes
-TARGET_CANDIDATES = 300
+TARGET_CANDIDATES = 300   # candidates that need a human (at least one extractor saw a patient symptom)
 PUBTATOR = "https://www.ncbi.nlm.nih.gov/research/pubtator3-api/publications/export/biocjson"
 EPMC = "https://www.ebi.ac.uk/europepmc/annotations_api/annotationsByArticleIds"
 UA = {"User-Agent": "anarcha-evidence-eval/1.0"}
@@ -206,7 +206,7 @@ def build(out_dir: str) -> dict:
     lex_c23 = {t: n for t, n in terms.items()}          # word -> symptom name (C23.888 + heart terms)
 
     chosen, cands, n_cand = [], [], 0
-    batch = 40
+    batch = 100
     i = 0
     stats = {"pubtator_docs": 0, "epmc_docs": 0, "pubtator_unplaced": 0, "epmc_unplaced": 0}
     while i < len(order) and (locked or n_cand < TARGET_CANDIDATES):
@@ -247,17 +247,21 @@ def build(out_dir: str) -> dict:
             chosen.append(pid)
             for g in merge(spans):
                 s = sents[g["sent"]]
+                # Body-weight measures, lab findings and pregnancy terms sit in MeSH "Signs and Symptoms" but are not
+                # symptoms a woman reports; they are labelled "no" automatically instead of by hand.
+                auto = None if any(v["symptom"] in symptoms.PATIENT_SYMPTOMS for v in g["systems"].values()) else "no"
                 cands.append({"id": f"{pid}:{g['sent']}:{g['start']}", "paper_id": pid, "pmid": pmid, "title": title,
                               "sentence": s, "span": s[g["start"]:g["end"]], "start": g["start"], "end": g["end"],
-                              "systems": g["systems"]})
-            n_cand = len(cands)
+                              "systems": g["systems"], "auto": auto})
+            n_cand = sum(1 for c in cands if not c["auto"])
         print(f"  {len(chosen)} papers, {n_cand} candidates", flush=True)
 
     if not locked:
         json.dump({"area": AREA, "salt": SALT, "created": time.strftime("%Y-%m-%d"), "papers": chosen},
                   open(papers_file, "w"), indent=1)
     json.dump(cands, open(os.path.join(out_dir, "candidates.json"), "w"), indent=1, ensure_ascii=False)
-    res = {"papers": len(chosen), "candidates": len(cands), **stats,
+    res = {"papers": len(chosen), "candidates": len(cands), "to_label": n_cand,
+           "auto_no": len(cands) - n_cand, **stats,
            "flagged": {f"{sys}_{k}": sum(1 for c in cands if c["systems"].get(sys, {}).get(k))
                        for sys in ("ours", "pubtator", "epmc") for k in ("raw", "final")}}
     json.dump(res, open(os.path.join(out_dir, "build_stats.json"), "w"), indent=1)
@@ -290,7 +294,7 @@ def score(d: str) -> dict:
     cands = json.load(open(os.path.join(d, "candidates.json")))
     labels = json.load(open(os.path.join(d, "labels.json")))      # {annotator: {candidate_id: yes|no|unsure}}
     names = sorted(labels)
-    both = [c["id"] for c in cands if all(c["id"] in labels[n] for n in names)]
+    both = [c["id"] for c in cands if not c.get("auto") and all(c["id"] in labels[n] for n in names)]
     agree = kappa([labels[names[0]][i] for i in both], [labels[names[1]][i] for i in both]) if len(names) >= 2 else None
     # gold: both say yes -> yes; both say no -> no; anything else is a disagreement to settle (gold.json overrides)
     gold_file = os.path.join(d, "gold.json")
@@ -298,14 +302,16 @@ def score(d: str) -> dict:
     gold, open_items = {}, []
     for c in cands:
         votes = {labels[n].get(c["id"]) for n in names} - {None}
-        if c["id"] in settled:
+        if c.get("auto"):
+            gold[c["id"]] = c["auto"]
+        elif c["id"] in settled:
             gold[c["id"]] = settled[c["id"]]
         elif len(votes) == 1 and votes <= {"yes", "no"}:
             gold[c["id"]] = votes.pop()
         elif votes:
             open_items.append(c["id"])
     positives = [c for c in cands if gold.get(c["id"]) == "yes"]
-    out = {"annotators": names, "labelled_by_all": len(both), "kappa": agree, "gold": len(gold),
+    out = {"auto_no": sum(1 for c in cands if c.get("auto")), "annotators": names, "labelled_by_all": len(both), "kappa": agree, "gold": len(gold),
            "gold_yes": len(positives), "disagreements_open": len(open_items), "systems": {}}
     for sys in ("ours", "pubtator", "epmc"):
         for k in ("raw", "final"):
