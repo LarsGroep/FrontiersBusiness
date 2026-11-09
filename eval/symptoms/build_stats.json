@@ -1,0 +1,18 @@
+{
+ "papers": 1309,
+ "candidates": 1259,
+ "to_label": 306,
+ "auto_no": 953,
+ "pubtator_docs": 1338,
+ "epmc_docs": 1398,
+ "pubtator_unplaced": 63,
+ "epmc_unplaced": 752,
+ "flagged": {
+  "ours_raw": 266,
+  "ours_final": 108,
+  "pubtator_raw": 1096,
+  "pubtator_final": 66,
+  "epmc_raw": 93,
+  "epmc_final": 15
+ }
+}
