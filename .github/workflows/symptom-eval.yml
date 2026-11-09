@@ -1,0 +1,85 @@
+name: Symptom test set (ours vs PubTator vs Europe PMC)
+# Builds the locked symptom test set: a fixed sample of women-only cardiovascular abstracts, run through our rules
+# (pi/symptoms.py), PubTator 3.0 and Europe PMC annotations. The first run writes eval/symptoms/papers.json (the
+# lock); later runs reuse exactly those papers. Labels live in eval/symptoms/labels.json; "score" reads them.
+
+on:
+  workflow_dispatch:
+    inputs:
+      step:
+        description: "build (extract candidates) or score (from labels.json)"
+        default: build
+  push:
+    branches: [main]
+    paths: ["eval/symptoms/labels.json", "eval/symptoms/gold.json"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: symptom-eval
+  cancel-in-progress: false
+
+jobs:
+  score:
+    if: github.event_name == 'push' || github.event.inputs.step == 'score'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - run: pip install -r requirements.txt -r pi/requirements.txt
+      - run: python -m pi.symptom_eval score --dir eval/symptoms
+      - name: Commit scores
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add eval/symptoms/scores.json
+          git diff --cached --quiet || { git commit -m "Symptom test set: scores"; git push; }
+
+  build:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.step != 'score'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    services:
+      postgres:
+        image: pgvector/pgvector:pg17
+        env: { POSTGRES_PASSWORD: analyse, POSTGRES_DB: herdb }
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 20
+    defaults:
+      run:
+        shell: bash
+    env:
+      PI_DB_URL: postgresql://postgres:analyse@localhost:5432/herdb
+      PI_MODEL_DIR: /home/runner/.cache/herevidence-models
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - name: Cache embedding model + MeSH
+        uses: actions/cache@v4
+        with:
+          path: /home/runner/.cache/herevidence-models
+          key: herevidence-models-bge-small-mesh-v1
+      - run: pip install -r requirements.txt -r pi/requirements.txt -r pi/requirements-analysis.txt
+      - name: Catalogue from the Pi
+        env:
+          PI_CATALOGUE_URL: ${{ format('{0}/catalogue', secrets.PI_API_URL) }}
+          PI_API_TOKEN: ${{ secrets.PI_API_TOKEN }}
+        run: |
+          docker exec ${{ job.services.postgres.id }} psql -U postgres -d herdb -qc "create extension if not exists vector"
+          python -m pi.sync catalogue | tail -3
+          n=$(docker exec ${{ job.services.postgres.id }} psql -U postgres -d herdb -Atc "select count(*) from papers")
+          echo "catalogue rows: $n"; [ "$n" -ge 20000 ] || { echo "::error::only $n papers"; exit 1; }
+      - name: MeSH + disease areas (same code as the analysis run)
+        run: python -m pi.analysis mesh | tail -2
+      - name: Build candidates
+        run: python -m pi.symptom_eval build --out eval/symptoms
+      - name: Commit the test set
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add eval/symptoms
+          git diff --cached --quiet || { git commit -m "Symptom test set: candidates (ours, PubTator 3, Europe PMC)"; git pull --rebase -q; git push; }
