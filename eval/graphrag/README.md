@@ -14,3 +14,25 @@ Caveats: one model judge, no human check yet; queries use words the symptom dict
 varies, which favours vector search); 10 queries; the graph is sparse (295 symptom links, abstracts only).
 The judge found 2 pooled papers that include men (PMC9898364, PMC10607223): label errors to fix.
 `conditions.json` compares the symptom→condition answer of the graph with what vector top-50 papers imply.
+
+## Run 2 (15 Nov evening): full-text graph + free-text GP questions
+
+The graph now also uses results/conclusion sections (Europe PMC full text, cached): 1,018 symptom links across 590
+papers (was 295), 55 symptoms, 40 conditions, 211 edges. It is exported to `web/graph/cv.json` for the `/graph`
+debug page. 10 dictionary-word questions + 10 free-text GP questions; 239 new papers judged blind (same rules).
+
+| Questions | Vector P@10 / nDCG | Graph P@10 / nDCG | Hybrid P@10 / nDCG |
+|---|---|---|---|
+| Dictionary words | 0.46 / 0.53 | 0.58 / 0.64 | 0.60 / 0.68 |
+| Free text (GP wording) | 0.17 / 0.41 | 0.20 / 0.34 | 0.30 / 0.60 |
+
+- **Hybrid is the best default:** best or joint-best on both sets.
+- **Free-text linking is the weak spot:** 4 of 10 free-text questions linked to no symptom ("pressure on her chest",
+  "out of breath … exhausted", "swollen ankles", "fainted … lightheaded"); "irregular heartbeat" and "upper back pain"
+  were missed. Fix: more lay terms in the dictionary and a calibrated embedding threshold, then test on NEW questions
+  (these 10 are now seen and must not be used for tuning).
+- **Graph precision fell from 0.74 (abstract graph) to 0.58** on the same questions. Part of this is a measurement
+  bias: the judge sees only the abstract, so papers linked through a results-section sentence look irrelevant. The
+  next judging round should show the linking sentence.
+- Absolute free-text precision is low because few women-only cardiovascular papers study these symptoms: an evidence
+  gap in itself.

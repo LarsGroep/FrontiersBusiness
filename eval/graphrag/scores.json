@@ -1,170 +1,30 @@
 {
- "vector": {
-  "p10": 0.46,
-  "ndcg10": 0.573,
-  "per_query": {
-   "chest pain": {
-    "p10": 0.6,
-    "ndcg10": 0.634,
-    "returned": 10
-   },
-   "shortness of breath": {
-    "p10": 0.5,
-    "ndcg10": 0.558,
-    "returned": 10
-   },
-   "fatigue": {
-    "p10": 0.2,
-    "ndcg10": 0.684,
-    "returned": 10
-   },
-   "palpitations": {
-    "p10": 0.3,
-    "ndcg10": 0.698,
-    "returned": 10
-   },
-   "leg swelling": {
-    "p10": 0.4,
-    "ndcg10": 0.562,
-    "returned": 10
-   },
-   "dizziness or fainting": {
-    "p10": 0.1,
-    "ndcg10": 0.067,
-    "returned": 10
-   },
-   "headache": {
-    "p10": 1.0,
-    "ndcg10": 0.915,
-    "returned": 10
-   },
-   "fatigue and shortness of breath": {
-    "p10": 0.5,
-    "ndcg10": 0.487,
-    "returned": 10
-   },
-   "chest pain and nausea": {
-    "p10": 0.6,
-    "ndcg10": 0.643,
-    "returned": 10
-   },
-   "palpitations and dizziness": {
-    "p10": 0.4,
-    "ndcg10": 0.478,
-    "returned": 10
-   }
+ "dictionary": {
+  "vector": {
+   "p10": 0.46,
+   "ndcg10": 0.526
+  },
+  "graph": {
+   "p10": 0.58,
+   "ndcg10": 0.636
+  },
+  "hybrid": {
+   "p10": 0.6,
+   "ndcg10": 0.679
   }
  },
- "graph": {
-  "p10": 0.74,
-  "ndcg10": 0.884,
-  "per_query": {
-   "chest pain": {
-    "p10": 0.9,
-    "ndcg10": 0.857,
-    "returned": 10
-   },
-   "shortness of breath": {
-    "p10": 0.9,
-    "ndcg10": 0.971,
-    "returned": 10
-   },
-   "fatigue": {
-    "p10": 0.6,
-    "ndcg10": 0.987,
-    "returned": 10
-   },
-   "palpitations": {
-    "p10": 0.6,
-    "ndcg10": 1.0,
-    "returned": 6
-   },
-   "leg swelling": {
-    "p10": 0.3,
-    "ndcg10": 0.485,
-    "returned": 10
-   },
-   "dizziness or fainting": {
-    "p10": 0.6,
-    "ndcg10": 0.978,
-    "returned": 9
-   },
-   "headache": {
-    "p10": 0.8,
-    "ndcg10": 0.786,
-    "returned": 10
-   },
-   "fatigue and shortness of breath": {
-    "p10": 1.0,
-    "ndcg10": 0.919,
-    "returned": 10
-   },
-   "chest pain and nausea": {
-    "p10": 0.8,
-    "ndcg10": 0.855,
-    "returned": 10
-   },
-   "palpitations and dizziness": {
-    "p10": 0.9,
-    "ndcg10": 1.0,
-    "returned": 10
-   }
-  }
- },
- "hybrid": {
-  "p10": 0.72,
-  "ndcg10": 0.833,
-  "per_query": {
-   "chest pain": {
-    "p10": 0.9,
-    "ndcg10": 0.93,
-    "returned": 10
-   },
-   "shortness of breath": {
-    "p10": 0.9,
-    "ndcg10": 0.909,
-    "returned": 10
-   },
-   "fatigue": {
-    "p10": 0.5,
-    "ndcg10": 0.933,
-    "returned": 10
-   },
-   "palpitations": {
-    "p10": 0.6,
-    "ndcg10": 0.967,
-    "returned": 10
-   },
-   "leg swelling": {
-    "p10": 0.4,
-    "ndcg10": 0.646,
-    "returned": 10
-   },
-   "dizziness or fainting": {
-    "p10": 0.5,
-    "ndcg10": 0.592,
-    "returned": 10
-   },
-   "headache": {
-    "p10": 1.0,
-    "ndcg10": 1.0,
-    "returned": 10
-   },
-   "fatigue and shortness of breath": {
-    "p10": 1.0,
-    "ndcg10": 0.744,
-    "returned": 10
-   },
-   "chest pain and nausea": {
-    "p10": 0.7,
-    "ndcg10": 0.779,
-    "returned": 10
-   },
-   "palpitations and dizziness": {
-    "p10": 0.7,
-    "ndcg10": 0.832,
-    "returned": 10
-   }
+ "free text": {
+  "vector": {
+   "p10": 0.17,
+   "ndcg10": 0.412
+  },
+  "graph": {
+   "p10": 0.2,
+   "ndcg10": 0.336
+  },
+  "hybrid": {
+   "p10": 0.3,
+   "ndcg10": 0.602
   }
  }
 }
