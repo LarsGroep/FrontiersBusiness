@@ -11,7 +11,7 @@ permissions:
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 150
     services:
       postgres:
         image: pgvector/pgvector:pg17
@@ -34,6 +34,12 @@ jobs:
         with:
           path: /home/runner/.cache/herevidence-models
           key: herevidence-models-bge-small-mesh-v1
+      - name: Cache full-text sections (graph)
+        uses: actions/cache@v4
+        with:
+          path: /home/runner/.cache/herevidence-models/sections_cache.json.gz
+          key: herevidence-sections-${{ github.run_id }}
+          restore-keys: herevidence-sections-
       - run: pip install -r requirements.txt -r pi/requirements.txt -r pi/requirements-analysis.txt
       - name: Catalogue from the Pi
         env:

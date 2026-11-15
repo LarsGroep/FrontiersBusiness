@@ -17,6 +17,7 @@ Retrieval for a free-text question (EvidenceGraph.search):
 from __future__ import annotations
 
 import argparse
+import gzip
 import json
 import os
 import re
@@ -45,7 +46,7 @@ def _sections(pmcid: str) -> list[tuple[str, str]]:
 
 
 class EvidenceGraph:
-    def __init__(self, area: str, with_sections: bool = True, workers: int = 6):
+    def __init__(self, area: str, with_sections: bool = True, workers: int = 12):
         conn = store.connect()
         rows = conn.execute("""select p.id, p.title, coalesce(p.abstract, ''), p.pub_year, coalesce(p.commercial_use_ok, false),
                                       a.terms, v.embedding::text
@@ -66,12 +67,20 @@ class EvidenceGraph:
         self.matcher = symptoms.compile_matcher(self.terms)
         secs: dict[str, list] = {}
         if with_sections:
+            # results/conclusion text is cached next to the models (kept by the CI cache), so reruns only fetch new papers
+            cache_file = os.path.join(MODEL_DIR, "sections_cache.json.gz")
+            cache = json.load(gzip.open(cache_file, "rt")) if os.path.exists(cache_file) else {}
+            todo = [p for p in self.ids if p not in cache]
             t0 = time.time()
             with ThreadPoolExecutor(workers) as ex:
-                for pid, s in zip(self.ids, ex.map(_sections, self.ids)):
-                    secs[pid] = s
+                for pid, s in zip(todo, ex.map(_sections, todo)):
+                    cache[pid] = s
+            if todo:
+                with gzip.open(cache_file, "wt") as f:
+                    json.dump(cache, f)
+            secs = {p: cache.get(p, []) for p in self.ids}
             print(f"  full-text sections for {sum(1 for s in secs.values() if s)}/{len(self.ids)} papers "
-                  f"in {time.time() - t0:.0f}s", flush=True)
+                  f"({len(todo)} fetched in {time.time() - t0:.0f}s)", flush=True)
         # symptom -> paper -> evidence
         self.sym: dict[str, dict[str, dict]] = defaultdict(dict)
         for pid in self.ids:
