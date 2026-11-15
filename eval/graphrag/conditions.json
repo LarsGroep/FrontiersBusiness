@@ -1,0 +1,448 @@
+{
+ "chest pain": {
+  "graph_papers": 22,
+  "graph": [
+   [
+    "Coronary Artery Disease",
+    8
+   ],
+   [
+    "Myocardial Infarction",
+    4
+   ],
+   [
+    "Myocardial Ischemia",
+    3
+   ],
+   [
+    "ST Elevation Myocardial Infarction",
+    3
+   ],
+   [
+    "Angina Pectoris",
+    3
+   ]
+  ],
+  "vector_top50": [
+   [
+    "Heart Diseases",
+    10
+   ],
+   [
+    "Myocardial Ischemia",
+    10
+   ],
+   [
+    "Myocardial Infarction",
+    9
+   ],
+   [
+    "Pregnancy Complications, Cardiovascular",
+    9
+   ],
+   [
+    "Coronary Artery Disease",
+    7
+   ],
+   [
+    "Cardiovascular Diseases",
+    7
+   ],
+   [
+    "Angina Pectoris",
+    5
+   ],
+   [
+    "Hypertension",
+    3
+   ]
+  ]
+ },
+ "shortness of breath": {
+  "graph_papers": 17,
+  "graph": [
+   [
+    "Pregnancy Complications, Cardiovascular",
+    3
+   ]
+  ],
+  "vector_top50": [
+   [
+    "Cardiovascular Diseases",
+    10
+   ],
+   [
+    "Hypertension, Pregnancy-Induced",
+    10
+   ],
+   [
+    "Hypertension",
+    7
+   ],
+   [
+    "Heart Diseases",
+    5
+   ],
+   [
+    "Angina Pectoris",
+    4
+   ],
+   [
+    "Coronary Artery Disease",
+    4
+   ],
+   [
+    "Arrhythmias, Cardiac",
+    4
+   ],
+   [
+    "Pregnancy Complications, Cardiovascular",
+    3
+   ]
+  ]
+ },
+ "fatigue": {
+  "graph_papers": 16,
+  "graph": [
+   [
+    "Hypertension",
+    5
+   ],
+   [
+    "Cardiovascular Diseases",
+    4
+   ]
+  ],
+  "vector_top50": [
+   [
+    "Cardiovascular Diseases",
+    22
+   ],
+   [
+    "Hypertension",
+    10
+   ],
+   [
+    "Hypertension, Pregnancy-Induced",
+    8
+   ],
+   [
+    "Stroke",
+    4
+   ],
+   [
+    "Myocardial Infarction",
+    3
+   ],
+   [
+    "Atrial Fibrillation",
+    2
+   ],
+   [
+    "Post-Exercise Hypotension",
+    1
+   ],
+   [
+    "Ischemic Stroke",
+    1
+   ]
+  ]
+ },
+ "palpitations": {
+  "graph_papers": 6,
+  "graph": [
+   [
+    "Arrhythmias, Cardiac",
+    4
+   ]
+  ],
+  "vector_top50": [
+   [
+    "Cardiovascular Diseases",
+    13
+   ],
+   [
+    "Arrhythmias, Cardiac",
+    6
+   ],
+   [
+    "Hypertension, Pregnancy-Induced",
+    5
+   ],
+   [
+    "Coronary Artery Disease",
+    4
+   ],
+   [
+    "Myocardial Ischemia",
+    4
+   ],
+   [
+    "Atrial Fibrillation",
+    4
+   ],
+   [
+    "Angina Pectoris",
+    4
+   ],
+   [
+    "Pregnancy Complications, Cardiovascular",
+    3
+   ]
+  ]
+ },
+ "leg swelling": {
+  "graph_papers": 19,
+  "graph": [
+   [
+    "Hypertension, Pregnancy-Induced",
+    7
+   ],
+   [
+    "Pregnancy Complications, Cardiovascular",
+    4
+   ],
+   [
+    "Cardiomyopathies",
+    3
+   ]
+  ],
+  "vector_top50": [
+   [
+    "Hypertension, Pregnancy-Induced",
+    13
+   ],
+   [
+    "Pregnancy Complications, Cardiovascular",
+    11
+   ],
+   [
+    "Hypertension",
+    9
+   ],
+   [
+    "Venous Thrombosis",
+    6
+   ],
+   [
+    "Venous Insufficiency",
+    5
+   ],
+   [
+    "Varicose Veins",
+    5
+   ],
+   [
+    "Venous Thromboembolism",
+    5
+   ],
+   [
+    "Cardiovascular Diseases",
+    5
+   ]
+  ]
+ },
+ "dizziness or fainting": {
+  "graph_papers": 0,
+  "graph": [],
+  "vector_top50": [
+   [
+    "Cardiovascular Diseases",
+    16
+   ],
+   [
+    "Hypertension, Pregnancy-Induced",
+    10
+   ],
+   [
+    "Stroke",
+    8
+   ],
+   [
+    "Hypertension",
+    5
+   ],
+   [
+    "Myocardial Infarction",
+    4
+   ],
+   [
+    "Myocardial Ischemia",
+    4
+   ],
+   [
+    "Ischemic Stroke",
+    3
+   ],
+   [
+    "Arrhythmias, Cardiac",
+    3
+   ]
+  ]
+ },
+ "headache": {
+  "graph_papers": 19,
+  "graph": [
+   [
+    "Hypertension",
+    6
+   ],
+   [
+    "Hypertension, Pregnancy-Induced",
+    4
+   ],
+   [
+    "Cardiovascular Diseases",
+    3
+   ]
+  ],
+  "vector_top50": [
+   [
+    "Stroke",
+    16
+   ],
+   [
+    "Cardiovascular Diseases",
+    10
+   ],
+   [
+    "Ischemic Stroke",
+    7
+   ],
+   [
+    "Hypertension",
+    5
+   ],
+   [
+    "Hypertension, Pregnancy-Induced",
+    4
+   ],
+   [
+    "Carotid Artery Diseases",
+    3
+   ],
+   [
+    "Cerebral Small Vessel Diseases",
+    2
+   ],
+   [
+    "Brain Infarction",
+    2
+   ]
+  ]
+ },
+ "fatigue and shortness of breath": {
+  "graph_papers": 2,
+  "graph": [],
+  "vector_top50": [
+   [
+    "Cardiovascular Diseases",
+    17
+   ],
+   [
+    "Hypertension, Pregnancy-Induced",
+    11
+   ],
+   [
+    "Hypertension",
+    8
+   ],
+   [
+    "Myocardial Infarction",
+    3
+   ],
+   [
+    "Arrhythmias, Cardiac",
+    2
+   ],
+   [
+    "Atherosclerosis",
+    2
+   ],
+   [
+    "Heart Diseases",
+    2
+   ],
+   [
+    "Angina Pectoris",
+    2
+   ]
+  ]
+ },
+ "chest pain and nausea": {
+  "graph_papers": 0,
+  "graph": [],
+  "vector_top50": [
+   [
+    "Coronary Artery Disease",
+    10
+   ],
+   [
+    "Myocardial Ischemia",
+    9
+   ],
+   [
+    "Cardiovascular Diseases",
+    9
+   ],
+   [
+    "Myocardial Infarction",
+    8
+   ],
+   [
+    "Angina Pectoris",
+    6
+   ],
+   [
+    "Heart Diseases",
+    5
+   ],
+   [
+    "Pregnancy Complications, Cardiovascular",
+    5
+   ],
+   [
+    "Cardiomyopathies",
+    3
+   ]
+  ]
+ },
+ "palpitations and dizziness": {
+  "graph_papers": 1,
+  "graph": [],
+  "vector_top50": [
+   [
+    "Cardiovascular Diseases",
+    16
+   ],
+   [
+    "Arrhythmias, Cardiac",
+    7
+   ],
+   [
+    "Stroke",
+    5
+   ],
+   [
+    "Myocardial Infarction",
+    5
+   ],
+   [
+    "Myocardial Ischemia",
+    5
+   ],
+   [
+    "Hypertension",
+    5
+   ],
+   [
+    "Coronary Artery Disease",
+    3
+   ],
+   [
+    "Ischemic Stroke",
+    3
+   ]
+  ]
+ }
+}

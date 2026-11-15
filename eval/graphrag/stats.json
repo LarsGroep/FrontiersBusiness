@@ -1,0 +1,18 @@
+{
+ "papers": 3967,
+ "symptom_nodes": 38,
+ "paper_symptom_edges": 295,
+ "pool": 177,
+ "graph_candidates": {
+  "chest pain": 22,
+  "shortness of breath": 17,
+  "fatigue": 16,
+  "palpitations": 6,
+  "leg swelling": 19,
+  "dizziness or fainting": 9,
+  "headache": 19,
+  "fatigue and shortness of breath": 31,
+  "chest pain and nausea": 33,
+  "palpitations and dizziness": 10
+ }
+}
