@@ -1,0 +1,61 @@
+name: GraphRAG test (graph vs vector retrieval)
+# Light GraphRAG (MeSH conditions + extracted symptoms as graph nodes, no LLM) against plain vector retrieval on
+# women-only cardiovascular papers. Writes eval/graphrag/ (runs, pool for blind judging, condition answers).
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    services:
+      postgres:
+        image: pgvector/pgvector:pg17
+        env: { POSTGRES_PASSWORD: analyse, POSTGRES_DB: herdb }
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 20
+    defaults:
+      run:
+        shell: bash
+    env:
+      PI_DB_URL: postgresql://postgres:analyse@localhost:5432/herdb
+      PI_MODEL_DIR: /home/runner/.cache/herevidence-models
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - name: Cache embedding model + MeSH
+        uses: actions/cache@v4
+        with:
+          path: /home/runner/.cache/herevidence-models
+          key: herevidence-models-bge-small-mesh-v1
+      - run: pip install -r requirements.txt -r pi/requirements.txt -r pi/requirements-analysis.txt
+      - name: Catalogue from the Pi
+        env:
+          PI_CATALOGUE_URL: ${{ format('{0}/catalogue', secrets.PI_API_URL) }}
+          PI_API_TOKEN: ${{ secrets.PI_API_TOKEN }}
+        run: |
+          docker exec ${{ job.services.postgres.id }} psql -U postgres -d herdb -qc "create extension if not exists vector"
+          python -m pi.sync catalogue | tail -3
+          n=$(docker exec ${{ job.services.postgres.id }} psql -U postgres -d herdb -Atc "select count(*) from papers")
+          echo "catalogue rows: $n"; [ "$n" -ge 20000 ] || { echo "::error::only $n papers"; exit 1; }
+      - name: MeSH + disease areas (same code as the analysis run)
+        run: python -m pi.analysis mesh | tail -2
+      - name: Vectors from the Pi
+        env:
+          PI_VECTORS_URL: ${{ format('{0}/vectors', secrets.PI_API_URL) }}
+          PI_API_TOKEN: ${{ secrets.PI_API_TOKEN }}
+        run: python -m pi.sync vectors | tail -3
+      - name: Graph vs vector retrieval
+        run: python -m pi.graph_test run --out eval/graphrag
+      - name: Commit the test set
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add eval/graphrag
+          git diff --cached --quiet || { git commit -m "GraphRAG test: retrieval runs and blind judging pool"; git pull --rebase -q; git push; }
