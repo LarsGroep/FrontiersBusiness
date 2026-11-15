@@ -1,0 +1,289 @@
+{
+ "chest pain": [
+  [
+   "Coronary Artery Disease",
+   17
+  ],
+  [
+   "Cardiovascular Diseases",
+   11
+  ],
+  [
+   "Angina Pectoris",
+   9
+  ],
+  [
+   "Myocardial Infarction",
+   7
+  ],
+  [
+   "Myocardial Ischemia",
+   6
+  ],
+  [
+   "Pregnancy Complications, Cardiovascular",
+   6
+  ],
+  [
+   "Venous Thromboembolism",
+   4
+  ],
+  [
+   "Hypertension",
+   4
+  ]
+ ],
+ "shortness of breath": [
+  [
+   "Pregnancy Complications, Cardiovascular",
+   14
+  ],
+  [
+   "Cardiomyopathies",
+   9
+  ],
+  [
+   "Cardiovascular Diseases",
+   7
+  ],
+  [
+   "Heart Failure",
+   7
+  ],
+  [
+   "Pulmonary Embolism",
+   6
+  ],
+  [
+   "Heart Diseases",
+   6
+  ],
+  [
+   "Hypertension, Pregnancy-Induced",
+   6
+  ],
+  [
+   "Coronary Artery Disease",
+   5
+  ]
+ ],
+ "fatigue": [
+  [
+   "Cardiovascular Diseases",
+   19
+  ],
+  [
+   "Hypertension",
+   13
+  ],
+  [
+   "Pregnancy Complications, Cardiovascular",
+   5
+  ],
+  [
+   "Cardiomyopathies",
+   4
+  ],
+  [
+   "Hypertension, Pregnancy-Induced",
+   4
+  ],
+  [
+   "Cardiotoxicity",
+   4
+  ],
+  [
+   "Heart Diseases",
+   3
+  ],
+  [
+   "Heart Failure",
+   3
+  ]
+ ],
+ "palpitations": [
+  [
+   "Arrhythmias, Cardiac",
+   7
+  ],
+  [
+   "Pregnancy Complications, Cardiovascular",
+   6
+  ],
+  [
+   "Cardiomyopathies",
+   5
+  ],
+  [
+   "Cardiovascular Diseases",
+   3
+  ],
+  [
+   "Myocardial Infarction",
+   3
+  ],
+  [
+   "Atrial Fibrillation",
+   3
+  ],
+  [
+   "Heart Diseases",
+   3
+  ]
+ ],
+ "leg swelling": [
+  [
+   "Hypertension, Pregnancy-Induced",
+   29
+  ],
+  [
+   "Pregnancy Complications, Cardiovascular",
+   19
+  ],
+  [
+   "Hypertension",
+   14
+  ],
+  [
+   "Heart Failure",
+   7
+  ],
+  [
+   "Cardiomyopathies",
+   6
+  ],
+  [
+   "Heart Defects, Congenital",
+   6
+  ],
+  [
+   "Venous Thrombosis",
+   4
+  ],
+  [
+   "Arrhythmias, Cardiac",
+   4
+  ]
+ ],
+ "dizziness or fainting": [],
+ "headache": [
+  [
+   "Hypertension, Pregnancy-Induced",
+   24
+  ],
+  [
+   "Hypertension",
+   21
+  ],
+  [
+   "Cardiovascular Diseases",
+   7
+  ],
+  [
+   "Stroke",
+   3
+  ],
+  [
+   "Venous Thrombosis",
+   3
+  ],
+  [
+   "Pregnancy Complications, Cardiovascular",
+   3
+  ],
+  [
+   "Hypotension",
+   3
+  ]
+ ],
+ "fatigue and shortness of breath": [
+  [
+   "Cardiomyopathies",
+   3
+  ],
+  [
+   "Pregnancy Complications, Cardiovascular",
+   3
+  ],
+  [
+   "Cardiovascular Diseases",
+   3
+  ]
+ ],
+ "chest pain and nausea": [],
+ "palpitations and dizziness": [],
+ "52-year-old woman with pressure on her chest when climbing stairs": [],
+ "she gets out of breath easily and feels exhausted all the time": [],
+ "episodes of her heart racing at night": [
+  [
+   "Arrhythmias, Cardiac",
+   7
+  ],
+  [
+   "Pregnancy Complications, Cardiovascular",
+   6
+  ],
+  [
+   "Cardiomyopathies",
+   5
+  ],
+  [
+   "Cardiovascular Diseases",
+   3
+  ],
+  [
+   "Myocardial Infarction",
+   3
+  ],
+  [
+   "Atrial Fibrillation",
+   3
+  ],
+  [
+   "Heart Diseases",
+   3
+  ]
+ ],
+ "swollen ankles in late pregnancy": [],
+ "fainted twice this month, feels lightheaded when standing up": [],
+ "pain in the jaw and upper back during exertion": [],
+ "severe headaches and blurred vision after giving birth": [
+  [
+   "Hypertension, Pregnancy-Induced",
+   10
+  ],
+  [
+   "Hypertension",
+   3
+  ]
+ ],
+ "unusual tiredness and nausea, no chest pain": [
+  [
+   "Cardiovascular Diseases",
+   4
+  ]
+ ],
+ "cold sweats and indigestion-like discomfort": [],
+ "irregular heartbeat and dizziness during menopause": [
+  [
+   "Cardiovascular Diseases",
+   6
+  ],
+  [
+   "Hypertension",
+   6
+  ],
+  [
+   "Hypertension, Pregnancy-Induced",
+   5
+  ],
+  [
+   "Hypotension",
+   4
+  ],
+  [
+   "Pregnancy Complications, Cardiovascular",
+   3
+  ]
+ ]
+}

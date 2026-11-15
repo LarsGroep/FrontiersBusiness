@@ -1,0 +1,902 @@
+{
+ "chest pain": {
+  "set": "dictionary",
+  "links": [
+   {
+    "symptom": "Chest Pain",
+    "via": "dictionary",
+    "words": "chest pain",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC12714392",
+   "PMC9327873",
+   "PMC13017302",
+   "PMC10353181",
+   "PMC5100226",
+   "PMC8111522",
+   "PMC13386483",
+   "PMC5146820",
+   "PMC5586417",
+   "PMC6902560"
+  ],
+  "graph": [
+   "PMC12714392",
+   "PMC13017302",
+   "PMC5073470",
+   "PMC9327873",
+   "PMC9505953",
+   "PMC12952176",
+   "PMC4943278",
+   "PMC13267789",
+   "PMC7816930",
+   "PMC7319702"
+  ],
+  "hybrid": [
+   "PMC12714392",
+   "PMC13017302",
+   "PMC9327873",
+   "PMC13386483",
+   "PMC10353181",
+   "PMC11681485",
+   "PMC11964040",
+   "PMC10558067",
+   "PMC11624552",
+   "PMC13052788"
+  ]
+ },
+ "shortness of breath": {
+  "set": "dictionary",
+  "links": [
+   {
+    "symptom": "Dyspnea",
+    "via": "dictionary",
+    "words": "shortness of breath",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC6735271",
+   "PMC6373241",
+   "PMC5126432",
+   "PMC11288741",
+   "PMC7185691",
+   "PMC3219735",
+   "PMC12055567",
+   "PMC8447506",
+   "PMC12365904",
+   "PMC4578053"
+  ],
+  "graph": [
+   "PMC4826418",
+   "PMC6373241",
+   "PMC3219735",
+   "PMC8569957",
+   "PMC4578053",
+   "PMC3411505",
+   "PMC6090783",
+   "PMC5073470",
+   "PMC12055567",
+   "PMC9327873"
+  ],
+  "hybrid": [
+   "PMC6373241",
+   "PMC3219735",
+   "PMC4578053",
+   "PMC12055567",
+   "PMC6735271",
+   "PMC9327873",
+   "PMC13386483",
+   "PMC9970247",
+   "PMC1079947",
+   "PMC11681466"
+  ]
+ },
+ "fatigue": {
+  "set": "dictionary",
+  "links": [
+   {
+    "symptom": "Fatigue",
+    "via": "dictionary",
+    "words": "fatigue",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC9720769",
+   "PMC4631358",
+   "PMC12640110",
+   "PMC8619613",
+   "PMC6042402",
+   "PMC6735271",
+   "PMC13211945",
+   "PMC11629989",
+   "PMC11935621",
+   "PMC2174935"
+  ],
+  "graph": [
+   "PMC9720769",
+   "PMC10647937",
+   "PMC3665816",
+   "PMC10558067",
+   "PMC10375733",
+   "PMC8569957",
+   "PMC13394706",
+   "PMC4631358",
+   "PMC2174935",
+   "PMC4864393"
+  ],
+  "hybrid": [
+   "PMC9720769",
+   "PMC4631358",
+   "PMC2174935",
+   "PMC4864393",
+   "PMC6735271",
+   "PMC3334640",
+   "PMC5723029",
+   "PMC12840593",
+   "PMC5020453",
+   "PMC13010047"
+  ]
+ },
+ "palpitations": {
+  "set": "dictionary",
+  "links": [
+   {
+    "symptom": "Palpitations",
+    "via": "dictionary",
+    "words": "palpitations",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC11624552",
+   "PMC4578053",
+   "PMC7955448",
+   "PMC11646512",
+   "PMC13386483",
+   "PMC9327873",
+   "PMC7660840",
+   "PMC8942223",
+   "PMC10694896",
+   "PMC4583376"
+  ],
+  "graph": [
+   "PMC11624552",
+   "PMC13348194",
+   "PMC4578053",
+   "PMC10252198",
+   "PMC10558067",
+   "PMC9238471",
+   "PMC9327873",
+   "PMC6343080",
+   "PMC4752646",
+   "PMC11681485"
+  ],
+  "hybrid": [
+   "PMC11624552",
+   "PMC4578053",
+   "PMC9327873",
+   "PMC13386483",
+   "PMC6015308",
+   "PMC6343080",
+   "PMC13348194",
+   "PMC7955448",
+   "PMC11646512",
+   "PMC10252198"
+  ]
+ },
+ "leg swelling": {
+  "set": "dictionary",
+  "links": [
+   {
+    "symptom": "Edema",
+    "via": "dictionary",
+    "words": "leg swelling",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC12621438",
+   "PMC6445463",
+   "PMC5511530",
+   "PMC13085492",
+   "PMC6925773",
+   "PMC13143545",
+   "PMC12014293",
+   "PMC11025160",
+   "PMC9675523",
+   "PMC2788913"
+  ],
+  "graph": [
+   "PMC12951259",
+   "PMC9675523",
+   "PMC11622127",
+   "PMC8480018",
+   "PMC3285159",
+   "PMC4915865",
+   "PMC6582481",
+   "PMC4115671",
+   "PMC8653539",
+   "PMC11581633"
+  ],
+  "hybrid": [
+   "PMC9675523",
+   "PMC4115671",
+   "PMC8653539",
+   "PMC7856547",
+   "PMC10830052",
+   "PMC3896751",
+   "PMC12621438",
+   "PMC12951259",
+   "PMC6445463",
+   "PMC5511530"
+  ]
+ },
+ "dizziness or fainting": {
+  "set": "dictionary",
+  "links": [
+   {
+    "symptom": "Dizziness",
+    "via": "dictionary",
+    "words": "dizziness",
+    "score": 1.0
+   },
+   {
+    "symptom": "Syncope",
+    "via": "dictionary",
+    "words": "fainting",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC1939710",
+   "PMC7955448",
+   "PMC13254043",
+   "PMC10623197",
+   "PMC12640110",
+   "PMC6735271",
+   "PMC4864393",
+   "PMC11646512",
+   "PMC7660840",
+   "PMC11841335"
+  ],
+  "graph": [
+   "PMC5878201",
+   "PMC1939710",
+   "PMC6343080",
+   "PMC7500469",
+   "PMC6585338",
+   "PMC7554212",
+   "PMC11807323",
+   "PMC10607223",
+   "PMC10558067",
+   "PMC10039538"
+  ],
+  "hybrid": [
+   "PMC1939710",
+   "PMC6735271",
+   "PMC6585338",
+   "PMC12723095",
+   "PMC12986047",
+   "PMC3297030",
+   "PMC5878201",
+   "PMC7955448",
+   "PMC13254043",
+   "PMC6343080"
+  ]
+ },
+ "headache": {
+  "set": "dictionary",
+  "links": [
+   {
+    "symptom": "Headache",
+    "via": "dictionary",
+    "words": "headache",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC7079482",
+   "PMC11841335",
+   "PMC2927695",
+   "PMC13197609",
+   "PMC4887613",
+   "PMC13711763",
+   "PMC1939710",
+   "PMC4939694",
+   "PMC10691126",
+   "PMC11603864"
+  ],
+  "graph": [
+   "PMC7079482",
+   "PMC1939710",
+   "PMC9523171",
+   "PMC11622127",
+   "PMC7841506",
+   "PMC10691126",
+   "PMC4939694",
+   "PMC4592567",
+   "PMC4983019",
+   "PMC4631358"
+  ],
+  "hybrid": [
+   "PMC7079482",
+   "PMC1939710",
+   "PMC10691126",
+   "PMC4939694",
+   "PMC7841506",
+   "PMC4631358",
+   "PMC12947441",
+   "PMC11459936",
+   "PMC11603864",
+   "PMC11857735"
+  ]
+ },
+ "fatigue and shortness of breath": {
+  "set": "dictionary",
+  "links": [
+   {
+    "symptom": "Fatigue",
+    "via": "dictionary",
+    "words": "fatigue",
+    "score": 1.0
+   },
+   {
+    "symptom": "Dyspnea",
+    "via": "dictionary",
+    "words": "shortness of breath",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC6735271",
+   "PMC4631358",
+   "PMC12055567",
+   "PMC6220553",
+   "PMC12640110",
+   "PMC3219735",
+   "PMC7185691",
+   "PMC9720769",
+   "PMC13211945",
+   "PMC11981094"
+  ],
+  "graph": [
+   "PMC10647937",
+   "PMC8569957",
+   "PMC10558067",
+   "PMC13394706",
+   "PMC4752646",
+   "PMC3411505",
+   "PMC5146820",
+   "PMC11542243",
+   "PMC6735271",
+   "PMC7427666"
+  ],
+  "hybrid": [
+   "PMC6735271",
+   "PMC9720769",
+   "PMC3219735",
+   "PMC12055567",
+   "PMC4631358",
+   "PMC13386483",
+   "PMC8853317",
+   "PMC6373241",
+   "PMC4578053",
+   "PMC3334640"
+  ]
+ },
+ "chest pain and nausea": {
+  "set": "dictionary",
+  "links": [
+   {
+    "symptom": "Chest Pain",
+    "via": "dictionary",
+    "words": "chest pain",
+    "score": 1.0
+   },
+   {
+    "symptom": "Nausea",
+    "via": "dictionary",
+    "words": "nausea",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC12714392",
+   "PMC9327873",
+   "PMC13386483",
+   "PMC4477493",
+   "PMC11624552",
+   "PMC11964040",
+   "PMC13017302",
+   "PMC5146820",
+   "PMC10854153",
+   "PMC9617394"
+  ],
+  "graph": [
+   "PMC12952176",
+   "PMC11681485",
+   "PMC10558067",
+   "PMC13394706",
+   "PMC3411505",
+   "PMC12488768",
+   "PMC7427666",
+   "PMC4592567",
+   "PMC10647937",
+   "PMC12714392"
+  ],
+  "hybrid": [
+   "PMC12714392",
+   "PMC4477493",
+   "PMC13017302",
+   "PMC9327873",
+   "PMC11681485",
+   "PMC13386483",
+   "PMC10558067",
+   "PMC11964040",
+   "PMC11624552",
+   "PMC13052788"
+  ]
+ },
+ "palpitations and dizziness": {
+  "set": "dictionary",
+  "links": [
+   {
+    "symptom": "Palpitations",
+    "via": "dictionary",
+    "words": "palpitations",
+    "score": 1.0
+   },
+   {
+    "symptom": "Dizziness",
+    "via": "dictionary",
+    "words": "dizziness",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC11624552",
+   "PMC7955448",
+   "PMC11646512",
+   "PMC1939710",
+   "PMC13386483",
+   "PMC4578053",
+   "PMC7660840",
+   "PMC10623197",
+   "PMC7079482",
+   "PMC6735271"
+  ],
+  "graph": [
+   "PMC10558067",
+   "PMC6343080",
+   "PMC11681485",
+   "PMC1131894",
+   "PMC8006717",
+   "PMC7500469",
+   "PMC10744405",
+   "PMC11624552",
+   "PMC13348194",
+   "PMC4578053"
+  ],
+  "hybrid": [
+   "PMC11624552",
+   "PMC4578053",
+   "PMC1939710",
+   "PMC13386483",
+   "PMC9327873",
+   "PMC6735271",
+   "PMC6015308",
+   "PMC10558067",
+   "PMC7955448",
+   "PMC6343080"
+  ]
+ },
+ "52-year-old woman with pressure on her chest when climbing stairs": {
+  "set": "free text",
+  "links": [],
+  "vector": [
+   "PMC4872890",
+   "PMC6735271",
+   "PMC10957602",
+   "PMC12322127",
+   "PMC3931482",
+   "PMC12401404",
+   "PMC12896010",
+   "PMC11935621",
+   "PMC8880941",
+   "PMC3901741"
+  ],
+  "graph": [],
+  "hybrid": [
+   "PMC4872890",
+   "PMC6735271",
+   "PMC10957602",
+   "PMC12322127",
+   "PMC3931482",
+   "PMC12401404",
+   "PMC12896010",
+   "PMC11935621",
+   "PMC8880941",
+   "PMC3901741"
+  ]
+ },
+ "she gets out of breath easily and feels exhausted all the time": {
+  "set": "free text",
+  "links": [],
+  "vector": [
+   "PMC6735271",
+   "PMC5317281",
+   "PMC6220553",
+   "PMC1079947",
+   "PMC11964040",
+   "PMC3334640",
+   "PMC5126432",
+   "PMC11288741",
+   "PMC8942223",
+   "PMC5469089"
+  ],
+  "graph": [],
+  "hybrid": [
+   "PMC6735271",
+   "PMC5317281",
+   "PMC6220553",
+   "PMC1079947",
+   "PMC11964040",
+   "PMC3334640",
+   "PMC5126432",
+   "PMC11288741",
+   "PMC8942223",
+   "PMC5469089"
+  ]
+ },
+ "episodes of her heart racing at night": {
+  "set": "free text",
+  "links": [
+   {
+    "symptom": "Palpitations",
+    "via": "dictionary",
+    "words": "heart racing",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC8619613",
+   "PMC11624552",
+   "PMC12006251",
+   "PMC7955448",
+   "PMC13055664",
+   "PMC6735271",
+   "PMC13682138",
+   "PMC6902560",
+   "PMC8942223",
+   "PMC10944021"
+  ],
+  "graph": [
+   "PMC11624552",
+   "PMC13348194",
+   "PMC4578053",
+   "PMC10252198",
+   "PMC9238471",
+   "PMC10558067",
+   "PMC9327873",
+   "PMC11681485",
+   "PMC6343080",
+   "PMC4752646"
+  ],
+  "hybrid": [
+   "PMC11624552",
+   "PMC9327873",
+   "PMC13386483",
+   "PMC9238471",
+   "PMC6015308",
+   "PMC8619613",
+   "PMC13348194",
+   "PMC12006251",
+   "PMC4578053",
+   "PMC7955448"
+  ]
+ },
+ "swollen ankles in late pregnancy": {
+  "set": "free text",
+  "links": [],
+  "vector": [
+   "PMC8653539",
+   "PMC5778964",
+   "PMC5554975",
+   "PMC9995268",
+   "PMC11025160",
+   "PMC5266153",
+   "PMC9675523",
+   "PMC6061134",
+   "PMC4115671",
+   "PMC6211673"
+  ],
+  "graph": [],
+  "hybrid": [
+   "PMC8653539",
+   "PMC5778964",
+   "PMC5554975",
+   "PMC9995268",
+   "PMC11025160",
+   "PMC5266153",
+   "PMC9675523",
+   "PMC6061134",
+   "PMC4115671",
+   "PMC6211673"
+  ]
+ },
+ "fainted twice this month, feels lightheaded when standing up": {
+  "set": "free text",
+  "links": [],
+  "vector": [
+   "PMC7955448",
+   "PMC1939710",
+   "PMC13254043",
+   "PMC10770972",
+   "PMC11646512",
+   "PMC10623197",
+   "PMC9955614",
+   "PMC5126432",
+   "PMC7660840",
+   "PMC12640110"
+  ],
+  "graph": [],
+  "hybrid": [
+   "PMC7955448",
+   "PMC1939710",
+   "PMC13254043",
+   "PMC10770972",
+   "PMC11646512",
+   "PMC10623197",
+   "PMC9955614",
+   "PMC5126432",
+   "PMC7660840",
+   "PMC12640110"
+  ]
+ },
+ "pain in the jaw and upper back during exertion": {
+  "set": "free text",
+  "links": [
+   {
+    "symptom": "Jaw Pain",
+    "via": "embedding",
+    "words": "pain in the jaw",
+    "score": 0.902
+   }
+  ],
+  "vector": [
+   "PMC6735271",
+   "PMC12322127",
+   "PMC9075327",
+   "PMC12813386",
+   "PMC4310412",
+   "PMC3334640",
+   "PMC10957602",
+   "PMC3266839",
+   "PMC4631358",
+   "PMC5721806"
+  ],
+  "graph": [
+   "PMC9327873",
+   "PMC10558067"
+  ],
+  "hybrid": [
+   "PMC6735271",
+   "PMC9327873",
+   "PMC12322127",
+   "PMC10558067",
+   "PMC9075327",
+   "PMC12813386",
+   "PMC4310412",
+   "PMC3334640",
+   "PMC10957602",
+   "PMC3266839"
+  ]
+ },
+ "severe headaches and blurred vision after giving birth": {
+  "set": "free text",
+  "links": [
+   {
+    "symptom": "Headache",
+    "via": "dictionary",
+    "words": "headaches",
+    "score": 1.0
+   },
+   {
+    "symptom": "Visual Disturbances",
+    "via": "dictionary",
+    "words": "blurred vision",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC3492915",
+   "PMC10691126",
+   "PMC4864393",
+   "PMC8985263",
+   "PMC1939710",
+   "PMC13235039",
+   "PMC7045168",
+   "PMC7592727",
+   "PMC9302856",
+   "PMC11094995"
+  ],
+  "graph": [
+   "PMC11622127",
+   "PMC4983019",
+   "PMC7841506",
+   "PMC4592567",
+   "PMC11459936",
+   "PMC11140884",
+   "PMC8008690",
+   "PMC13129962",
+   "PMC9352094",
+   "PMC13303033"
+  ],
+  "hybrid": [
+   "PMC11459936",
+   "PMC10691126",
+   "PMC1939710",
+   "PMC13303033",
+   "PMC10425443",
+   "PMC10039538",
+   "PMC10830052",
+   "PMC4939694",
+   "PMC11140884",
+   "PMC7079482"
+  ]
+ },
+ "unusual tiredness and nausea, no chest pain": {
+  "set": "free text",
+  "links": [
+   {
+    "symptom": "Fatigue",
+    "via": "dictionary",
+    "words": "tiredness",
+    "score": 1.0
+   },
+   {
+    "symptom": "Nausea",
+    "via": "dictionary",
+    "words": "nausea",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC13386483",
+   "PMC4477493",
+   "PMC11964040",
+   "PMC12714392",
+   "PMC6735271",
+   "PMC7079482",
+   "PMC10854153",
+   "PMC11624552",
+   "PMC10659052",
+   "PMC12986047"
+  ],
+  "graph": [
+   "PMC10647937",
+   "PMC10558067",
+   "PMC13394706",
+   "PMC8517804",
+   "PMC1131894",
+   "PMC7427666",
+   "PMC12488768",
+   "PMC10318771",
+   "PMC3411505",
+   "PMC9720769"
+  ],
+  "hybrid": [
+   "PMC4477493",
+   "PMC6735271",
+   "PMC9720769",
+   "PMC4631358",
+   "PMC2174935",
+   "PMC5146820",
+   "PMC7644075",
+   "PMC5020453",
+   "PMC13386483",
+   "PMC10647937"
+  ]
+ },
+ "cold sweats and indigestion-like discomfort": {
+  "set": "free text",
+  "links": [
+   {
+    "symptom": "Dyspepsia",
+    "via": "dictionary",
+    "words": "indigestion",
+    "score": 1.0
+   },
+   {
+    "symptom": "Sweating",
+    "via": "embedding",
+    "words": "cold sweats",
+    "score": 0.863
+   }
+  ],
+  "vector": [
+   "PMC10180572",
+   "PMC4631358",
+   "PMC5317281",
+   "PMC2671103",
+   "PMC3490750",
+   "PMC12838481",
+   "PMC6735271",
+   "PMC5723029",
+   "PMC10659052",
+   "PMC6902560"
+  ],
+  "graph": [
+   "PMC10558067",
+   "PMC10309111",
+   "PMC9327873",
+   "PMC10162354",
+   "PMC9505953",
+   "PMC12488768",
+   "PMC9916042",
+   "PMC5724104"
+  ],
+  "hybrid": [
+   "PMC10309111",
+   "PMC9327873",
+   "PMC10180572",
+   "PMC10558067",
+   "PMC4631358",
+   "PMC5317281",
+   "PMC2671103",
+   "PMC10162354",
+   "PMC3490750",
+   "PMC9505953"
+  ]
+ },
+ "irregular heartbeat and dizziness during menopause": {
+  "set": "free text",
+  "links": [
+   {
+    "symptom": "Dizziness",
+    "via": "dictionary",
+    "words": "dizziness",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC11646512",
+   "PMC7955448",
+   "PMC13711763",
+   "PMC5469089",
+   "PMC9595519",
+   "PMC10309111",
+   "PMC10316845",
+   "PMC13628890",
+   "PMC7118366",
+   "PMC9382827"
+  ],
+  "graph": [
+   "PMC7554212",
+   "PMC11807323",
+   "PMC10607223",
+   "PMC10558067",
+   "PMC5878201",
+   "PMC1939710",
+   "PMC6343080",
+   "PMC11681485",
+   "PMC6735271",
+   "PMC5836856"
+  ],
+  "hybrid": [
+   "PMC6735271",
+   "PMC11646512",
+   "PMC7554212",
+   "PMC7955448",
+   "PMC11807323",
+   "PMC13711763",
+   "PMC10607223",
+   "PMC5469089",
+   "PMC10558067",
+   "PMC9595519"
+  ]
+ }
+}

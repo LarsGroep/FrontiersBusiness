@@ -1,0 +1,188 @@
+{
+ "papers": 3972,
+ "export": {
+  "symptoms": 55,
+  "conditions": 40,
+  "edges": 211,
+  "paper_symptom_links": 1018,
+  "papers_linked": 590,
+  "bytes": 380649
+ },
+ "to_judge": 239,
+ "links": {
+  "chest pain": [
+   {
+    "symptom": "Chest Pain",
+    "via": "dictionary",
+    "words": "chest pain",
+    "score": 1.0
+   }
+  ],
+  "shortness of breath": [
+   {
+    "symptom": "Dyspnea",
+    "via": "dictionary",
+    "words": "shortness of breath",
+    "score": 1.0
+   }
+  ],
+  "fatigue": [
+   {
+    "symptom": "Fatigue",
+    "via": "dictionary",
+    "words": "fatigue",
+    "score": 1.0
+   }
+  ],
+  "palpitations": [
+   {
+    "symptom": "Palpitations",
+    "via": "dictionary",
+    "words": "palpitations",
+    "score": 1.0
+   }
+  ],
+  "leg swelling": [
+   {
+    "symptom": "Edema",
+    "via": "dictionary",
+    "words": "leg swelling",
+    "score": 1.0
+   }
+  ],
+  "dizziness or fainting": [
+   {
+    "symptom": "Dizziness",
+    "via": "dictionary",
+    "words": "dizziness",
+    "score": 1.0
+   },
+   {
+    "symptom": "Syncope",
+    "via": "dictionary",
+    "words": "fainting",
+    "score": 1.0
+   }
+  ],
+  "headache": [
+   {
+    "symptom": "Headache",
+    "via": "dictionary",
+    "words": "headache",
+    "score": 1.0
+   }
+  ],
+  "fatigue and shortness of breath": [
+   {
+    "symptom": "Fatigue",
+    "via": "dictionary",
+    "words": "fatigue",
+    "score": 1.0
+   },
+   {
+    "symptom": "Dyspnea",
+    "via": "dictionary",
+    "words": "shortness of breath",
+    "score": 1.0
+   }
+  ],
+  "chest pain and nausea": [
+   {
+    "symptom": "Chest Pain",
+    "via": "dictionary",
+    "words": "chest pain",
+    "score": 1.0
+   },
+   {
+    "symptom": "Nausea",
+    "via": "dictionary",
+    "words": "nausea",
+    "score": 1.0
+   }
+  ],
+  "palpitations and dizziness": [
+   {
+    "symptom": "Palpitations",
+    "via": "dictionary",
+    "words": "palpitations",
+    "score": 1.0
+   },
+   {
+    "symptom": "Dizziness",
+    "via": "dictionary",
+    "words": "dizziness",
+    "score": 1.0
+   }
+  ],
+  "52-year-old woman with pressure on her chest when climbing stairs": [],
+  "she gets out of breath easily and feels exhausted all the time": [],
+  "episodes of her heart racing at night": [
+   {
+    "symptom": "Palpitations",
+    "via": "dictionary",
+    "words": "heart racing",
+    "score": 1.0
+   }
+  ],
+  "swollen ankles in late pregnancy": [],
+  "fainted twice this month, feels lightheaded when standing up": [],
+  "pain in the jaw and upper back during exertion": [
+   {
+    "symptom": "Jaw Pain",
+    "via": "embedding",
+    "words": "pain in the jaw",
+    "score": 0.902
+   }
+  ],
+  "severe headaches and blurred vision after giving birth": [
+   {
+    "symptom": "Headache",
+    "via": "dictionary",
+    "words": "headaches",
+    "score": 1.0
+   },
+   {
+    "symptom": "Visual Disturbances",
+    "via": "dictionary",
+    "words": "blurred vision",
+    "score": 1.0
+   }
+  ],
+  "unusual tiredness and nausea, no chest pain": [
+   {
+    "symptom": "Fatigue",
+    "via": "dictionary",
+    "words": "tiredness",
+    "score": 1.0
+   },
+   {
+    "symptom": "Nausea",
+    "via": "dictionary",
+    "words": "nausea",
+    "score": 1.0
+   }
+  ],
+  "cold sweats and indigestion-like discomfort": [
+   {
+    "symptom": "Dyspepsia",
+    "via": "dictionary",
+    "words": "indigestion",
+    "score": 1.0
+   },
+   {
+    "symptom": "Sweating",
+    "via": "embedding",
+    "words": "cold sweats",
+    "score": 0.863
+   }
+  ],
+  "irregular heartbeat and dizziness during menopause": [
+   {
+    "symptom": "Dizziness",
+    "via": "dictionary",
+    "words": "dizziness",
+    "score": 1.0
+   }
+  ]
+ }
+}
