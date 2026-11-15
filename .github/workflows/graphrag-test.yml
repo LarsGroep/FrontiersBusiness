@@ -57,5 +57,5 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add eval/graphrag
-          git diff --cached --quiet || { git commit -m "GraphRAG test: retrieval runs and blind judging pool"; git pull --rebase -q; git push; }
+          git add eval/graphrag web/graph
+          git diff --cached --quiet || { git commit -m "GraphRAG test + evidence graph export for the debug page"; git pull --rebase -q; git push; }
