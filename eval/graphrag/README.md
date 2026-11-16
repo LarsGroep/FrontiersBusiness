@@ -36,3 +36,24 @@ debug page. 10 dictionary-word questions + 10 free-text GP questions; 239 new pa
   next judging round should show the linking sentence.
 - Absolute free-text precision is low because few women-only cardiovascular papers study these symptoms: an evidence
   gap in itself.
+
+## Run 3 (16 Nov): everyday-word linking + 20 fresh questions (written blind, locked before the changes)
+
+Graph now 4,049 papers (full text, cached). 397 new pooled papers judged blind; the judge also saw the sentences that
+link a paper to the question's symptoms. 813 judgments in total.
+
+| Questions | Vector P@10 / nDCG | Graph P@10 / nDCG | Hybrid P@10 / nDCG |
+|---|---|---|---|
+| Dictionary words (10) | 0.46 / 0.53 | 0.58 / 0.64 | 0.60 / 0.68 |
+| Free text, seen (10; lay terms partly drafted after seeing them) | 0.17 / 0.24 | 0.44 / 0.58 | 0.43 / 0.55 |
+| **Fresh, unseen (20)** | **0.17 / 0.27** | **0.35 / 0.57** | **0.37 / 0.57** |
+
+- Fresh questions: 15/20 link to at least one symptom. Linked: graph 0.47 vs vector 0.15. Not linked (5): graph finds
+  nothing, hybrid falls back to vector (0.24). Hybrid is the robust default.
+- Unlinked wording: "wiped out, gets puffed", "SOB lying flat", "tight feeling in her chest", "raised blood pressure
+  readings", "hot flushes and pounding heartbeat". These are now seen; a later round needs new questions again.
+
+## XGBoost tree (16 Nov build)
+586 papers with symptoms, 11 condition groups. Held-out: top-1 34% (baseline 18%), top-3 64%, log-loss 2.00
+(baseline 2.19), ECE 0.12. Distilled tree fidelity 59%. Strongest features: pregnancy, oedema, dyspnoea, cohort design,
+chest pain.
