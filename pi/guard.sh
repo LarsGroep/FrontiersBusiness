@@ -58,7 +58,12 @@ fi
 # Services that must be up. At boot the API can fail with "dependency failed" when the database or disk is not ready
 # yet, and systemd does not retry that (16 Nov: API down from 08:14 until restarted by hand). Start them here once the
 # disk and database are up; also restarts the collector if it stopped without being paused by this guard.
-if mountpoint -q /mnt/evidence && systemctl is-active -q postgresql; then
+# The real database is postgresql@17-main (plain "postgresql" is only a wrapper that reports active even when the
+# cluster is down). Start it here if the disk is mounted but the cluster failed at boot.
+if mountpoint -q /mnt/evidence && ! systemctl is-active -q postgresql@17-main; then
+  systemctl start postgresql@17-main && log "started postgresql@17-main (was down)"
+fi
+if mountpoint -q /mnt/evidence && systemctl is-active -q postgresql@17-main; then
   if ! systemctl is-active -q herevidence-api; then systemctl start herevidence-api && log "started herevidence-api (was down)"; fi
   if systemctl is-enabled -q herevidence-collect 2>/dev/null && ! systemctl is-active -q herevidence-collect \
      && [ ! -f "$STATE/paused" ] && [ "$temp" -lt 70 ] && [ "$memavail" -ge 150 ]; then

@@ -20,6 +20,7 @@ from . import scrape
 TOPICS = ["cardio-wide", "neuro-mesh", "autoimmune-mesh", "respiratory-mesh", "digestive-mesh", "cardio-mesh"]
 BATCH = 400                 # papers per topic per round (100 per publication-year band)
 ROUND_PAUSE = 6 * 3600      # seconds to wait after a round that found nothing new
+ERROR_PAUSE = 600           # seconds to wait after a round in which every topic failed (e.g. database not up yet)
 
 
 def one_round() -> dict:
@@ -47,7 +48,8 @@ def main() -> None:
         if a.once:
             break
         if added == 0:
-            time.sleep(ROUND_PAUSE)
+            failed = all("error" in r or r.get("errors") for r in res.values())
+            time.sleep(ERROR_PAUSE if failed else ROUND_PAUSE)
 
 
 if __name__ == "__main__":
