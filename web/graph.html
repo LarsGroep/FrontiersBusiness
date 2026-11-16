@@ -46,6 +46,22 @@ ol.papers li{min-width:0}
 .badge{font-size:11px;padding:1px 6px;border-radius:4px;background:var(--teal-soft);color:var(--teal);margin-left:4px}
 .note{font-size:12px;color:var(--muted)}
 .empty{color:var(--muted)}
+.tabs{display:flex;gap:4px}
+.tabs button[aria-pressed=true]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+#treeview{overflow:auto;padding:14px 16px;background:var(--surface);min-height:420px}
+#treeview .metrics{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;margin-bottom:10px}
+#treeview .metrics b{color:var(--ink)}
+.tree,.tree ul{list-style:none;margin:0;padding:0}
+.tree ul{padding-left:22px;border-left:1px dashed var(--rule-strong);margin-left:8px}
+.tree li{margin:4px 0}
+.tq{display:inline-block;padding:3px 8px;border:1px solid var(--rule-strong);border-radius:6px;background:var(--paper);font-weight:600}
+.tq.symptom{border-color:var(--heart);color:var(--heart)}
+.tq.context{border-color:var(--teal);color:var(--teal)}
+.br{font-size:12px;color:var(--muted);margin-right:6px;font-weight:600}
+.tleaf{display:inline-block;padding:4px 8px;border-radius:6px;background:var(--paper);border:1px solid var(--rule);cursor:pointer;font-size:13px}
+.tleaf small{color:var(--muted)}
+.onpath > .tq,.onpath > .tleaf{outline:3px solid var(--hl);outline-offset:1px}
+.bar{height:6px;background:var(--teal);border-radius:3px;display:inline-block;vertical-align:middle;margin-right:6px}
 @media (max-width:820px){main{grid-template-columns:1fr;grid-template-rows:60vh auto}aside{border-left:0;border-top:1px solid var(--rule)}}
 </style>
 </head>
@@ -56,6 +72,7 @@ ol.papers li{min-width:0}
   <a href="/">Search</a><a href="/themes">Themes</a>
 </header>
 <div class="controls">
+  <div class="tabs" role="group" aria-label="View"><button type="button" id="tab-graph" aria-pressed="true">Graph</button><button type="button" id="tab-tree" aria-pressed="false">Decision tree</button></div>
   <input type="search" id="q" placeholder="Type a GP question, e.g. chest pain and nausea" aria-label="Question">
   <label>Edges from <input type="range" id="minw" min="2" max="15" value="3"> <span id="minwv">3</span> papers</label>
   <label><input type="checkbox" id="labels" checked> Condition labels</label>
@@ -63,6 +80,7 @@ ol.papers li{min-width:0}
 </div>
 <main>
   <div id="cy" aria-label="Graph of symptoms and conditions"></div>
+  <div id="treeview" hidden></div>
   <aside id="panel">
     <div class="legend"><span><span class="dot" style="background:var(--heart)"></span>symptom</span><span><span class="dot" style="background:var(--teal)"></span>condition (MeSH)</span><span>edge = papers reporting both</span></div>
     <p class="empty">Click a symptom, a condition or an edge to see the women-only studies behind it, or type a question above.</p>
@@ -74,7 +92,7 @@ ol.papers li{min-width:0}
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const NEG = /\b(no|not|without|absence of|denies|denied|free of|negative for)\b/i;
-let G, cy, byId = {}, lexRx;
+let G, cy, byId = {}, lexRx, T = null, lastQ = "";
 
 fetch("/graph/cv.json").then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(init).catch(e => {
   document.getElementById("meta").textContent = "Couldn't load the graph data (" + e.message + "). It is created by the GraphRAG test workflow.";
@@ -115,7 +133,77 @@ function init(data) {
   document.getElementById("minw").oninput = applyFilter;
   document.getElementById("labels").onchange = applyFilter;
   document.getElementById("relayout").onclick = () => cy.layout({ name: "cose", animate: false, nodeRepulsion: 9000, idealEdgeLength: 80 }).run();
-  let t; document.getElementById("q").oninput = e => { clearTimeout(t); t = setTimeout(() => ask(e.target.value), 250); };
+  let t; document.getElementById("q").oninput = e => { clearTimeout(t); t = setTimeout(() => { lastQ = e.target.value; ask(lastQ); }, 250); };
+  document.getElementById("tab-graph").onclick = () => setTab("graph");
+  document.getElementById("tab-tree").onclick = () => setTab("tree");
+  fetch("/graph/tree-cv.json").then(r => r.ok ? r.json() : null).then(d => { T = d; if (tab === "tree") renderTree(); }).catch(() => {});
+}
+
+let tab = "graph";
+function setTab(name) {
+  tab = name;
+  document.getElementById("tab-graph").setAttribute("aria-pressed", name === "graph");
+  document.getElementById("tab-tree").setAttribute("aria-pressed", name === "tree");
+  document.getElementById("cy").hidden = name !== "graph";
+  document.getElementById("treeview").hidden = name !== "tree";
+  document.querySelectorAll("#minw,#labels,#relayout").forEach(el => (el.closest("label") || el).style.visibility = name === "graph" ? "" : "hidden");
+  if (name === "tree") renderTree(); else { cy.resize(); if (lastQ) ask(lastQ); }
+}
+
+// ---- decision tree (XGBoost, distilled) ----
+function questionFeatures(q) {
+  const f = new Set();
+  for (const m of q.matchAll(lexRx)) {
+    const before = q.slice(Math.max(0, m.index - 40), m.index).split(/\s+/).slice(-4).join(" ");
+    if (!NEG.test(before)) f.add(G.lexicon[m[1].toLowerCase()]);
+  }
+  if (/pregnan|gestation|trimester|\b\d{1,2}\s?(wk|wks|weeks)\b(?!.*(postnatal|postpartum))/i.test(q)) f.add("Pregnancy");
+  if (/postpartum|postnatal|post-natal|after (giving )?birth|had (a |her )?baby|after delivery|puerper/i.test(q)) { f.add("Postpartum"); f.delete("Pregnancy"); }
+  if (/menopaus|hot flush|hot flash/i.test(q)) f.add("Menopause");
+  const age = q.match(/\b(\d{2})\s?(-?\s?year|yo\b|y\/o|yrs?\b|F\b)/i);
+  if (age) { const a = +age[1]; f.add(a >= 65 ? "Age: 65 or older" : a >= 45 ? "Age: middle-aged" : a <= 24 ? "Age: adolescent or young adult" : ""); f.delete(""); }
+  return f;
+}
+function walk(node, feats, path = []) {
+  path.push(node);
+  if (node.leaf) return path;
+  return walk(feats.has(node.feature) ? node.yes : node.no, feats, path);
+}
+function renderTree() {
+  const el = document.getElementById("treeview");
+  if (!T) { el.innerHTML = '<p class="empty">The decision tree data is not built yet (Evidence graph workflow).</p>'; return; }
+  const m = T.metrics, feats = lastQ ? questionFeatures(lastQ) : null;
+  const path = feats ? new Set(walk(T.tree, feats)) : new Set();
+  const top = T.importance.slice(0, 6).map(r => esc(r[0])).join(", ");
+  el.innerHTML = `<div class="metrics"><span><b>${m.papers}</b> papers with symptoms</span><span>held-out log-loss <b>${m.test_logloss}</b> (baseline ${m.baseline_logloss})</span>
+      <span>top-1 <b>${Math.round(m.top1 * 100)}%</b> (baseline ${Math.round(m.baseline_top1 * 100)}%) · top-3 <b>${Math.round(m.top3 * 100)}%</b></span>
+      <span>single tree agrees with XGBoost on <b>${Math.round(m.fidelity * 100)}%</b></span><span>strongest features: ${top}</span><span>built ${esc(T.built)}</span></div>
+    <ul class="tree">${treeHtml(T.tree, path)}</ul>
+    <p class="note">The tree ranks bodies of women-only evidence for a symptom pattern. It does not estimate any patient's diagnosis.</p>`;
+  el.querySelectorAll(".tleaf").forEach((b, i) => b.onclick = () => showLeaf(leaves[i]));
+  if (feats) { const leaf = [...path].pop(); showLeaf(leaf, feats); }
+}
+let leaves = [];
+function treeHtml(n, path, depth = 0) {
+  if (depth === 0) leaves = [];
+  const on = path.has(n) ? ' class="onpath"' : "";
+  if (n.leaf) {
+    leaves.push(n);
+    const best = n.groups.slice(0, 2).map(g => `${esc(g[0])} <small>(${g[1]})</small>`).join(" · ");
+    return `<li${on}><button type="button" class="tleaf">${best}<small> · ${n.papers} papers</small></button></li>`;
+  }
+  return `<li${on}><span class="tq ${n.kind}">${esc(n.feature)}?</span> <small class="pmeta">${n.papers} papers</small>
+    <ul><li${path.has(n.yes) ? ' class="onpath"' : ""}><span class="br">yes</span></li>${treeHtml(n.yes, path, depth + 1)}
+        <li${path.has(n.no) ? ' class="onpath"' : ""}><span class="br">no</span></li>${treeHtml(n.no, path, depth + 1)}</ul></li>`;
+}
+function showLeaf(leaf, feats) {
+  const max = leaf.groups[0] ? leaf.groups[0][1] : 1;
+  const rows = leaf.groups.map(([g, n]) => `<li><div><span class="bar" style="width:${Math.max(4, 120 * n / max)}px"></span><b>${esc(g)}</b> <span class="pmeta">${n} papers</span></div>
+      <ol class="papers" style="margin-top:6px">${(leaf.paper_ids[g] || []).slice(0, 8).map(pid => paperItem(pid, null)).join("")}</ol></li>`).join("");
+  render(`<h2>Evidence groups at this leaf</h2>
+    ${feats ? `<div class="links">${[...feats].map(f => `<span class="chip">${esc(f)}</span>`).join("")}</div>` : ""}
+    <div class="pmeta">${leaf.papers} women-only papers end at this leaf, ranked by condition group</div>
+    <ol class="papers">${rows}</ol>`);
 }
 
 function applyFilter() {
@@ -169,6 +257,7 @@ function showEdge(edge) {
 }
 
 function ask(q) {
+  if (tab === "tree") { renderTree(); return; }
   if (!q.trim()) { clearHl(); return; }
   const found = new Map(), negated = new Set();
   for (const m of q.matchAll(lexRx)) {
