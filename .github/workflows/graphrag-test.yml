@@ -1,9 +1,16 @@
-name: GraphRAG test (graph vs vector retrieval)
+name: Evidence graph + decision trees (daily) and GraphRAG test
 # Light GraphRAG (MeSH conditions + extracted symptoms as graph nodes, no LLM) against plain vector retrieval on
 # women-only cardiovascular papers. Writes eval/graphrag/ (runs, pool for blind judging, condition answers).
 
 on:
+  schedule:
+    - cron: "47 6 * * *"     # daily, after the overnight collection; the site redeploys on the commit
   workflow_dispatch:
+    inputs:
+      eval:
+        description: "Also run the GraphRAG test questions (writes eval/graphrag/pool_new.json for judging)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -40,7 +47,7 @@ jobs:
           path: /home/runner/.cache/herevidence-models/sections_cache.json.gz
           key: herevidence-sections-${{ github.run_id }}
           restore-keys: herevidence-sections-
-      - run: pip install -r requirements.txt -r pi/requirements.txt -r pi/requirements-analysis.txt
+      - run: pip install -r requirements.txt -r pi/requirements.txt -r pi/requirements-analysis.txt xgboost scikit-learn
       - name: Catalogue from the Pi
         env:
           PI_CATALOGUE_URL: ${{ format('{0}/catalogue', secrets.PI_API_URL) }}
@@ -57,11 +64,11 @@ jobs:
           PI_VECTORS_URL: ${{ format('{0}/vectors', secrets.PI_API_URL) }}
           PI_API_TOKEN: ${{ secrets.PI_API_TOKEN }}
         run: python -m pi.sync vectors | tail -3
-      - name: Graph vs vector retrieval
-        run: python -m pi.graph_test run --out eval/graphrag
+      - name: Evidence graph + XGBoost tree (+ test questions on request)
+        run: python -m pi.build_demo ${{ github.event.inputs.eval == 'true' && '--eval' || '' }}
       - name: Commit the test set
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add eval/graphrag web/graph
-          git diff --cached --quiet || { git commit -m "GraphRAG test + evidence graph export for the debug page"; git pull --rebase -q; git push; }
+          git diff --cached --quiet || { git commit -m "Evidence graph + decision tree data for /graph (daily rebuild)"; git pull --rebase -q; git push; }

@@ -39,10 +39,18 @@ QUESTIONS = {
 }
 
 
+FRESH = os.path.join(os.path.dirname(__file__), "..", "eval", "graphrag", "questions_v3_fresh.json")
+if os.path.exists(FRESH):
+    QUESTIONS["fresh"] = json.load(open(FRESH))     # locked 16 Nov, written blind to the dictionary
+
+
 def run(out: str) -> dict:
-    os.makedirs(out, exist_ok=True)
     g = EvidenceGraph(AREA, with_sections=True)
-    export = g.export("web/graph/cv.json")
+    return evaluate(g, out, export=g.export("web/graph/cv.json"))
+
+
+def evaluate(g, out: str, export: dict | None = None) -> dict:
+    os.makedirs(out, exist_ok=True)
     runs, conds = {}, {}
     for qset, qs in QUESTIONS.items():
         for q in qs:
@@ -60,8 +68,12 @@ def run(out: str) -> dict:
                 key = f"{q}|{pid}"
                 if key not in judged:
                     p = g.papers[pid]
+                    # the sentences that tie the paper to the question's symptoms (any method), so a judge who
+                    # only sees the abstract does not miss evidence from the results section
+                    ev = [g.sym[l["symptom"]][pid]["sentence"] for l in r["links"]
+                          if pid in g.sym.get(l["symptom"], {}) and g.sym[l["symptom"]][pid].get("sentence")]
                     pool[key] = {"key": key, "query": q, "paper_id": pid, "title": p["title"],
-                                 "abstract": p["abstract"][:1500]}
+                                 "abstract": p["abstract"][:1500], "linked_sentences": ev}
     items = sorted(pool.values(), key=lambda x: hashlib.sha1(x["key"].encode()).hexdigest())
     json.dump(runs, open(os.path.join(out, "runs.json"), "w"), indent=1)
     json.dump(conds, open(os.path.join(out, "conditions.json"), "w"), indent=1)
