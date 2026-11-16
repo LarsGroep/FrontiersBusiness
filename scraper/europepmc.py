@@ -53,9 +53,39 @@ CARDIO_MESH = [
     "Vascular Diseases", "Hypertension, Pulmonary", "Blood Pressure", "Microvascular Angina", "Coronary Vessel Anomalies",
     "Aortic Stenosis", "Heart Valve Diseases", "Endothelium, Vascular", "Vascular Stiffness", "Cardiovascular System",
 ]
+# Thin areas in the dataset (7 Nov analysis): nervous system, autoimmune, respiratory and digestive.
+NEURO_MESH = [
+    "Multiple Sclerosis", "Migraine Disorders", "Headache Disorders", "Epilepsy", "Alzheimer Disease", "Dementia",
+    "Parkinson Disease", "Cognitive Dysfunction", "Fibromyalgia", "Chronic Pain", "Neuralgia", "Myasthenia Gravis",
+    "Sleep Initiation and Maintenance Disorders", "Restless Legs Syndrome", "Peripheral Nervous System Diseases",
+]
+AUTOIMMUNE_MESH = [
+    "Autoimmune Diseases", "Lupus Erythematosus, Systemic", "Arthritis, Rheumatoid", "Sjogren's Syndrome",
+    "Hashimoto Disease", "Graves Disease", "Thyroiditis, Autoimmune", "Psoriasis", "Scleroderma, Systemic",
+    "Antiphospholipid Syndrome", "Vasculitis", "Celiac Disease",
+]
+RESPIRATORY_MESH = [
+    "Asthma", "Pulmonary Disease, Chronic Obstructive", "Sleep Apnea, Obstructive", "Lung Diseases, Interstitial",
+    "Pulmonary Fibrosis", "Lymphangioleiomyomatosis", "Pneumonia", "Tuberculosis, Pulmonary", "COVID-19", "Cough",
+    "Dyspnea", "Lung Neoplasms",
+]
+DIGESTIVE_MESH = [
+    "Irritable Bowel Syndrome", "Inflammatory Bowel Diseases", "Crohn Disease", "Colitis, Ulcerative",
+    "Gastroesophageal Reflux", "Constipation", "Gallstones", "Non-alcoholic Fatty Liver Disease",
+    "Cholestasis, Intrahepatic", "Hyperemesis Gravidarum", "Gastroparesis", "Dyspepsia", "Abdominal Pain",
+]
 EXTRA_TOPICS = {
     "cardio-mesh": " OR ".join(f'KW:"{m}"' for m in CARDIO_MESH),
+    # Same headings, but without the methods-text filter in the base query: catches women-only studies whose methods
+    # section is worded differently. The labeller still reads the methods text and decides verified/probable/rejected.
+    "cardio-wide": " OR ".join(f'KW:"{m}"' for m in CARDIO_MESH),
+    "neuro-mesh": " OR ".join(f'KW:"{m}"' for m in NEURO_MESH),
+    "autoimmune-mesh": " OR ".join(f'KW:"{m}"' for m in AUTOIMMUNE_MESH),
+    "respiratory-mesh": " OR ".join(f'KW:"{m}"' for m in RESPIRATORY_MESH),
+    "digestive-mesh": " OR ".join(f'KW:"{m}"' for m in DIGESTIVE_MESH),
 }
+WIDE_QUERY = DEFAULT_QUERY.split(" AND METHODS:")[0]
+TOPIC_BASE = {"cardio-wide": WIDE_QUERY}      # topics that use a different base query than DEFAULT_QUERY
 ALL_TOPICS = {**DEFAULT_TOPICS, **EXTRA_TOPICS}
 
 

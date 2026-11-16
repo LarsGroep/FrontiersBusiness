@@ -43,7 +43,8 @@ def run(max_papers: int, since_year: int | None = None, topic: str | None = None
         start, exhausted = store.get_cursor(conn, key)
         if exhausted:
             start = "*"   # wrapped around: rescan from the top for newly published papers
-        q = europepmc.build_query(since_year, tq, year_range=yr)
+        q = europepmc.build_query(since_year, tq, base=europepmc.TOPIC_BASE.get(name, europepmc.DEFAULT_QUERY),
+                                  year_range=yr)
         try:
             # Focused runs scan the whole slice (most hits are new); the rotation reads up to 30x its quota.
             _, records, state = europepmc.search(q, max_results=10**6 if topic else per_slice * 30, start_cursor=start)

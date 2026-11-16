@@ -10,7 +10,7 @@ set -u
 LOG=/opt/herevidence/models/guard.log
 STATE=/run/herevidence-guard
 mkdir -p "$STATE"
-HEAVY="herevidence-cardio herevidence-symptoms herevidence-analyse"   # never the import: it replaces tables
+HEAVY="herevidence-collect herevidence-cardio herevidence-symptoms herevidence-analyse"   # never the import: it replaces tables
 log() { echo "$(date '+%F %T') $*" >> "$LOG"; }
 [ -f "$LOG" ] && [ "$(stat -c %s "$LOG")" -gt 1048576 ] && mv "$LOG" "$LOG.1"
 
@@ -21,7 +21,9 @@ pause() {
 }
 resume() {
   [ -f "$STATE/paused" ] || return 0
-  if grep -q herevidence-cardio "$STATE/paused"; then systemctl start herevidence-cardio && log "resumed herevidence-cardio ($1)"; fi
+  for u in herevidence-collect herevidence-cardio; do
+    if grep -q "$u" "$STATE/paused"; then systemctl start "$u" && log "resumed $u ($1)"; fi
+  done
   rm -f "$STATE/paused"
 }
 

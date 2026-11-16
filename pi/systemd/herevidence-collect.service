@@ -1,0 +1,19 @@
+[Unit]
+Description=Continuous women-only paper collection (cardio-wide, neuro, autoimmune, respiratory, digestive), resumable
+RequiresMountsFor=/mnt/evidence
+After=postgresql.service network-online.target
+Wants=network-online.target
+
+[Service]
+User=herevidence
+WorkingDirectory=/opt/herevidence
+EnvironmentFile=/etc/herevidence.env
+ExecStart=/opt/herevidence/.venv/bin/python -m pi.collect
+Restart=on-failure
+RestartSec=120
+Nice=10
+MemoryHigh=200M
+MemoryMax=250M
+
+[Install]
+WantedBy=multi-user.target
