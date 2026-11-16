@@ -6,55 +6,110 @@
 <link rel="icon" href="data:,">
 <title>Ask the research</title>
 <style>
-:root{--paper:#F6F8F7;--surface:#FFFFFF;--ink:#14233B;--ink-2:#3C4A60;--muted:#5F6D82;--rule:#D9E0E3;--rule-strong:#B7C3C9;
-  --teal:#0E7466;--teal-soft:#E1F1EE;--warn:#9A3B1E;--warn-soft:#FBEDE6;--focus:#2F6FEB;color-scheme:light}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#0F1828;--surface:#152135;--ink:#E8EEF2;--ink-2:#C2CCD6;--muted:#9AA7B8;
-  --rule:#26354C;--rule-strong:#3A4B65;--teal:#5CC2B2;--teal-soft:#16352F;--warn:#F0A07F;--warn-soft:#3A2219;--focus:#8AB4FF;color-scheme:dark}}
-:root[data-theme="dark"]{--paper:#0F1828;--surface:#152135;--ink:#E8EEF2;--ink-2:#C2CCD6;--muted:#9AA7B8;--rule:#26354C;--rule-strong:#3A4B65;
-  --teal:#5CC2B2;--teal-soft:#16352F;--warn:#F0A07F;--warn-soft:#3A2219;--focus:#8AB4FF;color-scheme:dark}
+/* ---- shared theme: this block is identical on every page ---- */
+:root{
+  --paper:#FCF4F3; --surface:#FFFFFF; --tint:#F7E8E7;
+  --ink:#2B1A1E; --ink-2:#523A40; --muted:#765C62;
+  --rule:#EFD9D8; --rule-strong:#D5ABAE; --field:#A8757C;
+  --accent:#B03A56; --accent-strong:#8F2A44; --accent-soft:#F9E1E4; --on-accent:#FFFFFF;
+  --teal:#2A6F73; --teal-soft:#DFEEED; --heart:#B03A56; --heart-soft:#F9E1E4;
+  --marker:#FFE08A; --marker-ink:#2B1A1E;
+  --warn:#7A4A00; --warn-line:#C77700; --warn-soft:#FFF0C2;
+  --focus:#1F5FD1; --edge:#D5ABAE; --hl:#E0A100;
+  --shadow:0 1px 2px rgba(92,38,50,.06),0 4px 14px rgba(92,38,50,.05);
+  --radius-s:6px; --radius-m:10px;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#1C1215; --surface:#261A1E; --tint:#2E1F24;
+    --ink:#F5E9EA; --ink-2:#DCC8CB; --muted:#B39CA1;
+    --rule:#3D2A30; --rule-strong:#5A4047; --field:#8F6F77;
+    --accent:#F08FA6; --accent-strong:#F7AEBF; --accent-soft:#45222D; --on-accent:#2B1015;
+    --teal:#6FC4BE; --teal-soft:#1C3836; --heart:#F08FA6; --heart-soft:#45222D;
+    --marker:#C9A93A; --marker-ink:#1C1215;
+    --warn:#F5C065; --warn-line:#D99A2B; --warn-soft:#3B2C0E;
+    --focus:#8AB4FF; --edge:#5A4047; --hl:#F5C451; --shadow:none;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+    --paper:#1C1215; --surface:#261A1E; --tint:#2E1F24;
+    --ink:#F5E9EA; --ink-2:#DCC8CB; --muted:#B39CA1;
+    --rule:#3D2A30; --rule-strong:#5A4047; --field:#8F6F77;
+    --accent:#F08FA6; --accent-strong:#F7AEBF; --accent-soft:#45222D; --on-accent:#2B1015;
+    --teal:#6FC4BE; --teal-soft:#1C3836; --heart:#F08FA6; --heart-soft:#45222D;
+    --marker:#C9A93A; --marker-ink:#1C1215;
+    --warn:#F5C065; --warn-line:#D99A2B; --warn-soft:#3B2C0E;
+    --focus:#8AB4FF; --edge:#5A4047; --hl:#F5C451; --shadow:none;
+    color-scheme:dark;
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
-:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 var(--sans)}
+a{color:inherit;text-decoration-color:var(--rule-strong);text-underline-offset:3px}
+a:hover{color:var(--accent-strong);text-decoration-color:currentColor}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:2px}
 button,input,select,textarea{font:inherit;color:inherit}
-.wrap{max-width:820px;margin:0 auto;padding:16px}
-a{color:inherit;text-underline-offset:3px}
+input[type=search],input[type=text],input[type=number],input:not([type]),select,textarea{
+  padding:10px 12px;border:1px solid var(--field);border-radius:var(--radius-m);background:var(--surface);color:var(--ink);max-width:100%}
+input:hover,select:hover,textarea:hover{border-color:var(--accent)}
+::placeholder{color:var(--muted);opacity:1}
+input[type=checkbox],input[type=radio],input[type=range]{accent-color:var(--accent)}
+h1,h2{font-family:var(--serif);font-weight:600;letter-spacing:-.005em}
+.btn{border:1px solid transparent;border-radius:var(--radius-m);padding:10px 18px;min-height:44px;font-weight:600;background:var(--accent);color:var(--on-accent);cursor:pointer;white-space:nowrap}
+.btn:hover{background:var(--accent-strong)}
+.btn:disabled{opacity:.55;cursor:default}
+.btn.quiet{background:var(--surface);color:var(--accent-strong);border-color:var(--rule-strong)}
+.btn.quiet:hover:not(:disabled){background:var(--accent-soft);border-color:var(--accent)}
+.sitenav{background:var(--surface);border-bottom:1px solid var(--rule)}
+.sitenav > div{max-width:var(--page,1180px);margin:0 auto;padding:8px 4px;display:flex;flex-wrap:wrap;gap:4px}
+.sitenav a{padding:7px 12px;border-radius:999px;font-size:15px;font-weight:600;color:var(--ink-2);text-decoration:none}
+.sitenav a:hover{background:var(--tint);color:var(--ink)}
+.sitenav a[aria-current]{background:var(--accent-soft);color:var(--accent-strong)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+/* ---- end shared theme ---- */
+:root{--page:820px}
+.wrap{max-width:var(--page);margin:0 auto;padding:16px}
 .top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--rule);padding-bottom:10px}
-.top h1{font-size:20px;margin:0}
+.top h1{font-size:26px;margin:0;line-height:1.25}
 .note{font-size:13.5px;color:var(--muted);margin:10px 0 0}
-details.profile{margin:14px 0 0;border:1px solid var(--rule);border-radius:8px;background:var(--surface);padding:6px 14px}
-details.profile summary{cursor:pointer;font-weight:600;padding:6px 0}
+details.profile{margin:16px 0 0;border:1px solid var(--rule);border-radius:14px;background:var(--surface);box-shadow:var(--shadow);padding:6px 16px}
+details.profile summary{cursor:pointer;font-weight:600;padding:8px 0}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px;padding:8px 0 12px}
 .f{display:flex;flex-direction:column;gap:4px}.f.full{grid-column:1/-1}
 .f label{font-size:14px;font-weight:600}
-.f input,.f select,textarea{padding:9px 11px;border:1px solid var(--rule-strong);border-radius:8px;background:var(--surface)}
-.consent{display:flex;gap:10px;align-items:flex-start;font-size:14px;background:var(--teal-soft);border-radius:8px;padding:10px 12px;margin:0 0 10px}
-.consent input{margin-top:4px;accent-color:var(--teal);width:18px;height:18px;flex:none}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:14px;background:var(--tint);border:1px solid var(--rule);border-radius:var(--radius-m);padding:10px 12px;margin:0 0 10px}
+.consent input{margin-top:3px;width:18px;height:18px;flex:none}
 #log{margin:18px 0 0;display:flex;flex-direction:column;gap:16px}
-.msg{max-width:100%}
-.msg.user{align-self:flex-end;background:var(--ink);color:var(--paper);border-radius:12px 12px 2px 12px;padding:10px 14px;max-width:85%;white-space:pre-wrap}
-.msg.bot{background:var(--surface);border:1px solid var(--rule);border-radius:12px 12px 12px 2px;padding:14px 16px}
+.msg{max-width:100%;overflow-wrap:anywhere}
+.msg.user{align-self:flex-end;background:var(--accent);color:var(--on-accent);border-radius:14px 14px 3px 14px;padding:10px 14px;max-width:85%;white-space:pre-wrap}
+.msg.bot{background:var(--surface);border:1px solid var(--rule);border-radius:14px 14px 14px 3px;box-shadow:var(--shadow);padding:14px 16px}
 .msg.bot p{margin:0 0 10px}.msg.bot p:last-child{margin:0}
-.urgent{border-left:3px solid var(--warn);background:var(--warn-soft);padding:10px 12px;border-radius:0 8px 8px 0;font-size:14px;margin:0 0 12px}
+/* urgent notice: amber, deliberately not the brand rose */
+.urgent{border:1px solid var(--warn-line);border-left-width:6px;background:var(--warn-soft);color:var(--ink);padding:10px 14px;border-radius:var(--radius-m);font-size:14.5px;margin:0 0 12px}
 .urgent strong{color:var(--warn)}
-.cite{font-size:12px;vertical-align:super;color:var(--teal);font-weight:700;text-decoration:none}
+.cite{font-size:12px;vertical-align:super;color:var(--accent-strong);font-weight:700;text-decoration:none}
 details.src{margin:10px 0 0;font-size:14px}details.src summary{cursor:pointer;color:var(--muted)}
 details.src ol{padding-left:22px;margin:8px 0 0}details.src li{margin:0 0 8px}
 details.src .m{color:var(--muted);font-size:13px}
 form.ask{display:flex;gap:8px;margin:18px 0 0;position:sticky;bottom:0;background:var(--paper);padding:10px 0 14px}
 form.ask textarea{flex:1;min-width:0;min-height:48px;max-height:180px;resize:vertical}
-.btn{border:0;border-radius:8px;padding:0 18px;min-height:48px;font-weight:600;background:var(--ink);color:var(--paper);cursor:pointer}
-.btn:disabled{opacity:.55;cursor:default}
-.quiet{background:none;border:1px solid var(--rule-strong);color:var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:14px}
+.btn{min-height:48px}
+.quiet{background:var(--surface);border:1px solid var(--rule-strong);color:var(--accent-strong);border-radius:var(--radius-m);padding:6px 12px;cursor:pointer;font-size:14px;font-weight:600;margin-right:6px}
+.quiet:hover{background:var(--accent-soft);border-color:var(--accent)}
 .status{color:var(--muted);font-size:14px;min-height:1.4em;margin:8px 0 0}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media (max-width:640px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
+<nav class="sitenav" aria-label="Site"><div><a href="/">Search</a><a href="/themes.html">Themes</a><a href="/chat" aria-current="page">Ask the research</a></div></nav>
 <div class="wrap">
   <div class="top">
     <h1>Ask the research</h1>
-    <a href="/">Search studies instead</a>
   </div>
   <p class="note">You are talking to an AI. It explains what peer-reviewed studies <b>in women</b> found and cites them. It does not diagnose and does not give treatment advice: this is research information, not medical advice. In an emergency call 112.</p>
 
