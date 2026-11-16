@@ -93,11 +93,11 @@
    4
   ],
   [
-   "Heart Diseases",
+   "Heart Failure",
    3
   ],
   [
-   "Heart Failure",
+   "Heart Diseases",
    3
   ]
  ],
@@ -134,7 +134,7 @@
  "leg swelling": [
   [
    "Hypertension, Pregnancy-Induced",
-   29
+   31
   ],
   [
    "Pregnancy Complications, Cardiovascular",
@@ -142,7 +142,7 @@
   ],
   [
    "Hypertension",
-   14
+   16
   ],
   [
    "Heart Failure",
@@ -169,11 +169,11 @@
  "headache": [
   [
    "Hypertension, Pregnancy-Induced",
-   24
+   25
   ],
   [
    "Hypertension",
-   21
+   22
   ],
   [
    "Cardiovascular Diseases",
@@ -212,8 +212,54 @@
  ],
  "chest pain and nausea": [],
  "palpitations and dizziness": [],
- "52-year-old woman with pressure on her chest when climbing stairs": [],
- "she gets out of breath easily and feels exhausted all the time": [],
+ "52-year-old woman with pressure on her chest when climbing stairs": [
+  [
+   "Coronary Artery Disease",
+   17
+  ],
+  [
+   "Cardiovascular Diseases",
+   11
+  ],
+  [
+   "Angina Pectoris",
+   9
+  ],
+  [
+   "Myocardial Infarction",
+   7
+  ],
+  [
+   "Myocardial Ischemia",
+   6
+  ],
+  [
+   "Pregnancy Complications, Cardiovascular",
+   6
+  ],
+  [
+   "Venous Thromboembolism",
+   4
+  ],
+  [
+   "Hypertension",
+   4
+  ]
+ ],
+ "she gets out of breath easily and feels exhausted all the time": [
+  [
+   "Cardiomyopathies",
+   3
+  ],
+  [
+   "Pregnancy Complications, Cardiovascular",
+   3
+  ],
+  [
+   "Cardiovascular Diseases",
+   3
+  ]
+ ],
  "episodes of her heart racing at night": [
   [
    "Arrhythmias, Cardiac",
@@ -244,7 +290,40 @@
    3
   ]
  ],
- "swollen ankles in late pregnancy": [],
+ "swollen ankles in late pregnancy": [
+  [
+   "Hypertension, Pregnancy-Induced",
+   31
+  ],
+  [
+   "Pregnancy Complications, Cardiovascular",
+   19
+  ],
+  [
+   "Hypertension",
+   16
+  ],
+  [
+   "Heart Failure",
+   7
+  ],
+  [
+   "Cardiomyopathies",
+   6
+  ],
+  [
+   "Heart Defects, Congenital",
+   6
+  ],
+  [
+   "Venous Thrombosis",
+   4
+  ],
+  [
+   "Arrhythmias, Cardiac",
+   4
+  ]
+ ],
  "fainted twice this month, feels lightheaded when standing up": [],
  "pain in the jaw and upper back during exertion": [],
  "severe headaches and blurred vision after giving birth": [
@@ -264,26 +343,200 @@
   ]
  ],
  "cold sweats and indigestion-like discomfort": [],
- "irregular heartbeat and dizziness during menopause": [
+ "irregular heartbeat and dizziness during menopause": [],
+ "Tight feeling in her chest climbing stairs, goes off when she stops": [],
+ "Says her heart keeps racing and fluttering at night, no chest pain": [
   [
-   "Cardiovascular Diseases",
+   "Arrhythmias, Cardiac",
+   7
+  ],
+  [
+   "Pregnancy Complications, Cardiovascular",
    6
   ],
   [
-   "Hypertension",
-   6
-  ],
-  [
-   "Hypertension, Pregnancy-Induced",
+   "Cardiomyopathies",
    5
   ],
   [
-   "Hypotension",
+   "Cardiovascular Diseases",
+   3
+  ],
+  [
+   "Myocardial Infarction",
+   3
+  ],
+  [
+   "Atrial Fibrillation",
+   3
+  ],
+  [
+   "Heart Diseases",
+   3
+  ]
+ ],
+ "Jaw ache and feeling sick while gardening, 58 yo woman": [],
+ "Pain between shoulder blades, sweaty and clammy, came on at rest": [],
+ "Wiped out all the time, gets puffed walking to the shops": [],
+ "Ankles really puffy by evening, shoes don't fit, 34 weeks pregnant": [
+  [
+   "Hypertension, Pregnancy-Induced",
+   31
+  ],
+  [
+   "Pregnancy Complications, Cardiovascular",
+   19
+  ],
+  [
+   "Hypertension",
+   16
+  ],
+  [
+   "Heart Failure",
+   7
+  ],
+  [
+   "Cardiomyopathies",
+   6
+  ],
+  [
+   "Heart Defects, Congenital",
+   6
+  ],
+  [
+   "Venous Thrombosis",
    4
+  ],
+  [
+   "Arrhythmias, Cardiac",
+   4
+  ]
+ ],
+ "Bad headache and seeing flashing lights, had baby 5 days ago": [
+  [
+   "Hypertension, Pregnancy-Induced",
+   25
+  ],
+  [
+   "Hypertension",
+   22
+  ],
+  [
+   "Cardiovascular Diseases",
+   7
+  ],
+  [
+   "Stroke",
+   3
+  ],
+  [
+   "Venous Thrombosis",
+   3
   ],
   [
    "Pregnancy Complications, Cardiovascular",
    3
+  ],
+  [
+   "Hypotension",
+   3
   ]
- ]
+ ],
+ "Calves cramp when walking, eases after a short rest, smoker": [],
+ "Came over all faint in the shower, nearly passed out, menopausal": [
+  [
+   "Hypertension, Pregnancy-Induced",
+   4
+  ],
+  [
+   "Pulmonary Embolism",
+   4
+  ],
+  [
+   "Cardiovascular Diseases",
+   3
+  ],
+  [
+   "Hypertension",
+   3
+  ],
+  [
+   "Arrhythmias, Cardiac",
+   3
+  ]
+ ],
+ "SOB lying flat, needs three pillows, 6 wks postnatal": [],
+ "Burning upper tummy like indigestion on exertion, antacids not helping, 62F": [],
+ "Hot flushes and pounding heartbeat, no dizziness or blackouts": [],
+ "Exertional dyspnoea and reduced exercise tolerance in a 45-year-old perimenopausal woman": [
+  [
+   "Pregnancy Complications, Cardiovascular",
+   14
+  ],
+  [
+   "Cardiomyopathies",
+   9
+  ],
+  [
+   "Cardiovascular Diseases",
+   7
+  ],
+  [
+   "Heart Failure",
+   7
+  ],
+  [
+   "Pulmonary Embolism",
+   6
+  ],
+  [
+   "Heart Diseases",
+   6
+  ],
+  [
+   "Hypertension, Pregnancy-Induced",
+   6
+  ],
+  [
+   "Coronary Artery Disease",
+   5
+  ]
+ ],
+ "Intermittent left arm heaviness and diaphoresis in a postmenopausal woman with diabetes": [],
+ "Recurrent presyncope on standing in a young woman with resting tachycardia": [
+  [
+   "Hypertension, Pregnancy-Induced",
+   4
+  ],
+  [
+   "Pulmonary Embolism",
+   4
+  ],
+  [
+   "Cardiovascular Diseases",
+   3
+  ],
+  [
+   "Hypertension",
+   3
+  ],
+  [
+   "Arrhythmias, Cardiac",
+   3
+  ]
+ ],
+ "Raised blood pressure readings at 28 weeks gestation without proteinuria or headache": [],
+ "Paroxysmal nocturnal dyspnoea and bilateral peripheral oedema in the third trimester": [],
+ "Atypical chest discomfort with nausea and fatigue in a 70-year-old woman": [],
+ "Right upper quadrant pain and visual disturbance at 36 weeks gestation": [
+  [
+   "Hypertension, Pregnancy-Induced",
+   12
+  ],
+  [
+   "Hypertension",
+   4
+  ]
+ ],
+ "Persistent fatigue, palpitations and orthopnoea at four months postpartum": []
 }

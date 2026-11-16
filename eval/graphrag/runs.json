@@ -219,19 +219,19 @@
    "PMC6582481",
    "PMC4115671",
    "PMC8653539",
-   "PMC11581633"
+   "PMC11775729"
   ],
   "hybrid": [
    "PMC9675523",
    "PMC4115671",
    "PMC8653539",
    "PMC7856547",
+   "PMC4602447",
    "PMC10830052",
    "PMC3896751",
    "PMC12621438",
    "PMC12951259",
-   "PMC6445463",
-   "PMC5511530"
+   "PMC6445463"
   ]
  },
  "dizziness or fainting": {
@@ -495,7 +495,14 @@
  },
  "52-year-old woman with pressure on her chest when climbing stairs": {
   "set": "free text",
-  "links": [],
+  "links": [
+   {
+    "symptom": "Chest Pain",
+    "via": "dictionary",
+    "words": "pressure on her chest",
+    "score": 1.0
+   }
+  ],
   "vector": [
    "PMC4872890",
    "PMC6735271",
@@ -508,23 +515,47 @@
    "PMC8880941",
    "PMC3901741"
   ],
-  "graph": [],
+  "graph": [
+   "PMC12714392",
+   "PMC13017302",
+   "PMC5073470",
+   "PMC9327873",
+   "PMC12952176",
+   "PMC9505953",
+   "PMC4943278",
+   "PMC13267789",
+   "PMC7816930",
+   "PMC7319702"
+  ],
   "hybrid": [
-   "PMC4872890",
    "PMC6735271",
+   "PMC13017302",
+   "PMC10353181",
+   "PMC4872890",
+   "PMC12714392",
    "PMC10957602",
+   "PMC5073470",
    "PMC12322127",
-   "PMC3931482",
-   "PMC12401404",
-   "PMC12896010",
-   "PMC11935621",
-   "PMC8880941",
-   "PMC3901741"
+   "PMC9327873",
+   "PMC3931482"
   ]
  },
  "she gets out of breath easily and feels exhausted all the time": {
   "set": "free text",
-  "links": [],
+  "links": [
+   {
+    "symptom": "Dyspnea",
+    "via": "dictionary",
+    "words": "out of breath",
+    "score": 1.0
+   },
+   {
+    "symptom": "Fatigue",
+    "via": "dictionary",
+    "words": "exhausted",
+    "score": 1.0
+   }
+  ],
   "vector": [
    "PMC6735271",
    "PMC5317281",
@@ -537,18 +568,29 @@
    "PMC8942223",
    "PMC5469089"
   ],
-  "graph": [],
+  "graph": [
+   "PMC10647937",
+   "PMC8569957",
+   "PMC10558067",
+   "PMC4752646",
+   "PMC13394706",
+   "PMC3411505",
+   "PMC5146820",
+   "PMC11542243",
+   "PMC6735271",
+   "PMC7427666"
+  ],
   "hybrid": [
    "PMC6735271",
-   "PMC5317281",
-   "PMC6220553",
+   "PMC8853317",
    "PMC1079947",
-   "PMC11964040",
+   "PMC12055567",
+   "PMC4631358",
    "PMC3334640",
-   "PMC5126432",
-   "PMC11288741",
-   "PMC8942223",
-   "PMC5469089"
+   "PMC3219735",
+   "PMC9970247",
+   "PMC13386483",
+   "PMC2174935"
   ]
  },
  "episodes of her heart racing at night": {
@@ -600,7 +642,14 @@
  },
  "swollen ankles in late pregnancy": {
   "set": "free text",
-  "links": [],
+  "links": [
+   {
+    "symptom": "Edema",
+    "via": "dictionary",
+    "words": "swollen ankles",
+    "score": 1.0
+   }
+  ],
   "vector": [
    "PMC8653539",
    "PMC5778964",
@@ -613,23 +662,47 @@
    "PMC4115671",
    "PMC6211673"
   ],
-  "graph": [],
+  "graph": [
+   "PMC12951259",
+   "PMC9675523",
+   "PMC11622127",
+   "PMC8480018",
+   "PMC3285159",
+   "PMC4915865",
+   "PMC6582481",
+   "PMC8653539",
+   "PMC4115671",
+   "PMC11775729"
+  ],
   "hybrid": [
    "PMC8653539",
+   "PMC9675523",
+   "PMC4115671",
+   "PMC10830052",
+   "PMC12951259",
    "PMC5778964",
    "PMC5554975",
+   "PMC11622127",
    "PMC9995268",
-   "PMC11025160",
-   "PMC5266153",
-   "PMC9675523",
-   "PMC6061134",
-   "PMC4115671",
-   "PMC6211673"
+   "PMC8480018"
   ]
  },
  "fainted twice this month, feels lightheaded when standing up": {
   "set": "free text",
-  "links": [],
+  "links": [
+   {
+    "symptom": "Syncope",
+    "via": "dictionary",
+    "words": "fainted",
+    "score": 1.0
+   },
+   {
+    "symptom": "Dizziness",
+    "via": "dictionary",
+    "words": "lightheaded",
+    "score": 1.0
+   }
+  ],
   "vector": [
    "PMC7955448",
    "PMC1939710",
@@ -642,23 +715,40 @@
    "PMC7660840",
    "PMC12640110"
   ],
-  "graph": [],
-  "hybrid": [
-   "PMC7955448",
+  "graph": [
+   "PMC5878201",
    "PMC1939710",
+   "PMC6343080",
+   "PMC7500469",
+   "PMC6585338",
+   "PMC7554212",
+   "PMC11807323",
+   "PMC10607223",
+   "PMC10558067",
+   "PMC10039538"
+  ],
+  "hybrid": [
+   "PMC1939710",
+   "PMC6585338",
+   "PMC6735271",
+   "PMC7554212",
+   "PMC12986047",
+   "PMC7955448",
+   "PMC5878201",
    "PMC13254043",
-   "PMC10770972",
-   "PMC11646512",
-   "PMC10623197",
-   "PMC9955614",
-   "PMC5126432",
-   "PMC7660840",
-   "PMC12640110"
+   "PMC6343080",
+   "PMC10770972"
   ]
  },
  "pain in the jaw and upper back during exertion": {
   "set": "free text",
   "links": [
+   {
+    "symptom": "Back Pain",
+    "via": "dictionary",
+    "words": "upper back",
+    "score": 1.0
+   },
    {
     "symptom": "Jaw Pain",
     "via": "embedding",
@@ -679,20 +769,28 @@
    "PMC5721806"
   ],
   "graph": [
+   "PMC10558067",
+   "PMC13348194",
+   "PMC4631358",
    "PMC9327873",
-   "PMC10558067"
+   "PMC11834756",
+   "PMC8985263",
+   "PMC13384121",
+   "PMC9308808",
+   "PMC4602447",
+   "PMC13255399"
   ],
   "hybrid": [
+   "PMC4631358",
    "PMC6735271",
-   "PMC9327873",
-   "PMC12322127",
    "PMC10558067",
+   "PMC12322127",
+   "PMC13348194",
    "PMC9075327",
    "PMC12813386",
+   "PMC9327873",
    "PMC4310412",
-   "PMC3334640",
-   "PMC10957602",
-   "PMC3266839"
+   "PMC11834756"
   ]
  },
  "severe headaches and blurred vision after giving birth": {
@@ -805,16 +903,16 @@
   "set": "free text",
   "links": [
    {
+    "symptom": "Sweating",
+    "via": "dictionary",
+    "words": "cold sweats",
+    "score": 1.0
+   },
+   {
     "symptom": "Dyspepsia",
     "via": "dictionary",
     "words": "indigestion",
     "score": 1.0
-   },
-   {
-    "symptom": "Sweating",
-    "via": "embedding",
-    "words": "cold sweats",
-    "score": 0.863
    }
   ],
   "vector": [
@@ -856,6 +954,12 @@
   "set": "free text",
   "links": [
    {
+    "symptom": "Palpitations",
+    "via": "dictionary",
+    "words": "irregular heartbeat",
+    "score": 1.0
+   },
+   {
     "symptom": "Dizziness",
     "via": "dictionary",
     "words": "dizziness",
@@ -875,28 +979,876 @@
    "PMC9382827"
   ],
   "graph": [
-   "PMC7554212",
-   "PMC11807323",
-   "PMC10607223",
    "PMC10558067",
-   "PMC5878201",
-   "PMC1939710",
    "PMC6343080",
    "PMC11681485",
-   "PMC6735271",
-   "PMC5836856"
+   "PMC1131894",
+   "PMC7500469",
+   "PMC8006717",
+   "PMC10744405",
+   "PMC11624552",
+   "PMC13348194",
+   "PMC4578053"
   ],
   "hybrid": [
    "PMC6735271",
    "PMC11646512",
-   "PMC7554212",
-   "PMC7955448",
-   "PMC11807323",
-   "PMC13711763",
-   "PMC10607223",
-   "PMC5469089",
    "PMC10558067",
+   "PMC7955448",
+   "PMC6343080",
+   "PMC13711763",
+   "PMC11681485",
+   "PMC5469089",
+   "PMC1131894",
    "PMC9595519"
+  ]
+ },
+ "Tight feeling in her chest climbing stairs, goes off when she stops": {
+  "set": "fresh",
+  "links": [],
+  "vector": [
+   "PMC12322127",
+   "PMC6843522",
+   "PMC8942223",
+   "PMC11282558",
+   "PMC6735271",
+   "PMC4864844",
+   "PMC6344204",
+   "PMC5317281",
+   "PMC10947396",
+   "PMC12401404"
+  ],
+  "graph": [],
+  "hybrid": [
+   "PMC12322127",
+   "PMC6843522",
+   "PMC8942223",
+   "PMC11282558",
+   "PMC6735271",
+   "PMC4864844",
+   "PMC6344204",
+   "PMC5317281",
+   "PMC10947396",
+   "PMC12401404"
+  ]
+ },
+ "Says her heart keeps racing and fluttering at night, no chest pain": {
+  "set": "fresh",
+  "links": [
+   {
+    "symptom": "Palpitations",
+    "via": "dictionary",
+    "words": "fluttering",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC13386483",
+   "PMC11624552",
+   "PMC8942223",
+   "PMC5586417",
+   "PMC12006251",
+   "PMC12823772",
+   "PMC11964040",
+   "PMC6735271",
+   "PMC6902560",
+   "PMC12838481"
+  ],
+  "graph": [
+   "PMC11624552",
+   "PMC13348194",
+   "PMC4578053",
+   "PMC10252198",
+   "PMC9238471",
+   "PMC10558067",
+   "PMC9327873",
+   "PMC6343080",
+   "PMC4752646",
+   "PMC11681485"
+  ],
+  "hybrid": [
+   "PMC11624552",
+   "PMC13386483",
+   "PMC9238471",
+   "PMC9327873",
+   "PMC6343080",
+   "PMC9505953",
+   "PMC5073470",
+   "PMC13348194",
+   "PMC8942223",
+   "PMC4578053"
+  ]
+ },
+ "Jaw ache and feeling sick while gardening, 58 yo woman": {
+  "set": "fresh",
+  "links": [
+   {
+    "symptom": "Jaw Pain",
+    "via": "embedding",
+    "words": "Jaw ache",
+    "score": 0.852
+   }
+  ],
+  "vector": [
+   "PMC4631358",
+   "PMC5723029",
+   "PMC10653337",
+   "PMC5380895",
+   "PMC7079482",
+   "PMC13678871",
+   "PMC5532989",
+   "PMC9234847",
+   "PMC10180572",
+   "PMC6313578"
+  ],
+  "graph": [
+   "PMC9327873",
+   "PMC10558067"
+  ],
+  "hybrid": [
+   "PMC4631358",
+   "PMC9327873",
+   "PMC5723029",
+   "PMC10558067",
+   "PMC10653337",
+   "PMC5380895",
+   "PMC7079482",
+   "PMC13678871",
+   "PMC5532989",
+   "PMC9234847"
+  ]
+ },
+ "Pain between shoulder blades, sweaty and clammy, came on at rest": {
+  "set": "fresh",
+  "links": [
+   {
+    "symptom": "Sweating",
+    "via": "dictionary",
+    "words": "clammy",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC13386483",
+   "PMC4631358",
+   "PMC12322127",
+   "PMC6344204",
+   "PMC3334640",
+   "PMC12714392",
+   "PMC5524089",
+   "PMC4889189",
+   "PMC11282558",
+   "PMC13017302"
+  ],
+  "graph": [
+   "PMC10558067",
+   "PMC9327873",
+   "PMC10309111",
+   "PMC10162354",
+   "PMC9505953",
+   "PMC5724104"
+  ],
+  "hybrid": [
+   "PMC13386483",
+   "PMC10558067",
+   "PMC4631358",
+   "PMC9327873",
+   "PMC12322127",
+   "PMC10309111",
+   "PMC6344204",
+   "PMC10162354",
+   "PMC3334640",
+   "PMC9505953"
+  ]
+ },
+ "Wiped out all the time, gets puffed walking to the shops": {
+  "set": "fresh",
+  "links": [],
+  "vector": [
+   "PMC7873009",
+   "PMC3059994",
+   "PMC7352151",
+   "PMC3585480",
+   "PMC10210573",
+   "PMC8769548",
+   "PMC6445463",
+   "PMC11607174",
+   "PMC8327770",
+   "PMC4685294"
+  ],
+  "graph": [],
+  "hybrid": [
+   "PMC7873009",
+   "PMC3059994",
+   "PMC7352151",
+   "PMC3585480",
+   "PMC10210573",
+   "PMC8769548",
+   "PMC6445463",
+   "PMC11607174",
+   "PMC8327770",
+   "PMC4685294"
+  ]
+ },
+ "Ankles really puffy by evening, shoes don't fit, 34 weeks pregnant": {
+  "set": "fresh",
+  "links": [
+   {
+    "symptom": "Edema",
+    "via": "dictionary",
+    "words": "puffy",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC9995268",
+   "PMC9675523",
+   "PMC11025160",
+   "PMC6042402",
+   "PMC6373241",
+   "PMC11910504",
+   "PMC5586280",
+   "PMC12123851",
+   "PMC6211673",
+   "PMC4575018"
+  ],
+  "graph": [
+   "PMC12951259",
+   "PMC9675523",
+   "PMC11622127",
+   "PMC8480018",
+   "PMC3285159",
+   "PMC4915865",
+   "PMC6582481",
+   "PMC8653539",
+   "PMC4115671",
+   "PMC11775729"
+  ],
+  "hybrid": [
+   "PMC9675523",
+   "PMC8653539",
+   "PMC9995268",
+   "PMC12951259",
+   "PMC11025160",
+   "PMC11622127",
+   "PMC6042402",
+   "PMC8480018",
+   "PMC6373241",
+   "PMC3285159"
+  ]
+ },
+ "Bad headache and seeing flashing lights, had baby 5 days ago": {
+  "set": "fresh",
+  "links": [
+   {
+    "symptom": "Headache",
+    "via": "dictionary",
+    "words": "headache",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC1939710",
+   "PMC4864393",
+   "PMC2927695",
+   "PMC10691126",
+   "PMC7079482",
+   "PMC13235039",
+   "PMC10512113",
+   "PMC12947441",
+   "PMC4477493",
+   "PMC3492915"
+  ],
+  "graph": [
+   "PMC7079482",
+   "PMC1939710",
+   "PMC9523171",
+   "PMC11622127",
+   "PMC7841506",
+   "PMC10691126",
+   "PMC4939694",
+   "PMC4592567",
+   "PMC4983019",
+   "PMC4631358"
+  ],
+  "hybrid": [
+   "PMC1939710",
+   "PMC7079482",
+   "PMC10691126",
+   "PMC4939694",
+   "PMC12947441",
+   "PMC11459936",
+   "PMC13303033",
+   "PMC13477402",
+   "PMC8638107",
+   "PMC9650891"
+  ]
+ },
+ "Calves cramp when walking, eases after a short rest, smoker": {
+  "set": "fresh",
+  "links": [
+   {
+    "symptom": "Muscle Cramp",
+    "via": "dictionary",
+    "words": "cramp",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC13386483",
+   "PMC9436130",
+   "PMC9180864",
+   "PMC3787588",
+   "PMC6902560",
+   "PMC3560833",
+   "PMC10656478",
+   "PMC12621438",
+   "PMC7400950",
+   "PMC11282558"
+  ],
+  "graph": [
+   "PMC10615485"
+  ],
+  "hybrid": [
+   "PMC13386483",
+   "PMC10615485",
+   "PMC9436130",
+   "PMC9180864",
+   "PMC3787588",
+   "PMC6902560",
+   "PMC3560833",
+   "PMC10656478",
+   "PMC12621438",
+   "PMC7400950"
+  ]
+ },
+ "Came over all faint in the shower, nearly passed out, menopausal": {
+  "set": "fresh",
+  "links": [
+   {
+    "symptom": "Syncope",
+    "via": "dictionary",
+    "words": "passed out",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC7955448",
+   "PMC6211673",
+   "PMC3896751",
+   "PMC12640110",
+   "PMC7236332",
+   "PMC6261602",
+   "PMC6085602",
+   "PMC4300408",
+   "PMC10770972",
+   "PMC4546135"
+  ],
+  "graph": [
+   "PMC6585338",
+   "PMC5878201",
+   "PMC1939710",
+   "PMC10039538",
+   "PMC9238471",
+   "PMC6343080",
+   "PMC13477290",
+   "PMC4616747",
+   "PMC3297030",
+   "PMC7250223"
+  ],
+  "hybrid": [
+   "PMC3297030",
+   "PMC7250223",
+   "PMC9566342",
+   "PMC7955448",
+   "PMC6585338",
+   "PMC6211673",
+   "PMC5878201",
+   "PMC3896751",
+   "PMC1939710",
+   "PMC12640110"
+  ]
+ },
+ "SOB lying flat, needs three pillows, 6 wks postnatal": {
+  "set": "fresh",
+  "links": [],
+  "vector": [
+   "PMC8985263",
+   "PMC13239756",
+   "PMC4640409",
+   "PMC10480095",
+   "PMC12625269",
+   "PMC4512956",
+   "PMC13518647",
+   "PMC6373241",
+   "PMC11919723",
+   "PMC5168516"
+  ],
+  "graph": [],
+  "hybrid": [
+   "PMC8985263",
+   "PMC13239756",
+   "PMC4640409",
+   "PMC10480095",
+   "PMC12625269",
+   "PMC4512956",
+   "PMC13518647",
+   "PMC6373241",
+   "PMC11919723",
+   "PMC5168516"
+  ]
+ },
+ "Burning upper tummy like indigestion on exertion, antacids not helping, 62F": {
+  "set": "fresh",
+  "links": [
+   {
+    "symptom": "Dyspepsia",
+    "via": "dictionary",
+    "words": "indigestion",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC4320572",
+   "PMC10180572",
+   "PMC8862775",
+   "PMC12879579",
+   "PMC4203993",
+   "PMC7034342",
+   "PMC6735271",
+   "PMC13173619",
+   "PMC2533348",
+   "PMC4483260"
+  ],
+  "graph": [
+   "PMC10558067",
+   "PMC12488768",
+   "PMC9916042"
+  ],
+  "hybrid": [
+   "PMC4320572",
+   "PMC10558067",
+   "PMC10180572",
+   "PMC12488768",
+   "PMC8862775",
+   "PMC9916042",
+   "PMC12879579",
+   "PMC4203993",
+   "PMC7034342",
+   "PMC6735271"
+  ]
+ },
+ "Hot flushes and pounding heartbeat, no dizziness or blackouts": {
+  "set": "fresh",
+  "links": [],
+  "vector": [
+   "PMC6735271",
+   "PMC13386483",
+   "PMC5469089",
+   "PMC7644075",
+   "PMC4583376",
+   "PMC11681466",
+   "PMC11964040",
+   "PMC12986047",
+   "PMC11935621",
+   "PMC5721777"
+  ],
+  "graph": [],
+  "hybrid": [
+   "PMC6735271",
+   "PMC13386483",
+   "PMC5469089",
+   "PMC7644075",
+   "PMC4583376",
+   "PMC11681466",
+   "PMC11964040",
+   "PMC12986047",
+   "PMC11935621",
+   "PMC5721777"
+  ]
+ },
+ "Exertional dyspnoea and reduced exercise tolerance in a 45-year-old perimenopausal woman": {
+  "set": "fresh",
+  "links": [
+   {
+    "symptom": "Dyspnea",
+    "via": "dictionary",
+    "words": "dyspnoea",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC6735271",
+   "PMC12055567",
+   "PMC11629989",
+   "PMC12813386",
+   "PMC12640110",
+   "PMC5469089",
+   "PMC12322127",
+   "PMC5894933",
+   "PMC3334640",
+   "PMC8910620"
+  ],
+  "graph": [
+   "PMC4826418",
+   "PMC6373241",
+   "PMC3219735",
+   "PMC8569957",
+   "PMC4578053",
+   "PMC3411505",
+   "PMC6090783",
+   "PMC5073470",
+   "PMC12055567",
+   "PMC5146820"
+  ],
+  "hybrid": [
+   "PMC12055567",
+   "PMC6735271",
+   "PMC3219735",
+   "PMC1079947",
+   "PMC4826418",
+   "PMC6373241",
+   "PMC11629989",
+   "PMC12813386",
+   "PMC8569957",
+   "PMC12640110"
+  ]
+ },
+ "Intermittent left arm heaviness and diaphoresis in a postmenopausal woman with diabetes": {
+  "set": "fresh",
+  "links": [
+   {
+    "symptom": "Sweating",
+    "via": "dictionary",
+    "words": "diaphoresis",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC10283215",
+   "PMC8880941",
+   "PMC9207340",
+   "PMC11646512",
+   "PMC5091468",
+   "PMC13628890",
+   "PMC11442489",
+   "PMC3988895",
+   "PMC10957602",
+   "PMC3792550"
+  ],
+  "graph": [
+   "PMC10558067",
+   "PMC10309111",
+   "PMC9505953",
+   "PMC9327873",
+   "PMC10162354",
+   "PMC5724104"
+  ],
+  "hybrid": [
+   "PMC10283215",
+   "PMC10558067",
+   "PMC8880941",
+   "PMC10309111",
+   "PMC9207340",
+   "PMC9505953",
+   "PMC11646512",
+   "PMC9327873",
+   "PMC5091468",
+   "PMC10162354"
+  ]
+ },
+ "Recurrent presyncope on standing in a young woman with resting tachycardia": {
+  "set": "fresh",
+  "links": [
+   {
+    "symptom": "Syncope",
+    "via": "dictionary",
+    "words": "presyncope",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC9528621",
+   "PMC11129793",
+   "PMC8942223",
+   "PMC12823772",
+   "PMC13386483",
+   "PMC9566342",
+   "PMC4583376",
+   "PMC6343080",
+   "PMC12006251",
+   "PMC9327873"
+  ],
+  "graph": [
+   "PMC6585338",
+   "PMC5878201",
+   "PMC1939710",
+   "PMC6343080",
+   "PMC9238471",
+   "PMC10039538",
+   "PMC13477290",
+   "PMC4616747",
+   "PMC12986047",
+   "PMC7250223"
+  ],
+  "hybrid": [
+   "PMC6343080",
+   "PMC9238471",
+   "PMC9566342",
+   "PMC12986047",
+   "PMC6585338",
+   "PMC13477290",
+   "PMC9528621",
+   "PMC11129793",
+   "PMC5878201",
+   "PMC8942223"
+  ]
+ },
+ "Raised blood pressure readings at 28 weeks gestation without proteinuria or headache": {
+  "set": "fresh",
+  "links": [],
+  "vector": [
+   "PMC6061134",
+   "PMC5745883",
+   "PMC11485200",
+   "PMC8494670",
+   "PMC11508545",
+   "PMC5506245",
+   "PMC7279325",
+   "PMC13437243",
+   "PMC9675523",
+   "PMC11103149"
+  ],
+  "graph": [],
+  "hybrid": [
+   "PMC6061134",
+   "PMC5745883",
+   "PMC11485200",
+   "PMC8494670",
+   "PMC11508545",
+   "PMC5506245",
+   "PMC7279325",
+   "PMC13437243",
+   "PMC9675523",
+   "PMC11103149"
+  ]
+ },
+ "Paroxysmal nocturnal dyspnoea and bilateral peripheral oedema in the third trimester": {
+  "set": "fresh",
+  "links": [
+   {
+    "symptom": "Dyspnea",
+    "via": "dictionary",
+    "words": "dyspnoea",
+    "score": 1.0
+   },
+   {
+    "symptom": "Edema",
+    "via": "dictionary",
+    "words": "oedema",
+    "score": 1.0
+   },
+   {
+    "symptom": "Dyspnea, Paroxysmal",
+    "via": "embedding",
+    "words": "Paroxysmal nocturnal dyspnoea",
+    "score": 0.814
+   }
+  ],
+  "vector": [
+   "PMC13143545",
+   "PMC11935579",
+   "PMC8845369",
+   "PMC6211673",
+   "PMC7185691",
+   "PMC13032356",
+   "PMC10523772",
+   "PMC6064839",
+   "PMC4826418",
+   "PMC8678671"
+  ],
+  "graph": [
+   "PMC10162354",
+   "PMC4826418",
+   "PMC5146820",
+   "PMC11542243",
+   "PMC9970247",
+   "PMC6090783",
+   "PMC8653539",
+   "PMC4752646",
+   "PMC4592567",
+   "PMC10092409"
+  ],
+  "hybrid": [
+   "PMC4826418",
+   "PMC6373241",
+   "PMC9675523",
+   "PMC8653539",
+   "PMC4578053",
+   "PMC4752646",
+   "PMC4115671",
+   "PMC10830052",
+   "PMC11581633",
+   "PMC1079947"
+  ]
+ },
+ "Atypical chest discomfort with nausea and fatigue in a 70-year-old woman": {
+  "set": "fresh",
+  "links": [
+   {
+    "symptom": "Chest Pain",
+    "via": "dictionary",
+    "words": "chest discomfort",
+    "score": 1.0
+   },
+   {
+    "symptom": "Nausea",
+    "via": "dictionary",
+    "words": "nausea",
+    "score": 1.0
+   },
+   {
+    "symptom": "Fatigue",
+    "via": "dictionary",
+    "words": "fatigue",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC6735271",
+   "PMC13386483",
+   "PMC13017302",
+   "PMC12714392",
+   "PMC12986047",
+   "PMC9720769",
+   "PMC7660840",
+   "PMC8942223",
+   "PMC3219735",
+   "PMC6902560"
+  ],
+  "graph": [
+   "PMC10647937",
+   "PMC10558067",
+   "PMC13394706",
+   "PMC3411505",
+   "PMC7427666",
+   "PMC12488768",
+   "PMC12952176",
+   "PMC11681485",
+   "PMC9505953",
+   "PMC8517804"
+  ],
+  "hybrid": [
+   "PMC6735271",
+   "PMC13017302",
+   "PMC12714392",
+   "PMC9720769",
+   "PMC13386483",
+   "PMC2174935",
+   "PMC11964040",
+   "PMC9327873",
+   "PMC11624552",
+   "PMC7816930"
+  ]
+ },
+ "Right upper quadrant pain and visual disturbance at 36 weeks gestation": {
+  "set": "fresh",
+  "links": [
+   {
+    "symptom": "Visual Disturbances",
+    "via": "dictionary",
+    "words": "visual disturbance",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC5554975",
+   "PMC10425443",
+   "PMC11827859",
+   "PMC12176964",
+   "PMC10512113",
+   "PMC3574024",
+   "PMC10194886",
+   "PMC2810571",
+   "PMC4402566",
+   "PMC11459936"
+  ],
+  "graph": [
+   "PMC10425443",
+   "PMC11622127",
+   "PMC4983019",
+   "PMC11459936",
+   "PMC13303033",
+   "PMC13129962",
+   "PMC7595287",
+   "PMC11140884",
+   "PMC9352094",
+   "PMC4592567"
+  ],
+  "hybrid": [
+   "PMC10425443",
+   "PMC11459936",
+   "PMC13303033",
+   "PMC13129962",
+   "PMC5554975",
+   "PMC11622127",
+   "PMC11827859",
+   "PMC4983019",
+   "PMC12176964",
+   "PMC10512113"
+  ]
+ },
+ "Persistent fatigue, palpitations and orthopnoea at four months postpartum": {
+  "set": "fresh",
+  "links": [
+   {
+    "symptom": "Fatigue",
+    "via": "dictionary",
+    "words": "fatigue",
+    "score": 1.0
+   },
+   {
+    "symptom": "Palpitations",
+    "via": "dictionary",
+    "words": "palpitations",
+    "score": 1.0
+   }
+  ],
+  "vector": [
+   "PMC8985263",
+   "PMC10694896",
+   "PMC4864393",
+   "PMC13211945",
+   "PMC4583376",
+   "PMC12840593",
+   "PMC13235039",
+   "PMC4747599",
+   "PMC9238464",
+   "PMC7660757"
+  ],
+  "graph": [
+   "PMC10558067",
+   "PMC13394706",
+   "PMC4752646",
+   "PMC1131894",
+   "PMC11080156",
+   "PMC8673455",
+   "PMC9505953",
+   "PMC11624552",
+   "PMC9720769",
+   "PMC13348194"
+  ],
+  "hybrid": [
+   "PMC4864393",
+   "PMC12840593",
+   "PMC4578053",
+   "PMC9327873",
+   "PMC11624552",
+   "PMC4752646",
+   "PMC13050647",
+   "PMC13625504",
+   "PMC5146820",
+   "PMC6343080"
   ]
  }
 }

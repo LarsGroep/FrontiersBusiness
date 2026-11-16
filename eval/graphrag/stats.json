@@ -1,14 +1,7 @@
 {
- "papers": 3972,
- "export": {
-  "symptoms": 55,
-  "conditions": 40,
-  "edges": 211,
-  "paper_symptom_links": 1018,
-  "papers_linked": 590,
-  "bytes": 380649
- },
- "to_judge": 239,
+ "papers": 4049,
+ "export": null,
+ "to_judge": 397,
  "links": {
   "chest pain": [
    {
@@ -114,8 +107,28 @@
     "score": 1.0
    }
   ],
-  "52-year-old woman with pressure on her chest when climbing stairs": [],
-  "she gets out of breath easily and feels exhausted all the time": [],
+  "52-year-old woman with pressure on her chest when climbing stairs": [
+   {
+    "symptom": "Chest Pain",
+    "via": "dictionary",
+    "words": "pressure on her chest",
+    "score": 1.0
+   }
+  ],
+  "she gets out of breath easily and feels exhausted all the time": [
+   {
+    "symptom": "Dyspnea",
+    "via": "dictionary",
+    "words": "out of breath",
+    "score": 1.0
+   },
+   {
+    "symptom": "Fatigue",
+    "via": "dictionary",
+    "words": "exhausted",
+    "score": 1.0
+   }
+  ],
   "episodes of her heart racing at night": [
    {
     "symptom": "Palpitations",
@@ -124,9 +137,35 @@
     "score": 1.0
    }
   ],
-  "swollen ankles in late pregnancy": [],
-  "fainted twice this month, feels lightheaded when standing up": [],
+  "swollen ankles in late pregnancy": [
+   {
+    "symptom": "Edema",
+    "via": "dictionary",
+    "words": "swollen ankles",
+    "score": 1.0
+   }
+  ],
+  "fainted twice this month, feels lightheaded when standing up": [
+   {
+    "symptom": "Syncope",
+    "via": "dictionary",
+    "words": "fainted",
+    "score": 1.0
+   },
+   {
+    "symptom": "Dizziness",
+    "via": "dictionary",
+    "words": "lightheaded",
+    "score": 1.0
+   }
+  ],
   "pain in the jaw and upper back during exertion": [
+   {
+    "symptom": "Back Pain",
+    "via": "dictionary",
+    "words": "upper back",
+    "score": 1.0
+   },
    {
     "symptom": "Jaw Pain",
     "via": "embedding",
@@ -164,23 +203,184 @@
   ],
   "cold sweats and indigestion-like discomfort": [
    {
+    "symptom": "Sweating",
+    "via": "dictionary",
+    "words": "cold sweats",
+    "score": 1.0
+   },
+   {
     "symptom": "Dyspepsia",
     "via": "dictionary",
     "words": "indigestion",
     "score": 1.0
-   },
-   {
-    "symptom": "Sweating",
-    "via": "embedding",
-    "words": "cold sweats",
-    "score": 0.863
    }
   ],
   "irregular heartbeat and dizziness during menopause": [
    {
+    "symptom": "Palpitations",
+    "via": "dictionary",
+    "words": "irregular heartbeat",
+    "score": 1.0
+   },
+   {
     "symptom": "Dizziness",
     "via": "dictionary",
     "words": "dizziness",
+    "score": 1.0
+   }
+  ],
+  "Tight feeling in her chest climbing stairs, goes off when she stops": [],
+  "Says her heart keeps racing and fluttering at night, no chest pain": [
+   {
+    "symptom": "Palpitations",
+    "via": "dictionary",
+    "words": "fluttering",
+    "score": 1.0
+   }
+  ],
+  "Jaw ache and feeling sick while gardening, 58 yo woman": [
+   {
+    "symptom": "Jaw Pain",
+    "via": "embedding",
+    "words": "Jaw ache",
+    "score": 0.852
+   }
+  ],
+  "Pain between shoulder blades, sweaty and clammy, came on at rest": [
+   {
+    "symptom": "Sweating",
+    "via": "dictionary",
+    "words": "clammy",
+    "score": 1.0
+   }
+  ],
+  "Wiped out all the time, gets puffed walking to the shops": [],
+  "Ankles really puffy by evening, shoes don't fit, 34 weeks pregnant": [
+   {
+    "symptom": "Edema",
+    "via": "dictionary",
+    "words": "puffy",
+    "score": 1.0
+   }
+  ],
+  "Bad headache and seeing flashing lights, had baby 5 days ago": [
+   {
+    "symptom": "Headache",
+    "via": "dictionary",
+    "words": "headache",
+    "score": 1.0
+   }
+  ],
+  "Calves cramp when walking, eases after a short rest, smoker": [
+   {
+    "symptom": "Muscle Cramp",
+    "via": "dictionary",
+    "words": "cramp",
+    "score": 1.0
+   }
+  ],
+  "Came over all faint in the shower, nearly passed out, menopausal": [
+   {
+    "symptom": "Syncope",
+    "via": "dictionary",
+    "words": "passed out",
+    "score": 1.0
+   }
+  ],
+  "SOB lying flat, needs three pillows, 6 wks postnatal": [],
+  "Burning upper tummy like indigestion on exertion, antacids not helping, 62F": [
+   {
+    "symptom": "Dyspepsia",
+    "via": "dictionary",
+    "words": "indigestion",
+    "score": 1.0
+   }
+  ],
+  "Hot flushes and pounding heartbeat, no dizziness or blackouts": [],
+  "Exertional dyspnoea and reduced exercise tolerance in a 45-year-old perimenopausal woman": [
+   {
+    "symptom": "Dyspnea",
+    "via": "dictionary",
+    "words": "dyspnoea",
+    "score": 1.0
+   }
+  ],
+  "Intermittent left arm heaviness and diaphoresis in a postmenopausal woman with diabetes": [
+   {
+    "symptom": "Sweating",
+    "via": "dictionary",
+    "words": "diaphoresis",
+    "score": 1.0
+   }
+  ],
+  "Recurrent presyncope on standing in a young woman with resting tachycardia": [
+   {
+    "symptom": "Syncope",
+    "via": "dictionary",
+    "words": "presyncope",
+    "score": 1.0
+   }
+  ],
+  "Raised blood pressure readings at 28 weeks gestation without proteinuria or headache": [],
+  "Paroxysmal nocturnal dyspnoea and bilateral peripheral oedema in the third trimester": [
+   {
+    "symptom": "Dyspnea",
+    "via": "dictionary",
+    "words": "dyspnoea",
+    "score": 1.0
+   },
+   {
+    "symptom": "Edema",
+    "via": "dictionary",
+    "words": "oedema",
+    "score": 1.0
+   },
+   {
+    "symptom": "Dyspnea, Paroxysmal",
+    "via": "embedding",
+    "words": "Paroxysmal nocturnal dyspnoea",
+    "score": 0.814
+   }
+  ],
+  "Atypical chest discomfort with nausea and fatigue in a 70-year-old woman": [
+   {
+    "symptom": "Chest Pain",
+    "via": "dictionary",
+    "words": "chest discomfort",
+    "score": 1.0
+   },
+   {
+    "symptom": "Nausea",
+    "via": "dictionary",
+    "words": "nausea",
+    "score": 1.0
+   },
+   {
+    "symptom": "Fatigue",
+    "via": "dictionary",
+    "words": "fatigue",
+    "score": 1.0
+   }
+  ],
+  "Right upper quadrant pain and visual disturbance at 36 weeks gestation": [
+   {
+    "symptom": "Visual Disturbances",
+    "via": "dictionary",
+    "words": "visual disturbance",
+    "score": 1.0
+   }
+  ],
+  "Persistent fatigue, palpitations and orthopnoea at four months postpartum": [
+   {
+    "symptom": "Fatigue",
+    "via": "dictionary",
+    "words": "fatigue",
+    "score": 1.0
+   },
+   {
+    "symptom": "Palpitations",
+    "via": "dictionary",
+    "words": "palpitations",
     "score": 1.0
    }
   ]
