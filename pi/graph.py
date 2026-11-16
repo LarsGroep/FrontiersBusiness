@@ -65,6 +65,12 @@ class EvidenceGraph:
         self.index = {p: i for i, p in enumerate(self.ids)}
         self.terms = symptoms.lexicon()
         self.matcher = symptoms.compile_matcher(self.terms)
+        # questions also understand everyday words (symptoms.QUERY_TERMS); paper text uses the clinical dictionary only
+        self.qterms = dict(self.terms)
+        for name, words in symptoms.QUERY_TERMS.items():
+            for w in words:
+                self.qterms.setdefault(w.lower(), name)
+        self.qmatcher = symptoms.compile_matcher(self.qterms)
         secs: dict[str, list] = {}
         if with_sections:
             # results/conclusion text is cached next to the models (kept by the CI cache), so reruns only fetch new papers
@@ -124,8 +130,8 @@ class EvidenceGraph:
 
     def link(self, question: str) -> list[dict]:
         found, negated = {}, set()
-        for m in self.matcher.finditer(question):
-            name = self.terms[m.group(1).lower()]
+        for m in self.qmatcher.finditer(question):
+            name = self.qterms[m.group(1).lower()]
             before = question[max(0, m.start() - 40):m.start()]
             if symptoms.NEGATION.search(" ".join(before.split()[-4:])):
                 negated.add(name)
@@ -206,7 +212,7 @@ class EvidenceGraph:
             if n["kind"] == "symptom":
                 for pid in n["evidence"]:
                     papers.setdefault(pid, {"title": self.papers[pid]["title"], "year": self.papers[pid]["year"]})
-        lex = {t: n for t, n in self.terms.items() if n in self.sym}
+        lex = {t: n for t, n in self.qterms.items() if n in self.sym}
         out = {"area": self.area, "built": time.strftime("%Y-%m-%d"), "papers_in_area": len(self.ids),
                "nodes": nodes, "edges": edges, "papers": papers, "lexicon": lex}
         os.makedirs(os.path.dirname(path) or ".", exist_ok=True)

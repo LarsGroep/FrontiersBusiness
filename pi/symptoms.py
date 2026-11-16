@@ -51,6 +51,27 @@ CARDIO_TERMS = {
     "Visual Disturbances": ["visual disturbances", "blurred vision", "visual disturbance"],
     "Anxiety": ["anxiety", "feeling of doom", "sense of impending doom"],
 }
+# Everyday words GPs and patients use, for linking a QUESTION to symptom nodes only (pi/graph.py). They are not used
+# on paper text, where words like "tired" or "faint" would add noise. Drafted 16 Nov 2026 before the locked fresh
+# question set (eval/graphrag/questions_v3_fresh.json) was seen, so that test stays fair.
+QUERY_TERMS = {
+    "Chest Pain": ["pressure on her chest", "pressure on the chest", "pressure in the chest", "tight chest",
+                   "chest heaviness", "chest ache"],
+    "Dyspnea": ["out of breath", "breathless", "winded", "can't catch her breath", "cannot catch her breath",
+                "struggling to breathe"],
+    "Fatigue": ["exhausted", "tired", "worn out", "no energy", "drained"],
+    "Edema": ["swollen ankles", "swollen legs", "swollen feet", "puffy", "fluid retention"],
+    "Syncope": ["fainted", "passed out", "blacked out", "blackout", "blackouts", "collapsed"],
+    "Dizziness": ["lightheaded", "light-headed", "light headed", "woozy", "giddy"],
+    "Palpitations": ["irregular heartbeat", "irregular heart beat", "pounding heart", "heart pounding",
+                     "skipped beats", "skipping beats", "heart flutters"],
+    "Sweating": ["cold sweats", "clammy", "sweats"],
+    "Nausea": ["throwing up", "sick to her stomach"],
+    "Back Pain": ["upper back"],
+    "Visual Disturbances": ["blurry vision", "seeing spots", "vision problems"],
+    "Headache": ["head pain"],
+}
+
 # Patient-recognisable symptoms only. MeSH "Signs and Symptoms" also holds body-weight measures, fetal/neonatal
 # signs and lab findings (birth weight, fetal distress, proteinuria), which are not things a woman notices.
 PATIENT_SYMPTOMS = set(CARDIO_TERMS) | {
