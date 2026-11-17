@@ -47,7 +47,7 @@ jobs:
           path: /home/runner/.cache/herevidence-models/sections_cache.json.gz
           key: herevidence-sections-${{ github.run_id }}
           restore-keys: herevidence-sections-
-      - run: pip install -r requirements.txt -r pi/requirements.txt -r pi/requirements-analysis.txt xgboost scikit-learn
+      - run: pip install -r requirements.txt -r pi/requirements.txt -r pi/requirements-analysis.txt xgboost scikit-learn openTSNE
       - name: Catalogue from the Pi
         env:
           PI_CATALOGUE_URL: ${{ format('{0}/catalogue', secrets.PI_API_URL) }}

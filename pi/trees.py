@@ -175,3 +175,33 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+
+def export_map(g, out: str, seed: int = 42) -> dict:
+    """Paper map for the "Ask the evidence" page: every paper in the area with its t-SNE position (from the stored
+    embeddings), condition group, year, title and women-specific context, so the page works without the Pi."""
+    from openTSNE import TSNE
+    conn = store.connect()
+    trees = {n: t for n, t in conn.execute("select name, trees from mesh").fetchall()}
+    meta = {r[0]: (set(r[1] or []) | set(r[2] or [])) for r in
+            conn.execute("select id, mesh_terms, pub_types from papers where id = any(%s)", (g.ids,)).fetchall()}
+    conn.close()
+    has_vec = np.linalg.norm(g.mat, axis=1) > 0.5
+    idx = [i for i in range(len(g.ids)) if has_vec[i]]
+    xy = np.asarray(TSNE(perplexity=30, metric="cosine", n_jobs=4, random_state=seed).fit(g.mat[idx]))
+    groups = [label for label, _ in GROUPS] + [OTHER]
+    ctx = list(CONTEXT)
+    rows = []
+    for k, i in enumerate(idx):
+        pid = g.ids[i]
+        terms = meta.get(pid, set())
+        bits = sum(1 << j for j, v in enumerate(CONTEXT.values()) if terms & set(v))
+        p = g.papers[pid]
+        rows.append([pid, round(float(xy[k, 0]), 2), round(float(xy[k, 1]), 2),
+                     groups.index(group_of(p["conditions"], trees)), p["year"], (p["title"] or "")[:160], bits])
+    res = {"built": time.strftime("%Y-%m-%d"), "area": g.area, "groups": groups, "context": ctx,
+           "columns": ["id", "x", "y", "group", "year", "title", "context_bits"], "papers": rows}
+    os.makedirs(os.path.dirname(out) or ".", exist_ok=True)
+    with open(out, "w") as fh:
+        json.dump(res, fh, separators=(",", ":"), ensure_ascii=False)
+    return {"papers": len(rows), "bytes": os.path.getsize(out)}
