@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How it works · Anarcha AI</title>
+<link rel="icon" href="data:,">
+<style>
+:root{
+  --paper:#FCF4F3; --surface:#FFFFFF; --tint:#F7E8E7;
+  --ink:#2B1A1E; --ink-2:#523A40; --muted:#765C62; --rule:#EFD9D8; --rule-strong:#D5ABAE;
+  --accent:#B03A56; --accent-strong:#8F2A44; --accent-soft:#F9E1E4; --on-accent:#FFFFFF;
+  --teal:#2A6F73; --teal-soft:#DFEEED; --marker:#FFE08A; --dot:#D9CBCB; --focus:#1F5FD1;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#1C1215; --surface:#261A1E; --tint:#2E1F24; --ink:#F5E9EA; --ink-2:#DCC8CB; --muted:#B39CA1;
+    --rule:#3D2A30; --rule-strong:#5A4047; --accent:#F08FA6; --accent-strong:#F7AEBF; --accent-soft:#45222D; --on-accent:#2B1015;
+    --teal:#6FC4BE; --teal-soft:#1C3836; --marker:#C9A93A; --dot:#4A3740; --focus:#8AB4FF; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+    --paper:#1C1215; --surface:#261A1E; --tint:#2E1F24; --ink:#F5E9EA; --ink-2:#DCC8CB; --muted:#B39CA1;
+    --rule:#3D2A30; --rule-strong:#5A4047; --accent:#F08FA6; --accent-strong:#F7AEBF; --accent-soft:#45222D; --on-accent:#2B1015;
+    --teal:#6FC4BE; --teal-soft:#1C3836; --marker:#C9A93A; --dot:#4A3740; --focus:#8AB4FF; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 var(--sans);display:grid;grid-template-rows:auto 1fr auto;overflow:hidden}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.sitenav{background:var(--surface);border-bottom:1px solid var(--rule)}
+.sitenav > div{max-width:1180px;margin:0 auto;padding:8px 4px;display:flex;flex-wrap:wrap;gap:4px}
+.sitenav a{padding:7px 12px;border-radius:999px;font-size:15px;font-weight:600;color:var(--ink-2);text-decoration:none}
+.sitenav a:hover{background:var(--tint);color:var(--ink)}
+.sitenav a[aria-current]{background:var(--accent-soft);color:var(--accent-strong)}
+.stage{position:relative;min-height:0}
+canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.caption{position:absolute;left:0;right:0;top:18px;text-align:center;pointer-events:none;padding:0 16px}
+.caption h1{margin:0;font:600 clamp(24px,3.6vw,44px)/1.15 var(--serif);transition:opacity .4s}
+.caption p{margin:6px 0 0;color:var(--muted);font-size:clamp(14px,1.6vw,18px);transition:opacity .4s}
+.bar{display:flex;align-items:center;gap:10px;justify-content:center;padding:10px 16px 14px;flex-wrap:wrap}
+.bar button{border:1px solid var(--rule-strong);background:var(--surface);color:var(--ink-2);border-radius:999px;min-height:40px;padding:0 16px;font:600 14px var(--sans);cursor:pointer}
+.bar button:hover{border-color:var(--accent);color:var(--accent-strong)}
+.bar button.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.dots{display:flex;gap:6px}
+.dots button{width:30px;min-height:30px;padding:0;font-size:12px}
+.dots button[aria-current]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-strong)}
+.safety{font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<nav class="sitenav" aria-label="Site"><div><a href="/">Search</a><a href="/themes.html">Themes</a><a href="/ask">Ask the evidence</a><a href="/methods" aria-current="page">How it works</a><a href="/chat">Ask the research</a></div></nav>
+<div class="stage" id="stage">
+  <canvas id="cv" role="img" aria-label="Animation: studies on women form groups, a question is typed, the decision tree finds a path and the matching studies light up"></canvas>
+  <div class="caption" aria-live="polite"><h1 id="cap">Loading</h1><p id="sub"></p></div>
+</div>
+<div class="bar">
+  <button type="button" class="primary" id="play">Pause</button>
+  <div class="dots" id="dots" aria-label="Scenes"></div>
+  <button type="button" id="restart">Restart</button>
+  <span class="safety">Information, not a diagnosis.</span>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const QUESTION = "62-year-old, chest pressure, short of breath, tiredness";
+const GROUPP = {"Hypertensive disorders of pregnancy":"High blood pressure in pregnancy","Hypertension":"High blood pressure",
+  "Coronary / ischaemic heart disease":"Coronary heart disease","Thrombosis / embolism":"Blood clots","Stroke / cerebrovascular":"Stroke",
+  "Arrhythmia":"Heart rhythm problems","Cardiomyopathy":"Heart muscle disease","Heart valve disease":"Heart valve disease",
+  "Heart failure":"Heart failure","Other vascular":"Other blood vessel conditions","Other heart":"Other heart conditions",
+  "Other cardiovascular":"Other heart and vessel conditions"};
+const PLAIN = {"Dyspnea":"Short of breath","Edema":"Swelling","Fatigue":"Tiredness","Chest Pain":"Chest pain","Syncope":"Fainting",
+  "Nausea":"Feeling sick","Palpitations":"Racing heart","Dizziness":"Dizziness","Headache":"Headache","Anxiety":"Anxiety",
+  "Pelvic Pain":"Pelvic pain","Pregnancy":"Pregnant","Postpartum":"After birth","Menopause":"Menopause","Age: 65 or older":"65 or older",
+  "Age: middle-aged":"Aged 45–64","Age: adolescent or young adult":"Under 25","Design: randomised trial":"Trial study",
+  "Design: cohort or observational":"Follow-up study","Design: cross-sectional":"Survey study"};
+const plain = s => PLAIN[s] || s;
+const ease = x => x < 0 ? 0 : x > 1 ? 1 : x * x * (3 - 2 * x);
+const prog = (t, a, b) => ease((t - a) / (b - a));
+
+// scenes: [start, end, title, subtitle]
+const SCENES = [
+  [0, 6, "", "Each dot is a heart study in women. Part of 47,299 women-only studies."],
+  [6, 14, "Similar studies group together", "The computer sorts them by topic"],
+  [14, 20, "A GP describes her symptoms", "In everyday words"],
+  [20, 29, "The decision tree asks yes or no", "Learned from 790 studies that describe symptoms"],
+  [29, 38, "The evidence lights up", "Each answer points to the study and sentence"],
+];
+const TOTAL = SCENES[SCENES.length - 1][1];
+
+let G, T, M, P = [], clusters = [], lex, match = null, t = 0, playing = true, last = 0;
+
+Promise.all(["/graph/cv.json", "/graph/tree-cv.json", "/graph/papers-cv.json"].map(u => fetch(u).then(r => r.json())))
+  .then(([g, tr, m]) => { G = g; T = tr; M = m; prepare(); requestAnimationFrame(loop); })
+  .catch(() => { $("cap").textContent = "The data could not be loaded."; });
+
+function prepare() {
+  const xs = M.papers.map(p => p[1]), ys = M.papers.map(p => p[2]);
+  const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  P = M.papers.map(p => ({ id: p[0], x: (p[1] - x0) / (x1 - x0), y: (p[2] - y0) / (y1 - y0), g: M.groups[p[3]],
+    sx: rnd(), sy: rnd(), d: rnd() }));
+  // spatial clusters on the map (k-means, k=7), each named after its most common condition group
+  const K = 7; let C = Array.from({ length: K }, (_, k) => ({ x: P[Math.floor(k * P.length / K)].x, y: P[Math.floor(k * P.length / K)].y }));
+  for (let it = 0; it < 25; it++) {
+    const acc = C.map(() => ({ x: 0, y: 0, n: 0 }));
+    P.forEach(p => { let b = 0, bd = 9; C.forEach((c, k) => { const d = (p.x - c.x) ** 2 + (p.y - c.y) ** 2; if (d < bd) { bd = d; b = k; } }); p.c = b; acc[b].x += p.x; acc[b].y += p.y; acc[b].n++; });
+    C = acc.map((a, k) => a.n ? { x: a.x / a.n, y: a.y / a.n } : C[k]);
+  }
+  const used = new Set();
+  clusters = C.map((c, k) => {
+    const mem = P.filter(p => p.c === k), cnt = {};
+    mem.forEach(p => { if (!p.g.startsWith("Other")) cnt[p.g] = (cnt[p.g] || 0) + 1; });
+    return { ...c, k, n: mem.length, cnt: Object.entries(cnt).sort((a, b) => b[1] - a[1]) };
+  }).sort((a, b) => b.n - a.n);
+  // a cluster is named after its most common condition; a name already used by a bigger cluster is not repeated
+  clusters.forEach(C => { const top = C.cnt[0]; C.label = top && !used.has(top[0]) ? GROUPP[top[0]] : ""; if (top) used.add(top[0]); });
+  // the question: symptoms, context, tree path, matching studies
+  const terms = Object.keys(G.lexicon).sort((a, b) => b.length - a.length).map(s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  lex = new RegExp("\\b(" + terms.join("|") + ")\\b", "gi");
+  const syms = new Map(); const spans = [];
+  for (const m of QUESTION.matchAll(lex)) { const name = G.lexicon[m[1].toLowerCase()]; if (G.nodes.some(n => n.id === "s:" + name)) { syms.set(name, m[1]); spans.push([m.index, m.index + m[1].length, name]); } }
+  const age = +QUESTION.match(/\d+/)[0];
+  const feats = new Set([...syms.keys(), age >= 65 ? "Age: 65 or older" : age >= 45 ? "Age: middle-aged" : "Age: adult"]);
+  Object.entries(T.merge || {}).forEach(([name, mem]) => { if (mem.some(x => feats.has(x))) feats.add(name); });
+  let n = T.tree; const path = [n];
+  while (!n.leaf) { n = feats.has(n.feature) ? n.yes : n.no; path.push(n); }
+  const byId = Object.fromEntries(G.nodes.map(x => [x.id, x]));
+  const score = {};
+  syms.forEach((w, s) => Object.entries(byId["s:" + s].evidence).forEach(([pid, ev]) => {
+    const r = score[pid] || (score[pid] = { n: 0, w: 0, ev: null }); r.n++; r.w += ev.weight; if (!r.ev && ev.sentence) r.ev = ev; }));
+  const leafFit = Object.fromEntries(n.groups.map(([g, c]) => [g, c / n.papers]));
+  const idx = Object.fromEntries(P.map((p, i) => [p.id, i]));
+  const ids = Object.keys(score).filter(pid => idx[pid] !== undefined)
+    .sort((a, b) => (score[b].n - score[a].n) || ((leafFit[P[idx[b]].g] || 0) - (leafFit[P[idx[a]].g] || 0)) || (score[b].w - score[a].w));
+  const quoteId = ids.find(pid => score[pid].ev);
+  match = { syms, spans, path, leaf: n, ids: new Set(ids), top: ids.slice(0, 3).map(pid => P[idx[pid]]), quote: quoteId && score[quoteId].ev,
+            quoteTitle: quoteId && (G.papers[quoteId] || {}).title, words: [...syms.values()] };
+  SCENES[0][2] = `${P.length.toLocaleString()} heart studies, only women`;
+  SCENES.forEach((s, i) => { const b = document.createElement("button"); b.type = "button"; b.textContent = i + 1; b.setAttribute("aria-label", s[2]);
+    b.onclick = () => { t = s[0] + .01; }; $("dots").appendChild(b); });
+  SCENES[0][2] = `${P.length.toLocaleString()} heart studies, only women`;
+}
+
+function loop(now) {
+  const dt = last ? Math.min(.1, (now - last) / 1000) : 0; last = now;
+  if (playing) { t += dt; if (t > TOTAL + 4) t = 0; }
+  draw(); requestAnimationFrame(loop);
+}
+$("play").onclick = () => { playing = !playing; $("play").textContent = playing ? "Pause" : "Play"; };
+$("restart").onclick = () => { t = 0; playing = true; $("play").textContent = "Pause"; };
+document.addEventListener("keydown", e => {
+  if (e.key === " " && e.target === document.body) { e.preventDefault(); $("play").click(); }
+  if (e.key === "ArrowRight") { const s = SCENES.find(s => s[0] > t + .1); t = s ? s[0] + .01 : t; }
+  if (e.key === "ArrowLeft") { const i = SCENES.findIndex(s => t < s[1]); t = SCENES[Math.max(0, i - 1)][0] + .01; }
+});
+if (matchMedia("(prefers-reduced-motion: reduce)").matches) { t = 33; playing = false; $("play").textContent = "Play"; }
+
+let CL = [], clusterRank = {};
+function hex(c) { c = c.replace("#", ""); return [0, 2, 4].map(i => parseInt(c.slice(i, i + 2), 16)); }
+function mix(a, b, k) { const A = hex(a), B = hex(b); return `rgb(${A.map((v, i) => Math.round(v + (B[i] - v) * k)).join(",")})`; }
+function rrect(c, x, y, w, h, r) { c.beginPath(); c.roundRect(x, y, w, h, r); }
+function wrapText(c, text, x, y, maxW, lh, maxLines) {
+  const words = text.split(" "); let line = "", n = 0;
+  for (const w of words) { const test = line ? line + " " + w : w;
+    if (c.measureText(test).width > maxW && line) { c.fillText(line, x, y + n * lh); line = w; if (++n >= maxLines - 1) { line = (line + " " + words.slice(words.indexOf(w) + 1).join(" ")); break; } } else line = test; }
+  let out = line; while (c.measureText(out + "…").width > maxW && out.length > 3) out = out.slice(0, -1);
+  c.fillText(out === line ? out : out + "…", x, y + n * lh); return n + 1;
+}
+
+function draw() {
+  const cv = $("cv"), st = $("stage"), dpr = window.devicePixelRatio || 1;
+  const W = st.clientWidth, H = st.clientHeight;
+  if (cv.width !== W * dpr || cv.height !== H * dpr) { cv.width = W * dpr; cv.height = H * dpr; }
+  const c = cv.getContext("2d"); c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, W, H);
+  if (!match) return;
+  const si = Math.max(0, SCENES.findIndex(s => t < s[1])), scene = SCENES[si < 0 ? SCENES.length - 1 : si];
+  $("cap").textContent = scene[2] || `${P.length.toLocaleString()} heart studies, only women`; $("sub").textContent = scene[3];
+  [...$("dots").children].forEach((b, i) => i === si ? b.setAttribute("aria-current", "step") : b.removeAttribute("aria-current"));
+  const ink = css("--ink"), muted = css("--muted"), acc = css("--accent"), accS = css("--accent-strong"), soft = css("--accent-soft"),
+        teal = css("--teal"), dot = css("--dot"), surf = css("--surface"), rule = css("--rule-strong"), mark = css("--marker"), serif = css("--serif"), sans = css("--sans");
+  const wide = W > 820, top = 110;
+  // panels: map left (or top), tree/question right (or bottom)
+  const split = prog(t, 14, 15.5);
+  const mapW = wide ? (W - 48) * (1 - .45 * split) : W - 32, mapH = wide ? H - top - 16 : (H - top) * (1 - .5 * split) - 8;
+  const side = Math.min(mapW, mapH), mx = wide ? 24 + (mapW - side) / 2 : (W - side) / 2, my = top + (mapH - side) / 2;
+  const px = p => mx + 10 + p * (side - 20), py = p => my + 10 + p * (side - 20);
+  if (!CL.length) { CL = ["--accent", "--teal", "--accent-strong", "--rule-strong", "--muted", "--accent", "--teal"].map(css); clusterRank = {}; clusters.forEach((C, r) => clusterRank[C.k] = r); }
+  const gather = prog(t, 6, 10), light = t >= 29 ? prog(t, 29, 31) : 0;
+  // dots
+  P.forEach(p => {
+    const appear = prog(t, p.d * 3, p.d * 3 + .6);
+    if (appear <= 0) return;
+    const x = px(p.sx + (p.x - p.sx) * gather), y = py(p.sy + (p.y - p.sy) * gather);
+    const hit = match.ids.has(p.id);
+    c.globalAlpha = appear * (light && !hit ? 1 - .45 * light : 1);
+    const ck = clusterRank[p.c], lit = prog(t, 10 + ck * .5, 10.35 + ck * .5) * (1 - prog(t, 14, 15));
+    c.fillStyle = hit && light ? acc : lit > 0 ? mix(dot, CL[ck % CL.length], lit) : dot;
+    c.beginPath(); c.arc(x, y, hit && light ? 1.6 + 1.6 * light : 1.6 + .6 * lit, 0, 7); c.fill();
+  });
+  c.globalAlpha = 1;
+  // cluster labels (their dots are coloured in the dot loop above)
+  for (let k = 0; k < clusters.length; k++) {
+    const a0 = 10 + k * .5, a = prog(t, a0, a0 + .35) * (1 - prog(t, 14, 15));
+    if (a <= 0) continue;
+    const C = clusters[k], y = py(C.y); let x = px(C.x);
+    if (!C.label) continue;
+    c.globalAlpha = a; c.font = `600 ${wide ? 14 : 12}px ${sans}`; c.textAlign = "center"; c.textBaseline = "middle";
+    const lab = C.label, tw = c.measureText(lab).width + 18;
+    x = Math.max(tw / 2 + 4, Math.min(W - tw / 2 - 4, x));
+    c.fillStyle = surf; rrect(c, x - tw / 2, y - 12, tw, 24, 12); c.fill(); c.strokeStyle = acc; c.lineWidth = 1.5; c.stroke();
+    c.fillStyle = accS; c.fillText(lab, x, y + .5);
+  }
+  c.globalAlpha = 1;
+  // top 3 studies numbered on the map
+  if (light) match.top.forEach((p, k) => {
+    const a = prog(t, 30 + k * .4, 30.6 + k * .4); if (a <= 0) return;
+    const x = px(p.x), y = py(p.y);
+    c.globalAlpha = a; c.fillStyle = teal; c.beginPath(); c.arc(x, y, 11, 0, 7); c.fill(); c.strokeStyle = surf; c.lineWidth = 2.5; c.stroke();
+    c.fillStyle = "#fff"; c.font = `700 12px ${sans}`; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText(k + 1, x, y + .5);
+  });
+  c.globalAlpha = 1;
+  if (split <= 0) return;
+  // right panel
+  const rx = wide ? 24 + mapW + 16 : 16, ry = wide ? top : top + mapH + 8, rw = wide ? W - rx - 24 : W - 32, rh = wide ? H - top - 16 : H - ry - 12;
+  c.globalAlpha = split;
+  // the question being typed
+  const typed = Math.floor(QUESTION.length * prog(t, 15, 18.5)), qh = 54;
+  c.fillStyle = surf; rrect(c, rx, ry, rw, qh, 27); c.fill(); c.strokeStyle = acc; c.lineWidth = 1.5; c.stroke();
+  c.font = `${rw > 520 ? 17 : rw > 400 ? 14 : 12}px ${sans}`; c.textAlign = "left"; c.textBaseline = "middle";
+  let x = rx + 20; const yq = ry + qh / 2, hl = prog(t, 18.6, 19.4);
+  const shown = QUESTION.slice(0, typed);
+  let i = 0;
+  const pieces = [];
+  match.spans.forEach(([a, b]) => { if (a > i) pieces.push([QUESTION.slice(i, a), false]); pieces.push([QUESTION.slice(a, b), true]); i = b; });
+  pieces.push([QUESTION.slice(i), false]);
+  let pos = 0;
+  for (const [txt, isSym] of pieces) {
+    const vis = shown.slice(pos, pos + txt.length); pos += txt.length; if (!vis) break;
+    const w = c.measureText(vis).width;
+    if (isSym && hl > 0) { c.globalAlpha = split * hl; c.fillStyle = mark; c.fillRect(x - 1, yq - 11, w + 2, 22); c.globalAlpha = split; }
+    c.fillStyle = ink; c.fillText(vis, x, yq); x += w;
+    if (x > rx + rw - 20) break;
+  }
+  if (typed < QUESTION.length && Math.floor(t * 2) % 2) { c.fillStyle = acc; c.fillRect(x + 2, yq - 10, 2, 20); }
+  // symptom pills
+  const py0 = ry + qh + 14; let pxx = rx;
+  [...match.syms.keys()].forEach((s, k) => {
+    const a = prog(t, 19 + k * .25, 19.4 + k * .25); if (a <= 0) return;
+    c.globalAlpha = split * a; c.font = `600 ${wide ? 15 : 13}px ${sans}`;
+    const lab = plain(s), w = c.measureText(lab).width + 22;
+    c.fillStyle = soft; rrect(c, pxx, py0 + (1 - a) * 8, w, 30, 15); c.fill(); c.fillStyle = accS; c.fillText(lab, pxx + 11, py0 + 15 + (1 - a) * 8); pxx += w + 8;
+  });
+  // the decision tree path
+  const treeTop = py0 + 52, steps = match.path.length - 1;
+  const rowH = Math.min(58, (rh - (treeTop - ry) - 150) / Math.max(1, steps));
+  match.path.slice(0, -1).forEach((node, k) => {
+    const a0 = 20.5 + k * 1.6, a = prog(t, a0, a0 + .5); if (a <= 0) return;
+    const yes = match.path[k + 1] === node.yes, y = treeTop + k * rowH, ans = prog(t, a0 + .7, a0 + 1.1);
+    c.globalAlpha = split * a;
+    if (k > 0) { c.strokeStyle = rule; c.lineWidth = 2; c.beginPath(); c.moveTo(rx + 22, y - rowH + 40); c.lineTo(rx + 22, y); c.stroke(); }
+    c.fillStyle = surf; rrect(c, rx, y, rw, 40, 12); c.fill(); c.strokeStyle = rule; c.lineWidth = 1; c.stroke();
+    c.fillStyle = ink; c.font = `600 ${wide ? 16 : 14}px ${sans}`; c.textAlign = "left"; c.fillText(plain(node.feature) + "?", rx + 16, y + 20);
+    if (ans > 0) { c.globalAlpha = split * ans; const lab = yes ? "YES" : "NO";
+      c.fillStyle = yes ? acc : css("--tint"); rrect(c, rx + rw - 64, y + 9, 50, 22, 11); c.fill();
+      c.fillStyle = yes ? "#fff" : muted; c.font = `800 12px ${sans}`; c.textAlign = "center"; c.fillText(lab, rx + rw - 39, y + 20); c.textAlign = "left"; }
+  });
+  // destination and the quote
+  const dy = treeTop + steps * rowH + 6, da = prog(t, 20.5 + steps * 1.6, 21 + steps * 1.6);
+  if (da > 0) {
+    const leaf = match.leaf, total = leaf.groups.reduce((s, [, n]) => s + n, 0);
+    c.globalAlpha = split * da; c.fillStyle = soft; rrect(c, rx, dy, rw, 70, 14); c.fill();
+    c.fillStyle = accS; c.font = `600 ${wide ? 22 : 18}px ${serif}`; c.textAlign = "left"; c.fillText(GROUPP[leaf.groups[0][0]] || leaf.groups[0][0], rx + 16, dy + 26);
+    c.fillStyle = css("--ink-2"); c.font = `14px ${sans}`;
+    c.fillText(`${Math.round(100 * leaf.groups[0][1] / total)}% of ${leaf.papers} similar studies`, rx + 16, dy + 52);
+  }
+  const qa = prog(t, 31.5, 32.5);
+  if (qa > 0 && match.quote) {
+    const qy = dy + 84, qhh = Math.max(90, Math.min(150, ry + rh - qy));
+    c.globalAlpha = split * qa; c.fillStyle = surf; rrect(c, rx, qy, rw, qhh, 14); c.fill(); c.strokeStyle = rule; c.lineWidth = 1; c.stroke();
+    c.fillStyle = teal; c.beginPath(); c.arc(rx + 24, qy + 24, 11, 0, 7); c.fill(); c.fillStyle = "#fff"; c.font = `700 12px ${sans}`; c.textAlign = "center"; c.fillText("1", rx + 24, qy + 24.5);
+    c.fillStyle = acc; c.fillRect(rx + 16, qy + 44, 3, qhh - 58);
+    c.fillStyle = css("--ink-2"); c.font = `italic ${wide ? 15 : 13}px ${serif}`; c.textAlign = "left";
+    const chars = Math.floor(match.quote.sentence.length * prog(t, 32, 35.5));
+    wrapText(c, "“" + match.quote.sentence.slice(0, chars) + (chars >= match.quote.sentence.length ? "”" : ""), rx + 28, qy + 54, rw - 44, 20, Math.floor((qhh - 50) / 20));
+    c.fillStyle = muted; c.font = `600 13px ${sans}`; wrapText(c, match.quoteTitle || "", rx + 44, qy + 24, rw - 60, 16, 1);
+  }
+  c.globalAlpha = 1;
+}
+window.addEventListener("resize", draw);
+</script>
+</body>
+</html>
