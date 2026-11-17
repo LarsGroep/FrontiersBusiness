@@ -208,7 +208,10 @@ def extract(text: str, section: str, matcher: re.Pattern, terms: dict[str, str])
         for m in matcher.finditer(sent):
             before = sent[max(0, m.start() - 60):m.start()]
             neg = bool(NEGATION.search(" ".join(before.split()[-6:])))
-            yield terms[m.group(1).lower()], m.group(1), section, neg, sent.strip()[:400], is_finding(sent, section)
+            # re.I also matches look-alike letters (Turkish dotless i), so look the word up loosely and skip a miss
+            name = terms.get(m.group(1).lower()) or terms.get(m.group(1).lower().replace("ı", "i").replace("i̇", "i"))
+            if name:
+                yield name, m.group(1), section, neg, sent.strip()[:400], is_finding(sent, section)
 
 
 def run(area: str) -> dict:

@@ -143,7 +143,9 @@ class EvidenceGraph:
     def link(self, question: str) -> list[dict]:
         found, negated = {}, set()
         for m in self.qmatcher.finditer(question):
-            name = self.qterms[m.group(1).lower()]
+            name = self.qterms.get(m.group(1).lower()) or self.qterms.get(m.group(1).lower().replace("ı", "i"))
+            if not name:
+                continue
             before = question[max(0, m.start() - 40):m.start()]
             if symptoms.NEGATION.search(" ".join(before.split()[-4:])):
                 negated.add(name)
