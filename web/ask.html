@@ -63,107 +63,125 @@ h1,h2{font-family:var(--serif);font-weight:600;letter-spacing:-.005em}
 .sitenav a:hover{background:var(--tint);color:var(--ink)}
 .sitenav a[aria-current]{background:var(--accent-soft);color:var(--accent-strong)}
 
-.wrap{max-width:1180px;margin:0 auto;padding:20px max(16px,env(safe-area-inset-right,0px)) 48px max(16px,env(safe-area-inset-left,0px));display:grid;gap:16px}
-.top{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline;justify-content:space-between}
-.top h1{margin:0;font-size:30px}
-.lead{margin:0;color:var(--ink-2);max-width:70ch}
-.status{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;padding:5px 12px;border-radius:999px;border:1px solid var(--rule-strong);background:var(--surface);color:var(--ink-2);font-variant-numeric:tabular-nums}
-.status i{width:9px;height:9px;border-radius:50%;background:var(--muted)}
-.status.live i{background:var(--teal)}
+.wrap{max-width:1120px;margin:0 auto;padding:28px max(16px,env(safe-area-inset-right,0px)) 56px max(16px,env(safe-area-inset-left,0px));display:grid;gap:22px}
+.hero{display:grid;gap:14px;text-align:center;justify-items:center}
+.hero h1{margin:0;font-size:clamp(28px,5vw,42px);line-height:1.1}
+.hero p{margin:0;color:var(--ink-2);font-size:18px}
+.status{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;padding:4px 11px;border-radius:999px;border:1px solid var(--rule-strong);background:var(--surface);color:var(--muted)}
+.status i{width:8px;height:8px;border-radius:50%;background:var(--muted)}
 .status.live{color:var(--teal);border-color:var(--teal)}
-form.ask{display:flex;gap:8px;flex-wrap:wrap}
-form.ask input{flex:1 1 360px;min-width:0;padding:12px 14px;border:1px solid var(--field);border-radius:var(--radius-m);background:var(--surface);font-size:17px}
-form.ask input:hover{border-color:var(--accent)}
-.examples{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px;color:var(--muted)}
-.chip{font-size:13px;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent-strong);border:0}
-button.chip{cursor:pointer}
-button.chip:hover{background:var(--accent);color:var(--on-accent)}
-.chip.ctx{background:var(--teal-soft);color:var(--teal)}
-.chip.neg{background:var(--rule);color:var(--muted);text-decoration:line-through}
-.understood{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:14px;color:var(--ink-2)}
-.grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:16px;align-items:start}
-.col{display:grid;gap:16px;min-width:0}
-.card{background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius-m);box-shadow:var(--shadow);padding:16px 18px;min-width:0}
-.card h2{font-size:19px;margin:0 0 10px}
-.headline{font-size:20px;line-height:1.35;margin:0 0 12px}
-.headline b{font-family:var(--serif);font-size:30px;color:var(--accent-strong);font-variant-numeric:tabular-nums}
-.bars{display:grid;gap:6px;margin:0;padding:0;list-style:none}
-.bars li{display:grid;grid-template-columns:minmax(120px,210px) minmax(0,1fr) 44px;gap:10px;align-items:center;font-size:14px}
-.bars .track{height:10px;background:var(--tint);border-radius:5px;overflow:hidden}
-.bars .fill{height:100%;background:var(--accent);border-radius:5px}
-.bars .n{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-2)}
-.notes{margin:12px 0 0;padding:0;list-style:none;display:grid;gap:6px;font-size:14px}
-.notes li{padding:6px 10px;border-radius:var(--radius-s);background:var(--tint);color:var(--ink-2)}
-.notes li.gap{background:var(--warn-soft);color:var(--warn);border-left:3px solid var(--warn-line)}
-ol.studies{margin:0;padding-left:22px;display:grid;gap:14px}
-ol.studies li{min-width:0;overflow-wrap:anywhere}
-.ptitle{font-weight:600;line-height:1.35}
+.status.live i{background:var(--teal);box-shadow:0 0 0 3px var(--teal-soft)}
+form.ask{display:flex;gap:8px;width:100%;max-width:760px}
+form.ask input{flex:1;min-width:0;padding:14px 18px;border:1.5px solid var(--field);border-radius:999px;background:var(--surface);font-size:18px}
+form.ask input:hover,form.ask input:focus{border-color:var(--accent)}
+.btn{border:0;border-radius:999px;padding:0 24px;min-height:52px;font-weight:700;font-size:17px;background:var(--accent);color:var(--on-accent);cursor:pointer}
+.btn:hover{background:var(--accent-strong)}
+.people{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;width:100%;max-width:900px}
+.person{display:grid;justify-items:center;gap:4px;padding:14px 10px 12px;border:1px solid var(--rule);border-radius:14px;background:var(--surface);cursor:pointer;box-shadow:var(--shadow);transition:transform .15s,border-color .15s}
+.person:hover{transform:translateY(-2px);border-color:var(--accent)}
+.person svg{width:38px;height:38px;color:var(--accent)}
+.person .age{font-size:12px;font-weight:700;color:var(--accent-strong);background:var(--accent-soft);padding:1px 9px;border-radius:999px}
+.person .who{font-size:13.5px;color:var(--ink-2);line-height:1.3;text-align:center}
+
+/* the three-step story */
+.story{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:start}
+.said{margin:0;font-family:var(--serif);font-size:17px;line-height:1.5;color:var(--ink-2)}
+.down{color:var(--rule-strong);font-size:18px;line-height:1;margin:6px 0}
+.step{background:var(--surface);border:1px solid var(--rule);border-radius:16px;box-shadow:var(--shadow);padding:18px;display:grid;gap:12px;align-content:start;min-width:0;opacity:0;transform:translateY(8px);transition:opacity .35s,transform .35s}
+.step.on{opacity:1;transform:none}
+.step:nth-child(2){transition-delay:.25s}.step:nth-child(3){transition-delay:.5s}
+.step h2{margin:0;display:flex;align-items:center;gap:10px;font-size:19px}
+.step h2 .n{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--on-accent);font:700 14px var(--sans)}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:15px;font-weight:600;padding:6px 12px;border-radius:999px;background:var(--accent-soft);color:var(--accent-strong)}
+.pill.ctx{background:var(--teal-soft);color:var(--teal)}
+.pill.neg{background:var(--tint);color:var(--muted);text-decoration:line-through}
+.empty{color:var(--muted)}
+.path{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.path li{display:flex;align-items:center;gap:8px;font-size:15px}
+.path .q{flex:1}
+.yn{font-size:12px;font-weight:800;letter-spacing:.03em;padding:2px 9px;border-radius:999px;background:var(--accent);color:var(--on-accent)}
+.yn.no{background:var(--tint);color:var(--muted)}
+.arrow{color:var(--rule-strong);text-align:center;font-size:18px;line-height:1;margin:-2px 0}
+.dest{border-radius:12px;background:var(--accent-soft);padding:12px 14px;display:grid;gap:8px}
+.dest b{font-family:var(--serif);font-size:21px;color:var(--accent-strong);line-height:1.2}
+.split{display:flex;height:12px;border-radius:6px;overflow:hidden;gap:2px}
+.split span{display:block;height:100%}
+.splitkey{display:grid;gap:3px;font-size:13px;color:var(--ink-2)}
+.splitkey span{display:flex;align-items:center;gap:6px}
+.splitkey i{width:10px;height:10px;border-radius:3px;flex:none}
+.big{font-family:var(--serif);font-size:46px;line-height:1;color:var(--accent-strong);font-variant-numeric:tabular-nums}
+.big small{display:block;font:600 14px var(--sans);color:var(--muted);margin-top:4px}
+canvas{width:100%;aspect-ratio:1/1;display:block;border-radius:12px;background:var(--paper)}
+.key{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--muted)}
+.key i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.gap{font-size:14px;padding:8px 12px;border-radius:10px;background:var(--warn-soft);color:var(--warn);border-left:3px solid var(--warn-line)}
+
+/* the studies */
+.studies h2{margin:0 0 4px;font-size:22px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0;padding:0;list-style:none}
+.cards li{background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:14px 16px;display:grid;gap:8px;align-content:start;min-width:0;overflow-wrap:anywhere}
+.cards .top{display:flex;gap:10px;align-items:flex-start}
+.rank{flex:none;display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--teal);color:#fff;font:700 13px var(--sans)}
+.ptitle{font-weight:600;line-height:1.35;font-size:15px}
 .ptitle a{color:var(--ink);text-decoration:none}
 .ptitle a:hover{text-decoration:underline}
-.pmeta{font-size:12.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;margin-top:2px;font-variant-numeric:tabular-nums}
-.tag{font-size:11.5px;font-weight:600;padding:1px 7px;border-radius:999px;background:var(--tint);color:var(--ink-2)}
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--tint);color:var(--ink-2)}
 .tag.live{background:var(--teal-soft);color:var(--teal)}
-.sent{font-size:14px;color:var(--ink-2);border-left:3px solid var(--rule-strong);padding:2px 0 2px 10px;margin-top:6px}
+.quote{font-family:var(--serif);font-size:15px;line-height:1.45;color:var(--ink-2);margin:0;padding-left:12px;border-left:3px solid var(--accent)}
 mark{background:var(--marker);color:var(--marker-ink);border-radius:2px;padding:0 2px}
-.similar{margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2)}
-.path{margin:0;padding:0;list-style:none;display:grid;gap:4px;font-size:14px}
-.path li{display:flex;gap:8px;align-items:baseline}
-.path .q{font-weight:600}
-.path .a{font-size:12px;font-weight:700;padding:0 7px;border-radius:999px;background:var(--accent-soft);color:var(--accent-strong)}
-.path .a.no{background:var(--tint);color:var(--muted)}
-.mapwrap{position:relative}
-canvas{width:100%;aspect-ratio:1/1;display:block;border-radius:var(--radius-s);background:var(--paper)}
-.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--muted);margin-top:8px}
-.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
-.note{font-size:13px;color:var(--muted);margin:0}
-.safety{font-size:13.5px;color:var(--ink-2);border-top:1px solid var(--rule);padding-top:12px}
-.empty{color:var(--muted)}
-.spin{font-size:12.5px;color:var(--muted)}
-@media (max-width:900px){.grid{grid-template-columns:1fr}.bars li{grid-template-columns:minmax(0,1fr) 90px 40px}}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.more{justify-self:start;font-size:13px;font-weight:600;border:1px solid var(--rule-strong);background:var(--surface);color:var(--accent-strong);border-radius:999px;padding:4px 12px;cursor:pointer}
+.more:hover{background:var(--accent-soft)}
+.similar{margin:0;padding-left:18px;font-size:13px;color:var(--ink-2);display:grid;gap:4px}
+.foot{text-align:center;font-size:14px;color:var(--muted);border-top:1px solid var(--rule);padding-top:14px}
+.foot b{color:var(--ink-2)}
+@media (max-width:860px){.story{grid-template-columns:1fr}.cards{grid-template-columns:1fr}.people{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){form.ask{flex-direction:column}.btn{min-height:48px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}.step{opacity:1;transform:none}}
 </style>
 </head>
 <body>
 <nav class="sitenav" aria-label="Site"><div><a href="/">Search</a><a href="/themes.html">Themes</a><a href="/ask" aria-current="page">Ask the evidence</a><a href="/chat">Ask the research</a></div></nav>
-<div class="wrap">
-  <div class="top">
-    <h1>Ask the evidence</h1>
-    <span class="status" id="status"><i></i><span id="statustext">Loading the evidence…</span></span>
-  </div>
-  <p class="lead">Women-only cardiovascular studies. Information, not a diagnosis.</p>
-  <form class="ask" id="ask">
-    <input id="q" type="search" autocomplete="off" placeholder="Symptoms, e.g. 58-year-old woman, jaw ache, feeling sick" aria-label="Symptoms">
-    <button class="btn" type="submit">Search</button>
-  </form>
-  <div class="examples" id="examples">Try:</div>
+<main class="wrap">
+  <section class="hero">
+    <span class="status" id="status"><i></i><span id="statustext">Loading</span></span>
+    <h1>What does research on women say?</h1>
+    <p>Describe her symptoms in everyday words.</p>
+    <form class="ask" id="ask" role="search">
+      <input id="q" type="search" autocomplete="off" placeholder="e.g. 58, jaw ache, feeling sick" aria-label="Her symptoms">
+      <button class="btn" type="submit">Ask</button>
+    </form>
+    <div class="people" id="examples" aria-label="Examples"></div>
+  </section>
 
   <div id="out" hidden>
-    <div class="understood" id="understood"></div>
-    <div class="grid" style="margin-top:14px">
-      <div class="col">
-        <section class="card" aria-labelledby="h-sum"><h2 id="h-sum">Evidence</h2><div id="summary"></div></section>
-        <section class="card" aria-labelledby="h-stu"><h2 id="h-stu">Studies <span class="spin" id="livestate"></span></h2><ol class="studies" id="studies"></ol></section>
-      </div>
-      <div class="col">
-        <section class="card" aria-labelledby="h-tree"><h2 id="h-tree">Decision tree</h2><div id="tree"></div></section>
-        <section class="card" aria-labelledby="h-map"><h2 id="h-map">Map</h2>
-          <div class="mapwrap"><canvas id="map" width="600" height="600" aria-label="Map of the cardiovascular women-only papers with the matching studies highlighted"></canvas></div>
-          <div class="legend"><span><i style="background:var(--dot)"></i>all papers</span><span><i style="background:var(--accent)"></i>match</span><span><i style="background:var(--teal)"></i>top 10</span></div>
-          <p class="note" id="mapnote"></p>
-        </section>
-      </div>
+    <div class="story">
+      <section class="step" aria-labelledby="h1s"><h2 id="h1s"><span class="n">1</span>We heard</h2><div id="heard"></div></section>
+      <section class="step" aria-labelledby="h2s"><h2 id="h2s"><span class="n">2</span>Where it points</h2><div id="tree"></div></section>
+      <section class="step" aria-labelledby="h3s"><h2 id="h3s"><span class="n">3</span>Studies in women</h2><div id="summary"></div>
+        <canvas id="map" width="600" height="600" aria-label="Every dot is a heart study in women; highlighted dots match her symptoms"></canvas>
+        <div class="key"><span><i style="background:var(--dot)"></i>every study</span><span><i style="background:var(--accent)"></i>matches</span><span><i style="background:var(--teal)"></i>best 10</span></div>
+      </section>
     </div>
+    <section class="studies" style="margin-top:22px" aria-labelledby="h-stu">
+      <h2 id="h-stu">What the studies say <span class="tag" id="livestate" hidden></span></h2>
+      <ol class="cards" id="studies"></ol>
+    </section>
   </div>
-  <p class="safety">Not medical advice. Emergency: call 112.</p>
-</div>
+  <p class="foot"><b>Information, not a diagnosis.</b> Emergency: call 112.</p>
+</main>
 
 <script>
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const NEG = /\b(no|not|without|absence of|denies|denied|free of|negative for)\b/i;
-const EXAMPLES = ["58-year-old woman, jaw ache and feeling sick while gardening", "34 weeks pregnant, swollen ankles and headache",
-                  "palpitations and dizziness during menopause", "out of breath and exhausted, 3 months after giving birth"];
+const EXAMPLES = [
+  ["58", "Jaw ache, feeling sick", "58-year-old woman, jaw ache and feeling sick while gardening"],
+  ["34 wk", "Pregnant, swollen ankles, headache", "34 weeks pregnant, swollen ankles and headache"],
+  ["51", "Racing heart, dizzy, menopause", "51-year-old, palpitations and dizziness during menopause"],
+  ["3 mo", "Out of breath, exhausted after birth", "out of breath and exhausted, 3 months after giving birth"]];
 const CTX_RULES = [
   ["Pregnancy", /pregnan|gestation|trimester|\b\d{1,2}\s?(wk|wks|weeks)\b(?![^,.]*(postnatal|postpartum|after))/i],
   ["Postpartum", /postpartum|postnatal|post-natal|after (giving )?birth|had (a |her )?baby|after delivery|puerper|months? after/i],
@@ -181,15 +199,16 @@ Promise.all(["/graph/cv.json", "/graph/tree-cv.json", "/graph/papers-cv.json"].m
     const terms = Object.keys(G.lexicon).sort((a, b) => b.length - a.length).map(t => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
     lexRx = new RegExp("\\b(" + terms.join("|") + ")\\b", "gi");
     setStatus();
-    EXAMPLES.forEach(e => { const b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.textContent = e;
-      b.onclick = () => { $("q").value = e; run(e); }; $("examples").appendChild(b); });
+    EXAMPLES.forEach(([badge, label, q]) => { const b = document.createElement("button"); b.type = "button"; b.className = "person";
+      b.innerHTML = `${PERSON_SVG}<span class="age">${esc(badge)}</span><span class="who">${esc(label)}</span>`;
+      b.onclick = () => { $("q").value = q; run(q); }; $("examples").appendChild(b); });
     checkPi();
   });
 
 function setStatus() {
-  const n = (M ? M.papers.length : G.papers_in_area).toLocaleString();
-  if (live) { $("status").classList.add("live"); $("statustext").textContent = `Pi online · ${liveCount.toLocaleString()} papers`; }
-  else { $("status").classList.remove("live"); $("statustext").textContent = `Offline · ${n} papers`; }
+  $("status").classList.toggle("live", live);
+  $("statustext").textContent = live ? "Live" : "Offline";
+  $("status").title = live ? `Connected to our server: ${liveCount.toLocaleString()} studies, full text` : "Works without our server, from a saved copy";
 }
 function timeout(ms) { const c = new AbortController(); setTimeout(() => c.abort(), ms); return c.signal; }
 async function checkPi() {
@@ -255,26 +274,55 @@ function highlight(text, words) {
 }
 function safeSnippet(s) { return esc(s).replace(/&lt;mark&gt;/g, "<mark>").replace(/&lt;\/mark&gt;/g, "</mark>"); }
 
+const PERSON_SVG = '<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="14" r="7" fill="currentColor" opacity=".9"/><path d="M6 36c1.5-8 7-12 14-12s12.5 4 14 12" fill="currentColor" opacity=".55"/></svg>';
+const PLAIN = {"Dyspnea":"Short of breath","Dyspnea, Paroxysmal":"Breathless at night","Edema":"Swelling","Fatigue":"Tiredness",
+  "Chest Pain":"Chest pain","Syncope":"Fainting","Nausea":"Feeling sick","Vomiting":"Vomiting","Palpitations":"Racing heart",
+  "Dizziness":"Dizziness","Headache":"Headache","Anxiety":"Anxiety","Pelvic Pain":"Pelvic pain","Abdominal Pain":"Tummy pain",
+  "Visual Disturbances":"Blurred vision","Hot Flashes":"Hot flushes","Sleep Wake Disorders":"Poor sleep","Sweating":"Sweating",
+  "Angina Pectoris":"Chest tightness","Angina, Stable":"Chest tightness","Angina, Unstable":"Chest tightness","Jaw Pain":"Jaw ache",
+  "Arm Pain":"Arm pain","Neck Pain":"Neck pain","Back Pain":"Back pain","Low Back Pain":"Lower back pain","Dyspepsia":"Indigestion",
+  "Myalgia":"Aching muscles","Muscle Weakness":"Weak muscles","Muscle Cramp":"Cramps","Chronic Pain":"Long-lasting pain",
+  "Musculoskeletal Pain":"Muscle or joint pain","Arthralgia":"Joint pain","Snoring":"Snoring","Cough":"Cough","Fever":"Fever",
+  "Confusion":"Confusion","Cyanosis":"Bluish skin","Hearing Loss":"Hearing loss","Constipation":"Constipation","Diarrhea":"Diarrhoea",
+  "Epistaxis":"Nosebleeds","Hemoptysis":"Coughing blood","Urinary Incontinence":"Leaking urine","Urinary Incontinence, Urge":"Urge to pee",
+  "Nocturia":"Peeing at night","Paresthesia":"Pins and needles","Pruritus":"Itching","Tinnitus":"Ringing ears","Dysmenorrhea":"Painful periods",
+  "Anorexia":"No appetite","Flatulence":"Wind","Mastodynia":"Breast pain","Intermittent Claudication":"Leg pain when walking",
+  "Memory Disorders":"Memory problems","Hirsutism":"Extra hair growth"};
+const CTXP = {"Pregnancy":"Pregnant","Postpartum":"After birth","Menopause":"Menopause","Age: 65 or older":"65+","Age: middle-aged":"45–64",
+  "Age: adult":"25–44","Age: adolescent or young adult":"Under 25"};
+const QP = {"Pregnancy":"Pregnant","Postpartum":"After birth","Menopause":"Menopause","Age: 65 or older":"65 or older","Age: middle-aged":"Aged 45–64",
+  "Age: adolescent or young adult":"Under 25","Design: randomised trial":"Trial study","Design: cohort or observational":"Follow-up study",
+  "Design: cross-sectional":"Survey study"};
+const GROUPP = {"Hypertensive disorders of pregnancy":"High blood pressure in pregnancy","Hypertension":"High blood pressure",
+  "Coronary / ischaemic heart disease":"Coronary heart disease","Thrombosis / embolism":"Blood clots","Stroke / cerebrovascular":"Stroke",
+  "Arrhythmia":"Heart rhythm problems","Cardiomyopathy":"Heart muscle disease","Heart valve disease":"Heart valve disease",
+  "Heart failure":"Heart failure","Other vascular":"Other blood vessel conditions","Other heart":"Other heart conditions",
+  "Other cardiovascular":"Other heart and vessel conditions"};
+const plain = s => PLAIN[s] || QP[s] || s;
+const gplain = g => GROUPP[g] || g;
+const SPLIT = ["--accent", "--teal", "--rule-strong"];
+
 // ---------- one question
 async function run(q) {
   q = (q || "").trim(); if (!q || !G) return;
   const runId = ++lastRun;
   const u = understand(q);
   $("out").hidden = false;
-  $("understood").innerHTML = ([...u.syms.keys()].map(s => `<span class="chip">${esc(s)}</span>`).join(" ") || '<span class="empty">No symptom recognised</span>')
-    + [...u.ctx].map(c => ` <span class="chip ctx">${esc(c)}</span>`).join("") + [...u.neg].map(n => ` <span class="chip neg">${esc(n)}</span>`).join("");
+  document.querySelectorAll(".step").forEach(s => s.classList.remove("on"));
+  requestAnimationFrame(() => requestAnimationFrame(() => document.querySelectorAll(".step").forEach(s => s.classList.add("on"))));
+  renderHeard(u);
   const tl = treeLeaf(u);
   const { ids, score } = graphRank(u.syms, u.ctx, tl && tl.leaf);
-  renderSummary(u, ids, score);
-  renderTree(tl);
-  const words = [...u.syms.values()];
-  const symNames = [...u.syms.keys()];
+  renderTree(tl, u);
+  renderSummary(u, ids);
+  const words = [...u.syms.values()], symNames = [...u.syms.keys()];
   const offline = ids.slice(0, 10).map(pid => ({ pid, src: "graph", sc: score[pid] }));
-  renderStudies(offline, words, symNames, u);
+  renderStudies(offline, words, symNames);
   drawMap(ids, offline.map(o => o.pid));
-  $("livestate").textContent = live ? "…" : "";
-  if (!live || !u.syms.size) { if (!live) $("livestate").textContent = ""; return; }
-  // live: full-text search on the Pi (newest papers, results sections), merged with the graph ranking
+  $("livestate").hidden = true;
+  $("out").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+  if (!live || !u.syms.size) return;
+  // live: full-text search on our server, merged with the saved ranking
   const terms = [...new Set([...u.syms.values(), ...u.syms.keys()].map(t => t.toLowerCase()))].map(t => t.includes(" ") ? `"${t}"` : t);
   try {
     const url = "/api/fulltext?" + new URLSearchParams({ q: terms.join(" OR "), area: "C14 Cardiovascular Diseases", per_page: "20" });
@@ -282,105 +330,100 @@ async function run(q) {
     if (runId !== lastRun) return;
     if (!r.ok) throw new Error(r.status);
     const j = await r.json();
-    const liveRes = (j.results || []);
+    const liveRes = j.results || [];
     const rr = {};
     ids.slice(0, 50).forEach((pid, i) => rr[pid] = (rr[pid] || 0) + 1 / (60 + i + 1));
     liveRes.forEach((p, i) => rr[p.paper_id] = (rr[p.paper_id] || 0) + 1 / (60 + i + 1));
     const liveBy = Object.fromEntries(liveRes.map(p => [p.paper_id, p]));
     const merged = Object.keys(rr).sort((a, b) => rr[b] - rr[a]).slice(0, 10)
-      .map(pid => ({ pid, src: score[pid] && liveBy[pid] ? "both" : liveBy[pid] ? "live" : "graph", sc: score[pid], live: liveBy[pid] }));
-    renderStudies(merged, words, symNames, u);
+      .map(pid => ({ pid, src: liveBy[pid] ? "live" : "graph", sc: score[pid], live: liveBy[pid] }));
+    renderStudies(merged, words, symNames);
     drawMap(ids, merged.map(o => o.pid));
-    $("livestate").textContent = `· ${j.total.toLocaleString()} on the Pi`;
-  } catch (e) {
-    if (runId === lastRun) $("livestate").textContent = "· Pi offline";
-  }
+    $("livestate").hidden = false; $("livestate").className = "tag live"; $("livestate").textContent = "Live: full text";
+  } catch (e) { /* offline answer stays */ }
 }
 
-function renderSummary(u, ids, score) {
-  const el = $("summary");
-  if (!u.syms.size) { el.innerHTML = '<p class="empty">Add a symptom.</p>'; return; }
-  const all = ids.filter(p => score[p].n === u.syms.size).length;
-  const names = [...u.syms.keys()];
-  const groups = {};
-  ids.forEach(pid => { const i = mapIdx[pid]; const g = i === undefined ? "Not on the map" : M.groups[M.papers[i][3]]; groups[g] = (groups[g] || 0) + 1; });
-  const rows = Object.entries(groups).sort((a, b) => b[1] - a[1]).slice(0, 7);
-  const max = rows.length ? rows[0][1] : 1;
-  const notes = [];
-  if (names.length > 1) notes.push(`<li>All symptoms: ${all}</li>`);
+function renderHeard(u) {
+  const s = [...u.syms.keys()].map(n => `<span class="pill">${esc(plain(n))}</span>`);
+  const c = [...u.ctx].map(n => `<span class="pill ctx">${esc(CTXP[n] || n)}</span>`);
+  const x = [...u.neg].map(n => `<span class="pill neg">${esc(plain(n))}</span>`);
+  const said = `<p class="said">“${highlight($("q").value.trim(), [...u.syms.values()])}”</p><div class="down" aria-hidden="true">↓</div>`;
+  $("heard").innerHTML = s.length || c.length ? said + `<div class="pills">${s.concat(c, x).join("")}</div>` + (s.length ? "" : '<p class="empty">Add a symptom, e.g. chest pain</p>')
+    : '<p class="empty">No symptom recognised. Try “chest pain” or “out of breath”.</p>';
+}
+
+function renderTree(tl, u) {
+  const el = $("tree");
+  if (!tl || !u.syms.size && !u.ctx.size) { el.innerHTML = '<p class="empty">—</p>'; return; }
+  const n = tl.leaf, total = n.groups.reduce((a, [, c]) => a + c, 0) || 1;
+  const top = n.groups.slice(0, 3);
+  const steps = tl.steps.map(([f, y]) => `<li><span class="q">${esc(plain(f))}?</span><span class="yn ${y ? "" : "no"}">${y ? "YES" : "NO"}</span></li>`).join("");
+  el.innerHTML = `<ol class="path">${steps}</ol><div class="arrow" aria-hidden="true">↓</div>
+    <div class="dest"><b>${esc(gplain(top[0][0]))}</b>
+      <div class="split" role="img" aria-label="Share of matching studies per condition">${top.map(([g, c], i) => `<span style="width:${100 * c / total}%;background:var(${SPLIT[i]})"></span>`).join("")}<span style="flex:1;background:var(--tint)"></span></div>
+      <div class="splitkey">${top.map(([g, c], i) => `<span><i style="background:var(${SPLIT[i]})"></i>${esc(gplain(g))} · ${Math.round(100 * c / total)}%</span>`).join("")}</div>
+    </div>`;
+}
+
+function renderSummary(u, ids) {
+  const n = ids.length;
+  let gaps = "";
   if (M && M.context_available !== false) u.ctx.forEach(c => {
-    const n = ids.filter(p => hasCtx(p, c)).length;
-    notes.push(`<li class="${n < 5 ? "gap" : ""}">${esc(c.replace("Age: ", ""))}: ${n}${n < 5 ? " (gap)" : ""}</li>`);
+    const k = ids.filter(p => hasCtx(p, c)).length;
+    if (k < 5) gaps += `<div class="gap">Only ${k} ${k === 1 ? "study" : "studies"} for “${esc(CTXP[c] || c)}”: a research gap</div>`;
   });
-  if (ids.length && ids.length < 10) notes.push(`<li class="gap">Few studies</li>`);
-  el.innerHTML = `<p class="headline"><b>${ids.length}</b> ${ids.length === 1 ? "study" : "studies"}</p>
-    <ul class="bars">${rows.map(([g, n]) => `<li><span>${esc(g)}</span><span class="track"><span class="fill" style="width:${Math.max(3, 100 * n / max)}%;display:block"></span></span><span class="n">${n}</span></li>`).join("")}</ul>
-    <ul class="notes">${notes.join("")}</ul>`;
+  $("summary").innerHTML = `<div class="big" data-to="${n}">0<small>studies match</small></div>${gaps}`;
+  const el = $("summary").querySelector(".big"), to = n, t0 = performance.now();
+  const tick = t => { const k = Math.min(1, (t - t0) / 700); el.firstChild.nodeValue = Math.round(to * (1 - Math.pow(1 - k, 3))).toLocaleString(); if (k < 1) requestAnimationFrame(tick); };
+  requestAnimationFrame(tick);
 }
 
-function renderStudies(list, words, symNames, u) {
+function renderStudies(list, words, symNames) {
   const el = $("studies");
   if (!list.length) { el.innerHTML = '<li class="empty">No studies found.</li>'; return; }
   el.innerHTML = list.map((o, k) => {
     const i = mapIdx[o.pid], mp = i !== undefined ? M.papers[i] : null;
     const title = (o.live && o.live.title) || (G.papers[o.pid] && G.papers[o.pid].title) || (mp && mp[5]) || o.pid;
     const year = (o.live && o.live.pub_year) || (mp && mp[4]) || (G.papers[o.pid] && G.papers[o.pid].year) || "";
-    const group = mp ? M.groups[mp[3]] : "";
-    const ctxTags = mp ? M.context.filter((c, b) => (mp[6] >> b) & 1 && !c.startsWith("Design")).map(c => c.replace("Age: ", "")) : [];
-    const design = mp ? M.context.filter((c, b) => (mp[6] >> b) & 1 && c.startsWith("Design")).map(c => c.replace("Design: ", "")) : [];
-    let sents = "";
-    if (o.sc) sents = o.sc.ev.filter(([, ev], k, all) => ev.sentence && all.findIndex(([, e]) => e.sentence === ev.sentence) === k).slice(0, 2).map(([s, ev]) => `<div class="sent">${highlight(ev.sentence, words.concat(symNames))}<span class="pmeta">${esc(ev.section || "")}${ev.findings ? " · finding" : ""}</span></div>`).join("");
-    if (!sents && o.live && o.live.passages) sents = o.live.passages.slice(0, 1).map(p => `<div class="sent">${safeSnippet(p.snippet)}<span class="pmeta">${esc(p.section)}</span></div>`).join("");
-    if (!sents && o.sc) sents = '<div class="sent empty">Quote not shown (licence)</div>';
-    const src = o.src === "live" || o.src === "both" ? '<span class="tag live">Pi</span>' : "";
-    return `<li><div class="ptitle"><a href="https://europepmc.org/article/PMC/${esc(o.pid)}" target="_blank" rel="noopener">${esc(title)}</a></div>
-      <div class="pmeta"><span>${esc(year)}</span>${group ? `<span class="tag">${esc(group)}</span>` : ""}${design.map(d => `<span class="tag">${esc(d)}</span>`).join("")}${ctxTags.map(c => `<span class="tag">${esc(c)}</span>`).join("")}${src}</div>
-      ${sents}${live ? `<button type="button" class="btn quiet" data-sim="${esc(o.pid)}" style="margin-top:6px">Similar studies</button><div class="simbox"></div>` : ""}</li>`;
+    const group = mp ? gplain(M.groups[mp[3]]) : "";
+    let quote = "";
+    if (o.sc) { const ev = o.sc.ev.find(([, e]) => e.sentence); if (ev) quote = `<p class="quote">${highlight(ev[1].sentence, words.concat(symNames))}${ev[1].sentence.length >= 400 ? "…" : ""}</p>`; }
+    if (!quote && o.live && o.live.passages && o.live.passages[0]) quote = `<p class="quote">${safeSnippet(o.live.passages[0].snippet)}</p>`;
+    return `<li><div class="top"><span class="rank">${k + 1}</span><div class="ptitle"><a href="https://europepmc.org/article/PMC/${esc(o.pid)}" target="_blank" rel="noopener">${esc(title)}</a></div></div>
+      ${quote}<div class="tags">${year ? `<span class="tag">${esc(year)}</span>` : ""}${group ? `<span class="tag">${esc(group)}</span>` : ""}${o.src === "live" ? '<span class="tag live">Live</span>' : ""}</div>
+      ${live ? `<button type="button" class="more" data-sim="${esc(o.pid)}">Similar studies</button><div></div>` : ""}</li>`;
   }).join("");
   el.querySelectorAll("[data-sim]").forEach(b => b.onclick = () => similar(b));
 }
 
 async function similar(btn) {
-  const box = btn.nextElementSibling; btn.disabled = true; box.innerHTML = '<span class="spin">…</span>';
+  const box = btn.nextElementSibling; btn.disabled = true; box.textContent = "…";
   try {
     const r = await fetch("/api/fulltext?" + new URLSearchParams({ similar: btn.dataset.sim }), { signal: timeout(9000) });
     const j = await r.json();
-    box.innerHTML = `<ol class="similar">${(j.results || []).slice(0, 5).map(p => `<li><a href="https://europepmc.org/article/PMC/${esc(p.paper_id)}" target="_blank" rel="noopener">${esc(p.title)}</a> <span class="pmeta" style="display:inline">${esc(p.pub_year || "")} · similarity ${Math.round(p.similarity * 100)}%</span></li>`).join("")}</ol>`;
-  } catch (e) { box.innerHTML = '<span class="spin">Pi offline</span>'; btn.disabled = false; }
-}
-
-function renderTree(tl) {
-  const el = $("tree");
-  if (!tl) { el.innerHTML = '<p class="empty">Not built yet.</p>'; return; }
-  const n = tl.leaf, steps = tl.steps;
-  const max = n.groups[0] ? n.groups[0][1] : 1;
-  el.innerHTML = `<ol class="path">${steps.map(([f, y]) => `<li><span class="a ${y ? "" : "no"}">${y ? "yes" : "no"}</span><span class="q">${esc(f)}?</span></li>`).join("")}</ol>
-    <p class="note" style="margin:10px 0 6px">${n.papers} papers on this branch</p>
-    <ul class="bars">${n.groups.slice(0, 4).map(([g, c]) => `<li><span>${esc(g)}</span><span class="track"><span class="fill" style="width:${Math.max(3, 100 * c / max)}%;display:block;background:var(--teal)"></span></span><span class="n">${c}</span></li>`).join("")}</ul>
-    `;
+    box.innerHTML = `<ol class="similar">${(j.results || []).slice(0, 5).map(p => `<li><a href="https://europepmc.org/article/PMC/${esc(p.paper_id)}" target="_blank" rel="noopener">${esc(p.title)}</a> · ${esc(p.pub_year || "")}</li>`).join("")}</ol>`;
+  } catch (e) { box.textContent = "Offline"; btn.disabled = false; }
 }
 
 let lastMap = null;
 function drawMap(matched, top) {
   lastMap = [matched, top];
   const cv = $("map");
-  if (!M) { $("mapnote").textContent = "Not built yet."; return; }
-  const dpr = window.devicePixelRatio || 1, w = cv.clientWidth || 500;
+  if (!M) return;
+  const dpr = window.devicePixelRatio || 1, w = cv.clientWidth || 340;
   cv.width = w * dpr; cv.height = w * dpr;
   const ctx = cv.getContext("2d"); ctx.scale(dpr, dpr);
   const xs = M.papers.map(p => p[1]), ys = M.papers.map(p => p[2]);
   const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
-  const pad = 14, sx = x => pad + (x - x0) / (x1 - x0) * (w - 2 * pad), sy = y => pad + (y - y0) / (y1 - y0) * (w - 2 * pad);
+  const pad = 12, sx = x => pad + (x - x0) / (x1 - x0) * (w - 2 * pad), sy = y => pad + (y - y0) / (y1 - y0) * (w - 2 * pad);
   ctx.fillStyle = css("--dot");
-  M.papers.forEach(p => { ctx.beginPath(); ctx.arc(sx(p[1]), sy(p[2]), 1.6, 0, 7); ctx.fill(); });
+  M.papers.forEach(p => { ctx.beginPath(); ctx.arc(sx(p[1]), sy(p[2]), 1.4, 0, 7); ctx.fill(); });
   ctx.fillStyle = css("--accent");
-  matched.forEach(pid => { const i = mapIdx[pid]; if (i === undefined) return; const p = M.papers[i]; ctx.beginPath(); ctx.arc(sx(p[1]), sy(p[2]), 3.2, 0, 7); ctx.fill(); });
-  ctx.font = "600 11px system-ui, sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  matched.forEach(pid => { const i = mapIdx[pid]; if (i === undefined) return; const p = M.papers[i]; ctx.beginPath(); ctx.arc(sx(p[1]), sy(p[2]), 3, 0, 7); ctx.fill(); });
+  ctx.font = "700 10px system-ui, sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
   top.forEach((pid, k) => { const i = mapIdx[pid]; if (i === undefined) return; const p = M.papers[i];
-    ctx.beginPath(); ctx.arc(sx(p[1]), sy(p[2]), 8, 0, 7); ctx.fillStyle = css("--teal"); ctx.fill();
-    ctx.lineWidth = 2; ctx.strokeStyle = css("--surface"); ctx.stroke(); ctx.fillStyle = css("--surface"); ctx.fillText(k + 1, sx(p[1]), sy(p[2]) + .5); });
-  const onMap = matched.filter(p => mapIdx[p] !== undefined).length;
-  $("mapnote").textContent = `t-SNE · ${M.papers.length.toLocaleString()} papers · ${onMap} match`;
+    ctx.beginPath(); ctx.arc(sx(p[1]), sy(p[2]), 7.5, 0, 7); ctx.fillStyle = css("--teal"); ctx.fill();
+    ctx.lineWidth = 2; ctx.strokeStyle = css("--surface"); ctx.stroke(); ctx.fillStyle = "#fff"; ctx.fillText(k + 1, sx(p[1]), sy(p[2]) + .5); });
 }
 let rz; window.addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => lastMap && drawMap(...lastMap), 150); });
 </script>
