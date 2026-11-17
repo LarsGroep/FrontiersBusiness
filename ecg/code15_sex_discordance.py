@@ -15,7 +15,8 @@
 # **Model design:** the residual network of Ribeiro et al. (Nat Commun 2020,
 # [automatic-ecg-diagnosis](https://github.com/antonior92/automatic-ecg-diagnosis), MIT), written here in PyTorch.
 #
-# **Kaggle settings:** Accelerator GPU (T4 or P100), Internet on. *Save version → Save & Run All* runs it in the
+# **Kaggle settings:** Accelerator GPU (T4 or P100). Either attach your uploaded CODE-15% dataset (Add input), or turn
+# Internet on and the notebook downloads it from Zenodo. *Save version → Save & Run All* runs it in the
 # background (about 2–4 hours). Results land in `/kaggle/working/`.
 #
 # Research use only. This is not a diagnostic tool.
@@ -49,18 +50,28 @@ def fetch(name, dest):
         subprocess.run(["wget", "-q", "-O", dest, BASE.format(name)], check=True)
     return dest
 
-exams = pd.read_csv(fetch("exams.csv", f"{TMP}/exams.csv"))
+# Use a Kaggle dataset copy when one is attached (Add input → your CODE-15% dataset); otherwise download from Zenodo.
+# Kaggle unpacks uploaded zips, so a part can arrive as .hdf5 (possibly in a folder) or still as .zip.
+def find_input(pattern):
+    hits = sorted(glob.glob(f"/kaggle/input/**/{pattern}", recursive=True))
+    return hits[0] if hits else None
+
+csv = find_input("exams.csv")
+exams = pd.read_csv(csv or fetch("exams.csv", f"{TMP}/exams.csv"))
+print("exams.csv from", csv or "Zenodo")
 print(exams.shape); print(exams.head(3).T)
 
 signals, ids = [], []
 for i in range(N_PARTS):
     t0 = time.time()
-    z = fetch(f"exams_part{i}.zip", f"{TMP}/part{i}.zip")
-    with zipfile.ZipFile(z) as zf:
-        name = [n for n in zf.namelist() if n.endswith(".hdf5")][0]
-        zf.extract(name, TMP)
-    os.remove(z)
-    path = f"{TMP}/{name}"
+    path, own = find_input(f"exams_part{i}.hdf5"), False
+    if not path:
+        z = find_input(f"exams_part{i}.zip") or fetch(f"exams_part{i}.zip", f"{TMP}/part{i}.zip")
+        with zipfile.ZipFile(z) as zf:
+            name = [n for n in zf.namelist() if n.endswith(".hdf5")][0]
+            zf.extract(name, TMP)
+        if z.startswith(TMP): os.remove(z)
+        path, own = f"{TMP}/{name}", True
     with h5py.File(path, "r") as f:
         eid = f["exam_id"][:]
         keep = np.where(eid != 0)[0]              # the last row of each file is zero padding
@@ -68,7 +79,7 @@ for i in range(N_PARTS):
         for s in range(0, len(keep), 2000):        # read in chunks
             idx = keep[s:s + 2000]
             x[s:s + len(idx)] = f["tracings"][idx[0]:idx[-1] + 1][idx - idx[0]][:, :, LEADS]
-    os.remove(path)
+    if own: os.remove(path)
     signals.append(x); ids.append(eid[keep])
     print(f"part {i}: {len(keep)} ECGs in {time.time() - t0:.0f}s")
 X = np.concatenate(signals); exam_id = np.concatenate(ids); del signals
