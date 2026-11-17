@@ -74,18 +74,25 @@ DIGESTIVE_MESH = [
     "Gastroesophageal Reflux", "Constipation", "Gallstones", "Non-alcoholic Fatty Liver Disease",
     "Cholestasis, Intrahepatic", "Hyperemesis Gravidarum", "Gastroparesis", "Dyspepsia", "Abdominal Pain",
 ]
+CARDIO_SYMPTOM_WORDS = ["chest pain", "chest pressure", "jaw pain", "arm pain", "neck pain", "back pain", "shoulder pain",
+                        "shortness of breath", "dyspnea", "dyspnoea", "fatigue", "palpitations", "nausea", "vomiting",
+                        "indigestion", "dizziness", "syncope", "sweating", "edema", "oedema", "symptoms"]
+
 EXTRA_TOPICS = {
     "cardio-mesh": " OR ".join(f'KW:"{m}"' for m in CARDIO_MESH),
     # Same headings, but without the methods-text filter in the base query: catches women-only studies whose methods
     # section is worded differently. The labeller still reads the methods text and decides verified/probable/rejected.
     "cardio-wide": " OR ".join(f'KW:"{m}"' for m in CARDIO_MESH),
+    # Heart studies that name symptoms in the abstract: these are the studies the symptom tree learns from.
+    "cardio-symptoms": "(" + " OR ".join(f'KW:"{m}"' for m in CARDIO_MESH) + ") AND (" + " OR ".join(
+        f'ABSTRACT:"{w}"' for w in CARDIO_SYMPTOM_WORDS) + ")",
     "neuro-mesh": " OR ".join(f'KW:"{m}"' for m in NEURO_MESH),
     "autoimmune-mesh": " OR ".join(f'KW:"{m}"' for m in AUTOIMMUNE_MESH),
     "respiratory-mesh": " OR ".join(f'KW:"{m}"' for m in RESPIRATORY_MESH),
     "digestive-mesh": " OR ".join(f'KW:"{m}"' for m in DIGESTIVE_MESH),
 }
 WIDE_QUERY = DEFAULT_QUERY.split(" AND METHODS:")[0]
-TOPIC_BASE = {"cardio-wide": WIDE_QUERY}      # topics that use a different base query than DEFAULT_QUERY
+TOPIC_BASE = {"cardio-wide": WIDE_QUERY, "cardio-symptoms": WIDE_QUERY}      # topics that use a different base query than DEFAULT_QUERY
 ALL_TOPICS = {**DEFAULT_TOPICS, **EXTRA_TOPICS}
 
 

@@ -227,6 +227,7 @@ function hasCtx(pid, name) { if (!M || M.context_available === false) return 0; 
 function treeLeaf(u) {
   if (!T) return null;
   const feats = new Set([...u.syms.keys(), ...u.ctx]);
+  Object.entries(T.merge || {}).forEach(([name, members]) => { if (members.some(m => feats.has(m))) feats.add(name); });
   let n = T.tree; const steps = [];
   while (!n.leaf) { const yes = feats.has(n.feature); steps.push([n.feature, yes]); n = yes ? n.yes : n.no; }
   return { leaf: n, steps };

@@ -17,7 +17,7 @@ import time
 from . import scrape
 
 # Order = priority. Cardiovascular first (the pilot), then the thin areas from the 7 Nov analysis.
-TOPICS = ["cardio-wide", "neuro-mesh", "autoimmune-mesh", "respiratory-mesh", "digestive-mesh", "cardio-mesh"]
+TOPICS = ["cardio-symptoms", "cardio-wide", "neuro-mesh", "autoimmune-mesh", "respiratory-mesh", "digestive-mesh", "cardio-mesh"]
 BATCH = 400                 # papers per topic per round (100 per publication-year band)
 ROUND_PAUSE = 6 * 3600      # seconds to wait after a round that found nothing new
 ERROR_PAUSE = 600           # seconds to wait after a round in which every topic failed (e.g. database not up yet)

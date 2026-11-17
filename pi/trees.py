@@ -64,6 +64,19 @@ def group_of(conditions: list[str], trees: dict[str, list[str]]) -> str:
     return OTHER
 
 
+# Broader symptoms for rare ones (MeSH names as in the evidence graph). A member already in MIN_FEATURE studies stays
+# on its own; only the rare members are folded in. The web page (/ask) uses the same table to walk the tree.
+MERGE = {
+    "Pain spreading from the chest": ["Jaw Pain", "Arm Pain", "Neck Pain", "Shoulder Pain", "Back Pain", "Low Back Pain"],
+    "Stomach upset": ["Dyspepsia", "Vomiting", "Flatulence", "Nausea", "Abdominal Pain"],
+    "Muscle pain or weakness": ["Myalgia", "Muscle Cramp", "Muscle Weakness", "Musculoskeletal Pain", "Chronic Pain"],
+    "Dyspnea": ["Dyspnea, Paroxysmal"],
+    "Bleeding": ["Epistaxis", "Hemoptysis"],
+    "Bladder symptoms": ["Urinary Incontinence, Urge", "Nocturia", "Urinary Incontinence"],
+    "Pins and needles or ringing ears": ["Paresthesia", "Tinnitus"],
+}
+
+
 def area_of(areas: list[str], freq: dict[str, int]) -> str:
     """Main disease area of a paper: the area with most of its MeSH terms; ties go to the less common area."""
     parsed = []
@@ -81,17 +94,24 @@ def dataset(g, target: str = "group"):
     meta = {r[0]: (set(r[1] or []), set(r[2] or [])) for r in
             conn.execute("select id, mesh_terms, pub_types from papers where id = any(%s)", (g.ids,)).fetchall()}
     conn.close()
-    sym_feats = sorted(s for s, ps in g.sym.items() if len(ps) >= MIN_FEATURE)
+    # Symptoms named in fewer than MIN_FEATURE studies are merged into a broader symptom, so their studies still count.
+    sym = {s: set(ps) for s, ps in g.sym.items()}
+    for name, members in MERGE.items():
+        rare = [m for m in members if m in sym and len(sym[m]) < MIN_FEATURE]
+        if rare:
+            sym[name] = set().union(*(sym.pop(m) for m in rare)) | sym.get(name, set())
+    g_sym = sym
+    sym_feats = sorted(s for s, ps in g_sym.items() if len(ps) >= MIN_FEATURE)
     area_freq = Counter(a.rpartition("|")[0] for p in g.papers.values() for a in p.get("areas", []))
     feats = sym_feats + list(CONTEXT)
     rows, ys, pids = [], [], []
     for pid in g.ids:
-        has = [s for s in sym_feats if pid in g.sym[s]]
+        has = [s for s in sym_feats if pid in g_sym[s]]
         if not has:
             continue
         mesh, ptypes = meta.get(pid, (set(), set()))
         terms = mesh | ptypes
-        x = [1 if pid in g.sym[s] else 0 for s in sym_feats] + [1 if terms & set(v) else 0 for v in CONTEXT.values()]
+        x = [1 if pid in g_sym[s] else 0 for s in sym_feats] + [1 if terms & set(v) else 0 for v in CONTEXT.values()]
         rows.append(x)
         if target == "area":
             ys.append(area_of(g.papers[pid].get("areas", []), area_freq))
@@ -171,7 +191,7 @@ def train(g, out: str, seed: int = 42, target: str = "group") -> dict:
                 "papers": int(t.n_node_samples[i]),
                 "yes": node(t.children_right[i]), "no": node(t.children_left[i])}   # binary features: > 0.5 = yes
     result = {"built": time.strftime("%Y-%m-%d"), "area": g.area, "classes": classes,
-              "class_counts": dict(Counter(ys)), "features": feats, "metrics": metrics,
+              "class_counts": dict(Counter(ys)), "features": feats, "merge": MERGE, "metrics": metrics,
               "importance": importance[:20], "tree": node(0), "groups_definition": [[l, p] for l, p in GROUPS]}
     os.makedirs(os.path.dirname(out) or ".", exist_ok=True)
     with open(out, "w") as fh:
