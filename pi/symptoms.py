@@ -72,6 +72,26 @@ QUERY_TERMS = {
     "Headache": ["head pain"],
 }
 
+# Added 17 Nov for the "Ask the evidence" demo, merged into QUERY_TERMS below. Some of these occur in the 20 locked
+# fresh questions (scored 16 Nov), so the next GraphRAG test round needs new questions.
+QUERY_TERMS_EXTRA = {
+    "Jaw Pain": ["jaw ache", "aching jaw", "pain in her jaw", "pain in the jaw", "sore jaw"],
+    "Nausea": ["feeling sick", "felt sick", "feels sick", "queasy", "nauseous"],
+    "Sweating": ["sweaty", "sweating a lot", "night sweats"],
+    "Syncope": ["faint", "fainting spells", "nearly passed out"],
+    "Fatigue": ["wiped out", "always tired", "lack of energy"],
+    "Dyspnea": ["puffed", "breathing difficulty", "breathlessness on exertion"],
+    "Back Pain": ["between the shoulder blades", "back ache", "backache"],
+    "Arm Pain": ["arm pain", "pain in her arm", "pain in the arm", "heavy arm", "arm heaviness"],
+    "Abdominal Pain": ["tummy pain", "stomach ache", "upper tummy"],
+    "Dyspepsia": ["indigestion", "heartburn"],
+    "Edema": ["puffy ankles", "ankle swelling", "swelling of the legs", "fluid on the legs"],
+}
+for _name, _words in QUERY_TERMS_EXTRA.items():
+    QUERY_TERMS.setdefault(_name, [])
+    QUERY_TERMS[_name] += [w for w in _words if w not in QUERY_TERMS[_name]]
+
+
 # Patient-recognisable symptoms only. MeSH "Signs and Symptoms" also holds body-weight measures, fetal/neonatal
 # signs and lab findings (birth weight, fetal distress, proteinuria), which are not things a woman notices.
 PATIENT_SYMPTOMS = set(CARDIO_TERMS) | {

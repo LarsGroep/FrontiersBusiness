@@ -199,7 +199,7 @@ def export_map(g, out: str, seed: int = 42) -> dict:
         p = g.papers[pid]
         rows.append([pid, round(float(xy[k, 0]), 2), round(float(xy[k, 1]), 2),
                      groups.index(group_of(p["conditions"], trees)), p["year"], (p["title"] or "")[:160], bits])
-    res = {"built": time.strftime("%Y-%m-%d"), "area": g.area, "groups": groups, "context": ctx,
+    res = {"built": time.strftime("%Y-%m-%d"), "area": g.area, "groups": groups, "context": ctx, "context_available": True,
            "columns": ["id", "x", "y", "group", "year", "title", "context_bits"], "papers": rows}
     os.makedirs(os.path.dirname(out) or ".", exist_ok=True)
     with open(out, "w") as fh:
