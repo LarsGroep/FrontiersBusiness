@@ -25,7 +25,19 @@ G = {"Hypertensive disorders of pregnancy": "High blood pressure in pregnancy", 
      "Other heart": "Other heart conditions", "Other cardiovascular": "Other heart and vessel conditions"}
 
 def q(f): return Q.get(f, f.replace("Age: ", "").replace("Design: ", "") + "?")
-def g(n): return G.get(n, n)
+A = {"C01 Infections": "Infections", "C04 Neoplasms": "Cancer", "C05 Musculoskeletal Diseases": "Bones and muscles",
+     "C06 Digestive System Diseases": "Digestive system", "C08 Respiratory Tract Diseases": "Lungs and airways",
+     "C10 Nervous System Diseases": "Brain and nerves", "C12 Urogenital Diseases": "Urinary and reproductive",
+     "C13 Female Urogenital Diseases and Pregnancy Complications": "Pregnancy and reproductive",
+     "C14 Cardiovascular Diseases": "Heart and blood vessels", "C15 Hemic and Lymphatic Diseases": "Blood",
+     "C17 Skin and Connective Tissue Diseases": "Skin and connective tissue",
+     "C18 Nutritional and Metabolic Diseases": "Nutrition and metabolism", "C19 Endocrine System Diseases": "Hormones",
+     "C20 Immune System Diseases": "Immune system", "C23 Pathological Conditions, Signs and Symptoms": "General signs",
+     "F03 Mental Disorders": "Mental health"}
+def g(n):
+    if n in G: return G[n]
+    if n in A: return A[n]
+    return n.split(" ", 1)[1] if n[:1] in "CF" and n[1:3].isdigit() else n
 
 def main(src, out, title):
     t = json.load(open(src))
