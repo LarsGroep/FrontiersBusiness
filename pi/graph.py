@@ -46,19 +46,31 @@ def _sections(pmcid: str) -> list[tuple[str, str]]:
 
 
 class EvidenceGraph:
-    def __init__(self, area: str, with_sections: bool = True, workers: int = 12):
+    def __init__(self, area: str | None, with_sections: bool = True, workers: int = 12):
+        """area=None builds the graph over the whole collection (every disease area; no vectors, to save memory)."""
         conn = store.connect()
-        rows = conn.execute("""select p.id, p.title, coalesce(p.abstract, ''), p.pub_year, coalesce(p.commercial_use_ok, false),
-                                      a.terms, v.embedding::text
-                               from papers p join paper_area a on a.paper_id = p.id and a.area = %s
-                               left join paper_vec v on v.paper_id = p.id
-                               where p.label in ('female_only_verified', 'female_only_probable')
-                                 and coalesce(p.abstract, '') <> ''""", (area,)).fetchall()
+        if area:
+            rows = conn.execute("""select p.id, p.title, coalesce(p.abstract, ''), p.pub_year, coalesce(p.commercial_use_ok, false),
+                                          a.terms, v.embedding::text, array[a.area]
+                                   from papers p join paper_area a on a.paper_id = p.id and a.area = %s
+                                   left join paper_vec v on v.paper_id = p.id
+                                   where p.label in ('female_only_verified', 'female_only_probable')
+                                     and coalesce(p.abstract, '') <> ''""", (area,)).fetchall()
+        else:
+            rows = conn.execute("""select p.id, p.title, coalesce(p.abstract, ''), p.pub_year, coalesce(p.commercial_use_ok, false),
+                                          coalesce((select array_agg(distinct t) from paper_area a, unnest(a.terms) t
+                                                    where a.paper_id = p.id), '{}'),
+                                          null::text,
+                                          coalesce((select array_agg(a.area || '|' || cardinality(a.terms)) from paper_area a
+                                                    where a.paper_id = p.id), '{}')
+                                   from papers p
+                                   where p.label in ('female_only_verified', 'female_only_probable')
+                                     and coalesce(p.abstract, '') <> ''""").fetchall()
         conn.close()
-        self.area = area
+        self.area = area or "All disease areas"
         self.ids = [r[0] for r in rows]
-        self.papers = {r[0]: {"title": r[1], "abstract": r[2], "year": r[3], "open": r[4], "conditions": r[5] or []}
-                       for r in rows}
+        self.papers = {r[0]: {"title": r[1], "abstract": r[2], "year": r[3], "open": r[4], "conditions": r[5] or [],
+                              "areas": r[7] or []} for r in rows}
         vecs = [json.loads(r[6]) if r[6] else [0.0] * 384 for r in rows]
         self.mat = np.array(vecs, dtype=np.float32)
         self.mat /= np.maximum(np.linalg.norm(self.mat, axis=1, keepdims=True), 1e-9)

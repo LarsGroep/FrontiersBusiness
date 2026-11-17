@@ -64,13 +64,25 @@ def group_of(conditions: list[str], trees: dict[str, list[str]]) -> str:
     return OTHER
 
 
-def dataset(g):
+def area_of(areas: list[str], freq: dict[str, int]) -> str:
+    """Main disease area of a paper: the area with most of its MeSH terms; ties go to the less common area."""
+    parsed = []
+    for a in areas:
+        name, _, n = a.rpartition("|")
+        parsed.append((name or a, int(n) if n.isdigit() else 1))
+    if not parsed:
+        return "No disease term"
+    return max(parsed, key=lambda x: (x[1], -freq.get(x[0], 0)))[0]
+
+
+def dataset(g, target: str = "group"):
     conn = store.connect()
     trees = {n: t for n, t in conn.execute("select name, trees from mesh").fetchall()}
     meta = {r[0]: (set(r[1] or []), set(r[2] or [])) for r in
             conn.execute("select id, mesh_terms, pub_types from papers where id = any(%s)", (g.ids,)).fetchall()}
     conn.close()
     sym_feats = sorted(s for s, ps in g.sym.items() if len(ps) >= MIN_FEATURE)
+    area_freq = Counter(a.rpartition("|")[0] for p in g.papers.values() for a in p.get("areas", []))
     feats = sym_feats + list(CONTEXT)
     rows, ys, pids = [], [], []
     for pid in g.ids:
@@ -81,21 +93,24 @@ def dataset(g):
         terms = mesh | ptypes
         x = [1 if pid in g.sym[s] else 0 for s in sym_feats] + [1 if terms & set(v) else 0 for v in CONTEXT.values()]
         rows.append(x)
-        ys.append(group_of(g.papers[pid]["conditions"], trees))
+        if target == "area":
+            ys.append(area_of(g.papers[pid].get("areas", []), area_freq))
+        else:
+            ys.append(group_of(g.papers[pid]["conditions"], trees))
         pids.append(pid)
     counts = Counter(ys)
     ys = [y if counts[y] >= MIN_CLASS else OTHER for y in ys]
     return np.array(rows, dtype=np.float32), ys, pids, feats, len(sym_feats)
 
 
-def train(g, out: str, seed: int = 42) -> dict:
+def train(g, out: str, seed: int = 42, target: str = "group") -> dict:
     from sklearn.model_selection import StratifiedKFold, train_test_split
     from sklearn.metrics import log_loss
     from sklearn.tree import DecisionTreeClassifier
     from sklearn.utils.class_weight import compute_sample_weight
     import xgboost as xgb
 
-    X, ys, pids, feats, n_sym = dataset(g)
+    X, ys, pids, feats, n_sym = dataset(g, target)
     classes = sorted(set(ys))
     y = np.array([classes.index(v) for v in ys])
     idx = np.arange(len(y))

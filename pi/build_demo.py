@@ -21,6 +21,14 @@ def main() -> None:
     g = EvidenceGraph(a.area, with_sections=True)
     out = {"graph": g.export("web/graph/cv.json"), "trees": trees.train(g, "web/graph/tree-cv.json"),
            "map": trees.export_map(g, "web/graph/papers-cv.json")}
+    # Second tree over the whole collection (every disease area, symptoms from abstracts only): which disease area a
+    # symptom pattern points to. Kept separate so a failure here never blocks the heart and blood vessel outputs.
+    try:
+        ga = EvidenceGraph(None, with_sections=False)
+        out["tree_all"] = trees.train(ga, "web/graph/tree-all.json", target="area")
+        del ga
+    except Exception as e:  # noqa: BLE001
+        out["tree_all"] = {"error": f"{type(e).__name__}: {e}"}
     if a.eval:
         out["eval"] = graph_test.evaluate(g, "eval/graphrag")
     print(json.dumps(out, indent=1))
