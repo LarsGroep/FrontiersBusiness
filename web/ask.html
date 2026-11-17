@@ -130,10 +130,10 @@ canvas{width:100%;aspect-ratio:1/1;display:block;border-radius:var(--radius-s);b
     <h1>Ask the evidence</h1>
     <span class="status" id="status"><i></i><span id="statustext">Loading the evidence…</span></span>
   </div>
-  <p class="lead">Describe a woman's symptoms the way you would in a consultation note. You get the women-only cardiovascular studies behind them, quoted from the papers themselves. Research information, not a diagnosis.</p>
+  <p class="lead">Women-only cardiovascular studies. Information, not a diagnosis.</p>
   <form class="ask" id="ask">
-    <input id="q" type="search" autocomplete="off" placeholder="e.g. 58-year-old woman, jaw ache and feeling sick while gardening" aria-label="Describe the symptoms">
-    <button class="btn" type="submit">Show evidence</button>
+    <input id="q" type="search" autocomplete="off" placeholder="Symptoms, e.g. 58-year-old woman, jaw ache, feeling sick" aria-label="Symptoms">
+    <button class="btn" type="submit">Search</button>
   </form>
   <div class="examples" id="examples">Try:</div>
 
@@ -141,20 +141,20 @@ canvas{width:100%;aspect-ratio:1/1;display:block;border-radius:var(--radius-s);b
     <div class="understood" id="understood"></div>
     <div class="grid" style="margin-top:14px">
       <div class="col">
-        <section class="card" aria-labelledby="h-sum"><h2 id="h-sum">What the women-only evidence covers</h2><div id="summary"></div></section>
+        <section class="card" aria-labelledby="h-sum"><h2 id="h-sum">Evidence</h2><div id="summary"></div></section>
         <section class="card" aria-labelledby="h-stu"><h2 id="h-stu">Studies <span class="spin" id="livestate"></span></h2><ol class="studies" id="studies"></ol></section>
       </div>
       <div class="col">
-        <section class="card" aria-labelledby="h-tree"><h2 id="h-tree">Decision tree path</h2><div id="tree"></div></section>
-        <section class="card" aria-labelledby="h-map"><h2 id="h-map">Where this lands in the evidence</h2>
+        <section class="card" aria-labelledby="h-tree"><h2 id="h-tree">Decision tree</h2><div id="tree"></div></section>
+        <section class="card" aria-labelledby="h-map"><h2 id="h-map">Map</h2>
           <div class="mapwrap"><canvas id="map" width="600" height="600" aria-label="Map of the cardiovascular women-only papers with the matching studies highlighted"></canvas></div>
-          <div class="legend"><span><i style="background:var(--dot)"></i>all cardiovascular papers</span><span><i style="background:var(--accent)"></i>report these symptoms</span><span><i style="background:var(--teal)"></i>top studies (numbered)</span></div>
+          <div class="legend"><span><i style="background:var(--dot)"></i>all papers</span><span><i style="background:var(--accent)"></i>match</span><span><i style="background:var(--teal)"></i>top 10</span></div>
           <p class="note" id="mapnote"></p>
         </section>
       </div>
     </div>
   </div>
-  <p class="safety">This is research information, not medical advice. It never tells you what a patient has. Chest pain with breathlessness, sweating or fainting, signs of stroke, or severe headache with visual symptoms in pregnancy or after birth: call 112 or contact the GP emergency service (huisartsenpost) straight away.</p>
+  <p class="safety">Not medical advice. Emergency: call 112.</p>
 </div>
 
 <script>
@@ -188,8 +188,8 @@ Promise.all(["/graph/cv.json", "/graph/tree-cv.json", "/graph/papers-cv.json"].m
 
 function setStatus() {
   const n = (M ? M.papers.length : G.papers_in_area).toLocaleString();
-  if (live) { $("status").classList.add("live"); $("statustext").textContent = `Pi online · live full-text search of ${liveCount.toLocaleString()} papers`; }
-  else { $("status").classList.remove("live"); $("statustext").textContent = `Offline mode · ${n} cardiovascular papers, built ${G.built}`; }
+  if (live) { $("status").classList.add("live"); $("statustext").textContent = `Pi online · ${liveCount.toLocaleString()} papers`; }
+  else { $("status").classList.remove("live"); $("statustext").textContent = `Offline · ${n} papers`; }
 }
 function timeout(ms) { const c = new AbortController(); setTimeout(() => c.abort(), ms); return c.signal; }
 async function checkPi() {
@@ -260,7 +260,7 @@ async function run(q) {
   const runId = ++lastRun;
   const u = understand(q);
   $("out").hidden = false;
-  $("understood").innerHTML = "Understood: " + ([...u.syms.keys()].map(s => `<span class="chip">${esc(s)}</span>`).join(" ") || '<span class="empty">no symptom words recognised</span>')
+  $("understood").innerHTML = ([...u.syms.keys()].map(s => `<span class="chip">${esc(s)}</span>`).join(" ") || '<span class="empty">No symptom recognised</span>')
     + [...u.ctx].map(c => ` <span class="chip ctx">${esc(c)}</span>`).join("") + [...u.neg].map(n => ` <span class="chip neg">${esc(n)}</span>`).join("");
   const tl = treeLeaf(u);
   const { ids, score } = graphRank(u.syms, u.ctx, tl && tl.leaf);
@@ -271,7 +271,7 @@ async function run(q) {
   const offline = ids.slice(0, 10).map(pid => ({ pid, src: "graph", sc: score[pid] }));
   renderStudies(offline, words, symNames, u);
   drawMap(ids, offline.map(o => o.pid));
-  $("livestate").textContent = live ? "· searching the Pi…" : "";
+  $("livestate").textContent = live ? "…" : "";
   if (!live || !u.syms.size) { if (!live) $("livestate").textContent = ""; return; }
   // live: full-text search on the Pi (newest papers, results sections), merged with the graph ranking
   const terms = [...new Set([...u.syms.values(), ...u.syms.keys()].map(t => t.toLowerCase()))].map(t => t.includes(" ") ? `"${t}"` : t);
@@ -290,15 +290,15 @@ async function run(q) {
       .map(pid => ({ pid, src: score[pid] && liveBy[pid] ? "both" : liveBy[pid] ? "live" : "graph", sc: score[pid], live: liveBy[pid] }));
     renderStudies(merged, words, symNames, u);
     drawMap(ids, merged.map(o => o.pid));
-    $("livestate").textContent = `· ${j.total.toLocaleString()} full-text matches on the Pi`;
+    $("livestate").textContent = `· ${j.total.toLocaleString()} on the Pi`;
   } catch (e) {
-    if (runId === lastRun) $("livestate").textContent = "· Pi did not answer, showing offline evidence";
+    if (runId === lastRun) $("livestate").textContent = "· Pi offline";
   }
 }
 
 function renderSummary(u, ids, score) {
   const el = $("summary");
-  if (!u.syms.size) { el.innerHTML = '<p class="empty">Name at least one symptom, for example chest pain, breathlessness, palpitations, swollen ankles or fatigue.</p>'; return; }
+  if (!u.syms.size) { el.innerHTML = '<p class="empty">Add a symptom.</p>'; return; }
   const all = ids.filter(p => score[p].n === u.syms.size).length;
   const names = [...u.syms.keys()];
   const groups = {};
@@ -306,20 +306,20 @@ function renderSummary(u, ids, score) {
   const rows = Object.entries(groups).sort((a, b) => b[1] - a[1]).slice(0, 7);
   const max = rows.length ? rows[0][1] : 1;
   const notes = [];
-  if (names.length > 1) notes.push(`<li>${all} ${all === 1 ? "study reports" : "studies report"} all of: ${names.map(esc).join(", ")}.</li>`);
+  if (names.length > 1) notes.push(`<li>All symptoms: ${all}</li>`);
   if (M && M.context_available !== false) u.ctx.forEach(c => {
     const n = ids.filter(p => hasCtx(p, c)).length;
-    notes.push(`<li class="${n < 5 ? "gap" : ""}">${n < 5 ? "Evidence gap: only " : ""}${n} of these ${ids.length} studies are in ${esc(c.replace("Age: ", "women aged ").replace("Pregnancy", "pregnant women").replace("Postpartum", "women after birth").replace("Menopause", "women around menopause"))}.</li>`);
+    notes.push(`<li class="${n < 5 ? "gap" : ""}">${esc(c.replace("Age: ", ""))}: ${n}${n < 5 ? " (gap)" : ""}</li>`);
   });
-  if (ids.length && ids.length < 10) notes.push(`<li class="gap">Evidence gap: few women-only cardiovascular studies report ${esc(names.join(" or "))}.</li>`);
-  el.innerHTML = `<p class="headline"><b>${ids.length}</b> women-only cardiovascular ${ids.length === 1 ? "study reports" : "studies report"} ${esc(names.join(" or "))} in their participants</p>
+  if (ids.length && ids.length < 10) notes.push(`<li class="gap">Few studies</li>`);
+  el.innerHTML = `<p class="headline"><b>${ids.length}</b> ${ids.length === 1 ? "study" : "studies"}</p>
     <ul class="bars">${rows.map(([g, n]) => `<li><span>${esc(g)}</span><span class="track"><span class="fill" style="width:${Math.max(3, 100 * n / max)}%;display:block"></span></span><span class="n">${n}</span></li>`).join("")}</ul>
     <ul class="notes">${notes.join("")}</ul>`;
 }
 
 function renderStudies(list, words, symNames, u) {
   const el = $("studies");
-  if (!list.length) { el.innerHTML = '<li class="empty">No women-only cardiovascular study in the evidence graph reports these symptoms yet.</li>'; return; }
+  if (!list.length) { el.innerHTML = '<li class="empty">No studies found.</li>'; return; }
   el.innerHTML = list.map((o, k) => {
     const i = mapIdx[o.pid], mp = i !== undefined ? M.papers[i] : null;
     const title = (o.live && o.live.title) || (G.papers[o.pid] && G.papers[o.pid].title) || (mp && mp[5]) || o.pid;
@@ -328,10 +328,10 @@ function renderStudies(list, words, symNames, u) {
     const ctxTags = mp ? M.context.filter((c, b) => (mp[6] >> b) & 1 && !c.startsWith("Design")).map(c => c.replace("Age: ", "")) : [];
     const design = mp ? M.context.filter((c, b) => (mp[6] >> b) & 1 && c.startsWith("Design")).map(c => c.replace("Design: ", "")) : [];
     let sents = "";
-    if (o.sc) sents = o.sc.ev.filter(([, ev], k, all) => ev.sentence && all.findIndex(([, e]) => e.sentence === ev.sentence) === k).slice(0, 2).map(([s, ev]) => `<div class="sent">${highlight(ev.sentence, words.concat(symNames))}<span class="pmeta">${esc(ev.section || "")}${ev.findings ? " · finding in these women" : ""}</span></div>`).join("");
+    if (o.sc) sents = o.sc.ev.filter(([, ev], k, all) => ev.sentence && all.findIndex(([, e]) => e.sentence === ev.sentence) === k).slice(0, 2).map(([s, ev]) => `<div class="sent">${highlight(ev.sentence, words.concat(symNames))}<span class="pmeta">${esc(ev.section || "")}${ev.findings ? " · finding" : ""}</span></div>`).join("");
     if (!sents && o.live && o.live.passages) sents = o.live.passages.slice(0, 1).map(p => `<div class="sent">${safeSnippet(p.snippet)}<span class="pmeta">${esc(p.section)}</span></div>`).join("");
-    if (!sents && o.sc) sents = '<div class="sent empty">Matched in a results section; the licence does not allow quoting it here.</div>';
-    const src = o.src === "live" ? '<span class="tag live">live from the Pi</span>' : o.src === "both" ? '<span class="tag live">graph + live</span>' : "";
+    if (!sents && o.sc) sents = '<div class="sent empty">Quote not shown (licence)</div>';
+    const src = o.src === "live" || o.src === "both" ? '<span class="tag live">Pi</span>' : "";
     return `<li><div class="ptitle"><a href="https://europepmc.org/article/PMC/${esc(o.pid)}" target="_blank" rel="noopener">${esc(title)}</a></div>
       <div class="pmeta"><span>${esc(year)}</span>${group ? `<span class="tag">${esc(group)}</span>` : ""}${design.map(d => `<span class="tag">${esc(d)}</span>`).join("")}${ctxTags.map(c => `<span class="tag">${esc(c)}</span>`).join("")}${src}</div>
       ${sents}${live ? `<button type="button" class="btn quiet" data-sim="${esc(o.pid)}" style="margin-top:6px">Similar studies</button><div class="simbox"></div>` : ""}</li>`;
@@ -340,30 +340,30 @@ function renderStudies(list, words, symNames, u) {
 }
 
 async function similar(btn) {
-  const box = btn.nextElementSibling; btn.disabled = true; box.innerHTML = '<span class="spin">Asking the Pi…</span>';
+  const box = btn.nextElementSibling; btn.disabled = true; box.innerHTML = '<span class="spin">…</span>';
   try {
     const r = await fetch("/api/fulltext?" + new URLSearchParams({ similar: btn.dataset.sim }), { signal: timeout(9000) });
     const j = await r.json();
     box.innerHTML = `<ol class="similar">${(j.results || []).slice(0, 5).map(p => `<li><a href="https://europepmc.org/article/PMC/${esc(p.paper_id)}" target="_blank" rel="noopener">${esc(p.title)}</a> <span class="pmeta" style="display:inline">${esc(p.pub_year || "")} · similarity ${Math.round(p.similarity * 100)}%</span></li>`).join("")}</ol>`;
-  } catch (e) { box.innerHTML = '<span class="spin">The Pi did not answer.</span>'; btn.disabled = false; }
+  } catch (e) { box.innerHTML = '<span class="spin">Pi offline</span>'; btn.disabled = false; }
 }
 
 function renderTree(tl) {
   const el = $("tree");
-  if (!tl) { el.innerHTML = '<p class="empty">The decision tree is not built yet.</p>'; return; }
+  if (!tl) { el.innerHTML = '<p class="empty">Not built yet.</p>'; return; }
   const n = tl.leaf, steps = tl.steps;
   const max = n.groups[0] ? n.groups[0][1] : 1;
   el.innerHTML = `<ol class="path">${steps.map(([f, y]) => `<li><span class="a ${y ? "" : "no"}">${y ? "yes" : "no"}</span><span class="q">${esc(f)}?</span></li>`).join("")}</ol>
-    <p class="note" style="margin:10px 0 6px">${n.papers} women-only papers end on this branch. Bodies of evidence that fit, by number of papers:</p>
+    <p class="note" style="margin:10px 0 6px">${n.papers} papers on this branch</p>
     <ul class="bars">${n.groups.slice(0, 4).map(([g, c]) => `<li><span>${esc(g)}</span><span class="track"><span class="fill" style="width:${Math.max(3, 100 * c / max)}%;display:block;background:var(--teal)"></span></span><span class="n">${c}</span></li>`).join("")}</ul>
-    <p class="note" style="margin-top:8px">The studies list uses this branch to break ties: among studies reporting the same symptoms, those in the groups that fit this branch come first. XGBoost distilled to one tree (held-out: correct group in the top 3 for ${Math.round(T.metrics.top3 * 100)}% of papers). It ranks evidence; it does not estimate a diagnosis.</p>`;
+    `;
 }
 
 let lastMap = null;
 function drawMap(matched, top) {
   lastMap = [matched, top];
   const cv = $("map");
-  if (!M) { $("mapnote").textContent = "The paper map is not built yet."; return; }
+  if (!M) { $("mapnote").textContent = "Not built yet."; return; }
   const dpr = window.devicePixelRatio || 1, w = cv.clientWidth || 500;
   cv.width = w * dpr; cv.height = w * dpr;
   const ctx = cv.getContext("2d"); ctx.scale(dpr, dpr);
@@ -379,7 +379,7 @@ function drawMap(matched, top) {
     ctx.beginPath(); ctx.arc(sx(p[1]), sy(p[2]), 8, 0, 7); ctx.fillStyle = css("--teal"); ctx.fill();
     ctx.lineWidth = 2; ctx.strokeStyle = css("--surface"); ctx.stroke(); ctx.fillStyle = css("--surface"); ctx.fillText(k + 1, sx(p[1]), sy(p[2]) + .5); });
   const onMap = matched.filter(p => mapIdx[p] !== undefined).length;
-  $("mapnote").textContent = `t-SNE map of ${M.papers.length.toLocaleString()} women-only cardiovascular papers (similar papers sit close together); ${onMap} report the symptoms. Built ${M.built}.`;
+  $("mapnote").textContent = `t-SNE · ${M.papers.length.toLocaleString()} papers · ${onMap} match`;
 }
 let rz; window.addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => lastMap && drawMap(...lastMap), 150); });
 </script>
