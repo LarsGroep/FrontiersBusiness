@@ -13,8 +13,8 @@ Q = {"Pregnancy": "Pregnant?", "Postpartum": "After giving birth?", "Menopause":
      "Design: randomised trial": "Randomised trial?", "Design: cohort or observational": "Follow-up study?",
      "Design: cross-sectional": "Survey study?", "Dyspnea": "Short of breath?", "Edema": "Swelling?", "Nausea": "Feeling sick?", "Cyanosis": "Bluish skin or lips?", "Palpitations": "Racing heart?", "Syncope": "Fainting?",
      "Fatigue": "Tiredness?", "Chest Pain": "Chest pain?", "Sleep Wake Disorders": "Sleep problems?",
-     "Syncope": "Fainting?", "Dizziness": "Dizziness?", "Palpitations": "Palpitations?", "Headache": "Headache?",
-     "Nausea": "Nausea?", "Pelvic Pain": "Pelvic pain?", "Anxiety": "Anxiety?", "Abdominal Pain": "Tummy pain?",
+     "Syncope": "Fainting?", "Dizziness": "Dizziness?", "Palpitations": "Racing heart?", "Headache": "Headache?",
+     "Nausea": "Feeling sick?", "Pelvic Pain": "Pelvic pain?", "Anxiety": "Anxiety?", "Abdominal Pain": "Tummy pain?",
      "Visual Disturbances": "Vision problems?", "Hot Flashes": "Hot flushes?", "Fever": "Fever?",
      "Angina Pectoris": "Angina?", "Back Pain": "Back pain?", "Cough": "Cough?", "Pruritus": "Itching?",
      "Pain": "Pain?", "Obesity": "Overweight?", "Infertility": "Infertility?"}
