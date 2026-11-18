@@ -10,10 +10,9 @@ const S = [
  ['STEP 1 · THE DATA','Studies in which only women took part',"Step one is the data. We collect medical studies from Europe PMC and keep only those in which only women took part. A program checks every study and saves the sentence that proves it. That leaves 50,748 studies."],
  ['STEP 1 · THE DATA',"A map of women's health research","A computer places similar studies close together. This is the map of women's health research. It also shows where research on women is missing."],
  ['STEP 2 · SYMPTOM FILTER','Her words find the studies',`Step two uses her own words. We zoom in on about 5,500 heart studies; 855 of them describe the symptoms the women actually had. Her ECG goes in too: our ECG AI, trained only on women, recognises heart problems with ${ACC}% accuracy.`],
- ['STEP 2 · SYMPTOM FILTER','280 studies match her symptoms',"Her four symptoms light up 280 studies: research on women with her complaints. And 'no chest pain' does not count as chest pain."],
- ['STEP 3 · DECISION TREE','Yes or no, step by step',"Step three is a decision tree, learned from 855 studies. Simple yes-or-no questions: not pregnant, no chest pain, but short of breath. That points to research on heart failure, and the GP can see exactly why."],
- ['STEP 4 · REASONING AGENT','Everything comes together, with sources',"Step four: the reasoning agent brings the studies, the ECG and the tree together. It answers with sources and never diagnoses. The doctor decides."],
- ['WITH ANARCHA AI','Referred straight away, not sent home',"And this time she is not sent home. She is referred to a cardiologist straight away."],
+ ['STEP 2 · SYMPTOM FILTER','280 studies match her symptoms',"Her four symptoms light up 280 studies: research on women with her complaints. Then a small decision tree, learned from 855 studies, asks yes or no: not pregnant, no chest pain, but short of breath. That points to research on heart failure, and the GP can see exactly why."],
+ ['STEP 3 · REASONING AGENT','Everything comes together, with sources',"Step three: the reasoning agent brings the studies, the ECG and the tree together. It answers with sources and never diagnoses. The doctor decides."],
+ ['WITH ANARCHA AI','Referred straight away, not sent home',"And this time she is not sent home. She is referred to a cardiologist straight away. This may sound too good to be true, but it can happen now: this is our working prototype."],
 ];
 S.forEach(([tag, title, note], i) => {
   const s = pres.addSlide();

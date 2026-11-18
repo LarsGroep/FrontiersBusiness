@@ -244,8 +244,28 @@ def clip3(ctx, t, dur, T):
     a2 = A*eout(prog(t, 3.0, 3.8))*(1 - prog(t, 4.6, 5.2))
     counter(ctx, 855, 'describe symptoms', 1660, 520, a2, 72)
     a3 = A*eout(prog(t, 5.4, 6.0))
-    counter(ctx, len(lit), 'match her symptoms', 1660, 520, a3, 72, RED2)
-    text(ctx, '"No chest pain" does not count', 1660, 700, 26, INK, 'm', a=A*eout(prog(t, 13.0, 13.8)))
+    if os.environ.get('MINITREE') == '1':
+        mini_path(ctx, 1640, 330, A)
+    else:
+        counter(ctx, len(lit), 'match her symptoms', 1660, 520, a3, 72, RED2)
+        text(ctx, '"No chest pain" does not count', 1660, 700, 26, INK, 'm', a=A*eout(prog(t, 13.0, 13.8)))
+
+
+def mini_path(ctx, x, y, a):
+    steps = [('Pregnant?', 'no'), ('Chest pain?', 'no'), ('Pelvic pain?', 'no'), ('Short of breath?', 'yes')]
+    text(ctx, 'Decision tree', x, y - 30, 24, RED2, 'b', a=a)
+    for k, (q, ans) in enumerate(steps):
+        yy = y + k*92
+        if k:
+            ctx.set_line_width(4); col(ctx, RED, a); ctx.move_to(x, yy - 64); ctx.line_to(x, yy - 26); ctx.stroke()
+        rrect(ctx, x - 125, yy - 24, 250, 48, 16); col(ctx, WHITE, a); ctx.fill()
+        ctx.set_line_width(3); col(ctx, RED2, a); rrect(ctx, x - 125, yy - 24, 250, 48, 16); ctx.stroke()
+        text(ctx, q, x - 108, yy + 7, 20, INK, 'b', 'l', a=a)
+        pill(ctx, ans.upper(), x + 92, yy, 14, WHITE, RED if ans == 'yes' else GREY2, a, 'b', 10)
+    yy = y + 4*92
+    ctx.set_line_width(4); col(ctx, RED, a); ctx.move_to(x, yy - 64); ctx.line_to(x, yy - 30); ctx.stroke()
+    rrect(ctx, x - 125, yy - 30, 250, 60, 18); col(ctx, RED, a); ctx.fill()
+    text(ctx, 'Heart failure studies', x, yy + 8, 21, WHITE, 'b', a=a)
 
 
 # ---------- 4. ECG AI (20 s) ----------
@@ -428,6 +448,8 @@ def clip6(ctx, t, dur, T):
         tag(ctx, 'WITH ANARCHA AI', e)
         headline(ctx, 'Referred straight away, not sent home', e)
         floor = 800
+        if os.environ.get('LEFTONLY') == '1':
+            ctx.save(); ctx.translate(-80, 800*(1 - 0.72) + 60); ctx.scale(0.72, 0.72)
         x, ph = walker(t, [(0, 720), (15.0, 720), (17.2, 1250), (99, 1250)])
         timeline(ctx, [330, 720, 1250, 1640], ['Week 0', 'GP visit', 'Referral', ''], floor + 10, lerp(0.29, 0.6, eio(prog(t, 15.0, 17.2))), e)
         woman(ctx, x, floor, 1.0, v=PAT, walk=ph, a=e)
@@ -438,6 +460,8 @@ def clip6(ctx, t, dur, T):
             col(ctx, GREEN, ck); ctx.arc(x, floor - 360, 30, 0, 6.29); ctx.fill()
             ctx.set_line_width(7); ctx.set_line_cap(cairo.LINE_CAP_ROUND); ctx.set_line_join(cairo.LINE_JOIN_ROUND); col(ctx, WHITE, ck)
             ctx.move_to(x - 13, floor - 360); ctx.line_to(x - 3, floor - 349); ctx.line_to(x + 14, floor - 372); ctx.stroke()
+        if os.environ.get('LEFTONLY') == '1':
+            ctx.restore()
 
 
 CLIPS = [(clip1, 15.0), (clip2, 25.0), (clip3, 20.0), (clip4, 20.0), (clip5, 20.0), (clip6, 20.0)]
