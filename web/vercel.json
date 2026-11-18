@@ -18,16 +18,11 @@
       ]
     }
   ],
-  "rewrites": [
+  "redirects": [
     {
-      "source": "/",
-      "has": [
-        {
-          "type": "host",
-          "value": "anarchaai.vercel.app"
-        }
-      ],
-      "destination": "/demo"
+      "source": "/demo",
+      "destination": "/",
+      "permanent": false
     }
   ]
 }
