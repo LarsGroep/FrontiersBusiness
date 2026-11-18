@@ -81,14 +81,9 @@ def draw(stage, out):
         else:
             text(ctx, NAME[tid], x, y + 6, 16, GREY2, 'm', a=0.8)
     bx, by, bw, bh = 1400, 240, 440, 680
-    card(ctx, bx, by, bw, bh, 1.0)
+    if stage == 2: card(ctx, bx, by, bw, bh, 1.0)
     if stage == 1:
-        text(ctx, '30 themes, 9 groups', bx + bw/2, by + 66, 30, INK, 'b')
-        for k, (name, hexc, ts) in enumerate(GROUPS):
-            yy = by + 130 + k*54
-            col(ctx, hx(hexc)); ctx.arc(bx + 50, yy - 8, 13, 0, 6.29); ctx.fill()
-            text(ctx, name, bx + 80, yy, 23, INK, 'm', 'l')
-        text(ctx, 'Each dot is one study', bx + bw/2, by + bh - 34, 22, GREY2, 'b')
+        pass
     else:
         n3 = int((l1 == 3).sum()); n4 = int((l1 == 4).sum())
         text(ctx, '2 heart themes', bx + bw/2, by + 90, 36, INK, 'b')
