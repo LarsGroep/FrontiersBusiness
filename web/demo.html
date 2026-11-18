@@ -33,7 +33,7 @@ class Component extends DCLogic {
     this.state = { tab: 'info', data: null, preset: 0, sel: { Fatigue: 1, Dyspnea: 1, Edema: 1, 'Jaw Pain': 1 }, ctx: {}, age: '45-64', ecg: true };
   }
   componentDidMount() {
-    fetch('demo/data/handson.json').then((r) => r.json()).then((data) => this.setState({ data })).catch(() => {});
+    fetch('demo-assets/evidence/handson.json').then((r) => r.json()).then((data) => this.setState({ data })).catch(() => {});
   }
   hands() {
     const st = this.state, D = st.data;
@@ -108,22 +108,22 @@ class Component extends DCLogic {
       bar: 'height: 22px; border-radius: 11px; background: #E65C6E; flex: 0 0 auto; width: ' + Math.max(4, Math.round(100 * (Math.log10(v) - lmin) / (lmax - lmin) * 0.85)) + '%'
     }));
     const steps = [
-      { tag: 'STEP 1 · THE DATA', title: 'Only studies of women', img: 'demo/img/step3.jpg', alt: 'Studies pass a female filter and a women-only check',
+      { tag: 'STEP 1 · THE DATA', title: 'Only studies of women', img: 'demo-assets/img/step3.jpg', alt: 'Studies pass a female filter and a women-only check',
         body: 'We keep studies labelled as about women and not men, then a program reads how each study describes its participants and saves the sentence that proves only women took part.',
         stats: [{ v: '50,748', l: 'women-only studies' }, { v: '9 in 10', l: 'confirmed in a hand check' }] },
-      { tag: 'STEP 1 · THE DATA', title: 'Similar studies group into themes', img: 'demo/img/step4.jpg', alt: 'A map of studies coloured by research theme',
+      { tag: 'STEP 1 · THE DATA', title: 'Similar studies group into themes', img: 'demo-assets/img/step4.jpg', alt: 'A map of studies coloured by research theme',
         body: 'A computer turns every study into a fingerprint and places similar studies close together. It finds the research themes on its own.',
         stats: [{ v: '30', l: 'research themes' }, { v: '2', l: 'themes about the heart' }] },
-      { tag: 'STEP 2 · SYMPTOM FILTER', title: 'Her words find the studies', img: 'demo/img/step7.jpg', alt: 'Matching heart studies light up next to a small decision tree',
+      { tag: 'STEP 2 · SYMPTOM FILTER', title: 'Her words find the studies', img: 'demo-assets/img/step7.jpg', alt: 'Matching heart studies light up next to a small decision tree',
         body: 'Everyday words like “jaw ache” are matched to medical terms, and “no chest pain” does not count. A decision tree of yes-or-no questions then points to the best-fitting research.',
         stats: [{ v: '56', l: 'symptoms recognised' }, { v: '280', l: 'studies match her' }] },
-      { tag: 'STEP 2 · ECG AI', title: 'An ECG model trained only on women', img: 'demo/img/step2.jpg', alt: 'The GP types her symptoms and attaches her ECG',
+      { tag: 'STEP 2 · ECG AI', title: 'An ECG model trained only on women', img: 'demo-assets/img/step2.jpg', alt: 'The GP types her symptoms and attaches her ECG',
         body: 'The GP can attach an ECG. Our model learned from women’s ECGs only and recognises six heart rhythm and conduction problems, such as atrial fibrillation.',
         stats: [{ v: '96%', l: 'accuracy (AUROC)' }, { v: '6', l: 'heart problems' }] },
-      { tag: 'STEP 3 · REASONING AGENT', title: 'One answer, with sources', img: 'demo/img/step8.jpg', alt: 'Studies, ECG and tree flow into the AI; an answer card with sources',
+      { tag: 'STEP 3 · REASONING AGENT', title: 'One answer, with sources', img: 'demo-assets/img/step8.jpg', alt: 'Studies, ECG and tree flow into the AI; an answer card with sources',
         body: 'The agent combines the studies, the ECG and the tree into a short answer. Every claim links to a study and a sentence. It never diagnoses.',
         stats: [{ v: '3', l: 'inputs: studies, ECG, tree' }, { v: '[1] [2] [3]', l: 'every claim has a source' }] },
-      { tag: 'THE RESULT', title: 'Referred straight away', img: 'demo/img/step9.jpg', alt: 'She walks on to a cardiologist, with a green check',
+      { tag: 'THE RESULT', title: 'Referred straight away', img: 'demo-assets/img/step9.jpg', alt: 'She walks on to a cardiologist, with a green check',
         body: 'Instead of being sent home, the patient in our example goes straight to a cardiologist. The doctor decides, with women’s research at hand.',
         stats: [{ v: '< 1 s', l: 'to an answer in our prototype' }, { v: '40', l: 'studies in her best-fit group' }] }
     ];

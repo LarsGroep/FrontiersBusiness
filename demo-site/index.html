@@ -33,7 +33,7 @@ class Component extends DCLogic {
     this.state = { tab: 'info', data: null, preset: 0, sel: { Fatigue: 1, Dyspnea: 1, Edema: 1, 'Jaw Pain': 1 }, ctx: {}, age: '45-64', ecg: true };
   }
   componentDidMount() {
-    fetch('data/handson.json').then((r) => r.json()).then((data) => this.setState({ data })).catch(() => {});
+    fetch('evidence/handson.json').then((r) => r.json()).then((data) => this.setState({ data })).catch(() => {});
   }
   hands() {
     const st = this.state, D = st.data;
