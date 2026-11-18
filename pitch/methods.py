@@ -229,6 +229,15 @@ def clip3(ctx, t, dur, T):
     # pills fly from her into the map
     fly = [(mx + mw/2, my + mh/2, prog(t, starts[k], starts[k] + 1.0)) for k in range(4)]
     bubble_pills(ctx, 300, 520, [A*eout(prog(t, 0.8 + k*0.3, 1.2 + k*0.3)) for k in range(4)], fly=fly)
+    ea = A*eout(prog(t, 2.0, 2.6))
+    if ea > 0:
+        ex, ey, ew, eh = 445, 330, 170, 112
+        card(ctx, ex, ey, ew, eh, ea, 20)
+        sig = D['ecg']; ctx.set_line_width(3); col(ctx, RED2, ea)
+        for i in range(0, 900, 4):
+            (ctx.move_to if i == 0 else ctx.line_to)(ex + 18 + i*134/900, ey + 46 - sig[i]*22)
+        ctx.stroke()
+        text(ctx, 'ECG AI', ex + ew/2, ey + 96, 22, DEEP, 'b', a=ea)
     # numbers on the left
     a1 = A*eout(prog(t, 0.8, 1.6))*(1 - prog(t, 2.6, 3.2))
     counter(ctx, 5484, 'heart studies', 1660, 520, a1, 72)
@@ -377,7 +386,7 @@ def clip6(ctx, t, dur, T):
     s1 = A*(1 - prog(t, 13.0, 13.8))
     tag(ctx, 'STEP 5 · REASONING AGENT', s1)
     headline(ctx, 'Everything comes together, with sources', s1)
-    srcs = [('280 women-only studies', mini_map), ('ECG: male-looking pattern', mini_ecg), ('Tree: heart failure studies', mini_tree)]
+    srcs = [('280 women-only studies', mini_map), ('ECG checked by ECG AI', mini_ecg), ('Tree: heart failure studies', mini_tree)]
     ax, ay = 900, 560
     for k, (lab, fn) in enumerate(srcs):
         a = s1*eout(prog(t, 0.6 + k*0.5, 1.2 + k*0.5))
@@ -406,7 +415,7 @@ def clip6(ctx, t, dur, T):
         rrect(ctx, bx + 150, by + 100, 510, 110, 22); col(ctx, RED, ca); ctx.fill()
         for i, l in enumerate(q): text(ctx, l, bx + 174, by + 145 + i*36, 22, WHITE, 'm', 'l', a=ca)
         aa = s1*eout(prog(t, 6.6, 7.4))
-        lines = ['Women-only studies link these symptoms', 'to heart failure.', 'Her ECG pattern is linked to', 'higher risk in women.']
+        lines = ['Women-only studies link these symptoms', 'to heart failure.', 'Her ECG was checked by our', 'women-only ECG AI.']
         rrect(ctx, bx + 40, by + 250, 520, 250, 22); col(ctx, PINK3, aa); ctx.fill()
         for i, l in enumerate(lines): text(ctx, l, bx + 66, by + 300 + i*38 + (16 if i >= 2 else 0), 24, INK, 'm', 'l', a=aa)
         for j, s in enumerate(['[1]', '[2]', '[3]']):
