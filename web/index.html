@@ -20,6 +20,9 @@ button:focus-visible,a:focus-visible{outline:3px solid #1F5FD1;outline-offset:2p
 h3.h{margin:0;font-size:19px;font-weight:700}
 .num{font-size:13px;font-weight:700;color:#fff;background:#E65C6E;border-radius:999px;width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;flex:none}
 .tag{font-size:12px;font-weight:700;letter-spacing:.08em;color:#fff;background:#E65C6E;border-radius:999px;padding:4px 12px}
+@keyframes fl{from{box-shadow:0 0 0 4px #F27383}to{box-shadow:0 12px 34px rgba(142,47,71,.09)}}
+.flash{animation:fl .7s ease-out}
+@media (prefers-reduced-motion:reduce){.flash{animation:none}}
 .chip{font-size:12px;font-weight:600;background:#FFE7EC;color:#8E2F47;border-radius:999px;padding:3px 9px}
 </style>
 </head>
@@ -30,7 +33,7 @@ class DCLogic { constructor(props) { this.props = props || {}; } setState(o) { O
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { tab: 'info', data: null, preset: 0, sel: { Fatigue: 1, Dyspnea: 1, Edema: 1, 'Jaw Pain': 1 }, ctx: {}, age: '45-64', ecg: true };
+    this.state = { tab: 'info', data: null, preset: 0, sel: { Fatigue: 1, Dyspnea: 1, Edema: 1, 'Jaw Pain': 1 }, ctx: {}, age: '45-64', ecg: 'normal' };
   }
   componentDidMount() {
     fetch('demo-assets/evidence/handson.json').then((r) => r.json()).then((data) => this.setState({ data })).catch(() => {});
@@ -38,28 +41,32 @@ class Component extends DCLogic {
   hands() {
     const st = this.state, D = st.data;
     const PRESETS = [
-      { name: 'Woman, 57', line: 'tired, breathless, swollen ankles, jaw ache', sel: ['Fatigue', 'Dyspnea', 'Edema', 'Jaw Pain'], ctx: {}, age: '45-64', ecg: true },
-      { name: 'Woman, 34', line: 'pregnant, headache, blurred vision, swelling', sel: ['Headache', 'Visual Disturbances', 'Edema'], ctx: { Pregnancy: 1 }, age: '25-44', ecg: false },
-      { name: 'Woman, 66', line: 'chest pain, sweating, feeling sick, arm pain', sel: ['Chest Pain', 'Sweating', 'Nausea', 'Arm Pain'], ctx: {}, age: '65+', ecg: true },
-      { name: 'Woman, 51', line: 'menopause, racing heart, dizziness, anxiety', sel: ['Palpitations', 'Dizziness', 'Anxiety'], ctx: { Menopause: 1 }, age: '45-64', ecg: true }
+      { name: 'Woman, 57', line: 'tired, breathless, swollen ankles, jaw ache', sel: ['Fatigue', 'Dyspnea', 'Edema', 'Jaw Pain'], ctx: {}, age: '45-64', ecg: 'normal' },
+      { name: 'Woman, 34', line: 'pregnant, headache, blurred vision', sel: ['Headache', 'Visual Disturbances', 'Edema'], ctx: { Pregnancy: 1 }, age: '25-44', ecg: 'none' },
+      { name: 'Woman, 66', line: 'chest pain, sweating, feeling sick', sel: ['Chest Pain', 'Sweating', 'Nausea', 'Arm Pain'], ctx: {}, age: '65+', ecg: 'normal' },
+      { name: 'Woman, 51', line: 'menopause, racing heart, dizzy', sel: ['Palpitations', 'Dizziness', 'Anxiety'], ctx: { Menopause: 1 }, age: '45-64', ecg: 'af' }
     ];
-    const pill = (on) => 'min-height: 40px; padding: 6px 12px; border-radius: 999px; font: 600 14px Poppins, system-ui, sans-serif; cursor: pointer; border: 1.5px solid ' + (on ? '#B03A56' : '#E7C3CB') + '; background: ' + (on ? '#B03A56' : '#FFFFFF') + '; color: ' + (on ? '#FFFFFF' : '#5C2234');
+    const seg = (on) => 'flex: 1 1 auto; min-height: 36px; padding: 4px 10px; border-radius: 10px; font: 600 13px Poppins, system-ui, sans-serif; cursor: pointer; border: 1.5px solid ' + (on ? '#B03A56' : '#EAD0D6') + '; background: ' + (on ? '#B03A56' : '#FFFFFF') + '; color: ' + (on ? '#FFFFFF' : '#5C2234');
+    const row = (on) => 'display: flex; align-items: center; gap: 8px; width: 100%; min-height: 32px; padding: 3px 6px; border-radius: 10px; border: 0; cursor: pointer; text-align: left; line-height: 1.2; font: 500 13px Poppins, system-ui, sans-serif; color: #5C2234; background: ' + (on ? '#FFE7EC' : 'transparent');
+    const box = (on) => 'flex: none; width: 18px; height: 18px; border-radius: 5px; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #fff; border: 1.5px solid ' + (on ? '#B03A56' : '#CDB7BD') + '; background: ' + (on ? '#B03A56' : '#fff');
     const presets = PRESETS.map((p, i) => ({
       name: p.name, line: p.line, pressed: String(st.preset === i),
-      style: 'text-align: left; min-height: 64px; padding: 10px 12px; border-radius: 16px; cursor: pointer; font-family: Poppins, system-ui, sans-serif; color: ' + (st.preset === i ? '#FFFFFF' : '#5C2234') + '; background: ' + (st.preset === i ? '#B03A56' : '#FFF3F5') + '; border: 1.5px solid ' + (st.preset === i ? '#B03A56' : '#F2C3CD'),
+      style: 'text-align: left; padding: 8px 10px; border-radius: 12px; cursor: pointer; font-family: Poppins, system-ui, sans-serif; color: ' + (st.preset === i ? '#FFFFFF' : '#5C2234') + '; background: ' + (st.preset === i ? '#B03A56' : '#FFF3F5') + '; border: 1.5px solid ' + (st.preset === i ? '#B03A56' : '#F2C3CD'),
       pick: () => this.setState({ preset: i, sel: Object.fromEntries(p.sel.map((x) => [x, 1])), ctx: Object.assign({}, p.ctx), age: p.age, ecg: p.ecg })
     }));
-    const syms = D ? D.symptoms : [];
-    const chips = syms.map((s) => ({ plain: s.plain, pressed: String(!!st.sel[s.name]), style: pill(!!st.sel[s.name]),
-      toggle: () => { const sel = Object.assign({}, st.sel); if (sel[s.name]) delete sel[s.name]; else sel[s.name] = 1; this.setState({ sel, preset: -1 }); } }));
+    const syms = D ? D.symptoms.slice().sort((x, y) => x.plain.localeCompare(y.plain)) : [];
+    const list = syms.map((s) => { const v = !!st.sel[s.name]; return { label: s.plain, checked: String(v), row: row(v), box: box(v), mark: v ? '✓' : '',
+      toggle: () => { const sel = Object.assign({}, st.sel); if (sel[s.name]) delete sel[s.name]; else sel[s.name] = 1; this.setState({ sel, preset: -1 }); } }; });
     const CTX = [['Pregnancy', 'Pregnant'], ['Postpartum', 'Just gave birth'], ['Menopause', 'Menopause']];
-    const ctxChips = CTX.map(([k, label]) => ({ label, pressed: String(!!st.ctx[k]), style: pill(!!st.ctx[k]),
-      toggle: () => { const ctx = Object.assign({}, st.ctx); if (ctx[k]) delete ctx[k]; else ctx[k] = 1; this.setState({ ctx, preset: -1 }); } }));
+    const ctxList = CTX.map(([k, label]) => { const v = !!st.ctx[k]; return { label, checked: String(v), row: row(v), box: box(v), mark: v ? '✓' : '',
+      toggle: () => { const ctx = Object.assign({}, st.ctx); if (ctx[k]) delete ctx[k]; else ctx[k] = 1; this.setState({ ctx, preset: -1 }); } }; });
     const AGES = ['under 25', '25-44', '45-64', '65+'];
-    const ages = AGES.map((a) => ({ label: a === 'under 25' ? 'Under 25' : a, pressed: String(st.age === a), style: pill(st.age === a), pick: () => this.setState({ age: a, preset: -1 }) }));
-    const base = { presets, chips, ctxChips, ages, ecg: st.ecg, ecgPressed: String(st.ecg), ecgBtn: pill(st.ecg) + '; align-self: flex-start', ecgLabel: st.ecg ? 'ECG attached' : 'Attach an ECG',
-      toggleEcg: () => this.setState({ ecg: !st.ecg }), loading: !D, ready: !!D };
-    if (!D) return Object.assign(base, { typed: '', recog: [], funnelLive: [], path: [], leafName: '', leafNote: '', leafBars: [], top: [], noStudies: true, answer: '', ecgPoints: '' });
+    const ages = AGES.map((a) => ({ label: a === 'under 25' ? '<25' : a, pressed: String(st.age === a), style: seg(st.age === a), pick: () => this.setState({ age: a, preset: -1 }) }));
+    const EC = [['none', 'No ECG'], ['normal', 'Regular'], ['af', 'Irregular']];
+    const ecgOpts = EC.map(([k, label]) => ({ label, pressed: String(st.ecg === k), style: seg(st.ecg === k), pick: () => this.setState({ ecg: k, preset: -1 }) }));
+    const nSel = Object.keys(st.sel).filter((k) => syms.some((s) => s.name === k)).length;
+    const base = { presets, list, ctxList, ages, ecgOpts, nSel, loading: !D, ready: !!D };
+    if (!D) return Object.assign(base, { typed: '', funnelLive: [], path: [], leafName: '', leafNote: '', leafBars: [], top: [], noStudies: true, answer: [], ecgView: null });
     const chosen = syms.filter((s) => st.sel[s.name]);
     const feats = new Set(chosen.map((s) => s.name).concat(Object.keys(st.ctx)));
     if (st.age === 'under 25') feats.add('Age: adolescent or young adult');
@@ -69,30 +76,58 @@ class Component extends DCLogic {
     const PL = { 'Pregnancy': 'Pregnant', 'Postpartum': 'Just gave birth', 'Menopause': 'Menopause', 'Age: adolescent or young adult': 'Under 25', 'Age: middle-aged': 'Aged 45 to 64', 'Age: 65 or older': '65 or older', 'Design: randomised trial': 'Trial study', 'Design: cohort or observational': 'Follow-up study', 'Design: cross-sectional': 'Survey study', 'Pain spreading from the chest': 'Pain spreading from the chest', 'Muscle pain or weakness': 'Muscle pain or weakness', 'Pelvic Pain': 'Pelvic pain', 'Cyanosis': 'Bluish lips', 'Snoring': 'Snoring', 'Hirsutism': 'Extra hair growth', 'Urinary Incontinence': 'Leaking urine', 'Sleep Wake Disorders': 'Poor sleep', 'Myalgia': 'Aching muscles', 'Muscle Weakness': 'Weak muscles', 'Fever': 'Fever' };
     const plainOf = (f) => PL[f] || ((syms.find((s) => s.name === f) || {}).plain) || f;
     let n = D.tree; const path = [];
-    while (!n.leaf) { const yes = feats.has(n.f); path.push({ q: plainOf(n.f) + '?', a: yes ? 'YES' : 'NO', ansStyle: 'font-size: 12px; font-weight: 700; color: #FFFFFF; border-radius: 999px; padding: 2px 7px; margin-left: 4px; background: ' + (yes ? '#B03A56' : '#B9A6AD') }); n = yes ? n.yes : n.no; }
+    while (!n.leaf) { const yes = feats.has(n.f); path.push({ q: plainOf(n.f) + '?', yes, a: yes ? 'yes' : 'no', ansStyle: 'font-size: 11px; font-weight: 700; color: #FFFFFF; border-radius: 999px; padding: 1px 7px; margin-left: 4px; background: ' + (yes ? '#B03A56' : '#B9A6AD') }); n = yes ? n.yes : n.no; }
     const leafTotal = n.groups.reduce((a, g) => a + g[1], 0) || 1;
-    const leafBars = n.groups.map(([g, k]) => ({ name: g, pct: Math.round(100 * k / leafTotal) + '%', bar: 'height: 100%; border-radius: 7px; background: #E65C6E; width: ' + Math.round(100 * k / leafTotal) + '%' }));
+    const leafBars = n.groups.slice(0, 3).map(([g, k]) => ({ name: g, pct: Math.round(100 * k / leafTotal) + '%', bar: 'height: 100%; border-radius: 6px; background: #E65C6E; width: ' + Math.round(100 * k / leafTotal) + '%' }));
     const hits = {};
     chosen.forEach((s) => s.ids.forEach((i) => { (hits[i] = hits[i] || []).push(s); }));
     const lead = n.groups[0][0];
-    const ids = Object.keys(hits).map(Number).sort((a, b) => (hits[b].length - hits[a].length) || ((D.studies[b].g === lead) - (D.studies[a].g === lead)) || ((D.studies[b].y || 0) - (D.studies[a].y || 0)));
-    const top = ids.slice(0, 5).map((i, k) => {
-      const s = D.studies[i]; const q = hits[i].map((h) => D.quotes[i + '|' + h.name]).find(Boolean) || '';
-      return { n: k + 1, t: s.t, y: String(s.y || ''), g: s.g, url: 'https://europepmc.org/article/PMC/' + s.id, q, hasQuote: !!q, m: 'matches: ' + hits[i].map((h) => h.plain.toLowerCase()).join(', ') };
+    const RHY = 'Heart rhythm problems', isAF = st.ecg === 'af';
+    const score = (i) => hits[i].length * 10 + (D.studies[i].g === lead ? 3 : 0) + (isAF && D.studies[i].g === RHY ? 6 : 0);
+    const ids = Object.keys(hits).map(Number).sort((a, b) => (score(b) - score(a)) || ((D.studies[b].y || 0) - (D.studies[a].y || 0)));
+    const top = ids.slice(0, 3).map((i, k) => {
+      const s = D.studies[i], tt = s.t.replace(/<[^>]+>/g, ''); let q = hits[i].map((h) => D.quotes[i + '|' + h.name]).find(Boolean) || '';
+      if (q.replace(/\W/g, '').toLowerCase().startsWith(tt.replace(/\W/g, '').toLowerCase().slice(0, 40))) q = '';
+      return { n: k + 1, t: tt, y: String(s.y || ''), g: s.g, url: 'https://europepmc.org/article/PMC/' + s.id, q, hasQuote: !!q, m: hits[i].map((h) => h.plain.toLowerCase()).join(', ') };
     });
-    const lm = Math.log10(50748), l0 = Math.log10(1);
-    const bar = (v) => 'height: 18px; border-radius: 9px; background: #E65C6E; flex: 0 0 auto; width: ' + Math.max(2, Math.round(80 * (Math.log10(Math.max(v, 1)) - l0) / (lm - l0))) + '%';
-    const funnelLive = [['Women-only studies', 50748], ['Heart and blood vessels', D.total_heart], ['Describe women\u2019s symptoms', D.with_symptoms], ['Match her symptoms', ids.length]]
+    const lm = Math.log10(50748);
+    const bar = (v) => 'height: 12px; border-radius: 6px; background: #E65C6E; flex: 0 0 auto; width: ' + Math.max(2, Math.round(70 * Math.log10(Math.max(v, 1)) / lm)) + '%';
+    const funnelLive = [['All women-only studies', 50748], ['Heart and blood vessels', D.total_heart], ['Describe symptoms', D.with_symptoms], ['Match her symptoms', ids.length]]
       .map(([label, v]) => ({ label, n: v.toLocaleString('en-US'), bar: bar(v) }));
-    const ageTxt = st.age === 'under 25' ? 'under 25' : 'aged ' + st.age.replace('-', ' to ');
+    const ageTxt = st.age === 'under 25' ? 'under 25' : st.age === '65+' ? '65 or older' : 'aged ' + st.age.replace('-', ' to ');
     const ctxTxt = Object.keys(st.ctx).map((k) => plainOf(k).toLowerCase());
-    const typed = 'Woman, ' + ageTxt + (ctxTxt.length ? ', ' + ctxTxt.join(', ') : '') + ': ' + (chosen.length ? chosen.map((s) => s.plain.toLowerCase()).join(', ') : 'no symptoms picked') + (st.ecg ? '. ECG attached.' : '.');
-    const recog = chosen.map((s) => s.plain + ' \u2192 ' + s.name).concat(Object.keys(st.ctx).map(plainOf));
-    const answer = chosen.length
-      ? ids.length.toLocaleString('en-US') + ' women-only studies describe women with ' + chosen.map((s) => s.plain.toLowerCase()).join(', ') + '. The decision tree points to research on ' + lead.toLowerCase() + ' (' + leafBars[0].pct + ' of the most similar studies). Start with sources [1] to [3].' + (st.ecg ? ' Her ECG was checked by the women-only ECG AI.' : '')
-      : 'Pick one or more symptoms to see the evidence.';
-    const ecgPoints = (D.ecg || []).map((v, i) => i + ',' + (60 - v * 48).toFixed(1)).join(' ');
-    return Object.assign(base, { typed, recog, funnelLive, path, leafName: lead, leafNote: 'Best-fit group of ' + n.papers + ' studies at the end of her path. Learned from 855 studies; right group in its top three 71% of the time.', leafBars, top, noStudies: !chosen.length, answer, ecgPoints });
+    const symTxt = chosen.map((s) => s.plain.toLowerCase());
+    const typed = 'Woman, ' + ageTxt + (ctxTxt.length ? ', ' + ctxTxt.join(', ') : '') + ': ' + (symTxt.length ? symTxt.join(', ') : 'no symptoms picked') + (st.ecg !== 'none' ? '. ECG attached.' : '.');
+    // ECG view
+    let ecgView = null, ecgLine = 'No ECG was attached.';
+    const X = D.ecgx;
+    if (X && st.ecg !== 'none') {
+      const e = X[st.ecg], rr = e.rr, mean = rr.reduce((a, b) => a + b, 0) / rr.length, med = rr.slice().sort((a, b) => a - b)[rr.length >> 1];
+      const bpm = Math.round(60000 / mean), lo = Math.min.apply(null, rr), hi = Math.max.apply(null, rr);
+      const Y = (v) => (95 - v * 75).toFixed(1);
+      const pts = e.v.map((v, i) => i + ',' + Y(v)).join(' ');
+      const beats = e.r.map((i) => ({ x: i, y: Y(e.v[i]) }));
+      const gaps = rr.map((ms, k) => { const x1 = e.r[k], x2 = e.r[k + 1], odd = isAF && Math.abs(ms - med) / med > 0.15;
+        return { x1, w: x2 - x1, mid: (x1 + x2) / 2, ms, odd, fill: odd ? '#E65C6E' : '#5C2234', band: odd ? 'rgba(230,92,110,.13)' : 'transparent' }; });
+      const nOdd = gaps.filter((g) => g.odd).length;
+      ecgView = { pts, beats, gaps, isAF, bpm, lo, hi,
+        pX: e.r[3] - 17, pY: Y(Math.max.apply(null, e.v.slice(e.r[3] - 24, e.r[3] - 10))),
+        bx: e.r[e.rr.indexOf(hi)] + 10, bw: hi / 10 - 20,
+        other: isAF ? X.normal.v.map((v, i) => i + ',' + (30 - v * 24).toFixed(1)).join(' ') : '',
+        verdict: isAF ? 'Irregular rhythm: looks like atrial fibrillation' : 'Regular rhythm, nothing unusual flagged',
+        detail: isAF ? 'Gaps between beats jump from ' + lo + ' to ' + hi + ' ms (' + nOdd + ' of ' + rr.length + ' clearly off), and the baseline wobbles where P waves should be.' : 'Gaps between beats stay between ' + lo + ' and ' + hi + ' ms, and every beat has a P wave before it. About ' + bpm + ' beats a minute.',
+        src: 'Real ECG of a woman aged ' + e.age + ' from the open CODE-15% data, lead II, 10 seconds.' };
+      ecgLine = isAF ? 'The women-only ECG AI flags an irregular rhythm that looks like atrial fibrillation (' + lo + ' to ' + hi + ' ms between beats).' : 'The women-only ECG AI sees a regular rhythm of about ' + bpm + ' beats a minute.';
+    }
+    const nRhy = ids.filter((i) => D.studies[i].g === RHY).length;
+    const yesQ = path.filter((p) => p.yes).map((p) => p.q.replace('?', '').toLowerCase());
+    const answer = !chosen.length ? [{ t: 'Tick one or more symptoms to see the evidence.' }] : [
+      { t: ids.length.toLocaleString('en-US') + ' women-only studies describe women with ' + symTxt.join(', ') + '.' },
+      { t: 'For a woman ' + ageTxt + (ctxTxt.length ? ' (' + ctxTxt.join(', ') + ')' : '') + ', the decision tree' + (yesQ.length ? ' (via ' + yesQ.slice(0, 3).join(' → ') + ')' : '') + ' points to research on ' + lead.toLowerCase() + ': ' + leafBars[0].pct + ' of the closest studies' + (leafBars[1] ? ', then ' + leafBars[1].name.toLowerCase() + ' (' + leafBars[1].pct + ')' : '') + '.' },
+      { t: ecgLine + (isAF ? ' ' + nRhy + ' of the matching studies are about heart rhythm problems; they are moved up in the sources.' : ''), hl: isAF },
+      { t: 'Start with [1] ' + (top[0] ? top[0].t.replace(/\.$/, '') + ' (' + top[0].y + ')' : '') + '.' }
+    ];
+    return Object.assign(base, { typed, funnelLive, path, leafName: lead, leafNote: n.papers + ' studies at the end of her path. Right group in the top three 71% of the time.', leafBars, top, noStudies: !chosen.length, answer, ecgView });
   }
   renderVals() {
     const F = [
@@ -184,38 +219,58 @@ function info(v) {
     <p style="margin:0;font-size:13px;color:#7A4A58">First checks, mostly judged by AI. Next: two doctors check at least 300 examples per test.</p>
   </section>`;
 }
+function ecgSvg(e) {
+  return `<svg viewBox="0 0 1000 ${e.isAF ? 175 : 125}" role="img" aria-label="${esc(e.verdict)}" style="width:100%;height:auto;display:block;border-radius:10px;background:#FFF8F9">
+    <defs><pattern id="sm" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M4 0H0V4" fill="none" stroke="#F7DCE2" stroke-width=".5"/></pattern><pattern id="bg" width="20" height="20" patternUnits="userSpaceOnUse"><rect width="20" height="20" fill="url(#sm)"/><path d="M20 0H0V20" fill="none" stroke="#EFC3CD" stroke-width="1"/></pattern></defs>
+    <rect width="1000" height="125" fill="url(#bg)"/>
+    ${e.gaps.map((g) => `<rect x="${g.x1}" y="0" width="${g.w}" height="125" fill="${g.band}"/><text x="${g.mid}" y="14" text-anchor="middle" font-family="Poppins" font-size="12" font-weight="${g.odd ? 700 : 500}" fill="${g.fill}">${g.ms}</text>`).join('')}
+    ${e.isAF ? `<rect x="${e.bx}" y="62" width="${e.bw}" height="44" rx="8" fill="none" stroke="#8E2F47" stroke-width="2" stroke-dasharray="5 4"/><text x="${e.bx + e.bw / 2}" y="121" text-anchor="middle" font-family="Poppins" font-size="12" font-weight="700" fill="#8E2F47">no P wave, wavy line</text>`
+      : `<circle cx="${e.pX}" cy="${e.pY}" r="9" fill="none" stroke="#8E2F47" stroke-width="2"/><text x="${e.pX}" y="${+e.pY + 26}" text-anchor="middle" font-family="Poppins" font-size="12" font-weight="700" fill="#8E2F47">P wave</text>`}
+    <polyline points="${e.pts}" fill="none" stroke="#C2334F" stroke-width="2" stroke-linejoin="round"/>
+    ${e.beats.map((b) => `<circle cx="${b.x}" cy="${b.y}" r="4" fill="#5C2234"/>`).join('')}
+    ${e.isAF ? `<g transform="translate(0,128)"><text x="0" y="12" font-family="Poppins" font-size="12" font-weight="600" fill="#9C8890">For comparison, a regular rhythm:</text><polyline transform="translate(0,14)" points="${e.other}" fill="none" stroke="#B9A6AD" stroke-width="1.6"/></g>` : ''}
+  </svg>`;
+}
 function hands(v) {
-  const left = `<aside class="card" style="flex:1 1 320px">
-    <h2 style="margin:0;font-size:19px;font-weight:700">1. Choose a patient</h2>
-    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">${v.presets.map((p) => `<button type="button" ${on(p.pick)} aria-pressed="${p.pressed}" style="${p.style}"><span style="font-weight:700;display:block">${esc(p.name)}</span><span style="font-size:13px;display:block">${esc(p.line)}</span></button>`).join('')}</div>
-    <h2 style="margin:8px 0 0;font-size:19px;font-weight:700">2. Symptoms</h2>
-    <div style="display:flex;flex-wrap:wrap;gap:6px">${v.chips.map((c) => `<button type="button" ${on(c.toggle)} aria-pressed="${c.pressed}" style="${c.style}">${esc(c.plain)}</button>`).join('')}</div>
-    <h2 style="margin:8px 0 0;font-size:19px;font-weight:700">3. About her</h2>
-    <div style="display:flex;flex-wrap:wrap;gap:6px">${v.ctxChips.map((c) => `<button type="button" ${on(c.toggle)} aria-pressed="${c.pressed}" style="${c.style}">${esc(c.label)}</button>`).join('')}</div>
-    <div style="display:flex;flex-wrap:wrap;gap:6px" aria-label="Age">${v.ages.map((a) => `<button type="button" ${on(a.pick)} aria-pressed="${a.pressed}" style="${a.style}">${esc(a.label)}</button>`).join('')}</div>
-    <button type="button" ${on(v.toggleEcg)} aria-pressed="${v.ecgPressed}" style="${v.ecgBtn}">${esc(v.ecgLabel)}</button>
+  const H2 = (t, extra) => `<h2 style="margin:0;font-size:15px;font-weight:700;display:flex;justify-content:space-between;align-items:baseline">${t}${extra ? `<span style="font-size:12px;font-weight:500;color:#9C7380">${extra}</span>` : ''}</h2>`;
+  const check = (c) => `<button type="button" role="checkbox" ${on(c.toggle)} aria-checked="${c.checked}" style="${c.row}"><span aria-hidden="true" style="${c.box}">${c.mark}</span>${esc(c.label)}</button>`;
+  const left = `<aside class="card" style="flex:1 1 300px;max-width:100%;gap:10px;padding:16px;position:sticky;top:12px">
+    ${H2('Patient')}
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px">${v.presets.map((p) => `<button type="button" ${on(p.pick)} aria-pressed="${p.pressed}" style="${p.style}"><span style="font-weight:700;font-size:14px;display:block">${esc(p.name)}</span><span style="font-size:12px;line-height:1.3;display:block">${esc(p.line)}</span></button>`).join('')}</div>
+    ${H2('Symptoms', v.nSel + ' ticked')}
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 4px">${v.list.map(check).join('')}</div>
+    ${H2('About her')}
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 4px">${v.ctxList.map(check).join('')}</div>
+    <div style="display:flex;gap:4px" role="group" aria-label="Age">${v.ages.map((a) => `<button type="button" ${on(a.pick)} aria-pressed="${a.pressed}" style="${a.style}">${esc(a.label)}</button>`).join('')}</div>
+    ${H2('ECG')}
+    <div style="display:flex;gap:4px" role="group" aria-label="ECG">${v.ecgOpts.map((a) => `<button type="button" ${on(a.pick)} aria-pressed="${a.pressed}" style="${a.style}">${esc(a.label)}</button>`).join('')}</div>
   </aside>`;
-  if (v.loading) return `<div class="w" style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">${left}<div class="card" style="flex:999 1 560px"><p style="margin:0">Loading the evidence…</p></div></div>`;
-  const right = `<div style="flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:16px">
-    <section class="card"><div style="display:flex;align-items:center;gap:10px"><span class="num">1</span><h3 class="h">What the GP typed</h3></div>
-      <p style="margin:0;font-size:17px;line-height:1.5;background:#FFF3F5;border-radius:14px;padding:12px 16px">${esc(v.typed)}</p>
-      <div style="display:flex;flex-wrap:wrap;gap:6px">${v.recog.map((r) => `<span class="chip" style="font-size:13px;padding:4px 10px">${esc(r)}</span>`).join('')}</div></section>
-    <section class="card"><div style="display:flex;align-items:center;gap:10px"><span class="num">2</span><h3 class="h">From all studies to hers</h3></div>
-      ${v.funnelLive.map((f) => `<div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px"><span style="flex:0 0 200px;font-size:14px;font-weight:600;color:#7A4A58">${esc(f.label)}</span><div style="flex:999 1 260px;display:flex;align-items:center;gap:10px;min-width:0"><div style="${f.bar}"></div><span style="font-size:20px;font-weight:700;color:#B03A56;white-space:nowrap">${esc(f.n)}</span></div></div>`).join('')}</section>
-    <section class="card"><div style="display:flex;align-items:center;gap:10px"><span class="num">3</span><h3 class="h">The decision tree, live</h3></div>
-      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">${v.path.map((q) => `<div style="display:flex;align-items:center;gap:8px"><span style="font-size:15px;font-weight:600;border:2px solid #E65C6E;border-radius:12px;padding:6px 10px">${esc(q.q)} <span style="${q.ansStyle}">${q.a}</span></span><span aria-hidden="true" style="color:#E65C6E;font-weight:700">→</span></div>`).join('')}<span style="font-size:15px;font-weight:700;color:#fff;background:#B03A56;border-radius:12px;padding:8px 12px">${esc(v.leafName)}</span></div>
-      <p style="margin:0;font-size:14px;color:#7A4A58">${esc(v.leafNote)}</p>
-      ${v.leafBars.map((b) => `<div style="display:flex;align-items:center;gap:10px"><span style="flex:0 1 230px;font-size:14px">${esc(b.name)}</span><div style="flex:1 1 auto;height:14px;background:#FFF3F5;border-radius:7px;overflow:hidden"><div style="${b.bar}"></div></div><span style="flex:0 0 48px;font-size:15px;font-weight:700;color:#B03A56;text-align:right">${b.pct}</span></div>`).join('')}</section>
-    ${v.ecg ? `<section class="card"><div style="display:flex;align-items:center;gap:10px"><span class="num">4</span><h3 class="h">ECG AI, trained only on women</h3></div>
-      <svg viewBox="0 0 1024 120" role="img" aria-label="Example ECG trace" style="width:100%;height:auto;background:#FFF3F5;border-radius:12px"><polyline points="${v.ecgPoints}" fill="none" stroke="#E65C6E" stroke-width="2.4" stroke-linejoin="round"></polyline></svg>
-      <p style="margin:0;font-size:15px;line-height:1.5">The ECG is checked for six heart rhythm and conduction problems, such as atrial fibrillation. On women it had not seen, the model scores <b style="color:#B03A56">96%</b> (AUROC). Example trace from the open CODE-15% data.</p></section>` : ''}
-    <section class="card"><div style="display:flex;align-items:center;gap:10px"><span class="num">5</span><h3 class="h">The best-matching studies</h3></div>
-      ${v.noStudies ? '<p style="margin:0;font-size:15px">Pick one or more symptoms.</p>' : ''}
-      ${v.top.map((t) => `<article style="border-top:1px solid #F2C3CD;padding-top:12px;display:flex;flex-direction:column;gap:6px"><a href="${t.url}" target="_blank" rel="noopener" style="font-size:16px;font-weight:600;line-height:1.35">[${t.n}] ${esc(t.t)}</a>${t.hasQuote ? `<p style="margin:0;font-size:14px;line-height:1.5;background:#FFF3F5;border-radius:10px;padding:8px 12px">“${esc(t.q)}”</p>` : ''}<div style="display:flex;flex-wrap:wrap;gap:6px"><span class="chip">${esc(t.y)}</span><span class="chip">${esc(t.g)}</span><span class="chip">${esc(t.m)}</span></div></article>`).join('')}</section>
-    <section class="card" style="background:#8E2F47;color:#fff"><div style="display:flex;align-items:center;gap:10px"><span class="num" style="background:#fff;color:#8E2F47">6</span><h3 class="h" style="color:#fff">The agent's answer</h3></div>
-      <p style="margin:0;font-size:17px;line-height:1.6">${esc(v.answer)}</p><p style="margin:0;font-size:14px;color:#FFD6DE">Research information, not a diagnosis. The doctor decides.</p></section>
+  if (v.loading) return `<div class="w" style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">${left}<div class="card" style="flex:999 1 560px"><p style="margin:0">Loading the evidence…</p></div></div>`;
+  const hd = (n, t) => `<div style="display:flex;align-items:center;gap:8px"><span class="num">${n}</span><h3 class="h" style="font-size:16px">${t}</h3></div>`;
+  const right = `<div style="flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:14px">
+    <section class="card flash" style="background:#8E2F47;color:#fff;gap:10px;padding:18px 20px" aria-live="polite">
+      <div style="display:flex;align-items:center;gap:8px"><span class="num" style="background:#fff;color:#8E2F47">AI</span><h3 class="h" style="color:#fff;font-size:16px">The agent's answer</h3></div>
+      <p style="margin:0;font-size:13px;color:#FFD6DE;background:rgba(255,255,255,.08);border-radius:10px;padding:6px 10px">GP typed: ${esc(v.typed)}</p>
+      ${v.answer.map((a) => `<p style="margin:0;font-size:15px;line-height:1.5${a.hl ? ';background:rgba(255,255,255,.12);border-radius:10px;padding:6px 10px' : ''}">${esc(a.t)}</p>`).join('')}
+      <p style="margin:0;font-size:12px;color:#FFD6DE">Research information, not a diagnosis. The doctor decides.</p></section>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px">
+      <section class="card" style="gap:8px;padding:16px">${hd(1, 'Decision tree, live')}
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px">${v.path.map((q) => `<span style="font-size:13px;font-weight:600;border:1.5px solid #E65C6E;border-radius:10px;padding:3px 8px">${esc(q.q)}<span style="${q.ansStyle}">${q.a}</span></span><span aria-hidden="true" style="color:#E65C6E;font-weight:700">→</span>`).join('')}<span style="font-size:13px;font-weight:700;color:#fff;background:#B03A56;border-radius:10px;padding:4px 10px">${esc(v.leafName)}</span></div>
+        ${v.leafBars.map((b) => `<div style="display:flex;align-items:center;gap:8px"><span style="flex:0 1 150px;font-size:12px;line-height:1.2">${esc(b.name)}</span><div style="flex:1 1 auto;height:10px;background:#FFF3F5;border-radius:6px;overflow:hidden"><div style="${b.bar}"></div></div><span style="flex:0 0 38px;font-size:13px;font-weight:700;color:#B03A56;text-align:right">${b.pct}</span></div>`).join('')}
+        <p style="margin:0;font-size:12px;color:#7A4A58">${esc(v.leafNote)}</p></section>
+      <section class="card" style="gap:8px;padding:16px">${hd(2, 'From all studies to hers')}
+        ${v.funnelLive.map((f) => `<div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;font-weight:600;color:#7A4A58">${esc(f.label)}</span><div style="display:flex;align-items:center;gap:8px"><div style="${f.bar}"></div><span style="font-size:15px;font-weight:700;color:#B03A56">${esc(f.n)}</span></div></div>`).join('')}</section>
+    </div>
+    ${v.ecgView ? `<section class="card" style="gap:8px;padding:16px">${hd(3, 'ECG AI, trained only on women')}
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px"><span style="font-size:14px;font-weight:700;color:#fff;background:${v.ecgView.isAF ? '#C2334F' : '#3F8F6B'};border-radius:999px;padding:3px 12px">${esc(v.ecgView.verdict)}</span><span style="font-size:12px;color:#7A4A58">Model accuracy on unseen women: 96% (AUROC)</span></div>
+      ${ecgSvg(v.ecgView)}
+      <p style="margin:0;font-size:13px;line-height:1.45">${esc(v.ecgView.detail)} <span style="color:#7A4A58">Dots are heartbeats; numbers are the milliseconds between them${v.ecgView.isAF ? ', red where they jump' : ''}.</span></p>
+      <p style="margin:0;font-size:11px;color:#9C7380">${esc(v.ecgView.src)}</p></section>` : ''}
+    <section class="card" style="gap:8px;padding:16px">${hd(v.ecgView ? 4 : 3, 'Sources')}
+      ${v.noStudies ? '<p style="margin:0;font-size:14px">Tick one or more symptoms.</p>' : ''}
+      ${v.top.map((t) => `<article style="border-top:1px solid #F7DCE2;padding-top:8px;display:flex;flex-direction:column;gap:4px"><a href="${t.url}" target="_blank" rel="noopener" style="font-size:14px;font-weight:600;line-height:1.35">[${t.n}] ${esc(t.t)}</a>${t.hasQuote ? `<p style="margin:0;font-size:12px;line-height:1.45;color:#7A4A58;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">“${esc(t.q)}”</p>` : ''}<div style="display:flex;flex-wrap:wrap;gap:4px"><span class="chip">${esc(t.y)}</span><span class="chip">${esc(t.g)}</span><span class="chip">${esc(t.m)}</span></div></article>`).join('')}</section>
   </div>`;
-  return `<div class="w" style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">${left}${right}</div>`;
+  return `<div class="w" style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start">${left}${right}</div>`;
 }
 function draw() {
   H = [];
