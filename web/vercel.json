@@ -1,7 +1,33 @@
 {
-  "regions": ["fra1"],
+  "regions": [
+    "fra1"
+  ],
   "cleanUrls": true,
   "headers": [
-    { "source": "/api/chat", "headers": [{ "key": "Cache-Control", "value": "no-store" }, { "key": "Referrer-Policy", "value": "no-referrer" }] }
+    {
+      "source": "/api/chat",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "anarchaai.vercel.app"
+        }
+      ],
+      "destination": "/demo"
+    }
   ]
 }
