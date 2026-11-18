@@ -5,7 +5,7 @@ pres.layout = 'LAYOUT_WIDE';
 pres.title = 'Anarcha AI: how it works';
 const S = [
  ['WITH ANARCHA AI','Same patient. Same GP.',"Let's go back to the woman from the video. Same symptoms: she's tired, breathless, her ankles are swollen and her jaw aches."],
- ['WITH ANARCHA AI','This time, the GP asks Anarcha',"Same GP. But this time he types her symptoms into Anarcha. So what happens behind that screen?"],
+ ['WITH ANARCHA AI','This time, the GP asks Anarcha',"Same GP. But this time he types her symptoms into Anarcha and attaches her ECG. So what happens behind that screen?"],
  ['STEP 1 · THE DATA','Studies in which only women took part',"Step one is the data. We collect medical studies from Europe PMC and keep only those in which only women took part. A program checks every study and saves the sentence that proves it. That leaves 50,748 studies."],
  ['STEP 1 · THE DATA',"A map of women's health research","A computer places similar studies close together. This is the map of women's health research. It also shows where research on women is missing."],
  ['STEP 2 · SYMPTOM FILTER','Her words find the studies',"Step two uses her own words. We zoom in on about 5,500 heart studies. 855 of them describe the symptoms the women in the study actually had."],

@@ -106,9 +106,30 @@ def clip1(ctx, t, dur, T):
     doctor(ctx, 1220, floor, 1.0, a=A*eout(prog(t, 0.6, 1.4)), v=GPV)
     woman(ctx, x, floor, 1.0, v=PAT, walk=ph, a=A*eout(prog(t, 0.2, 0.9)))
     laptop(ctx, lx, ly - 30, 0.8, A*eout(prog(t, 7.6, 8.3)), glow=prog(t, 9.0, 11.0), logo_a=eout(prog(t, 8.0, 8.6)))
-    # her symptoms appear, then fly into the laptop
-    fly = [(lx, ly - 110, prog(t, 9.0 + k*0.35, 10.2 + k*0.35)) for k in range(4)]
-    bubble_pills(ctx, x, 455, [A*eout(prog(t, 1.8 + k*0.5, 2.3 + k*0.5)) for k in range(4)], fly=fly)
+    pa = 1 - prog(t, 8.2, 8.8)
+    bubble_pills(ctx, x, 455, [A*pa*eout(prog(t, 1.8 + k*0.5, 2.3 + k*0.5)) for k in range(4)])
+    ca = a0*eout(prog(t, 8.6, 9.1))
+    if ca > 0:
+        cx0, cy0, cw, chh = 700, 235, 640, 215
+        card(ctx, cx0, cy0, cw, chh, ca)
+        text(ctx, 'GP types in Anarcha', cx0 + 30, cy0 + 44, 22, RED2, 'b', 'l', a=ca)
+        full = ['Woman, 57: tired, breathless,', 'swollen ankles, jaw ache']
+        n = int(sum(len(l) for l in full) * prog(t, 9.0, 10.6)); shown = []
+        for l in full:
+            shown.append(l[:max(0, n)]); n -= len(l)
+        for i, l in enumerate(shown):
+            if l: text(ctx, l, cx0 + 30, cy0 + 92 + i*38, 26, INK, 'm', 'l', a=ca)
+        if prog(t, 9.0, 10.6) < 1 and int(t*3) % 2 == 0:
+            k = 0 if shown[1] == '' else 1
+            col(ctx, RED, ca); ctx.rectangle(cx0 + 34 + twidth(ctx, shown[k], 26, 'm'), cy0 + 70 + k*38, 3, 28); ctx.fill()
+        ea = ca*eout(prog(t, 10.8, 11.3))
+        if ea > 0:
+            rrect(ctx, cx0 + 30, cy0 + 160, 290, 40, 20); col(ctx, PINK3, ea); ctx.fill()
+            sig = D['ecg']; ctx.set_line_width(2.5); col(ctx, RED2, ea)
+            for i in range(0, 800, 4):
+                (ctx.move_to if i == 0 else ctx.line_to)(cx0 + 48 + i*80/800, cy0 + 180 - sig[i]*14)
+            ctx.stroke()
+            text(ctx, 'ECG attached', cx0 + 142, cy0 + 188, 20, DEEP, 'b', 'l', a=ea)
     ctx.restore()
     # end of the zoom: the screen fills the frame
     if z > 0.85:
