@@ -8,7 +8,7 @@ APP_USER=herevidence
 APP_DIR=/opt/herevidence
 ENV_FILE=/etc/herevidence.env
 DATA_MOUNT=/mnt/evidence          # USB/SSD data disk prepared by pi/prepare-usb.sh
-SITE_ORIGIN="${SITE_ORIGIN:-https://larsfrontiers2.vercel.app}"
+SITE_ORIGIN="${SITE_ORIGIN:-https://anarcha-ai.vercel.app}"
 REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 
 say()  { printf '\n\033[1m==> %s\033[0m\n' "$*"; }

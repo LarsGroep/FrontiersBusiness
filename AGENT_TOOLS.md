@@ -1,6 +1,6 @@
 # Agent tools for the women-only evidence database
 
-Base URL: `https://larsfrontiers2.vercel.app`. The tools are read-only and need no key. CORS is open.
+Base URL: `https://anarcha-ai.vercel.app`. The tools are read-only and need no key. CORS is open.
 
 The database is a lean catalogue of studies with only women/girls as participants. Each study has metadata, a women-only label with the supporting quote, a structured evidence record (once Claude extraction runs) and up to 4 passages. Full text is fetched on demand.
 

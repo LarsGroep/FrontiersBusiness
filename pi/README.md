@@ -56,7 +56,7 @@ bash /opt/herevidence/pi/expose.sh
 ```
 1. Sign in to Tailscale when asked. The first time, open the link it prints to allow HTTPS/Funnel, then run the script again.
 2. It prints an address like `https://evidence.tail1234.ts.net`.
-3. In **Vercel → larsfrontiers2 → Settings → Environment Variables**, add:
+3. In **Vercel → project larsfrontiers2 (site anarcha-ai.vercel.app) → Settings → Environment Variables**, add:
    - `PI_API_URL` = that address (no trailing slash)
    - `PI_API_TOKEN` = the token printed by `install.sh` (also in `/etc/herevidence.env`)
 4. Redeploy. The site then shows *"Whole-text search is on"* under the study count.
