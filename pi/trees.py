@@ -77,14 +77,21 @@ MERGE = {
 }
 
 
+NOT_DISEASE = {"Signs and Symptoms", "No disease term", "C23 Pathological Conditions",
+               "C23 Pathological Conditions, Signs and Symptoms"}
+
+
 def area_of(areas: list[str], freq: dict[str, int]) -> str:
     """Main disease area of a paper: the area with most of its MeSH terms; ties go to the less common area."""
     parsed = []
     for a in areas:
         name, _, n = a.rpartition("|")
-        parsed.append((name or a, int(n) if n.isdigit() else 1))
+        name = name or a
+        if name in NOT_DISEASE or name.startswith("C23"):   # the symptom areas themselves would make the target circular
+            continue
+        parsed.append((name, int(n) if n.isdigit() else 1))
     if not parsed:
-        return "No disease term"
+        return None
     return max(parsed, key=lambda x: (x[1], -freq.get(x[0], 0)))[0]
 
 
@@ -109,14 +116,14 @@ def dataset(g, target: str = "group"):
         has = [s for s in sym_feats if pid in g_sym[s]]
         if not has:
             continue
+        y = area_of(g.papers[pid].get("areas", []), area_freq) if target == "area" else group_of(g.papers[pid]["conditions"], trees)
+        if y is None:
+            continue
         mesh, ptypes = meta.get(pid, (set(), set()))
         terms = mesh | ptypes
         x = [1 if pid in g_sym[s] else 0 for s in sym_feats] + [1 if terms & set(v) else 0 for v in CONTEXT.values()]
         rows.append(x)
-        if target == "area":
-            ys.append(area_of(g.papers[pid].get("areas", []), area_freq))
-        else:
-            ys.append(group_of(g.papers[pid]["conditions"], trees))
+        ys.append(y)
         pids.append(pid)
     counts = Counter(ys)
     ys = [y if counts[y] >= MIN_CLASS else OTHER for y in ys]
