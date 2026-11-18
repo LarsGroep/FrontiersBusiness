@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Anarcha AI: how it works</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#FFF3F5}
+a{color:#B03A56}a:hover{color:#8E2F47}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; font-family: Poppins, system-ui, sans-serif; color: #5C2234; background: linear-gradient(160deg, #FFF3F5 0%, #FFDDE4 100%); padding: 24px 20px 48px; display: flex; flex-direction: column; align-items: center; gap: 28px">
+
+  <header style="width: 100%; max-width: 1160px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <span style="font-weight: 700; font-size: 22px; letter-spacing: 0.18em; color: #8E2F47">ANARCHA</span>
+      <span style="font-weight: 700; font-size: 13px; color: #FFFFFF; background: #E65C6E; border-radius: 999px; padding: 3px 9px">AI</span>
+    </div>
+    <span style="font-size: 15px; font-weight: 500; color: #7A4A58">How it works, in numbers</span>
+  </header>
+
+  <nav aria-label="Demo sections" style="width: 100%; max-width: 1160px; display: flex; gap: 8px; background: #FFFFFF; border-radius: 999px; padding: 6px; box-sizing: border-box; box-shadow: 0 8px 24px rgba(142, 47, 71, 0.08)">
+    <button type="button" onClick="{{showInfo}}" aria-pressed="{{infoPressed}}" style="{{infoTab}}">Information</button>
+    <button type="button" onClick="{{showHands}}" aria-pressed="{{handsPressed}}" style="{{handsTab}}">Practical hands-on</button>
+  </nav>
+
+  <sc-if value="{{isInfo}}" hint-placeholder-val="{{ true }}">
+  <div style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 28px">
+  <section style="width: 100%; max-width: 1160px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center">
+    <h1 style="margin: 0; font-size: clamp(30px, 4.4vw, 52px); line-height: 1.1; font-weight: 700">From 50,748 studies to one answer</h1>
+    <p style="margin: 0; max-width: 720px; font-size: 18px; line-height: 1.55">Every number below comes from our own data and tests. The example patient: a woman of 57, tired, breathless, swollen ankles and a sore jaw.</p>
+  </section>
+
+  <section aria-label="The process as a funnel" style="width: 100%; max-width: 1160px; background: #FFFFFF; border-radius: 28px; box-shadow: 0 18px 50px rgba(142, 47, 71, 0.10); padding: 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px">
+    <h2 style="margin: 0 0 6px; font-size: 24px; font-weight: 700">The funnel</h2>
+    <sc-for list="{{funnel}}" as="f" hint-placeholder-count="5">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px">
+        <span style="flex: 0 0 210px; font-size: 15px; font-weight: 600; color: #7A4A58">{{f.step}}</span>
+        <div style="flex: 999 1 380px; display: flex; align-items: center; gap: 12px; min-width: 0">
+          <div style="{{f.bar}}"></div>
+          <span style="font-size: 22px; font-weight: 700; color: #B03A56; white-space: nowrap">{{f.n}}</span>
+        </div>
+        <span style="flex: 1 1 100%; font-size: 15px; color: #5C2234; padding-left: 0">{{f.what}}</span>
+      </div>
+    </sc-for>
+    <p style="margin: 4px 0 0; font-size: 13px; color: #7A4A58">Bar length on a log scale, so every step stays visible.</p>
+  </section>
+
+  <section style="width: 100%; max-width: 1160px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 520px), 1fr)); gap: 20px">
+    <sc-for list="{{steps}}" as="s" hint-placeholder-count="4">
+      <article style="background: #FFFFFF; border-radius: 24px; box-shadow: 0 12px 34px rgba(142, 47, 71, 0.09); overflow: hidden; display: flex; flex-direction: column">
+        <img src="{{s.img}}" alt="{{s.alt}}" style="width: 100%; aspect-ratio: 1440 / 683; object-fit: cover; background: #FFE7EC; display: block">
+        <div style="padding: 18px 22px 22px; display: flex; flex-direction: column; gap: 10px">
+          <span style="align-self: flex-start; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: #FFFFFF; background: #E65C6E; border-radius: 999px; padding: 4px 12px">{{s.tag}}</span>
+          <h3 style="margin: 0; font-size: 22px; font-weight: 700">{{s.title}}</h3>
+          <p style="margin: 0; font-size: 16px; line-height: 1.55">{{s.body}}</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px">
+            <sc-for list="{{s.stats}}" as="k" hint-placeholder-count="2">
+              <div style="background: #FFF3F5; border-radius: 14px; padding: 10px 14px; display: flex; flex-direction: column">
+                <span style="font-size: 22px; font-weight: 700; color: #B03A56">{{k.v}}</span>
+                <span style="font-size: 13px; color: #5C2234">{{k.l}}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </article>
+    </sc-for>
+  </section>
+
+  <section aria-label="Test results" style="width: 100%; max-width: 1160px; background: #FFFFFF; border-radius: 28px; box-shadow: 0 18px 50px rgba(142, 47, 71, 0.10); padding: 28px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px">
+    <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px">
+      <h2 style="margin: 0; font-size: 24px; font-weight: 700">How well it works</h2>
+      <div style="display: flex; gap: 16px; font-size: 14px; color: #5C2234">
+        <span style="display: flex; align-items: center; gap: 6px"><span style="width: 14px; height: 14px; border-radius: 4px; background: #B03A56"></span>Anarcha AI</span>
+        <span style="display: flex; align-items: center; gap: 6px"><span style="width: 14px; height: 14px; border-radius: 4px; background: #CDB7BD"></span>Comparison</span>
+      </div>
+    </div>
+    <sc-for list="{{tests}}" as="t" hint-placeholder-count="5">
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <span style="font-size: 16px; font-weight: 600">{{t.name}}</span>
+        <div style="display: flex; align-items: center; gap: 10px">
+          <div style="flex: 1 1 auto; height: 18px; background: #FFF3F5; border-radius: 9px; overflow: hidden"><div style="{{t.ours}}"></div></div>
+          <span style="flex: 0 0 64px; font-size: 18px; font-weight: 700; color: #B03A56; text-align: right">{{t.a}}</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px">
+          <div style="flex: 1 1 auto; height: 18px; background: #FFF3F5; border-radius: 9px; overflow: hidden"><div style="{{t.base}}"></div></div>
+          <span style="flex: 0 0 64px; font-size: 18px; font-weight: 600; color: #7A4A58; text-align: right">{{t.b}}</span>
+        </div>
+        <span style="font-size: 13px; color: #7A4A58">{{t.note}}</span>
+      </div>
+    </sc-for>
+    <p style="margin: 0; font-size: 13px; color: #7A4A58">First checks, mostly judged by AI. Next: two doctors check at least 300 examples per test.</p>
+  </section>
+  </div>
+  </sc-if>
+  <sc-if value="{{isHands}}" hint-placeholder-val="{{ false }}">
+  <div style="width: 100%; max-width: 1160px; display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+    <aside style="flex: 1 1 320px; background: #FFFFFF; border-radius: 24px; box-shadow: 0 12px 34px rgba(142, 47, 71, 0.09); padding: 22px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px">
+      <h2 style="margin: 0; font-size: 19px; font-weight: 700">1. Choose a patient</h2>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+        <sc-for list="{{presets}}" as="p" hint-placeholder-count="4">
+          <button type="button" onClick="{{p.pick}}" aria-pressed="{{p.pressed}}" style="{{p.style}}"><span style="font-weight: 700; display: block">{{p.name}}</span><span style="font-size: 13px; display: block">{{p.line}}</span></button>
+        </sc-for>
+      </div>
+      <h2 style="margin: 0; font-size: 19px; font-weight: 700; margin-top: 8px">2. Symptoms</h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 6px">
+        <sc-for list="{{chips}}" as="c" hint-placeholder-count="18">
+          <button type="button" onClick="{{c.toggle}}" aria-pressed="{{c.pressed}}" style="{{c.style}}">{{c.plain}}</button>
+        </sc-for>
+      </div>
+      <h2 style="margin: 0; font-size: 19px; font-weight: 700; margin-top: 8px">3. About her</h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 6px">
+        <sc-for list="{{ctxChips}}" as="c" hint-placeholder-count="3">
+          <button type="button" onClick="{{c.toggle}}" aria-pressed="{{c.pressed}}" style="{{c.style}}">{{c.label}}</button>
+        </sc-for>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 6px" aria-label="Age">
+        <sc-for list="{{ages}}" as="a" hint-placeholder-count="4">
+          <button type="button" onClick="{{a.pick}}" aria-pressed="{{a.pressed}}" style="{{a.style}}">{{a.label}}</button>
+        </sc-for>
+      </div>
+      <button type="button" onClick="{{toggleEcg}}" aria-pressed="{{ecgPressed}}" style="{{ecgBtn}}">{{ecgLabel}}</button>
+    </aside>
+
+    <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+      <sc-if value="{{loading}}" hint-placeholder-val="{{ false }}">
+        <div style="background: #FFFFFF; border-radius: 24px; box-shadow: 0 12px 34px rgba(142, 47, 71, 0.09); padding: 22px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px"><p style="margin: 0; font-size: 16px">Loading the evidence…</p></div>
+      </sc-if>
+      <sc-if value="{{ready}}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-direction: column; gap: 16px">
+        <section style="background: #FFFFFF; border-radius: 24px; box-shadow: 0 12px 34px rgba(142, 47, 71, 0.09); padding: 22px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; align-items: center; gap: 10px"><span style="font-size: 13px; font-weight: 700; color: #FFFFFF; background: #E65C6E; border-radius: 999px; width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; flex: none">1</span><h3 style="margin: 0; font-size: 19px; font-weight: 700">What the GP typed</h3></div>
+          <p style="margin: 0; font-size: 17px; line-height: 1.5; background: #FFF3F5; border-radius: 14px; padding: 12px 16px">{{typed}}</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px">
+            <sc-for list="{{recog}}" as="r" hint-placeholder-count="4">
+              <span style="font-size: 13px; font-weight: 600; color: #8E2F47; background: #FFE7EC; border-radius: 999px; padding: 4px 10px">{{r}}</span>
+            </sc-for>
+          </div>
+        </section>
+
+        <section style="background: #FFFFFF; border-radius: 24px; box-shadow: 0 12px 34px rgba(142, 47, 71, 0.09); padding: 22px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; align-items: center; gap: 10px"><span style="font-size: 13px; font-weight: 700; color: #FFFFFF; background: #E65C6E; border-radius: 999px; width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; flex: none">2</span><h3 style="margin: 0; font-size: 19px; font-weight: 700">From all studies to hers</h3></div>
+          <sc-for list="{{funnelLive}}" as="f" hint-placeholder-count="4">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px">
+              <span style="flex: 0 0 200px; font-size: 14px; font-weight: 600; color: #7A4A58">{{f.label}}</span>
+              <div style="flex: 999 1 300px; display: flex; align-items: center; gap: 10px; min-width: 0">
+                <div style="{{f.bar}}"></div>
+                <span style="font-size: 20px; font-weight: 700; color: #B03A56; white-space: nowrap">{{f.n}}</span>
+              </div>
+            </div>
+          </sc-for>
+        </section>
+
+        <section style="background: #FFFFFF; border-radius: 24px; box-shadow: 0 12px 34px rgba(142, 47, 71, 0.09); padding: 22px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; align-items: center; gap: 10px"><span style="font-size: 13px; font-weight: 700; color: #FFFFFF; background: #E65C6E; border-radius: 999px; width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; flex: none">3</span><h3 style="margin: 0; font-size: 19px; font-weight: 700">The decision tree, live</h3></div>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+            <sc-for list="{{path}}" as="q" hint-placeholder-count="4">
+              <div style="display: flex; align-items: center; gap: 8px">
+                <span style="font-size: 15px; font-weight: 600; border: 2px solid #E65C6E; border-radius: 12px; padding: 6px 10px">{{q.q}} <span style="{{q.ansStyle}}">{{q.a}}</span></span>
+                <span aria-hidden="true" style="color: #E65C6E; font-weight: 700">→</span>
+              </div>
+            </sc-for>
+            <span style="font-size: 15px; font-weight: 700; color: #FFFFFF; background: #B03A56; border-radius: 12px; padding: 8px 12px">{{leafName}}</span>
+          </div>
+          <p style="margin: 0; font-size: 14px; color: #7A4A58">{{leafNote}}</p>
+          <sc-for list="{{leafBars}}" as="b" hint-placeholder-count="3">
+            <div style="display: flex; align-items: center; gap: 10px">
+              <span style="flex: 0 0 230px; font-size: 14px">{{b.name}}</span>
+              <div style="flex: 1 1 auto; height: 14px; background: #FFF3F5; border-radius: 7px; overflow: hidden"><div style="{{b.bar}}"></div></div>
+              <span style="flex: 0 0 48px; font-size: 15px; font-weight: 700; color: #B03A56; text-align: right">{{b.pct}}</span>
+            </div>
+          </sc-for>
+        </section>
+
+        <sc-if value="{{ecg}}" hint-placeholder-val="{{ true }}">
+        <section style="background: #FFFFFF; border-radius: 24px; box-shadow: 0 12px 34px rgba(142, 47, 71, 0.09); padding: 22px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; align-items: center; gap: 10px"><span style="font-size: 13px; font-weight: 700; color: #FFFFFF; background: #E65C6E; border-radius: 999px; width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; flex: none">4</span><h3 style="margin: 0; font-size: 19px; font-weight: 700">ECG AI, trained only on women</h3></div>
+          <svg viewBox="0 0 1024 120" role="img" aria-label="Example ECG trace" style="width: 100%; height: auto; background: #FFF3F5; border-radius: 12px"><polyline points="{{ecgPoints}}" fill="none" stroke="#E65C6E" stroke-width="2.4" stroke-linejoin="round"></polyline></svg>
+          <p style="margin: 0; font-size: 15px; line-height: 1.5">The ECG is checked for six heart rhythm and conduction problems, such as atrial fibrillation. On women it had not seen, the model scores <b style="color: #B03A56">96%</b> (AUROC). Example trace from the open CODE-15% data.</p>
+        </section>
+        </sc-if>
+
+        <section style="background: #FFFFFF; border-radius: 24px; box-shadow: 0 12px 34px rgba(142, 47, 71, 0.09); padding: 22px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; align-items: center; gap: 10px"><span style="font-size: 13px; font-weight: 700; color: #FFFFFF; background: #E65C6E; border-radius: 999px; width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; flex: none">5</span><h3 style="margin: 0; font-size: 19px; font-weight: 700">The best-matching studies</h3></div>
+          <sc-if value="{{noStudies}}" hint-placeholder-val="{{ false }}"><p style="margin: 0; font-size: 15px">Pick one or more symptoms.</p></sc-if>
+          <sc-for list="{{top}}" as="t" hint-placeholder-count="5">
+            <article style="border-top: 1px solid #F2C3CD; padding-top: 12px; display: flex; flex-direction: column; gap: 6px">
+              <a href="{{t.url}}" style="font-size: 16px; font-weight: 600; line-height: 1.35">[{{t.n}}] {{t.t}}</a>
+              <sc-if value="{{t.hasQuote}}" hint-placeholder-val="{{ true }}"><p style="margin: 0; font-size: 14px; line-height: 1.5; color: #5C2234; background: #FFF3F5; border-radius: 10px; padding: 8px 12px">“{{t.q}}”</p></sc-if>
+              <div style="display: flex; flex-wrap: wrap; gap: 6px">
+                <span style="font-size: 12px; font-weight: 600; background: #FFE7EC; color: #8E2F47; border-radius: 999px; padding: 3px 9px">{{t.y}}</span>
+                <span style="font-size: 12px; font-weight: 600; background: #FFE7EC; color: #8E2F47; border-radius: 999px; padding: 3px 9px">{{t.g}}</span>
+                <span style="font-size: 12px; font-weight: 600; background: #FFE7EC; color: #8E2F47; border-radius: 999px; padding: 3px 9px">{{t.m}}</span>
+              </div>
+            </article>
+          </sc-for>
+        </section>
+
+        <section style="background: #FFFFFF; border-radius: 24px; box-shadow: 0 12px 34px rgba(142, 47, 71, 0.09); padding: 22px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; background: #8E2F47; color: #FFFFFF">
+          <div style="display: flex; align-items: center; gap: 10px"><span style="font-size: 13px; font-weight: 700; color: #FFFFFF; background: #E65C6E; border-radius: 999px; width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; flex: none; background: #FFFFFF; color: #8E2F47">6</span><h3 style="margin: 0; font-size: 19px; font-weight: 700; color: #FFFFFF">The agent's answer</h3></div>
+          <p style="margin: 0; font-size: 17px; line-height: 1.6">{{answer}}</p>
+          <p style="margin: 0; font-size: 14px; color: #FFD6DE">Research information, not a diagnosis. The doctor decides.</p>
+        </section>
+      </div>
+      </sc-if>
+    </div>
+  </div>
+  </sc-if>
+
+  <p style="margin: 0; font-size: 14px; color: #7A4A58; text-align: center">Information, not a diagnosis. The doctor decides.</p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3600}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tab: 'info', data: null, preset: 0, sel: { Fatigue: 1, Dyspnea: 1, Edema: 1, 'Jaw Pain': 1 }, ctx: {}, age: '45-64', ecg: true };
+  }
+  componentDidMount() {
+    fetch('/_blob/969a442e2a336a2548ef1e3dc4e72e71').then((r) => r.json()).then((data) => this.setState({ data })).catch(() => {});
+  }
+  hands() {
+    const st = this.state, D = st.data;
+    const PRESETS = [
+      { name: 'Woman, 57', line: 'tired, breathless, swollen ankles, jaw ache', sel: ['Fatigue', 'Dyspnea', 'Edema', 'Jaw Pain'], ctx: {}, age: '45-64', ecg: true },
+      { name: 'Woman, 34', line: 'pregnant, headache, blurred vision, swelling', sel: ['Headache', 'Visual Disturbances', 'Edema'], ctx: { Pregnancy: 1 }, age: '25-44', ecg: false },
+      { name: 'Woman, 66', line: 'chest pain, sweating, feeling sick, arm pain', sel: ['Chest Pain', 'Sweating', 'Nausea', 'Arm Pain'], ctx: {}, age: '65+', ecg: true },
+      { name: 'Woman, 51', line: 'menopause, racing heart, dizziness, anxiety', sel: ['Palpitations', 'Dizziness', 'Anxiety'], ctx: { Menopause: 1 }, age: '45-64', ecg: true }
+    ];
+    const pill = (on) => 'min-height: 40px; padding: 6px 12px; border-radius: 999px; font: 600 14px Poppins, system-ui, sans-serif; cursor: pointer; border: 1.5px solid ' + (on ? '#B03A56' : '#E7C3CB') + '; background: ' + (on ? '#B03A56' : '#FFFFFF') + '; color: ' + (on ? '#FFFFFF' : '#5C2234');
+    const presets = PRESETS.map((p, i) => ({
+      name: p.name, line: p.line, pressed: String(st.preset === i),
+      style: 'text-align: left; min-height: 64px; padding: 10px 12px; border-radius: 16px; cursor: pointer; font-family: Poppins, system-ui, sans-serif; color: ' + (st.preset === i ? '#FFFFFF' : '#5C2234') + '; background: ' + (st.preset === i ? '#B03A56' : '#FFF3F5') + '; border: 1.5px solid ' + (st.preset === i ? '#B03A56' : '#F2C3CD'),
+      pick: () => this.setState({ preset: i, sel: Object.fromEntries(p.sel.map((x) => [x, 1])), ctx: Object.assign({}, p.ctx), age: p.age, ecg: p.ecg })
+    }));
+    const syms = D ? D.symptoms : [];
+    const chips = syms.map((s) => ({ plain: s.plain, pressed: String(!!st.sel[s.name]), style: pill(!!st.sel[s.name]),
+      toggle: () => { const sel = Object.assign({}, st.sel); if (sel[s.name]) delete sel[s.name]; else sel[s.name] = 1; this.setState({ sel, preset: -1 }); } }));
+    const CTX = [['Pregnancy', 'Pregnant'], ['Postpartum', 'Just gave birth'], ['Menopause', 'Menopause']];
+    const ctxChips = CTX.map(([k, label]) => ({ label, pressed: String(!!st.ctx[k]), style: pill(!!st.ctx[k]),
+      toggle: () => { const ctx = Object.assign({}, st.ctx); if (ctx[k]) delete ctx[k]; else ctx[k] = 1; this.setState({ ctx, preset: -1 }); } }));
+    const AGES = ['under 25', '25-44', '45-64', '65+'];
+    const ages = AGES.map((a) => ({ label: a === 'under 25' ? 'Under 25' : a, pressed: String(st.age === a), style: pill(st.age === a), pick: () => this.setState({ age: a, preset: -1 }) }));
+    const base = { presets, chips, ctxChips, ages, ecg: st.ecg, ecgPressed: String(st.ecg), ecgBtn: pill(st.ecg) + '; align-self: flex-start', ecgLabel: st.ecg ? 'ECG attached' : 'Attach an ECG',
+      toggleEcg: () => this.setState({ ecg: !st.ecg }), loading: !D, ready: !!D };
+    if (!D) return Object.assign(base, { typed: '', recog: [], funnelLive: [], path: [], leafName: '', leafNote: '', leafBars: [], top: [], noStudies: true, answer: '', ecgPoints: '' });
+    const chosen = syms.filter((s) => st.sel[s.name]);
+    const feats = new Set(chosen.map((s) => s.name).concat(Object.keys(st.ctx)));
+    if (st.age === 'under 25') feats.add('Age: adolescent or young adult');
+    if (st.age === '45-64') feats.add('Age: middle-aged');
+    if (st.age === '65+') feats.add('Age: 65 or older');
+    Object.entries(D.merge || {}).forEach(([name, mem]) => { if (mem.some((m) => feats.has(m))) feats.add(name); });
+    const PL = { 'Pregnancy': 'Pregnant', 'Postpartum': 'Just gave birth', 'Menopause': 'Menopause', 'Age: adolescent or young adult': 'Under 25', 'Age: middle-aged': 'Aged 45 to 64', 'Age: 65 or older': '65 or older', 'Design: randomised trial': 'Trial study', 'Design: cohort or observational': 'Follow-up study', 'Design: cross-sectional': 'Survey study', 'Pain spreading from the chest': 'Pain spreading from the chest', 'Muscle pain or weakness': 'Muscle pain or weakness', 'Pelvic Pain': 'Pelvic pain', 'Cyanosis': 'Bluish lips', 'Snoring': 'Snoring', 'Hirsutism': 'Extra hair growth', 'Urinary Incontinence': 'Leaking urine', 'Sleep Wake Disorders': 'Poor sleep', 'Myalgia': 'Aching muscles', 'Muscle Weakness': 'Weak muscles', 'Fever': 'Fever' };
+    const plainOf = (f) => PL[f] || ((syms.find((s) => s.name === f) || {}).plain) || f;
+    let n = D.tree; const path = [];
+    while (!n.leaf) { const yes = feats.has(n.f); path.push({ q: plainOf(n.f) + '?', a: yes ? 'YES' : 'NO', ansStyle: 'font-size: 12px; font-weight: 700; color: #FFFFFF; border-radius: 999px; padding: 2px 7px; margin-left: 4px; background: ' + (yes ? '#B03A56' : '#B9A6AD') }); n = yes ? n.yes : n.no; }
+    const leafTotal = n.groups.reduce((a, g) => a + g[1], 0) || 1;
+    const leafBars = n.groups.map(([g, k]) => ({ name: g, pct: Math.round(100 * k / leafTotal) + '%', bar: 'height: 100%; border-radius: 7px; background: #E65C6E; width: ' + Math.round(100 * k / leafTotal) + '%' }));
+    const hits = {};
+    chosen.forEach((s) => s.ids.forEach((i) => { (hits[i] = hits[i] || []).push(s); }));
+    const lead = n.groups[0][0];
+    const ids = Object.keys(hits).map(Number).sort((a, b) => (hits[b].length - hits[a].length) || ((D.studies[b].g === lead) - (D.studies[a].g === lead)) || ((D.studies[b].y || 0) - (D.studies[a].y || 0)));
+    const top = ids.slice(0, 5).map((i, k) => {
+      const s = D.studies[i]; const q = hits[i].map((h) => D.quotes[i + '|' + h.name]).find(Boolean) || '';
+      return { n: k + 1, t: s.t, y: String(s.y || ''), g: s.g, url: 'https://europepmc.org/article/PMC/' + s.id, q, hasQuote: !!q, m: 'matches: ' + hits[i].map((h) => h.plain.toLowerCase()).join(', ') };
+    });
+    const lm = Math.log10(50748), l0 = Math.log10(1);
+    const bar = (v) => 'height: 18px; border-radius: 9px; background: #E65C6E; flex: 0 0 auto; width: ' + Math.max(2, Math.round(80 * (Math.log10(Math.max(v, 1)) - l0) / (lm - l0))) + '%';
+    const funnelLive = [['Women-only studies', 50748], ['Heart and blood vessels', D.total_heart], ['Describe women\u2019s symptoms', D.with_symptoms], ['Match her symptoms', ids.length]]
+      .map(([label, v]) => ({ label, n: v.toLocaleString('en-US'), bar: bar(v) }));
+    const ageTxt = st.age === 'under 25' ? 'under 25' : 'aged ' + st.age.replace('-', ' to ');
+    const ctxTxt = Object.keys(st.ctx).map((k) => plainOf(k).toLowerCase());
+    const typed = 'Woman, ' + ageTxt + (ctxTxt.length ? ', ' + ctxTxt.join(', ') : '') + ': ' + (chosen.length ? chosen.map((s) => s.plain.toLowerCase()).join(', ') : 'no symptoms picked') + (st.ecg ? '. ECG attached.' : '.');
+    const recog = chosen.map((s) => s.plain + ' \u2192 ' + s.name).concat(Object.keys(st.ctx).map(plainOf));
+    const answer = chosen.length
+      ? ids.length.toLocaleString('en-US') + ' women-only studies describe women with ' + chosen.map((s) => s.plain.toLowerCase()).join(', ') + '. The decision tree points to research on ' + lead.toLowerCase() + ' (' + leafBars[0].pct + ' of the most similar studies). Start with sources [1] to [3].' + (st.ecg ? ' Her ECG was checked by the women-only ECG AI.' : '')
+      : 'Pick one or more symptoms to see the evidence.';
+    const ecgPoints = (D.ecg || []).map((v, i) => i + ',' + (60 - v * 48).toFixed(1)).join(' ');
+    return Object.assign(base, { typed, recog, funnelLive, path, leafName: lead, leafNote: 'Best-fit group of ' + n.papers + ' studies at the end of her path. Learned from 855 studies; right group in its top three 71% of the time.', leafBars, top, noStudies: !chosen.length, answer, ecgPoints });
+  }
+  renderVals() {
+    const F = [
+      ['Collected and checked', 50748, '50,748', 'Studies in which only women took part, from Europe PMC. In a hand check, about 9 in 10 were truly women-only.'],
+      ['Heart and blood vessels', 5500, '≈ 5,500', 'Studies about the heart and blood vessels.'],
+      ['Women’s symptoms described', 855, '855', 'Heart studies that describe the symptoms the women actually had.'],
+      ['Match her symptoms', 280, '280', 'Studies of women who had tiredness, breathlessness, swollen ankles or jaw ache.'],
+      ['Best-fit group', 40, '40', 'The decision tree points to a group of 40 studies, led by heart failure.']
+    ];
+    const lmax = Math.log10(50748), lmin = Math.log10(10);
+    const funnel = F.map(([step, v, n, what]) => ({
+      step, n, what,
+      bar: 'height: 22px; border-radius: 11px; background: #E65C6E; flex: 0 0 auto; width: ' + Math.max(4, Math.round(100 * (Math.log10(v) - lmin) / (lmax - lmin) * 0.85)) + '%'
+    }));
+    const steps = [
+      { tag: 'STEP 1 · THE DATA', title: 'Only studies of women', img: '/_blob/a112c0dcb2a503616a9229d1bdeb9c0c', alt: 'Studies pass a female filter and a women-only check',
+        body: 'We keep studies labelled as about women and not men, then a program reads how each study describes its participants and saves the sentence that proves only women took part.',
+        stats: [{ v: '50,748', l: 'women-only studies' }, { v: '9 in 10', l: 'confirmed in a hand check' }] },
+      { tag: 'STEP 1 · THE DATA', title: 'Similar studies group into themes', img: '/_blob/da84999d76c5c1b09ce08674eff3e8f1', alt: 'A map of studies coloured by research theme',
+        body: 'A computer turns every study into a fingerprint and places similar studies close together. It finds the research themes on its own.',
+        stats: [{ v: '30', l: 'research themes' }, { v: '2', l: 'themes about the heart' }] },
+      { tag: 'STEP 2 · SYMPTOM FILTER', title: 'Her words find the studies', img: '/_blob/803ec6f8bee76dc327e4c50fbf4bb1dc', alt: 'Matching heart studies light up next to a small decision tree',
+        body: 'Everyday words like “jaw ache” are matched to medical terms, and “no chest pain” does not count. A decision tree of yes-or-no questions then points to the best-fitting research.',
+        stats: [{ v: '56', l: 'symptoms recognised' }, { v: '280', l: 'studies match her' }] },
+      { tag: 'STEP 2 · ECG AI', title: 'An ECG model trained only on women', img: '/_blob/57200de5964edd7da790d7d5fe9796ce', alt: 'The GP types her symptoms and attaches her ECG',
+        body: 'The GP can attach an ECG. Our model learned from women’s ECGs only and recognises six heart rhythm and conduction problems, such as atrial fibrillation.',
+        stats: [{ v: '96%', l: 'accuracy (AUROC)' }, { v: '6', l: 'heart problems' }] },
+      { tag: 'STEP 3 · REASONING AGENT', title: 'One answer, with sources', img: '/_blob/75932cff2744574fd9023d3414726b3f', alt: 'Studies, ECG and tree flow into the AI; an answer card with sources',
+        body: 'The agent combines the studies, the ECG and the tree into a short answer. Every claim links to a study and a sentence. It never diagnoses.',
+        stats: [{ v: '3', l: 'inputs: studies, ECG, tree' }, { v: '[1] [2] [3]', l: 'every claim has a source' }] },
+      { tag: 'THE RESULT', title: 'Referred straight away', img: '/_blob/9d5426614f62c51afc34108eb85a049d', alt: 'She walks on to a cardiologist, with a green check',
+        body: 'Instead of being sent home, the patient in our example goes straight to a cardiologist. The doctor decides, with women’s research at hand.',
+        stats: [{ v: '< 1 s', l: 'to an answer in our prototype' }, { v: '40', l: 'studies in her best-fit group' }] }
+    ];
+    const bar = (v, c) => 'height: 100%; border-radius: 9px; background: ' + c + '; width: ' + v + '%';
+    const T = [
+      ['Correct symptoms found in study summaries', 84, 80, 'Comparison: PubTator, a leading public tool. 1,309 study summaries.'],
+      ['Share of symptoms found at all', 89, 42, 'Comparison: PubTator.'],
+      ['Useful studies in the top 10, for 20 new GP questions', 37, 17, 'Comparison: a standard search.'],
+      ['Decision tree: right group in its top three', 71, 16, 'Comparison: picking by chance. Tested on studies it had not seen.'],
+      ['ECG AI on women it had not seen', 96, 50, 'AUROC; comparison: guessing (50). Average over the heart problems, from the latest training round.']
+    ];
+    const tests = T.map(([name, a, b, note]) => ({ name, note, a: a + '%', b: b + '%', ours: bar(a, '#B03A56'), base: bar(b, '#CDB7BD') }));
+    const tabStyle = (on) => 'flex: 1 1 0; min-height: 46px; border-radius: 999px; border: 0; cursor: pointer; font: 600 16px Poppins, system-ui, sans-serif; background: ' + (on ? '#B03A56' : 'transparent') + '; color: ' + (on ? '#FFFFFF' : '#8E2F47');
+    const isInfo = this.state.tab === 'info';
+    return Object.assign({ funnel, steps, tests, isInfo, isHands: !isInfo, infoPressed: String(isInfo), handsPressed: String(!isInfo),
+      infoTab: tabStyle(isInfo), handsTab: tabStyle(!isInfo), showInfo: () => this.setState({ tab: 'info' }), showHands: () => this.setState({ tab: 'hands' }) }, this.hands());
+  }
+}
+</script>
+</body>
+</html>
