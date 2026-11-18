@@ -10,10 +10,13 @@ GREEN = hx('#3FA66B')
 
 
 # ---------- shared pieces ----------
+NOTEXT = os.environ.get('NOTEXT') == '1'
 def tag(ctx, s, a, bg=RED):
+    if NOTEXT: return
     pill(ctx, s, W/2, 62, 20, WHITE, bg, a, 'b', 16)
 
 def headline(ctx, s, a, y=140, size=58):
+    if NOTEXT: return
     text(ctx, s, W/2, y, size, INK, 'b', a=a)
 
 def fade(t, dur, fi=0.5, fo=0.5):
@@ -105,7 +108,7 @@ def clip1(ctx, t, dur, T):
     laptop(ctx, lx, ly - 30, 0.8, A*eout(prog(t, 7.6, 8.3)), glow=prog(t, 9.0, 11.0), logo_a=eout(prog(t, 8.0, 8.6)))
     # her symptoms appear, then fly into the laptop
     fly = [(lx, ly - 110, prog(t, 9.0 + k*0.35, 10.2 + k*0.35)) for k in range(4)]
-    bubble_pills(ctx, x, 380, [A*eout(prog(t, 1.8 + k*0.5, 2.3 + k*0.5)) for k in range(4)], fly=fly)
+    bubble_pills(ctx, x, 455, [A*eout(prog(t, 1.8 + k*0.5, 2.3 + k*0.5)) for k in range(4)], fly=fly)
     ctx.restore()
     # end of the zoom: the screen fills the frame
     if z > 0.85:
